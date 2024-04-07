@@ -25,5 +25,14 @@ offset_bottom = 635.0
 text = "0 u/s"
 vertical_alignment = 2
 
+[node name="LastJump" type="Label" parent="."]
+offset_left = 7.0
+offset_top = 584.0
+offset_right = 47.0
+offset_bottom = 607.0
+text = "0 u
+"
+vertical_alignment = 2
+
 [node name="RaycastPos" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.716269, 0)

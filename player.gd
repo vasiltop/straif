@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @onready var camera = $Camera3D
 @onready var speed_label = $Speed
+@onready var last_jump_label = $LastJump
 @onready var RAY_POS = $RaycastPos.position
 
 const MAX_G_SPEED = 5
@@ -16,6 +17,10 @@ var gravity = 11
 const SENS = 0.0004
 
 var floor_col_pos = Vector3.ZERO
+
+var last_jump = 0
+var last_jump_pos = Vector3.ZERO
+var landed = true
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -32,8 +37,7 @@ func grounded():
 func get_slope_angle(normal): return normal.angle_to(up_direction)
 
 func _physics_process(delta):
-	
-	#print(velocity)
+
 	var wish_dir = Input.get_vector("left", "right", "up", "down")
 	wish_dir = wish_dir.rotated(-rotation.y)
 	var vel_planar = Vector2(velocity.x, velocity.z)
@@ -42,7 +46,11 @@ func _physics_process(delta):
 	if not grounded():
 		vel_vertical -= gravity * delta
 	else:
-		
+		if not landed:
+			landed = true
+			last_jump = last_jump_pos.distance_to(global_position)
+			last_jump_label.text = str(snapped(last_jump, 0.1)) + " u"
+			
 		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 		
 		if vel_planar.length_squared() < 1.0 and wish_dir.length_squared() < 0.01:
@@ -55,9 +63,14 @@ func _physics_process(delta):
 	var add_speed = clamp(max_speed - current_speed, 0.0, max_accel * delta)
 	vel_planar += wish_dir * add_speed
 	
-	if Input.is_action_pressed("jump") and grounded():
-		vel_vertical = JUMP_FORCE
 	
+	if Input.is_action_just_pressed("jump") and grounded():
+		landed = false
+		
+	if Input.is_action_pressed("jump") and grounded():
+		last_jump_pos = global_position
+		vel_vertical = JUMP_FORCE
+
 	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
 	speed_label.text = str(snapped(abs(velocity.x) + abs(velocity.z), 0.1)) + " u/s"
 	
