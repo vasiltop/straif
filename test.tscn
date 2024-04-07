@@ -1,11 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://5v44egqunx3o"]
 
-[ext_resource type="Texture2D" uid="uid://bxs6ib571tx6a" path="res://73319473-914d-4d37-9719-d27dc6ea4c2d.png" id="2_op5u6"]
+[ext_resource type="Texture2D" uid="uid://bxs6ib571tx6a" path="res://prototype.png" id="2_op5u6"]
 [ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player.tscn" id="2_xd2kr"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h1ijr"]
-albedo_texture = ExtResource("2_op5u6")
-uv1_scale = Vector3(30, 30, 30)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hudmk"]
 sky_top_color = Color(0.32549, 0.384314, 0.858824, 1)
@@ -23,16 +19,37 @@ sky = SubResource("Sky_3yqpb")
 ambient_light_color = Color(0.607843, 0.392157, 0.254902, 1)
 ambient_light_energy = 7.3
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h1ijr"]
+albedo_texture = ExtResource("2_op5u6")
+uv1_scale = Vector3(30, -30, 30)
+
 [node name="Node3D" type="Node3D"]
 
 [node name="Player" parent="." instance=ExtResource("2_xd2kr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.32606, 1.66214, 4.9456)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sqikj")
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Level"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.9396, 0.241943, -1.69712)
 use_collision = true
 size = Vector3(64.6547, 0.516113, 69.269)
 material = SubResource("StandardMaterial3D_h1ijr")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_sqikj")
+[node name="CSGBox3D2" type="CSGBox3D" parent="Level"]
+transform = Transform3D(0.794277, 0.607556, 0, -0.607556, 0.794277, 0, 0, 0, 1, -2.35383, 1.09081, -4.27197)
+use_collision = true
+size = Vector3(3.19043, 1, 9.54395)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Level"]
+transform = Transform3D(0.600002, 0.799999, 0, -0.799999, 0.600002, 0, 0, 0, 1, 12.6013, 1.09081, -9.08984)
+use_collision = true
+size = Vector3(3.19043, 1, 19.1797)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Level"]
+transform = Transform3D(-0.963668, 0.267105, 0, -0.267105, -0.963668, 0, 0, 0, 1, 28.4123, 0.707325, -18.1797)
+use_collision = true
+size = Vector3(6, 1, 19.1797)

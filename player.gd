@@ -4,27 +4,35 @@ extends CharacterBody3D
 const MAX_G_SPEED = 7
 const MAX_G_ACCEL = MAX_G_SPEED * 15
 
-const MAX_A_SPEED = 1
-const MAX_A_ACCEL = 70
-
+const MAX_A_SPEED = 2
+const MAX_A_ACCEL = 100
+const MAX_SLOPE = 45
 const JUMP_FORCE = 4.5
 @onready var camera = $Camera3D
 @onready var speed_label = $Speed
 
+
+@onready var RAY_POS = $RaycastPos.position
+const RAY_REACH = 0.1
+
 const SENS = 0.0004
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+var floor_col_pos = Vector3.ZERO
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func grounded():
-	var origin = global_position
-	var target = Vector3.DOWN * 1
+	var origin = global_position + RAY_POS
+	var target = Vector3.DOWN * RAY_REACH
 	
 	var query = PhysicsRayQueryParameters3D.create(origin, origin + target)
 	var check = get_world_3d().direct_space_state.intersect_ray(query)
-	
+	floor_col_pos = check
 	return check.size() > 0
+	
+func get_slope_angle(normal): return normal.angle_to(up_direction)
 
 func _physics_process(delta):
 	
@@ -39,8 +47,7 @@ func _physics_process(delta):
 	if not grounded():
 		vel_vertical -= gravity * delta
 	else:
-		vel_vertical = 0
-		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 4
+		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 		
 		if vel_planar.length_squared() < 1.0 and wish_dir.length_squared() < 0.01:
 			vel_planar = Vector2.ZERO
@@ -57,8 +64,21 @@ func _physics_process(delta):
 	
 	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
 	speed_label.text = str(snapped(abs(velocity.x) + abs(velocity.z), 0.1)) + " u/s"
-	move_and_collide(velocity * delta)
-
+	
+	var col = move_and_collide(velocity * delta)
+	
+	if col:
+		
+		move_and_collide(col.get_remainder().slide(col.get_normal()))
+		
+		if not grounded():
+			velocity = velocity.slide(col.get_normal())
+			var slope_angle = get_slope_angle(col.get_normal())
+			if slope_angle < MAX_SLOPE:
+				velocity.y = 0.0
+	elif grounded():
+		move_and_collide(floor_col_pos.position - global_position)
+		
 	
 func _input(event):
 	if event is InputEventMouseMotion:
