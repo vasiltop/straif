@@ -1,16 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cyt0ed0fw4xgt"]
+[gd_scene load_steps=3 format=3 uid="uid://cyt0ed0fw4xgt"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_fc76d"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lhs2w"]
-
-[sub_resource type="Sky" id="Sky_yyfv1"]
-
-[sub_resource type="Environment" id="Environment_k3bdl"]
-background_energy_multiplier = 3.69
-sky = SubResource("Sky_yyfv1")
-ambient_light_color = Color(0.427451, 0.372549, 0.384314, 1)
-ambient_light_energy = 11.44
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_fc76d")
@@ -21,7 +13,6 @@ shape = SubResource("CapsuleShape3D_lhs2w")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510573, 0)
-environment = SubResource("Environment_k3bdl")
 
 [node name="Speed" type="Label" parent="."]
 offset_left = 9.0
