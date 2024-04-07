@@ -1,22 +1,19 @@
 extends CharacterBody3D
 
-
-const MAX_G_SPEED = 7
-const MAX_G_ACCEL = MAX_G_SPEED * 15
-
-const MAX_A_SPEED = 2
-const MAX_A_ACCEL = 100
-const MAX_SLOPE = 45
-const JUMP_FORCE = 4.5
 @onready var camera = $Camera3D
 @onready var speed_label = $Speed
-
-
 @onready var RAY_POS = $RaycastPos.position
+
+const MAX_G_SPEED = 5
+const MAX_G_ACCEL = MAX_G_SPEED * 13
+const MAX_A_SPEED = 1
+const MAX_A_ACCEL = 50
+const MAX_SLOPE = 1
+const JUMP_FORCE = 4
 const RAY_REACH = 0.1
+var gravity = 11
 
 const SENS = 0.0004
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var floor_col_pos = Vector3.ZERO
 
@@ -36,17 +33,16 @@ func get_slope_angle(normal): return normal.angle_to(up_direction)
 
 func _physics_process(delta):
 	
-	
-	print(velocity)
+	#print(velocity)
 	var wish_dir = Input.get_vector("left", "right", "up", "down")
 	wish_dir = wish_dir.rotated(-rotation.y)
 	var vel_planar = Vector2(velocity.x, velocity.z)
 	var vel_vertical = velocity.y
 	
-
 	if not grounded():
 		vel_vertical -= gravity * delta
 	else:
+		
 		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 		
 		if vel_planar.length_squared() < 1.0 and wish_dir.length_squared() < 0.01:
@@ -67,19 +63,23 @@ func _physics_process(delta):
 	
 	var col = move_and_collide(velocity * delta)
 	
+	
 	if col:
 		
-		move_and_collide(col.get_remainder().slide(col.get_normal()))
+		var slope_angle = get_slope_angle(col.get_normal())
 		
-		if not grounded():
-			velocity = velocity.slide(col.get_normal())
-			var slope_angle = get_slope_angle(col.get_normal())
-			if slope_angle < MAX_SLOPE:
-				velocity.y = 0.0
+		#Surfing
+		if slope_angle < MAX_SLOPE:
+			velocity.y = 0.0
+			move_and_collide(col.get_remainder().slide(col.get_normal()))
+			if not grounded():
+				velocity = velocity.slide(col.get_normal())
+		else:
+			move_and_slide()	
+					
 	elif grounded():
 		move_and_collide(floor_col_pos.position - global_position)
-		
-	
+
 func _input(event):
 	if event is InputEventMouseMotion:
 		rotate(Vector3(0, -1, 0), event.relative.x * SENS)

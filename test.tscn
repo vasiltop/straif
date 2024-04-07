@@ -34,7 +34,7 @@ environment = SubResource("Environment_sqikj")
 [node name="Level" type="Node3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.9396, 0.241943, -1.69712)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8902, 0.249844, -1.69202)
 use_collision = true
 size = Vector3(64.6547, 0.516113, 69.269)
 material = SubResource("StandardMaterial3D_h1ijr")
@@ -53,3 +53,28 @@ size = Vector3(3.19043, 1, 19.1797)
 transform = Transform3D(-0.963668, 0.267105, 0, -0.267105, -0.963668, 0, 0, 0, 1, 28.4123, 0.707325, -18.1797)
 use_collision = true
 size = Vector3(6, 1, 19.1797)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8561, 1.3222, 0.7146)
+use_collision = true
+size = Vector3(2.30225, 0.220215, 2.4292)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.1255, 0.981224, 4.08305)
+use_collision = true
+size = Vector3(2.21228, 0.220215, 2.07813)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.2635, 0.998688, -2.3984)
+use_collision = true
+size = Vector3(2.46729, 0.220215, 2.27625)
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.2069, 1.3222, -4.90633)
+use_collision = true
+size = Vector3(2.59863, 0.220215, 2.6095)
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.7536, 1.35572, -9.14685)
+use_collision = true
+size = Vector3(2.22253, 0.220215, 2.53711)

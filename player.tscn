@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" path="res://player.gd" id="1_fc76d"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lhs2w"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_xqa3n"]
+size = Vector3(0.5, 1.5, 0.5)
 
 [node name="Player" type="CharacterBody3D"]
 slide_on_ceiling = false
@@ -11,7 +12,7 @@ floor_block_on_wall = false
 script = ExtResource("1_fc76d")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_lhs2w")
+shape = SubResource("BoxShape3D_xqa3n")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510573, 0)
@@ -25,4 +26,4 @@ text = "0 u/s"
 vertical_alignment = 2
 
 [node name="RaycastPos" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.924375, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.716269, 0)
