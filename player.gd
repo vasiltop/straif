@@ -36,6 +36,13 @@ func grounded():
 	
 func get_slope_angle(normal): return normal.angle_to(up_direction)
 
+func _process(delta):
+	if Input.is_action_just_pressed("menu"):
+		get_tree().change_scene_to_file("level_select.tscn")
+	elif Input.is_action_just_pressed("restart"):
+		get_tree().reload_current_scene()	
+	
+
 func _physics_process(delta):
 
 	var wish_dir = Input.get_vector("left", "right", "up", "down")

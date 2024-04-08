@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://bfcah5t4kll2w"]
+
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://texture_01.png" id="1_yp456"]
+[ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player.tscn" id="2_l0gwf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d7fd4"]
+albedo_texture = ExtResource("1_yp456")
+uv1_scale = Vector3(10, 10, 10)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rgotf"]
+sky_top_color = Color(0.32549, 0.384314, 0.858824, 1)
+sky_horizon_color = Color(0.631373, 0.67451, 0.584314, 1)
+sky_curve = 0.409812
+sky_energy_multiplier = 0.79
+
+[sub_resource type="Sky" id="Sky_3yqpb"]
+sky_material = SubResource("ProceduralSkyMaterial_rgotf")
+
+[sub_resource type="Environment" id="Environment_3ct3f"]
+background_mode = 2
+background_energy_multiplier = 1.6
+sky = SubResource("Sky_3yqpb")
+ambient_light_color = Color(0.607843, 0.392157, 0.254902, 1)
+ambient_light_energy = 7.3
+
+[node name="Longjump" type="Node3D"]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6303, -0.422363, 1.88826)
+size = Vector3(57.1485, 0.155273, 44.6685)
+material = SubResource("StandardMaterial3D_d7fd4")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2363, -0.283936, 0.17552)
+size = Vector3(4.28467, 0.432129, 3.67468)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2363, -0.283936, -7.03978)
+size = Vector3(4.28467, 0.432129, 3.67468)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.07494, -0.268526, 0.159844)
+size = Vector3(4.28467, 0.432129, 3.67468)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.07494, -0.268526, -7.5227)
+size = Vector3(4.28467, 0.432129, 3.67468)
+
+[node name="Player" parent="." instance=ExtResource("2_l0gwf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0942998, 0.499939, 6.48674)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3ct3f")
