@@ -25,14 +25,14 @@ ground_curve = 0.0627669
 sun_angle_max = 14.4
 sun_curve = 0.0724453
 
-[sub_resource type="Sky" id="Sky_05t6w"]
+[sub_resource type="Sky" id="Sky_21rtc"]
 sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
 radiance_size = 2
 
 [sub_resource type="Environment" id="Environment_l4w43"]
 background_mode = 2
 background_energy_multiplier = 2.35
-sky = SubResource("Sky_05t6w")
+sky = SubResource("Sky_21rtc")
 ambient_light_source = 3
 ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
 ambient_light_energy = 0.0
@@ -40,7 +40,7 @@ fog_enabled = true
 fog_light_color = Color(0.47451, 0.576471, 0.560784, 1)
 fog_light_energy = 0.79
 fog_sun_scatter = 0.21
-fog_density = 0.0174
+fog_density = 0.0399
 fog_height_density = 0.0155
 
 [node name="1" type="Node3D"]
@@ -108,7 +108,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -11.97
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -11.9725, 5.69974, -11.6768)
 
 [node name="CSGBox3D29" parent="Level" instance=ExtResource("5_6yo4g")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.93093, 6.8099, -9.97765)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.93093, 6.37962, -9.97765)
 
 [node name="CSGBox3D10" parent="Level" instance=ExtResource("6_kneyj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, -27.3287)
@@ -144,13 +144,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.8194, 3.33167, -7.4231)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.8194, 3.95842, -10.4195)
 
 [node name="CSGBox3D32" parent="Level" instance=ExtResource("7_ekbl2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.8194, 4.5206, -13.4803)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.8194, 4.65077, -13.4803)
 
 [node name="CSGBox3D36" parent="Level" instance=ExtResource("7_ekbl2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.8194, 4.96415, -16.1635)
 
 [node name="CSGBox3D33" parent="Level" instance=ExtResource("7_ekbl2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.4243, 5.29034, -14.8653)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.4243, 5.26746, -14.8653)
 
 [node name="CSGBox3D34" parent="Level" instance=ExtResource("7_ekbl2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9973, 5.95658, -14.8653)

@@ -7,21 +7,33 @@
 albedo_texture = ExtResource("1_yp456")
 uv1_scale = Vector3(10, 10, 10)
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rgotf"]
-sky_top_color = Color(0.32549, 0.384314, 0.858824, 1)
-sky_horizon_color = Color(0.631373, 0.67451, 0.584314, 1)
-sky_curve = 0.409812
-sky_energy_multiplier = 0.79
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cjq74"]
+sky_top_color = Color(0.468637, 0.364248, 0.756109, 1)
+sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+sky_energy_multiplier = 0.85
+ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
+ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+ground_curve = 0.0627669
+sun_angle_max = 14.4
+sun_curve = 0.0724453
 
-[sub_resource type="Sky" id="Sky_3yqpb"]
-sky_material = SubResource("ProceduralSkyMaterial_rgotf")
+[sub_resource type="Sky" id="Sky_05t6w"]
+sky_material = SubResource("ProceduralSkyMaterial_cjq74")
+radiance_size = 2
 
-[sub_resource type="Environment" id="Environment_3ct3f"]
+[sub_resource type="Environment" id="Environment_ks83u"]
 background_mode = 2
-background_energy_multiplier = 1.6
-sky = SubResource("Sky_3yqpb")
-ambient_light_color = Color(0.607843, 0.392157, 0.254902, 1)
-ambient_light_energy = 7.3
+background_energy_multiplier = 2.35
+sky = SubResource("Sky_05t6w")
+ambient_light_source = 3
+ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
+ambient_light_energy = 0.0
+fog_enabled = true
+fog_light_color = Color(0.466667, 0.541176, 0.756863, 1)
+fog_light_energy = 0.79
+fog_sun_scatter = 0.21
+fog_density = 0.0174
+fog_height_density = 0.0155
 
 [node name="Longjump" type="Node3D"]
 
@@ -53,4 +65,4 @@ size = Vector3(4.28467, 0.432129, 3.67468)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0942998, 0.499939, 6.48674)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_3ct3f")
+environment = SubResource("Environment_ks83u")

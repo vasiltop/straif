@@ -27,6 +27,7 @@ var last_jump_pos = Vector3.ZERO
 var jumped = false
 var prev_pos = Vector3.ZERO
 var camera_height = 0
+
 func _ready():
 	prev_pos = camera.position
 	camera_height = camera.position.y
@@ -42,8 +43,6 @@ func grounded():
 	return check.size() > 0
 	
 func get_slope_angle(normal): return normal.angle_to(up_direction)
-
-
 
 func _process(delta):
 	$Sens.text = "sens: " + str(SENS)
