@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://cuxlf7dpvwh46"]
+
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://texture_01.png" id="1_p4iq4"]
+[ext_resource type="Material" uid="uid://cbqx4albph2qv" path="res://props/test_mat.tres" id="2_37ail"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i8f8m"]
+albedo_texture = ExtResource("1_p4iq4")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xlu5o"]
+size = Vector3(7.95496, 3.29059, 5.93872)
+
+[node name="StartZone" type="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, 0)
+material_override = SubResource("StandardMaterial3D_i8f8m")
+size = Vector3(8, 0.1, 6)
+material = ExtResource("2_37ail")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00372314, 1.71414, 0.00280762)
+shape = SubResource("BoxShape3D_xlu5o")
