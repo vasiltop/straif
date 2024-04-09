@@ -28,6 +28,8 @@ var jumped = false
 var prev_pos = Vector3.ZERO
 var camera_height = 0
 
+var time_since_landing = 0
+
 func _ready():
 	prev_pos = camera.position
 	camera_height = camera.position.y
@@ -38,6 +40,9 @@ func grounded():
 	var target = Vector3.DOWN * RAY_REACH
 	
 	var query = PhysicsRayQueryParameters3D.create(origin, origin + target)
+	
+	if get_world_3d() == null: return false
+	
 	var check = get_world_3d().direct_space_state.intersect_ray(query)
 	floor_col_pos = check
 	return check.size() > 0
@@ -48,20 +53,30 @@ func _process(delta):
 	$Sens.text = "sens: " + str(SENS)
 	if Input.is_action_just_pressed("menu"):
 		get_tree().change_scene_to_file("res://menus/level_select/level_select.tscn")
+		self.queue_free()
 	elif Input.is_action_just_pressed("restart"):
 		get_tree().reload_current_scene()	
+	
+	if Input.is_action_just_pressed("fullscreen"):
+		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 		
 	if Input.is_key_pressed(KEY_PAGEUP):
 		SENS += 0.00001
 	elif Input.is_key_pressed(KEY_PAGEDOWN):
 		SENS -= 0.00001
+		
+	if not jumped and grounded():
+		time_since_landing += delta
+	
 	
 	
 	var camera_pos = prev_pos.lerp(position, delta * 70)
 	camera.global_position = camera_pos
 	camera.position.y = camera_height
 	prev_pos = camera_pos
-	
 
 
 func _physics_process(delta):
@@ -78,8 +93,11 @@ func _physics_process(delta):
 			audio_player.stream = landing
 			audio_player.play()
 			jumped = false
-			last_jump = last_jump_pos.distance_to(global_position)
-			last_jump_label.text = str(snapped(last_jump, 0.1)) + " u"
+			
+			if time_since_landing > 0.1:
+				last_jump = last_jump_pos.distance_to(global_position)
+				last_jump_label.text = str(snapped(last_jump, 0.1)) + " u"
+				time_since_landing = 0
 			
 		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 		

@@ -171,7 +171,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.0249, 0.939935, -20.8388)
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.8088, 7.21802, -9.86053)
 
 [node name="CSGBox3D38" parent="Level" instance=ExtResource("8_0qg43")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.221, 1.52974, -19.2784)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.221, 1.30382, -19.2784)
 
 [node name="CSGBox3D39" parent="Level" instance=ExtResource("8_0qg43")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.7876, 1.92099, -17.7526)
