@@ -23,13 +23,13 @@ var floor_col_pos = Vector3.ZERO
 
 var last_jump = 0
 var last_jump_pos = Vector3.ZERO
-var landed = true
 
 var jumped = false
-
-var relative_rotation = Vector2.ZERO
-
+var prev_pos = Vector3.ZERO
+var camera_height = 0
 func _ready():
+	prev_pos = camera.position
+	camera_height = camera.position.y
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func grounded():
@@ -43,6 +43,8 @@ func grounded():
 	
 func get_slope_angle(normal): return normal.angle_to(up_direction)
 
+
+
 func _process(delta):
 	$Sens.text = "sens: " + str(SENS)
 	if Input.is_action_just_pressed("menu"):
@@ -55,6 +57,13 @@ func _process(delta):
 	elif Input.is_key_pressed(KEY_PAGEDOWN):
 		SENS -= 0.00001
 	
+	
+	var camera_pos = prev_pos.lerp(position, delta * 70)
+	camera.global_position = camera_pos
+	camera.position.y = camera_height
+	prev_pos = camera_pos
+	
+
 
 func _physics_process(delta):
 
@@ -62,7 +71,7 @@ func _physics_process(delta):
 	wish_dir = wish_dir.rotated(-rotation.y)
 	var vel_planar = Vector2(velocity.x, velocity.z)
 	var vel_vertical = velocity.y
-	
+
 	if not grounded():
 		vel_vertical -= gravity * delta
 	else:
@@ -70,9 +79,6 @@ func _physics_process(delta):
 			audio_player.stream = landing
 			audio_player.play()
 			jumped = false
-			
-		if not landed:
-			landed = true
 			last_jump = last_jump_pos.distance_to(global_position)
 			last_jump_label.text = str(snapped(last_jump, 0.1)) + " u"
 			
@@ -82,15 +88,11 @@ func _physics_process(delta):
 			vel_planar = Vector2.ZERO
 		
 	var current_speed = vel_planar.dot(wish_dir)
-	
+
 	var max_speed = MAX_G_SPEED if grounded() else MAX_A_SPEED
 	var max_accel = MAX_G_ACCEL if grounded() else MAX_A_ACCEL
 	var add_speed = clamp(max_speed - current_speed, 0.0, max_accel * delta)
 	vel_planar += wish_dir * add_speed
-	
-	
-	if Input.is_action_just_pressed("jump") and grounded():
-		landed = false
 		
 	if (Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")) and grounded():
 		last_jump_pos = global_position
@@ -101,12 +103,9 @@ func _physics_process(delta):
 	speed_label.text = str(snapped(abs(velocity.x) + abs(velocity.z), 0.1)) + " u/s"
 	
 	var col = move_and_collide(velocity * delta)
-	
-	
+
 	if col:
-		
 		var slope_angle = get_slope_angle(col.get_normal())
-		
 		#Surfing
 		if slope_angle < MAX_SLOPE:
 			velocity.y = 0.0
@@ -115,16 +114,18 @@ func _physics_process(delta):
 				velocity = velocity.slide(col.get_normal())
 		else:
 			move_and_slide()	
-					
+
 	elif grounded():
 		move_and_collide(floor_col_pos.position - global_position)
-	
-	if relative_rotation != Vector2.ZERO:
-		rotate(Vector3(0, -1, 0), relative_rotation.x * SENS)
-		camera.rotate(Vector3(-1, 0, 0), relative_rotation.y * SENS)
-		camera.rotation.x = clamp(camera.rotation.x, -1, 1.5)
-		relative_rotation = Vector2.ZERO
+		
+
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		relative_rotation += event.relative
+		
+		
+		
+		rotate(Vector3(0, -1, 0), event.relative.x * SENS)
+		camera.rotate(Vector3(-1, 0, 0), event.relative.y * SENS)
+		camera.rotation.x = clamp(camera.rotation.x, -1, 1.5)
+		
