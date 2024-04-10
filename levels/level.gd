@@ -28,7 +28,7 @@ func handle_request(result, response_code, headers, body):
 	
 	for run in json:
 		
-		leaderboard += run.username + " | " + str(snapped(run.time_ms / 1000, 0.01)) + "\n"
+		leaderboard += run.username + " | " + str(snapped(run.value / 1000, 0.01)) + "s\n"
 
 func player_started(col):
 	
@@ -42,7 +42,7 @@ func player_finished(col):
 	
 	if not completed:
 		var body = JSON.stringify({
-			"time_ms": floor(timer * 1000)
+			"value": floor(timer * 1000)
 		})
 		var headers = ["Content-Type: application/json", "user_id: " + User.uuid]
 		$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)

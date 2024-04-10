@@ -30,6 +30,8 @@ var camera_height = 0
 
 var time_since_landing = 0
 
+var url = "http://192.168.2.16:8000/Longjump/leaderboard"
+
 func _ready():
 	prev_pos = camera.position
 	camera_height = camera.position.y
@@ -80,7 +82,7 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	print(time_since_landing)
+	
 	var wish_dir = Input.get_vector("left", "right", "up", "down")
 	wish_dir = wish_dir.rotated(-rotation.y)
 	var vel_planar = Vector2(velocity.x, velocity.z)
@@ -94,9 +96,15 @@ func _physics_process(delta):
 			audio_player.play()
 			jumped = false
 			
-			if time_since_landing > 0.1:
+			if time_since_landing > 0.1 and snapped(global_position.y, 0.01) == snapped(last_jump_pos.y, 0.01):
 				last_jump = last_jump_pos.distance_to(global_position)
-				last_jump_label.text = str(snapped(last_jump, 0.1)) + " u"
+				last_jump_label.text = str(snapped(last_jump, 0.01)) + " u"
+				
+				var body = JSON.stringify({
+					"value": floor(last_jump * -1000)
+				})
+				var headers = ["Content-Type: application/json", "user_id: " + User.uuid]
+				$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
 				
 			time_since_landing = 0
 		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2

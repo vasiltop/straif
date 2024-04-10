@@ -56,7 +56,7 @@ func create_user():
 	$CreateUser.request(url, headers, HTTPClient.METHOD_POST, body)
 	
 func longjump():
-	get_tree().change_scene_to_file("res://longjump.tscn")
+	get_tree().change_scene_to_file("res://levels/longjump.tscn")
 	
 func bhop():
 	get_tree().change_scene_to_file("res://levels/1.tscn")

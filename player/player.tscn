@@ -74,3 +74,5 @@ offset_right = 87.0
 offset_bottom = -75.0
 grow_vertical = 0
 text = "sens: 0.0"
+
+[node name="PostLeaderboard" type="HTTPRequest" parent="."]
