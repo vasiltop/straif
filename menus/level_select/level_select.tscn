@@ -27,3 +27,40 @@ offset_right = 705.0
 offset_bottom = 360.0
 text = "bhop map
 "
+
+[node name="bhop2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 612.0
+offset_top = 445.0
+offset_right = 699.0
+offset_bottom = 476.0
+text = "bhop map
+ 2"
+
+[node name="username" type="TextEdit" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 481.0
+offset_top = 133.0
+offset_right = 631.0
+offset_bottom = 169.0
+placeholder_text = "username"
+
+[node name="submit_username" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 515.0
+offset_top = 194.0
+offset_right = 595.0
+offset_bottom = 236.0
+text = "submit"
+
+[node name="CreateUser" type="HTTPRequest" parent="."]
+
+[node name="logout" type="Button" parent="."]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 52.0
+offset_right = 207.0
+offset_bottom = 95.0
+text = "make new account idk"

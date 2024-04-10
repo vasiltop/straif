@@ -183,11 +183,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.3738, 2.43618, -13.8338)
 environment = SubResource("Environment_l4w43")
 
 [node name="Timer" type="Label" parent="."]
-offset_left = 17.0
-offset_top = 14.0
-offset_right = 57.0
-offset_bottom = 37.0
+offset_left = 20.0
+offset_right = 60.0
+offset_bottom = 23.0
 text = "0s"
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
-volume_db = -16.345
+volume_db = -32.193
+
+[node name="GetLeaderboard" type="HTTPRequest" parent="."]
+
+[node name="PostLeaderboard" type="HTTPRequest" parent="."]
+
+[node name="Leaderboard" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -124.0
+offset_right = -10.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "munost 0.0001"

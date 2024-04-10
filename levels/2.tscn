@@ -1,0 +1,113 @@
+[gd_scene load_steps=13 format=3 uid="uid://c3ghsggtvier5"]
+
+[ext_resource type="Script" path="res://levels/level.gd" id="1_0tawf"]
+[ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player/player.tscn" id="2_vpryq"]
+[ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_w1tiu"]
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://texture_01.png" id="4_66fg6"]
+[ext_resource type="PackedScene" uid="uid://dhrwk6tthy3r8" path="res://props/medium_box.tscn" id="5_ofshu"]
+[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="6_bb0lb"]
+[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="7_0eqqd"]
+[ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="10_brm7t"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
+albedo_texture = ExtResource("4_66fg6")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
+sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
+sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+sky_energy_multiplier = 0.85
+ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
+ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+ground_curve = 0.0627669
+sun_angle_max = 14.4
+sun_curve = 0.0724453
+
+[sub_resource type="Sky" id="Sky_21rtc"]
+sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
+radiance_size = 2
+
+[sub_resource type="Environment" id="Environment_l4w43"]
+background_mode = 2
+background_energy_multiplier = 2.35
+sky = SubResource("Sky_21rtc")
+ambient_light_source = 3
+ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
+ambient_light_energy = 0.0
+fog_enabled = true
+fog_light_color = Color(0.47451, 0.576471, 0.560784, 1)
+fog_light_energy = 0.79
+fog_sun_scatter = 0.21
+fog_density = 0.0399
+fog_height_density = 0.0155
+
+[node name="2" type="Node3D"]
+script = ExtResource("1_0tawf")
+
+[node name="Player" parent="." instance=ExtResource("2_vpryq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.736992, 0.998674, 1.20542)
+
+[node name="Level" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="StartZone" parent="Level" instance=ExtResource("3_w1tiu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
+material = SubResource("StandardMaterial3D_ivg4n")
+
+[node name="CSGBox3D" parent="Level" instance=ExtResource("5_ofshu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -5.78647)
+
+[node name="CSGBox3D2" parent="Level" instance=ExtResource("5_ofshu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -5.78647)
+
+[node name="CSGBox3D3" parent="Level" instance=ExtResource("5_ofshu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -9.65065)
+
+[node name="CSGBox3D4" parent="Level" instance=ExtResource("5_ofshu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -9.65065)
+
+[node name="CSGBox3D6" parent="Level" instance=ExtResource("5_ofshu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -17.625)
+
+[node name="CSGBox3D7" parent="Level" instance=ExtResource("5_ofshu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -17.625)
+
+[node name="CSGBox3D8" parent="Level" instance=ExtResource("5_ofshu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -21.4892)
+
+[node name="CSGBox3D9" parent="Level" instance=ExtResource("5_ofshu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -21.4892)
+
+[node name="CSGBox3D5" parent="Level" instance=ExtResource("6_bb0lb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00543594, -0.617405, -13.4476)
+
+[node name="CSGBox3D10" parent="Level" instance=ExtResource("7_0eqqd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, -27.3287)
+
+[node name="EndZone" parent="Level" instance=ExtResource("10_brm7t")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.0812871, 0.231246, -35.5112)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l4w43")
+
+[node name="Timer" type="Label" parent="."]
+offset_left = 20.0
+offset_right = 60.0
+offset_bottom = 23.0
+text = "0s"
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+volume_db = -42.097
+
+[node name="GetLeaderboard" type="HTTPRequest" parent="."]
+
+[node name="PostLeaderboard" type="HTTPRequest" parent="."]
+
+[node name="Leaderboard" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -124.0
+offset_right = -10.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "munost 0.0001"
