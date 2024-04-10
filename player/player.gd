@@ -53,7 +53,7 @@ func _process(delta):
 	$Sens.text = "sens: " + str(SENS)
 	if Input.is_action_just_pressed("menu"):
 		get_tree().change_scene_to_file("res://menus/level_select/level_select.tscn")
-		self.queue_free()
+		
 	elif Input.is_action_just_pressed("restart"):
 		get_tree().reload_current_scene()	
 	
@@ -80,7 +80,7 @@ func _process(delta):
 
 
 func _physics_process(delta):
-
+	print(time_since_landing)
 	var wish_dir = Input.get_vector("left", "right", "up", "down")
 	wish_dir = wish_dir.rotated(-rotation.y)
 	var vel_planar = Vector2(velocity.x, velocity.z)
@@ -97,8 +97,8 @@ func _physics_process(delta):
 			if time_since_landing > 0.1:
 				last_jump = last_jump_pos.distance_to(global_position)
 				last_jump_label.text = str(snapped(last_jump, 0.1)) + " u"
-				time_since_landing = 0
-			
+				
+			time_since_landing = 0
 		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 		
 		if vel_planar.length_squared() < 1.0 and wish_dir.length_squared() < 0.01:
