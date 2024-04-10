@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdtadmf5o7hmb"]
+
+[ext_resource type="Script" path="res://menus/settings/settings_menu.gd" id="1_03vip"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_03vip")
+
+[node name="Sens" type="HSlider" parent="."]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 78.0
+offset_right = 239.0
+offset_bottom = 94.0
+max_value = 2.0
+step = 0.01
+value = 0.4
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 145.0
+offset_top = 46.0
+offset_right = 185.0
+offset_bottom = 69.0
+text = "Sens"

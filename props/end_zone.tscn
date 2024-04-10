@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://rsls7ibrad26"]
 
-[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://texture_01.png" id="1_tiwpf"]
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="1_tiwpf"]
 [ext_resource type="Material" uid="uid://cbqx4albph2qv" path="res://props/test_mat.tres" id="2_hb60a"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i8f8m"]

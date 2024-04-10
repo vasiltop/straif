@@ -17,8 +17,6 @@ const JUMP_FORCE = 4
 const RAY_REACH = 0.1
 var gravity = 11
 
-var SENS = 0.0004
-
 var floor_col_pos = Vector3.ZERO
 
 var last_jump = 0
@@ -52,34 +50,28 @@ func grounded():
 func get_slope_angle(normal): return normal.angle_to(up_direction)
 
 func _process(delta):
-	$Sens.text = "sens: " + str(SENS)
 	if Input.is_action_just_pressed("menu"):
 		get_tree().change_scene_to_file("res://menus/level_select/level_select.tscn")
-		
 	elif Input.is_action_just_pressed("restart"):
-		get_tree().reload_current_scene()	
+		get_tree().reload_current_scene()
+	elif Input.is_action_just_pressed("settings"):
+		get_tree().change_scene_to_file("res://menus/settings/settings.tscn")
 	
 	if Input.is_action_just_pressed("fullscreen"):
 		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-		
-	if Input.is_key_pressed(KEY_PAGEUP):
-		SENS += 0.00001
-	elif Input.is_key_pressed(KEY_PAGEDOWN):
-		SENS -= 0.00001
-		
+
 	if not jumped and grounded():
 		time_since_landing += delta
-	
-	
-	
+
 	var camera_pos = prev_pos.lerp(position, delta * 70)
 	camera.global_position = camera_pos
 	camera.position.y = camera_height
 	prev_pos = camera_pos
-
+	
+	$Sens.text = "Sens: " + str(Settings.sens)
 
 func _physics_process(delta):
 	
@@ -147,10 +139,8 @@ func _physics_process(delta):
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		
-		
-		
-		rotate(Vector3(0, -1, 0), event.relative.x * SENS)
-		camera.rotate(Vector3(-1, 0, 0), event.relative.y * SENS)
+		print(Settings.sens)
+		rotate(Vector3(0, -1, 0), event.relative.x * Settings.sens)
+		camera.rotate(Vector3(-1, 0, 0), event.relative.y * Settings.sens)
 		camera.rotation.x = clamp(camera.rotation.x, -1, 1.5)
 		
