@@ -31,9 +31,9 @@ var time_since_landing = 0
 var url = "http://192.168.2.16:8000/Longjump/leaderboard"
 
 func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	prev_pos = camera.position
 	camera_height = camera.position.y
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func grounded():
 	var origin = global_position + RAY_POS
@@ -50,29 +50,34 @@ func grounded():
 func get_slope_angle(normal): return normal.angle_to(up_direction)
 
 func _process(delta):
+	handle_scene_changes()
+	update_timers(delta)
+	interpolate_camera_pos(delta)
+	
+func interpolate_camera_pos(delta):
+	var camera_pos = prev_pos.lerp(position, delta * 70)
+	camera.global_position = camera_pos
+	camera.position.y = camera_height
+	prev_pos = camera_pos
+	
+func update_timers(delta):
+	if not jumped and grounded():
+		time_since_landing += delta
+		
+func handle_scene_changes():
 	if Input.is_action_just_pressed("menu"):
 		get_tree().change_scene_to_file("res://menus/level_select/level_select.tscn")
 	elif Input.is_action_just_pressed("restart"):
 		get_tree().reload_current_scene()
 	elif Input.is_action_just_pressed("settings"):
 		get_tree().change_scene_to_file("res://menus/settings/settings.tscn")
-	
+		
 	if Input.is_action_just_pressed("fullscreen"):
 		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-
-	if not jumped and grounded():
-		time_since_landing += delta
-
-	var camera_pos = prev_pos.lerp(position, delta * 70)
-	camera.global_position = camera_pos
-	camera.position.y = camera_height
-	prev_pos = camera_pos
 	
-	$Sens.text = "Sens: " + str(Settings.sens)
-
 func _physics_process(delta):
 	
 	var wish_dir = Input.get_vector("left", "right", "up", "down")
@@ -95,7 +100,7 @@ func _physics_process(delta):
 				var body = JSON.stringify({
 					"value": floor(last_jump * -1000)
 				})
-				var headers = ["Content-Type: application/json", "user_id: " + User.uuid]
+				var headers = ["Content-Type: application/json", "user_id: " + Settings.uuid]
 				$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
 				
 			time_since_landing = 0
@@ -105,7 +110,6 @@ func _physics_process(delta):
 			vel_planar = Vector2.ZERO
 		
 	var current_speed = vel_planar.dot(wish_dir)
-
 	var max_speed = MAX_G_SPEED if grounded() else MAX_A_SPEED
 	var max_accel = MAX_G_ACCEL if grounded() else MAX_A_ACCEL
 	var add_speed = clamp(max_speed - current_speed, 0.0, max_accel * delta)
@@ -135,15 +139,13 @@ func _physics_process(delta):
 	elif grounded():
 		move_and_collide(floor_col_pos.position - global_position)
 		
-
-
 func _input(event):
 	if event is InputEventMouseMotion:
-		
-		rotate(Vector3(0, -1, 0), event.relative.x * Settings.sens)
-		camera.rotate_x(-event.relative.y * Settings.sens)
-		camera.rotation.y = 0
-		camera.rotation.z = 0
-		camera.rotation.x = clamp(camera.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))
-		
-		
+		rotate_player(event)
+
+func rotate_player(event):
+	rotate(Vector3(0, -1, 0), event.relative.x * Settings.sens)
+	camera.rotate_x(-event.relative.y * Settings.sens)
+	camera.rotation.y = 0
+	camera.rotation.z = 0
+	camera.rotation.x = clamp(camera.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))

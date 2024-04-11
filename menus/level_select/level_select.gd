@@ -1,7 +1,7 @@
 extends Control
 
 var url = "http://192.168.2.16:8000/user"
-var levels = []
+var levels = ["dawn.tscn", "fog.tscn", "longjump.tscn", "rookie.tscn"]
 var current_level = 0
 
 func _ready():
@@ -12,10 +12,13 @@ func _ready():
 	$Next.pressed.connect(next_map)
 	$StartLevel.pressed.connect(start_map)
 	
+	check_for_save_file()
+	update_level_labels()
+
+func check_for_save_file():
 	var save_file = FileAccess.open('user://source.data', FileAccess.READ)
 	
 	if save_file == null:
-		print(FileAccess.get_open_error())
 		$username.visible = true
 		$logout.visible = false
 		$submit_username.visible = true
@@ -24,23 +27,8 @@ func _ready():
 	else:
 		$logout.pressed.connect(logout)
 		var uuid = save_file.get_as_text()
-		User.uuid = uuid
+		Settings.uuid = uuid
 		
-	var levels_dir = DirAccess.open("res://levels")
-	if levels_dir:
-		levels_dir.list_dir_begin()
-		var file_name = levels_dir.get_next()
-		
-		while file_name != "":
-			if file_name.ends_with(".gd"): 
-				file_name = levels_dir.get_next()
-				continue
-				
-			levels.append(file_name)
-			file_name = levels_dir.get_next()
-	
-	update_level_labels()
-
 func next_map():
 	current_level = current_level + 1 if current_level < len(levels) - 1 else 0
 	update_level_labels()
@@ -64,15 +52,13 @@ func logout():
 	$CreateUser.request_completed.connect(save_uuid)
 	
 func save_uuid(result, response_code, headers, body):
-	print(response_code)
 	if response_code != 200:
 		return
 		
 	var save_file = FileAccess.open('user://source.data', FileAccess.WRITE_READ)
 	var json = JSON.parse_string(body.get_string_from_utf8())
-	print(json)
 	save_file.store_string(json.id)
-	User.uuid = json.id
+	Settings.uuid = json.id
 	$username.visible = false
 	$submit_username.visible = false
 

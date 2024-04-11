@@ -16,7 +16,6 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 
 [autoload]
 
-User="*res://user.gd"
 Settings="*res://settings.gd"
 
 [display]

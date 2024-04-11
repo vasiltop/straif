@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://cetj3cqw2whas"]
+
+[ext_resource type="Script" path="res://menus/level_select/level_select.gd" id="1_mqxld"]
+
+[node name="LevelSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mqxld")
+
+[node name="username" type="TextEdit" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 481.0
+offset_top = 133.0
+offset_right = 631.0
+offset_bottom = 169.0
+placeholder_text = "username"
+
+[node name="submit_username" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 515.0
+offset_top = 194.0
+offset_right = 595.0
+offset_bottom = 236.0
+text = "submit"
+
+[node name="CreateUser" type="HTTPRequest" parent="."]
+
+[node name="logout" type="Button" parent="."]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 52.0
+offset_right = 207.0
+offset_bottom = 95.0
+text = "make new account idk"
+
+[node name="StartLevel" type="Button" parent="."]
+layout_mode = 0
+offset_left = 502.0
+offset_top = 341.0
+offset_right = 613.0
+offset_bottom = 377.0
+text = "Start Level: 1"
+
+[node name="Prev" type="Button" parent="."]
+layout_mode = 0
+offset_left = 283.0
+offset_top = 342.0
+offset_right = 358.0
+offset_bottom = 373.0
+text = "Previous"
+
+[node name="Next" type="Button" parent="."]
+offset_left = 734.0
+offset_top = 344.0
+offset_right = 800.0
+offset_bottom = 375.0
+text = "Next"

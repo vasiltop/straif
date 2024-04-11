@@ -42,7 +42,7 @@ func player_finished(col):
 		var body = JSON.stringify({
 			"value": floor(timer * 1000)
 		})
-		var headers = ["Content-Type: application/json", "user_id: " + User.uuid]
+		var headers = ["Content-Type: application/json", "user_id: " + Settings.uuid]
 		$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
 	
 	
