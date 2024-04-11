@@ -1,0 +1,146 @@
+[gd_scene load_steps=17 format=3 uid="uid://dmm4nqd5hlyk4"]
+
+[ext_resource type="Script" path="res://levels/level.gd" id="1_r46vw"]
+[ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player/player.tscn" id="2_xg8cv"]
+[ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_fd1xa"]
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="4_igim7"]
+[ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="5_4pwus"]
+[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="6_pbyhw"]
+[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="7_0khkp"]
+[ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://props/small.tscn" id="8_u1abt"]
+[ext_resource type="PackedScene" uid="uid://gdrhguyyuy8i" path="res://props/large.tscn" id="9_asa2o"]
+[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="10_t0bnn"]
+[ext_resource type="PackedScene" uid="uid://dhrwk6tthy3r8" path="res://props/medium_box.tscn" id="11_r6o4x"]
+[ext_resource type="PackedScene" uid="uid://nn4mtur3ev0n" path="res://props/small_box.tscn" id="12_ltwnk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
+albedo_texture = ExtResource("4_igim7")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
+sky_top_color = Color(0.266667, 0.486275, 0.52549, 1)
+sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+sky_energy_multiplier = 0.85
+ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
+ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+ground_curve = 0.0627669
+sun_angle_max = 14.4
+sun_curve = 0.0724453
+
+[sub_resource type="Sky" id="Sky_21rtc"]
+sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
+radiance_size = 2
+
+[sub_resource type="Environment" id="Environment_l4w43"]
+background_mode = 2
+background_energy_multiplier = 2.35
+sky = SubResource("Sky_21rtc")
+ambient_light_source = 3
+ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
+ambient_light_energy = 0.0
+fog_enabled = true
+fog_light_color = Color(0.211765, 0.109804, 0.203922, 1)
+fog_light_energy = 0.61
+fog_density = 0.1072
+
+[node name="Fog" type="Node3D"]
+script = ExtResource("1_r46vw")
+
+[node name="Player" parent="." instance=ExtResource("2_xg8cv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.225461, 0.998674, 0.299806)
+
+[node name="Level" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="StartZone" parent="Level" instance=ExtResource("3_fd1xa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
+material = SubResource("StandardMaterial3D_ivg4n")
+
+[node name="EndZone" parent="Level" instance=ExtResource("5_4pwus")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -27.4612, 0.231246, -84.7335)
+size = Vector3(8, 0.1, 5.88281)
+
+[node name="CSGBox3D" parent="Level" instance=ExtResource("6_pbyhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35.606)
+
+[node name="CSGBox3D13" parent="Level" instance=ExtResource("6_pbyhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.8734, 0, -35.606)
+
+[node name="CSGBox3D12" parent="Level" instance=ExtResource("6_pbyhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -17.803)
+
+[node name="CSGBox3D2" parent="Level" instance=ExtResource("7_0khkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35089, 0, -5.32238)
+
+[node name="CSGBox3D3" parent="Level" instance=ExtResource("7_0khkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70737, 0, -9.17727)
+
+[node name="CSGBox3D4" parent="Level" instance=ExtResource("7_0khkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73961, 0, -11.9291)
+
+[node name="CSGBox3D5" parent="Level" instance=ExtResource("8_u1abt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.36401, -0.167335, -23.4282)
+
+[node name="CSGBox3D6" parent="Level" instance=ExtResource("8_u1abt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.64053, -0.155187, -26.7049)
+
+[node name="CSGBox3D7" parent="Level" instance=ExtResource("8_u1abt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.849922, -0.218956, -29.5579)
+
+[node name="CSGBox3D8" parent="Level" instance=ExtResource("9_asa2o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.93867, -4.76837e-07, -35.8624)
+
+[node name="CSGBox3D9" parent="Level" instance=ExtResource("10_t0bnn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7826, 0, -35.9599)
+
+[node name="CSGBox3D10" parent="Level" instance=ExtResource("7_0khkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0102, 0.47617, -32.5716)
+
+[node name="CSGBox3D11" parent="Level" instance=ExtResource("7_0khkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0032, 0.451841, -39.444)
+
+[node name="CSGBox3D14" parent="Level" instance=ExtResource("11_r6o4x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.1008, 0, -53.5337)
+
+[node name="CSGBox3D15" parent="Level" instance=ExtResource("12_ltwnk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6248, 2.38419e-07, -48.2944)
+
+[node name="CSGBox3D16" parent="Level" instance=ExtResource("8_u1abt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.578, 0, -43.3664)
+
+[node name="CSGBox3D17" parent="Level" instance=ExtResource("10_t0bnn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.7386, 0, -60.3313)
+
+[node name="CSGBox3D18" parent="Level" instance=ExtResource("8_u1abt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.8625, 0, -64.1462)
+
+[node name="CSGBox3D19" parent="Level" instance=ExtResource("8_u1abt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.4931, 0, -68.3693)
+
+[node name="CSGBox3D20" parent="Level" instance=ExtResource("9_asa2o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.3803, 0, -74.9227)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l4w43")
+
+[node name="Timer" type="Label" parent="."]
+offset_left = 20.0
+offset_right = 60.0
+offset_bottom = 23.0
+text = "0s"
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+volume_db = -42.097
+
+[node name="GetLeaderboard" type="HTTPRequest" parent="."]
+
+[node name="PostLeaderboard" type="HTTPRequest" parent="."]
+
+[node name="Leaderboard" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -124.0
+offset_right = -10.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "munost 0.0001"

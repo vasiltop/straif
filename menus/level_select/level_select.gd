@@ -1,16 +1,16 @@
 extends Control
 
-@onready var lj = $longjump
-@onready var bh = $bhop
-@onready var bh2 = $bhop2
-
 var url = "http://192.168.2.16:8000/user"
+var levels = []
+var current_level = 0
 
 func _ready():
+	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	lj.pressed.connect(longjump)
-	bh.pressed.connect(bhop)
-	bh2.pressed.connect(bhop2)
+	
+	$Prev.pressed.connect(prev_map)
+	$Next.pressed.connect(next_map)
+	$StartLevel.pressed.connect(start_map)
 	
 	var save_file = FileAccess.open('user://source.data', FileAccess.READ)
 	
@@ -25,6 +25,35 @@ func _ready():
 		$logout.pressed.connect(logout)
 		var uuid = save_file.get_as_text()
 		User.uuid = uuid
+		
+	var levels_dir = DirAccess.open("res://levels")
+	if levels_dir:
+		levels_dir.list_dir_begin()
+		var file_name = levels_dir.get_next()
+		
+		while file_name != "":
+			if file_name.ends_with(".gd"): 
+				file_name = levels_dir.get_next()
+				continue
+				
+			levels.append(file_name)
+			file_name = levels_dir.get_next()
+	
+	update_level_labels()
+
+func next_map():
+	current_level = current_level + 1 if current_level < len(levels) - 1 else 0
+	update_level_labels()
+	
+func prev_map():
+	current_level = current_level - 1 if current_level > 0 else len(levels) - 1
+	update_level_labels()
+	
+func start_map():
+	get_tree().change_scene_to_file("res://levels/" + levels[current_level])
+
+func update_level_labels():
+	$StartLevel.text = "Start Level: " + levels[current_level]
 
 func logout():
 	DirAccess.remove_absolute('user://source.data')
@@ -54,15 +83,3 @@ func create_user():
 	print(body)
 	var headers = ["Content-Type: application/json"]
 	$CreateUser.request(url, headers, HTTPClient.METHOD_POST, body)
-	
-func longjump():
-	get_tree().change_scene_to_file("res://levels/longjump.tscn")
-	
-func bhop():
-	get_tree().change_scene_to_file("res://levels/1.tscn")
-	
-func bhop2():
-	get_tree().change_scene_to_file("res://levels/2.tscn")
-	
-func _process(delta):
-	pass

@@ -139,8 +139,11 @@ func _physics_process(delta):
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		print(Settings.sens)
+		
 		rotate(Vector3(0, -1, 0), event.relative.x * Settings.sens)
-		camera.rotate(Vector3(-1, 0, 0), event.relative.y * Settings.sens)
-		camera.rotation.x = clamp(camera.rotation.x, -1, 1.5)
+		camera.rotate_x(-event.relative.y * Settings.sens)
+		camera.rotation.y = 0
+		camera.rotation.z = 0
+		camera.rotation.x = clamp(camera.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))
+		
 		

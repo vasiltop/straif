@@ -27,7 +27,6 @@ func handle_request(result, response_code, headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	
 	for run in json:
-		
 		leaderboard += run.username + " | " + str(snapped(run.value / 1000, 0.01)) + "s\n"
 
 func player_started(col):
@@ -38,7 +37,6 @@ func player_started(col):
 	started = true
 
 func player_finished(col):
-	
 	
 	if not completed:
 		var body = JSON.stringify({
