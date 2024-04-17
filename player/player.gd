@@ -138,7 +138,7 @@ func _physics_process(delta):
 
 	elif grounded():
 		move_and_collide(floor_col_pos.position - global_position)
-		
+
 func _input(event):
 	if event is InputEventMouseMotion:
 		rotate_player(event)
