@@ -3,8 +3,9 @@ use axum::{
 	routing::{get, post},
 	Router,
 };
-use postgres::{Client, NoTls};
+
 use serde::Deserialize;
+use sqlx::{postgres::PgPoolOptions, query};
 
 #[derive(Deserialize)]
 struct Test {
@@ -13,18 +14,16 @@ struct Test {
 
 #[tokio::main]
 async fn main() {
-	let app = Router::new().route("/", post(test));
+	let pool = PgPoolOptions::new()
+		.max_connections(5)
+		.connect("postgres://postgres:root@localhost:5432/straif")
+		.await
+		.unwrap();
+
+	let app = Router::new().route("/", post(test)).with_state(pool);
 
 	let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
 	axum::serve(listener, app).await.unwrap();
-
-	let mut client = Client::configure()
-		.user("postgres")
-		.password("root")
-		.host("localhost")
-		.dbname("straif")
-		.connect(NoTls)
-		.unwrap();
 }
 
 async fn test(Json(payload): Json<Test>) -> String {
