@@ -1,16 +1,9 @@
-use axum::{
-	extract::Json,
-	routing::{get, post},
-	Router,
-};
+mod routes;
 
-use serde::Deserialize;
-use sqlx::{postgres::PgPoolOptions, query};
+use axum::Router;
+use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
-#[derive(Deserialize)]
-struct Test {
-	foo: String,
-}
+type State = Pool<Postgres>;
 
 #[tokio::main]
 async fn main() {
@@ -20,12 +13,15 @@ async fn main() {
 		.await
 		.unwrap();
 
-	let app = Router::new().route("/", post(test)).with_state(pool);
+	let app = Router::new()
+		.nest("/user", routes::user::router().with_state(pool.clone()))
+		.nest("/bhop", routes::bhop::router().with_state(pool.clone()))
+		.nest(
+			"/longjump",
+			routes::longjump::router().with_state(pool.clone()),
+		)
+		.with_state(pool);
 
 	let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
 	axum::serve(listener, app).await.unwrap();
-}
-
-async fn test(Json(payload): Json<Test>) -> String {
-	payload.foo
 }
