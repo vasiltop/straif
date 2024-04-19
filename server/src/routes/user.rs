@@ -1,16 +1,33 @@
-use axum::{extract::Json, routing::post, Router};
+use axum::{
+	extract::{Json, State},
+	routing::post,
+	Router,
+};
 use serde::Deserialize;
+use validator::Validate;
 
-use crate::State;
+use crate::{AppState, ResponseError};
 
-#[derive(Deserialize)]
-struct Test {
-	foo: String,
+#[derive(Deserialize, Validate)]
+struct User {
+	#[validate(length(min = 3, max = 32))]
+	username: String,
+	#[validate(length(min = 8, max = 128))]
+	password: String,
 }
-pub fn router() -> Router<State> {
-	Router::new().route("/", post(test))
+
+pub fn router() -> Router<AppState> {
+	Router::new()
+		.route("/login", post(login))
+		.route("/register", post(register))
 }
 
-async fn test(Json(payload): Json<Test>) -> String {
-	payload.foo
+async fn login(State(pool): State<AppState>, Json(user): Json<User>) -> String {
+	user.username
+}
+
+#[axum::debug_handler]
+async fn register(Json(user): Json<User>) -> Result<String, ResponseError> {
+	user.validate()?;
+	Ok(user.username)
 }

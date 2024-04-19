@@ -1,9 +1,27 @@
 mod routes;
 
-use axum::Router;
+use axum::{body::Body, http::Response, response::IntoResponse, Router};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
-type State = Pool<Postgres>;
+type AppState = Pool<Postgres>;
+
+enum ResponseError {
+	ValidationError(validator::ValidationErrors),
+}
+
+impl From<validator::ValidationErrors> for ResponseError {
+	fn from(value: validator::ValidationErrors) -> Self {
+		ResponseError::ValidationError(value)
+	}
+}
+
+impl IntoResponse for ResponseError {
+	fn into_response(self) -> Response<Body> {
+		match self {
+			Self::ValidationError(e) => e.to_string().into_response(),
+		}
+	}
+}
 
 #[tokio::main]
 async fn main() {

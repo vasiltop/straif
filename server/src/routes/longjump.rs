@@ -1,13 +1,13 @@
 use axum::{extract::Json, routing::post, Router};
 use serde::Deserialize;
 
-use crate::State;
+use crate::AppState;
 
 #[derive(Deserialize)]
 struct Test {
 	foo: String,
 }
-pub fn router() -> Router<State> {
+pub fn router() -> Router<AppState> {
 	Router::new().route("/", post(test))
 }
 
