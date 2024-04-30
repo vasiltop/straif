@@ -15,6 +15,7 @@ const MAX_A_ACCEL = 50
 const MAX_SLOPE = 1
 const JUMP_FORCE = 4
 const RAY_REACH = 0.1
+
 var gravity = 11
 
 var floor_col_pos = Vector3.ZERO

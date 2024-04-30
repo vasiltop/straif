@@ -1,4 +1,4 @@
-mod routes;
+pub mod routes;
 
 use axum::{body::Body, http::Response, response::IntoResponse, Router};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
@@ -7,6 +7,7 @@ type AppState = Pool<Postgres>;
 
 enum ResponseError {
 	ValidationError(validator::ValidationErrors),
+	QueryError,
 }
 
 impl From<validator::ValidationErrors> for ResponseError {
@@ -19,6 +20,7 @@ impl IntoResponse for ResponseError {
 	fn into_response(self) -> Response<Body> {
 		match self {
 			Self::ValidationError(e) => e.to_string().into_response(),
+			Self::QueryError => "Invalid Query".to_string().into_response(),
 		}
 	}
 }

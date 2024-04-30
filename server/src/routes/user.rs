@@ -27,7 +27,37 @@ async fn login(State(pool): State<AppState>, Json(user): Json<User>) -> String {
 }
 
 #[axum::debug_handler]
-async fn register(Json(user): Json<User>) -> Result<String, ResponseError> {
-	user.validate()?;
-	Ok(user.username)
+async fn register(
+	State(pool): State<AppState>,
+	Json(input): Json<User>,
+) -> Result<String, ResponseError> {
+	input.validate()?;
+
+	let user = sqlx::query!(
+		r#"SELECT * FROM "user" WHERE username = $1"#,
+		input.username
+	)
+	.fetch_all(&pool)
+	.await
+	.map_err(|_| ResponseError::QueryError)?;
+
+	if !user.is_empty() {
+		return Err(ResponseError::QueryError);
+	}
+
+	let hashed = bcrypt::hash(input.password, bcrypt::DEFAULT_COST)
+		.map_err(|_| ResponseError::QueryError)?;
+
+	let query = sqlx::query!(
+		r#"INSERT INTO "user" (username, password, admin) VALUES ($1, $2, FALSE)"#,
+		input.username,
+		hashed.as_bytes()
+	)
+	.execute(&pool)
+	.await
+	.map_err(|_| ResponseError::QueryError)?;
+
+	println!("{:?}", user);
+
+	Ok(input.username)
 }
