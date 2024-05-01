@@ -8,6 +8,8 @@ pub enum Error {
 	Auth(#[from] crate::routes::user::Error),
 	#[error("bhop error: {0}")]
 	Bhop(#[from] crate::routes::bhop::Error),
+	#[error("longjump error: {0}")]
+	Longjump(#[from] crate::routes::longjump::Error),
 }
 
 impl IntoResponse for Error {
@@ -16,6 +18,7 @@ impl IntoResponse for Error {
 			Self::ValidationError(e) => (StatusCode::BAD_REQUEST, e.to_string()),
 			Self::Auth(e) => (e.status(), e.to_string()),
 			Self::Bhop(e) => (StatusCode::REQUEST_TIMEOUT, e.to_string()),
+			Self::Longjump(e) => (StatusCode::REQUEST_TIMEOUT, e.to_string()),
 		};
 
 		(status, error).into_response()
