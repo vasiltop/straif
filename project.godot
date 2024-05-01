@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="straif"
-run/main_scene="res://menus/level_select/level_select.tscn"
+run/main_scene="res://menus/account/account.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
 [autoload]

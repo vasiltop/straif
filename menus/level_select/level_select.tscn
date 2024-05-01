@@ -11,33 +11,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mqxld")
 
-[node name="username" type="TextEdit" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 481.0
-offset_top = 133.0
-offset_right = 631.0
-offset_bottom = 169.0
-placeholder_text = "username"
-
-[node name="submit_username" type="Button" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 515.0
-offset_top = 194.0
-offset_right = 595.0
-offset_bottom = 236.0
-text = "submit"
-
-[node name="CreateUser" type="HTTPRequest" parent="."]
-
-[node name="logout" type="Button" parent="."]
+[node name="Logout" type="Button" parent="."]
 layout_mode = 0
 offset_left = 43.0
 offset_top = 52.0
 offset_right = 207.0
 offset_bottom = 95.0
-text = "make new account idk"
+text = "Logout"
 
 [node name="StartLevel" type="Button" parent="."]
 layout_mode = 0

@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx2wwnljmaqkf"]
+
+[ext_resource type="Script" path="res://menus/account/account.gd" id="1_k2oyw"]
+
+[node name="Account" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k2oyw")
+
+[node name="Username" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 464.0
+offset_top = 168.0
+offset_right = 716.0
+offset_bottom = 203.0
+placeholder_text = "Username"
+
+[node name="Password" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 469.0
+offset_top = 249.0
+offset_right = 721.0
+offset_bottom = 284.0
+placeholder_text = "Password"
+
+[node name="Submit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 511.0
+offset_top = 343.0
+offset_right = 679.0
+offset_bottom = 388.0
+text = "Login"
+
+[node name="Request" type="HTTPRequest" parent="."]
+
+[node name="StateSwitcher" type="Button" parent="."]
+layout_mode = 0
+offset_left = 505.0
+offset_top = 411.0
+offset_right = 693.0
+offset_bottom = 449.0
+text = "Don't have an account?"

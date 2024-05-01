@@ -29,7 +29,7 @@ var camera_height = 0
 
 var time_since_landing = 0
 
-var url = "http://192.168.2.16:8000/Longjump/leaderboard"
+var url = "http://localhost:8000/longjump/publish"
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -99,7 +99,8 @@ func _physics_process(delta):
 				last_jump_label.text = str(snapped(last_jump, 0.01)) + " u"
 				
 				var body = JSON.stringify({
-					"value": floor(last_jump * -1000)
+					# Multiply by 100 to keep accuracy, this is bad and will change
+					"length": floor(last_jump * 100)
 				})
 				var headers = ["Content-Type: application/json", "user_id: " + Settings.uuid]
 				$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)

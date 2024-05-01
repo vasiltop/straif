@@ -42,7 +42,7 @@ struct RunInput {
 
 #[derive(Deserialize)]
 struct Map {
-	name: String,
+	map_name: String,
 }
 
 struct MapId {
@@ -86,7 +86,7 @@ async fn leaderboard(
 	let runs = sqlx::query_as!(
 		RunOutput,
 		"SELECT name, run, time_ms FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 LIMIT 10",
-		map.name
+		map.map_name
 	)
 	.fetch_all(&pool)
 	.await.map_err(|_| Error::InvalidMapName)?;
