@@ -107,8 +107,7 @@ func _physics_process(delta):
 				last_jump = last_jump_pos.distance_to(global_position)
 				last_jump_label.text = str(snapped(last_jump, 0.01)) + " u"
 				submit_to_leaderboard(last_jump)
-				
-				
+
 			time_since_landing = 0
 		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 		

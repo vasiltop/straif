@@ -28,7 +28,7 @@ impl Error {
 
 #[derive(Serialize, Deserialize)]
 struct RunOutput {
-	name: String,
+	username: Option<String>,
 	run: Option<Vec<u8>>,
 	time_ms: Option<i32>,
 }
@@ -85,7 +85,7 @@ async fn leaderboard(
 ) -> Result<impl IntoResponse, crate::error::Error> {
 	let runs = sqlx::query_as!(
 		RunOutput,
-		"SELECT name, run, time_ms FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 LIMIT 10",
+		"SELECT username, run, time_ms FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 LIMIT 10",
 		map.map_name
 	)
 	.fetch_all(&pool)
