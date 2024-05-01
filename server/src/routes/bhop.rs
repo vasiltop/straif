@@ -35,9 +35,9 @@ struct RunOutput {
 
 #[derive(Deserialize)]
 struct RunInput {
-	name: String,
-	id: Uuid,
-	run: Vec<u8>,
+	map_name: String,
+	user_id: Uuid,
+	time: i32,
 }
 
 #[derive(Deserialize)]
@@ -59,18 +59,18 @@ async fn publish(
 	State(pool): State<AppState>,
 	Json(run): Json<RunInput>,
 ) -> Result<(), crate::error::Error> {
-	let map_id = sqlx::query_as!(MapId, "SELECT id FROM map WHERE name = $1", run.name)
+	let map_id = sqlx::query_as!(MapId, "SELECT id FROM map WHERE name = $1", run.map_name)
 		.fetch_one(&pool)
 		.await
 		.map_err(|_| Error::InvalidMapName)?;
 
 	sqlx::query!(
 		"INSERT INTO placement_bhop VALUES ($1, $2, $3, $4) ON CONFLICT (user_id, map_id) DO UPDATE SET time_ms = $4 WHERE placement_bhop.time_ms > $4 ",
-		run.id,
+		run.user_id,
 		map_id.id,
-		run.run,
-		9
-		//TODO: Make the run parser to calculate time
+		//TODO: Make this Vector an actual viewable run
+		Vec::new(),
+		run.time
 	)
 	.execute(&pool)
 	.await
