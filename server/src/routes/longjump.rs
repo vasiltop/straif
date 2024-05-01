@@ -1,6 +1,7 @@
 use crate::AppState;
 use axum::{
 	extract::{Json, State},
+	http::StatusCode,
 	response::IntoResponse,
 	routing::{get, post},
 	Router,
@@ -15,6 +16,15 @@ pub enum Error {
 	InternalError,
 	#[error("invalid submission")]
 	InvalidSubmission,
+}
+
+impl Error {
+	pub fn status(&self) -> StatusCode {
+		match self {
+			Self::InvalidSubmission => StatusCode::BAD_REQUEST,
+			Self::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
+		}
+	}
 }
 
 #[derive(Serialize, Deserialize)]

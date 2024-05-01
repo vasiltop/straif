@@ -1,6 +1,7 @@
 use crate::AppState;
 use axum::{
 	extract::{Json, State},
+	http::StatusCode,
 	response::IntoResponse,
 	routing::{get, post},
 	Router,
@@ -15,6 +16,14 @@ pub enum Error {
 	InvalidMapName,
 	#[error("invalid submission")]
 	InvalidSubmission,
+}
+
+impl Error {
+	pub fn status(&self) -> StatusCode {
+		match self {
+			Self::InvalidMapName | Self::InvalidSubmission => StatusCode::BAD_REQUEST,
+		}
+	}
 }
 
 #[derive(Serialize, Deserialize)]
