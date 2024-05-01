@@ -29,7 +29,7 @@ var camera_height = 0
 
 var time_since_landing = 0
 
-var url = "http://localhost:8000/longjump/publish"
+var url = Settings.base_url + "longjump/publish"
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -78,6 +78,15 @@ func handle_scene_changes():
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+
+func submit_to_leaderboard(length):
+	var body = JSON.stringify({
+		# Multiply by 100 to keep accuracy, this is bad and will change
+		"user_id": Settings.uuid,
+		"length": floor(last_jump * 100),
+	})
+	var headers = ["Content-Type: application/json"]
+	$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
 	
 func _physics_process(delta):
 	
@@ -97,13 +106,8 @@ func _physics_process(delta):
 			if time_since_landing > 0.1 and snapped(global_position.y, 0.01) == snapped(last_jump_pos.y, 0.01):
 				last_jump = last_jump_pos.distance_to(global_position)
 				last_jump_label.text = str(snapped(last_jump, 0.01)) + " u"
+				submit_to_leaderboard(last_jump)
 				
-				var body = JSON.stringify({
-					# Multiply by 100 to keep accuracy, this is bad and will change
-					"length": floor(last_jump * 100)
-				})
-				var headers = ["Content-Type: application/json", "user_id: " + Settings.uuid]
-				$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
 				
 			time_since_landing = 0
 		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2

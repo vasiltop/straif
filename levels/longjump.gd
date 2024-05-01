@@ -1,6 +1,6 @@
 extends Node
 
-var url = "http://localhost:8000/longjump/leaderboard"
+var url = Settings.base_url + "longjump/leaderboard"
 var leaderboard = ""
 
 func _ready():	

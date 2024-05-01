@@ -1,6 +1,6 @@
 extends Control
 
-var url = "http://localhost:8000/user/"
+var url = Settings.base_url + "user/"
 var state = 0
 
 func _ready():
@@ -21,7 +21,7 @@ func switch_state():
 		$StateSwitcher.text = "Don't have an account?"
 
 func check_for_save_file():
-	var save_file = FileAccess.open('user://straif.data', FileAccess.READ)
+	var save_file = FileAccess.open(Settings.save_file, FileAccess.READ)
 	
 	if save_file != null:
 		var uuid = save_file.get_as_text()
@@ -29,7 +29,7 @@ func check_for_save_file():
 		get_tree().change_scene_to_file("res://menus/level_select/level_select.tscn")
 
 func save_uuid(uuid):
-	var save_file = FileAccess.open('user://straif.data', FileAccess.WRITE_READ)
+	var save_file = FileAccess.open(Settings.save_file, FileAccess.WRITE_READ)
 	save_file.store_string(uuid)
 	Settings.uuid = uuid
 	check_for_save_file()

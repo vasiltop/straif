@@ -29,7 +29,6 @@ func update_level_labels():
 	$StartLevel.text = "Start Level: " + levels[current_level]
 
 func logout():
-	print("logging out")
-	DirAccess.remove_absolute('user://straif.data')
+	DirAccess.remove_absolute(Settings.save_file)
 	get_tree().change_scene_to_file("res://menus/account/account.tscn")
 
