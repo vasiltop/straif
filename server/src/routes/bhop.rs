@@ -21,6 +21,7 @@ pub enum Error {
 struct RunOutput {
 	name: String,
 	run: Option<Vec<u8>>,
+	time_ms: Option<i32>,
 }
 
 #[derive(Deserialize)]
@@ -49,7 +50,6 @@ async fn publish(
 	State(pool): State<AppState>,
 	Json(run): Json<RunInput>,
 ) -> Result<(), crate::error::Error> {
-	print!("hit");
 	let map_id = sqlx::query_as!(MapId, "SELECT id FROM map WHERE name = $1", run.name)
 		.fetch_one(&pool)
 		.await
@@ -76,7 +76,7 @@ async fn leaderboard(
 ) -> Result<impl IntoResponse, crate::error::Error> {
 	let runs = sqlx::query_as!(
 		RunOutput,
-		"SELECT name, run FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 LIMIT 10",
+		"SELECT name, run, time_ms FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 LIMIT 10",
 		map.name
 	)
 	.fetch_all(&pool)
