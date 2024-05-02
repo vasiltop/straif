@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://cyt0ed0fw4xgt"]
+[gd_scene load_steps=6 format=3 uid="uid://cyt0ed0fw4xgt"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_fc76d"]
 [ext_resource type="Texture2D" uid="uid://crts166us2dgy" path="res://images/crosshair.png" id="2_ti3rd"]
+[ext_resource type="Script" path="res://player/console.gd" id="3_0hlh4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xqa3n"]
 size = Vector3(0.5, 1.5, 0.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_k0auw"]
+font_size = 14
 
 [node name="Player" type="CharacterBody3D"]
 slide_on_ceiling = false
@@ -65,3 +69,59 @@ text = "0 u
 vertical_alignment = 2
 
 [node name="PostLeaderboard" type="HTTPRequest" parent="."]
+
+[node name="Console" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.997699, 1.00414)
+script = ExtResource("3_0hlh4")
+
+[node name="Container" type="ColorRect" parent="Console"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.140447, 0.140447, 0.140447, 1)
+
+[node name="Output" type="Label" parent="Console/Container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -191.0
+offset_top = -47.0
+offset_right = 193.0
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0, 50)
+text = "Enter the command 'help' for help.
+"
+label_settings = SubResource("LabelSettings_k0auw")
+
+[node name="Command" type="LineEdit" parent="Console/Container"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -71.5
+offset_top = 10.0
+offset_right = 71.5
+offset_bottom = 41.0
+grow_horizontal = 2
+placeholder_text = "Command"

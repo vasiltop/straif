@@ -26,7 +26,7 @@ func check_for_save_file():
 	if save_file != null:
 		var uuid = save_file.get_as_text()
 		Settings.uuid = uuid
-		get_tree().change_scene_to_file("res://menus/level_select/level_select.tscn")
+		get_tree().change_scene_to_file("res://levels/dawn.tscn")
 
 func save_uuid(uuid):
 	var save_file = FileAccess.open(Settings.save_file, FileAccess.WRITE_READ)

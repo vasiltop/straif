@@ -25,35 +25,36 @@ func get_leaderboard():
 	var body = JSON.stringify({
 			"map_name": map_name
 	})
-	
+
 	var headers = ["Content-Type: application/json"]
 	$GetLeaderboard.request(url + "leaderboard", headers, HTTPClient.METHOD_GET, body)
-	
+
 func handle_leaderboard(result, response_code, headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
-	
+
 	for run in json:
 		leaderboard += run.username + " | " + str(snapped(run.time_ms / 1000, 0.01)) + "s\n"
-	
+
 func player_started(col):
 	
 	if !started:
 		audio_player.stream = track1
-		audio_player.play()
+		#audio_player.play()
 	started = true
 
 func player_finished(col):
-	
+
 	if not completed:
 		var body = JSON.stringify({
 				"map_name": map_name,
 				"user_id": Settings.uuid,
 				"time": floor(timer * 1000)
 		})
+
 		var headers = ["Content-Type: application/json"]
-		print(url + "publish")
 		$PostLeaderboard.request(url + "publish", headers, HTTPClient.METHOD_POST, body)
 		$PostLeaderboard.request_completed.connect(test	)
+
 	completed = true
 
 func test(result, response_code, headers, body):
@@ -71,4 +72,3 @@ func _process(delta):
 		$Leaderboard.text = leaderboard
 	else:
 		$Leaderboard.text = ""
-		

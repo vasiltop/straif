@@ -51,33 +51,32 @@ func grounded():
 func get_slope_angle(normal): return normal.angle_to(up_direction)
 
 func _process(delta):
-	handle_scene_changes()
 	update_timers(delta)
-	interpolate_camera_pos(delta)
 	
+	if $Console.visible: return
+	
+	interpolate_camera_pos(delta)
+	handle_scene_changes()
+	
+	if Input.is_action_just_pressed("console"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		$Console.visible = true
+
+func handle_scene_changes():
+
+	Settings.prev_room = get_tree().current_scene.scene_file_path
+	if Input.is_action_just_pressed("restart"):
+		get_tree().reload_current_scene()
+
 func interpolate_camera_pos(delta):
 	var camera_pos = prev_pos.lerp(position, delta * 70)
 	camera.global_position = camera_pos
 	camera.position.y = camera_height
 	prev_pos = camera_pos
-	
+
 func update_timers(delta):
 	if not jumped and grounded():
 		time_since_landing += delta
-		
-func handle_scene_changes():
-	if Input.is_action_just_pressed("menu"):
-		get_tree().change_scene_to_file("res://menus/level_select/level_select.tscn")
-	elif Input.is_action_just_pressed("restart"):
-		get_tree().reload_current_scene()
-	elif Input.is_action_just_pressed("settings"):
-		get_tree().change_scene_to_file("res://menus/settings/settings.tscn")
-		
-	if Input.is_action_just_pressed("fullscreen"):
-		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		else:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 func submit_to_leaderboard(length):
 	var body = JSON.stringify({
@@ -87,8 +86,9 @@ func submit_to_leaderboard(length):
 	})
 	var headers = ["Content-Type: application/json"]
 	$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
-	
+
 func _physics_process(delta):
+	if $Console.visible: return
 	
 	var wish_dir = Input.get_vector("left", "right", "up", "down")
 	wish_dir = wish_dir.rotated(-rotation.y)
@@ -145,6 +145,8 @@ func _physics_process(delta):
 		move_and_collide(floor_col_pos.position - global_position)
 
 func _input(event):
+	if $Console.visible: return
+	
 	if event is InputEventMouseMotion:
 		rotate_player(event)
 
