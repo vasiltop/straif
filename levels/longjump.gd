@@ -11,7 +11,7 @@ func handle_request(result, response_code, headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
 
 	for jump in json:
-		leaderboard += jump.username + " | " + str(snapped(jump.length / 100, 0.01)) + "u\n"
+		leaderboard += jump.username + " | " + str(snapped(jump.length / 1000, 0.01)) + "u\n"
 
 func _process(delta):
 	if Input.is_action_pressed("leaderboard"):

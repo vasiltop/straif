@@ -37,11 +37,11 @@ func parse_command(command):
 			output("Sens changed to " + split[1] + ".")
 		"map":
 			if len(split) == 1:
-				output("Current maps: dawn.tscn, fog.tscn,
-						longjump.tscn, rookie.tscn.")
+				output("Current maps: dawn, fog,
+						longjump, rookie.")
 			else:
 				var name = split[1]
-				get_tree().change_scene_to_file("res://levels/" + name)
+				get_tree().change_scene_to_file("res://levels/" + name + ".tscn")
 		"logout":
 			DirAccess.remove_absolute(Settings.save_file)
 			get_tree().change_scene_to_file("res://menus/account/account.tscn")
@@ -55,6 +55,7 @@ func parse_command(command):
 						logout
 						quit
 						")
+
 func first_word(str):
 	return str.split(' ')[0]
 

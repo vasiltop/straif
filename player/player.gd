@@ -82,7 +82,7 @@ func submit_to_leaderboard(length):
 	var body = JSON.stringify({
 		# Multiply by 100 to keep accuracy, this is bad and will change
 		"user_id": Settings.uuid,
-		"length": floor(last_jump * 100),
+		"length": floor(last_jump * 1000),
 	})
 	var headers = ["Content-Type: application/json"]
 	$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
