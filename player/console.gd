@@ -37,8 +37,8 @@ func parse_command(command):
 			output("Sens changed to " + split[1] + ".")
 		"map":
 			if len(split) == 1:
-				output("Current maps: dawn, fog,
-						longjump, rookie.")
+				output("Current maps: dawn, fog, swift,
+						longjump, rookie, purge.")
 			else:
 				var name = split[1]
 				get_tree().change_scene_to_file("res://levels/" + name + ".tscn")

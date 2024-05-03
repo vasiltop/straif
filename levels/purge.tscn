@@ -1,19 +1,19 @@
 [gd_scene load_steps=16 format=3 uid="uid://c3doptdpriaqg"]
 
-[ext_resource type="Script" path="res://levels/level.gd" id="1_5r81y"]
-[ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player/player.tscn" id="2_5bbc6"]
-[ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_ehys7"]
-[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="4_c5q3p"]
-[ext_resource type="PackedScene" uid="uid://dhrwk6tthy3r8" path="res://props/medium_box.tscn" id="5_mwple"]
-[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="7_mu5ix"]
-[ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="8_qm38a"]
-[ext_resource type="PackedScene" uid="uid://nn4mtur3ev0n" path="res://props/small_box.tscn" id="8_rjt1i"]
-[ext_resource type="PackedScene" uid="uid://gdrhguyyuy8i" path="res://props/large.tscn" id="9_0vk2j"]
-[ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://props/small.tscn" id="10_npb3d"]
-[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="11_25tuc"]
+[ext_resource type="Script" path="res://levels/level.gd" id="1_0pcym"]
+[ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player/player.tscn" id="2_sg50d"]
+[ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_fj0sq"]
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="4_jj8x5"]
+[ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="5_nqf5f"]
+[ext_resource type="PackedScene" uid="uid://dhrwk6tthy3r8" path="res://props/medium_box.tscn" id="6_j24wi"]
+[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="7_eyo14"]
+[ext_resource type="PackedScene" uid="uid://nn4mtur3ev0n" path="res://props/small_box.tscn" id="8_3an8r"]
+[ext_resource type="PackedScene" uid="uid://gdrhguyyuy8i" path="res://props/large.tscn" id="9_7hm2o"]
+[ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://props/small.tscn" id="10_yaoux"]
+[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="11_0svoq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
-albedo_texture = ExtResource("4_c5q3p")
+albedo_texture = ExtResource("4_jj8x5")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
 sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
@@ -43,128 +43,128 @@ fog_sun_scatter = 0.21
 fog_density = 0.0399
 fog_height_density = 0.0155
 
-[node name="Cocytus" type="Node3D"]
+[node name="Purge" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0312672, -0.00716591, 0.0513344)
-script = ExtResource("1_5r81y")
+script = ExtResource("1_0pcym")
 
-[node name="Player" parent="." instance=ExtResource("2_5bbc6")]
+[node name="Player" parent="." instance=ExtResource("2_sg50d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.838891, 1.05815, 0.583531)
 
 [node name="Level" type="CSGCombiner3D" parent="."]
 use_collision = true
 
-[node name="StartZone" parent="Level" instance=ExtResource("3_ehys7")]
+[node name="StartZone" parent="Level" instance=ExtResource("3_fj0sq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
 material = SubResource("StandardMaterial3D_ivg4n")
 
-[node name="EndZone" parent="Level" instance=ExtResource("8_qm38a")]
+[node name="EndZone" parent="Level" instance=ExtResource("5_nqf5f")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -38.8121, 0.231246, -30.9255)
 size = Vector3(8, 0.1, 7.91748)
 
-[node name="CSGBox3D" parent="Level" instance=ExtResource("5_mwple")]
+[node name="CSGBox3D" parent="Level" instance=ExtResource("6_j24wi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.673327, -5.23566)
 
-[node name="CSGBox3D2" parent="Level" instance=ExtResource("5_mwple")]
+[node name="CSGBox3D2" parent="Level" instance=ExtResource("6_j24wi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59054, -0.673327, -8.97234)
 
-[node name="CSGBox3D18" parent="Level" instance=ExtResource("5_mwple")]
+[node name="CSGBox3D18" parent="Level" instance=ExtResource("6_j24wi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.9243, 1.08099, -30.9107)
 size = Vector3(0.374023, 5.29581, 8.38428)
 
-[node name="CSGBox3D10" parent="Level" instance=ExtResource("5_mwple")]
+[node name="CSGBox3D10" parent="Level" instance=ExtResource("6_j24wi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.45659, -0.673327, -8.98821)
 
-[node name="CSGBox3D3" parent="Level" instance=ExtResource("5_mwple")]
+[node name="CSGBox3D3" parent="Level" instance=ExtResource("6_j24wi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.673327, -12.8669)
 
-[node name="CSGBox3D32" parent="Level" instance=ExtResource("5_mwple")]
+[node name="CSGBox3D32" parent="Level" instance=ExtResource("6_j24wi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.3555, 6.71608, -27.9842)
 
-[node name="CSGBox3D4" parent="Level" instance=ExtResource("7_mu5ix")]
+[node name="CSGBox3D4" parent="Level" instance=ExtResource("7_eyo14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0263157, 0.0387263, -27.6048)
 
-[node name="CSGBox3D5" parent="Level" instance=ExtResource("7_mu5ix")]
+[node name="CSGBox3D5" parent="Level" instance=ExtResource("7_eyo14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.30785, -48.1878)
 
-[node name="CSGBox3D6" parent="Level" instance=ExtResource("7_mu5ix")]
+[node name="CSGBox3D6" parent="Level" instance=ExtResource("7_eyo14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7303, 4.79818, -48.1878)
 
-[node name="CSGBox3D7" parent="Level" instance=ExtResource("7_mu5ix")]
+[node name="CSGBox3D7" parent="Level" instance=ExtResource("7_eyo14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7303, 7.1242, -30.2122)
 
-[node name="CSGBox3D8" parent="Level" instance=ExtResource("7_mu5ix")]
+[node name="CSGBox3D8" parent="Level" instance=ExtResource("7_eyo14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.497971, 6.6647, -30.2122)
 
-[node name="CSGBox3D9" parent="Level" instance=ExtResource("7_mu5ix")]
+[node name="CSGBox3D9" parent="Level" instance=ExtResource("7_eyo14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.9509, 6.6647, -30.2165)
 
-[node name="CSGBox3D11" parent="Level" instance=ExtResource("8_rjt1i")]
+[node name="CSGBox3D11" parent="Level" instance=ExtResource("8_3an8r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0067637, 0, -17.9742)
 
-[node name="CSGBox3D12" parent="Level" instance=ExtResource("8_rjt1i")]
+[node name="CSGBox3D12" parent="Level" instance=ExtResource("8_3an8r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0067637, 0, -21.3622)
 
-[node name="CSGBox3D13" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D13" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.661698, -34.1364)
 
-[node name="CSGBox3D14" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D14" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.04452, 1.18946, -36.8712)
 
-[node name="CSGBox3D15" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D15" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.301679, 1.68099, -39.8945)
 
-[node name="CSGBox3D20" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D20" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.6546, 5.24801, -41.0637)
 
-[node name="CSGBox3D26" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D26" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.4295, 5.66242, -39.2302)
 
-[node name="CSGBox3D27" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D27" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.4295, 5.99345, -34.4555)
 
-[node name="CSGBox3D28" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D28" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7831, 6.20748, -35.7042)
 
-[node name="CSGBox3D29" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D29" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.5791, 6.20748, -37.6409)
 
-[node name="CSGBox3D30" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D30" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.8513, 6.59832, -32.8935)
 
-[node name="CSGBox3D31" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D31" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.8815, 6.78617, -29.7782)
 
-[node name="CSGBox3D21" parent="Level" instance=ExtResource("10_npb3d")]
+[node name="CSGBox3D21" parent="Level" instance=ExtResource("10_yaoux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.9394, 4.79289, -53.1355)
 
-[node name="CSGBox3D16" parent="Level" instance=ExtResource("9_0vk2j")]
+[node name="CSGBox3D16" parent="Level" instance=ExtResource("9_7hm2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.01164, 1.98809, -43.1715)
 
-[node name="CSGBox3D22" parent="Level" instance=ExtResource("11_25tuc")]
+[node name="CSGBox3D22" parent="Level" instance=ExtResource("11_0svoq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.50542, 2.96852, -51.0642)
 
-[node name="CSGBox3D34" parent="Level" instance=ExtResource("11_25tuc")]
+[node name="CSGBox3D34" parent="Level" instance=ExtResource("11_0svoq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.94965, 6.86537, -30.3)
 
-[node name="CSGBox3D35" parent="Level" instance=ExtResource("11_25tuc")]
+[node name="CSGBox3D35" parent="Level" instance=ExtResource("11_0svoq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0113, 6.86537, -30.3)
 
-[node name="CSGBox3D23" parent="Level" instance=ExtResource("11_25tuc")]
+[node name="CSGBox3D23" parent="Level" instance=ExtResource("11_0svoq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.835, 3.72639, -59.6145)
 
-[node name="CSGBox3D36" parent="Level" instance=ExtResource("11_25tuc")]
+[node name="CSGBox3D36" parent="Level" instance=ExtResource("11_0svoq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.66842, 3.37731, -54.6679)
 
-[node name="CSGBox3D24" parent="Level" instance=ExtResource("11_25tuc")]
+[node name="CSGBox3D24" parent="Level" instance=ExtResource("11_0svoq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5159, 4.31786, -57.7846)
 
-[node name="CSGBox3D25" parent="Level" instance=ExtResource("11_25tuc")]
+[node name="CSGBox3D25" parent="Level" instance=ExtResource("11_0svoq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.7649, 4.5291, -53.707)
 
-[node name="CSGBox3D19" parent="Level" instance=ExtResource("8_rjt1i")]
+[node name="CSGBox3D19" parent="Level" instance=ExtResource("8_3an8r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7887, 3.07516, -58.1625)
 
-[node name="CSGBox3D33" parent="Level" instance=ExtResource("8_rjt1i")]
+[node name="CSGBox3D33" parent="Level" instance=ExtResource("8_3an8r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.10351, 6.82637, -31.2878)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
