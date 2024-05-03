@@ -4,7 +4,7 @@ var sens = 0.001
 var uuid = ""
 
 var save_file = "user://straif.data"
-var base_url = "http://localhost:8000/"
+var base_url = "https://straif.vasiltopalovic.com/"
 
 var prev_room = "res://menus/account/account.tscn"
 

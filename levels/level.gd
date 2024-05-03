@@ -30,8 +30,11 @@ func get_leaderboard():
 	$GetLeaderboard.request(url + "leaderboard", headers, HTTPClient.METHOD_GET, body)
 
 func handle_leaderboard(result, response_code, headers, body):
+	
+	if response_code != 200: return
+	
 	var json = JSON.parse_string(body.get_string_from_utf8())
-
+	
 	for run in json:
 		leaderboard += run.username + " | " + str(snapped(run.time_ms / 1000, 0.01)) + "s\n"
 
@@ -50,7 +53,7 @@ func player_finished(col):
 				"user_id": Settings.uuid,
 				"time": floor(timer * 1000)
 		})
-
+		print(Settings.uuid)
 		var headers = ["Content-Type: application/json"]
 		$PostLeaderboard.request(url + "publish", headers, HTTPClient.METHOD_POST, body)
 		$PostLeaderboard.request_completed.connect(test	)

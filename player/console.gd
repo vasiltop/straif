@@ -47,6 +47,8 @@ func parse_command(command):
 			get_tree().change_scene_to_file("res://menus/account/account.tscn")
 		"quit":
 			get_tree().quit()
+		"baseurl":
+			Settings.base_url = split[1]
 		"help":
 			output("Available Commands:
 						fullscreen | f
