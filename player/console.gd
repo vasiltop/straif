@@ -44,6 +44,7 @@ func parse_command(command):
 				get_tree().change_scene_to_file("res://levels/" + name + ".tscn")
 		"logout":
 			DirAccess.remove_absolute(Settings.save_file)
+			Settings.uuid = ""
 			get_tree().change_scene_to_file("res://menus/account/account.tscn")
 		"quit":
 			get_tree().quit()
