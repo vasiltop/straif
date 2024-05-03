@@ -38,12 +38,10 @@ func save_uuid(uuid):
 
 func register():
 	if state != 1: return
-	print('Registering')
 	account_request("register")
 
 func login():
 	if state != 0: return
-	print('Logging In')
 	account_request("login")
 	
 func account_request(url_end):
@@ -57,6 +55,9 @@ func account_request(url_end):
 	
 	
 func handle_request(result, response_code, headers, body):
-	print(body.get_string_from_utf8())
-	if response_code == 200:
-		save_uuid(body.get_string_from_utf8())
+	if response_code != 200:
+		$Error.text = body.get_string_from_utf8()
+		return
+	
+	save_uuid(body.get_string_from_utf8())
+	

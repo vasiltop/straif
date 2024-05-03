@@ -142,7 +142,7 @@ offset_left = -124.0
 offset_right = -10.0
 offset_bottom = 23.0
 grow_horizontal = 0
-text = "munost 0.0001"
+text = "leaderboard"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_uytp7")

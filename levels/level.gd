@@ -12,12 +12,13 @@ var timer = 0
 var completed = false
 var started = false
 var map_name = ""
-var leaderboard = ""
+var leaderboard = "Could not connect to server."
 
 func _ready():
 	start_zone.get_node("Area3D").body_exited.connect(player_started)
 	end_zone.get_node("Area3D").body_entered.connect(player_finished)
 	map_name = get_tree().current_scene.name
+	
 	get_leaderboard()
 	
 func get_leaderboard():
@@ -34,6 +35,7 @@ func handle_leaderboard(result, response_code, headers, body):
 	if response_code != 200: return
 	
 	var json = JSON.parse_string(body.get_string_from_utf8())
+	leaderboard = ""
 	
 	for run in json:
 		leaderboard += run.username + " | " + str(snapped(run.time_ms / 1000, 0.01)) + "s\n"
