@@ -9,7 +9,7 @@ func _ready():
 	$Submit.pressed.connect(login)
 	$Submit.pressed.connect(register)
 	$StateSwitcher.pressed.connect(switch_state)
-	
+
 func switch_state():
 	if state == 0:
 		state = 1
@@ -25,11 +25,13 @@ func check_for_save_file():
 	
 	if save_file != null:
 		var uuid = save_file.get_as_text()
-		Settings.uuid = uuid
+		# This prevents the bug where the uuid can be "" after logging in
+		if Settings.uuid == "":
+			Settings.uuid = uuid
 		get_tree().change_scene_to_file("res://levels/rookie.tscn")
 
 func save_uuid(uuid):
-	var save_file = FileAccess.open(Settings.save_file, FileAccess.WRITE_READ)
+	var save_file = FileAccess.open(Settings.save_file, FileAccess.WRITE)
 	save_file.store_string(uuid)
 	Settings.uuid = uuid
 	check_for_save_file()
