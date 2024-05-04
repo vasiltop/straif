@@ -66,7 +66,7 @@ func test(result, response_code, headers, body):
 	print(body.get_string_from_utf8())
 	
 func _process(delta):
-	if Input.is_action_pressed("jump"):
+	if Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump"):
 		player_started({})
 		
 	if not completed and started:
