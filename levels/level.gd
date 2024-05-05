@@ -55,7 +55,7 @@ func player_finished(col):
 				"user_id": Settings.uuid,
 				"time": floor(timer * 1000)
 		})
-		print(body)
+		
 		var headers = ["Content-Type: application/json"]
 		$PostLeaderboard.request(url + "publish", headers, HTTPClient.METHOD_POST, body)
 		$PostLeaderboard.request_completed.connect(test	)

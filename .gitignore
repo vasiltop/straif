@@ -1,3 +1,5 @@
 .godot/
 target/
 source.console.exe
+env
+env.txt
