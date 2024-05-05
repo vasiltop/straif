@@ -1,6 +1,8 @@
 use crate::AppState;
 use axum::{
 	extract::{Json, State},
+	http::HeaderMap,
+	http::HeaderValue,
 	http::StatusCode,
 	response::IntoResponse,
 	routing::{get, post},
@@ -47,8 +49,13 @@ pub fn router() -> Router<AppState> {
 
 async fn publish(
 	State(pool): State<AppState>,
+	headers: HeaderMap,
 	Json(jump): Json<LongjumpInput>,
 ) -> Result<(), crate::error::Error> {
+	if Some(HeaderValue::from_static(dotenv!("PASSWORD"))) != headers.get("password").cloned() {
+		return Err(crate::error::Error::Longjump(Error::InvalidSubmission));
+	}
+
 	sqlx::query!(
 		"INSERT INTO placement_longjump VALUES ($1, $2) ON CONFLICT (user_id) DO UPDATE SET length = $2 WHERE placement_longjump.length< $2 ",
 		jump.user_id,

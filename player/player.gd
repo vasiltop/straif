@@ -84,7 +84,7 @@ func submit_to_leaderboard(length):
 		"user_id": Settings.uuid,
 		"length": floor(last_jump * 1000),
 	})
-	var headers = ["Content-Type: application/json"]
+	var headers = ["Content-Type: application/json", "password: " + Settings.password]
 	$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
 
 func _physics_process(delta):

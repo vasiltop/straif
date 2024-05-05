@@ -2,12 +2,17 @@ pub mod error;
 pub mod routes;
 
 use axum::Router;
+use dotenv::dotenv;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
 type AppState = Pool<Postgres>;
 
+#[macro_use]
+extern crate dotenv_codegen;
+
 #[tokio::main]
 async fn main() {
+	dotenv().ok();
 	let pool = PgPoolOptions::new()
 		.max_connections(5)
 		.connect("postgres://postgres:root@localhost:5432/straif")

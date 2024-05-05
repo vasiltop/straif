@@ -56,7 +56,8 @@ func player_finished(col):
 				"time": floor(timer * 1000)
 		})
 		
-		var headers = ["Content-Type: application/json"]
+		var headers = ["Content-Type: application/json", "password: " + Settings.password]
+		
 		$PostLeaderboard.request(url + "publish", headers, HTTPClient.METHOD_POST, body)
 		$PostLeaderboard.request_completed.connect(test	)
 

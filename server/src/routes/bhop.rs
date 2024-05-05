@@ -1,6 +1,8 @@
 use crate::AppState;
 use axum::{
 	extract::{Json, State},
+	http::HeaderMap,
+	http::HeaderValue,
 	http::StatusCode,
 	response::IntoResponse,
 	routing::{get, post},
@@ -16,12 +18,16 @@ pub enum Error {
 	InvalidMapName,
 	#[error("invalid submission")]
 	InvalidSubmission,
+	#[error("password not provided")]
+	InvalidPasswordHeader,
 }
 
 impl Error {
 	pub fn status(&self) -> StatusCode {
 		match self {
-			Self::InvalidMapName | Self::InvalidSubmission => StatusCode::BAD_REQUEST,
+			Self::InvalidMapName | Self::InvalidSubmission | Self::InvalidPasswordHeader => {
+				StatusCode::BAD_REQUEST
+			}
 		}
 	}
 }
@@ -57,13 +63,16 @@ pub fn router() -> Router<AppState> {
 
 async fn publish(
 	State(pool): State<AppState>,
+	headers: HeaderMap,
 	Json(run): Json<RunInput>,
 ) -> Result<(), crate::error::Error> {
+	if Some(HeaderValue::from_static(dotenv!("PASSWORD"))) != headers.get("password").cloned() {
+		return Err(crate::error::Error::Bhop(Error::InvalidSubmission));
+	}
 	let map_id = sqlx::query_as!(MapId, "SELECT id FROM map WHERE name = $1", run.map_name)
 		.fetch_one(&pool)
 		.await
 		.map_err(|_| Error::InvalidMapName)?;
-
 	sqlx::query!(
 		"INSERT INTO placement_bhop VALUES ($1, $2, $3, $4) ON CONFLICT (user_id, map_id) DO UPDATE SET time_ms = $4 WHERE placement_bhop.time_ms > $4 ",
 		run.user_id,
