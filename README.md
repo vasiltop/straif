@@ -14,7 +14,7 @@ Straif is a fast-paced time trial game inspired by the movement mechanics of the
 ## Installing
 ### Prerequisites
 
-- [Godot](https://godotengine.org/)
+- [Godot Steamworks (4.2.2)](https://github.com/GodotSteam/GodotSteam/releases/tag/v4.7)
 
 ```bash
 git clone https://github.com/vasiltop/straif
