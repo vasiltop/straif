@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3qlpeoak3ahd"]
+
+[ext_resource type="Script" path="res://menus/notification.gd" id="1_nti58"]
+
+[node name="Notification" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nti58")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = 100
+layout_mode = 0
+offset_right = 354.0
+offset_bottom = 83.0
+color = Color(0.130772, 0.130772, 0.130772, 1)
+
+[node name="Label" type="Label" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 21.0
+offset_top = -12.5
+offset_right = 181.0
+offset_bottom = 10.5
+grow_vertical = 2
+text = "example notification"

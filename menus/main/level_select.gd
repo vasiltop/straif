@@ -1,8 +1,10 @@
 extends GridContainer
 
 var level_button = preload("res://menus/main/level_button.tscn")
+var lobby_button = preload("res://menus/main/lobby_button.tscn")
 
 func _ready():
+	Steam.lobby_match_list.connect(on_lobbies_received)
 	set_gamemode_bhop()
 
 func set_gamemode_bhop():
@@ -39,9 +41,23 @@ func get_maps_with_prefix(prefix: String) -> Array:
 		var split_name = file_name.split("_")
 		
 		if split_name[0] == prefix:
-			
 			result.append(file_name.left(file_name.length() - ".tscn".length()))
 
 		file_name = dir.get_next()
-		
+
 	return result
+
+func show_lobbies():
+	remove_children()
+	Steam.requestLobbyList()
+
+func on_lobbies_received(lobbies: Array):
+	for lobby_id in lobbies:
+		var name = Steam.getLobbyData(lobby_id, "name")
+		if name == "": continue
+		
+		var instance = lobby_button.instantiate()
+		instance.set_label(name)
+		instance.set_id(lobby_id)
+		add_child(instance)
+

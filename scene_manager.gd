@@ -1,11 +1,12 @@
 extends Node
-enum SCENES { MAIN_MENU, PAUSE_MENU }
+enum SCENES { MAIN_MENU, PAUSE_MENU, LOBBY_MENU }
 
 var previous_scene = SCENES.MAIN_MENU
 
 var scene_filenames = {
 	SCENES.MAIN_MENU: "res://menus/main/main.tscn",
-	SCENES.PAUSE_MENU: "res://menus/pause/pause.tscn"
+	SCENES.PAUSE_MENU: "res://menus/pause/pause.tscn",
+	SCENES.LOBBY_MENU: "res://menus/lobby/lobby.tscn"
 }
 
 func change_scene(scene: SCENES):

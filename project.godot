@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 Settings="*res://settings.gd"
 SteamClient="*res://steam.gd"
 SceneManager="*res://scene_manager.gd"
+Notify="*res://notify.gd"
 
 [display]
 

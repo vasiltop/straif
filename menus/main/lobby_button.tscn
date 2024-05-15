@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddgvwyvl8wmh7"]
+
+[ext_resource type="Script" path="res://menus/main/lobby_button.gd" id="1_4huyx"]
+
+[node name="Button" type="Button"]
+offset_right = 97.0
+offset_bottom = 56.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_4huyx")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = -11.5
+offset_right = 23.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Name"
