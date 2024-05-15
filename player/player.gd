@@ -32,9 +32,6 @@ var time_since_landing = 0
 var url = Settings.base_url + "longjump/publish"
 
 func _ready():
-	var a = Steam.steamInitEx()
-	print(a)
-	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	prev_pos = camera.position
 	camera_height = camera.position.y
@@ -69,6 +66,9 @@ func handle_scene_changes():
 
 	if Input.is_action_just_pressed("restart"):
 		get_tree().reload_current_scene()
+		
+	if Input.is_action_just_pressed("pause"):
+		SceneManager.change_scene(SceneManager.SCENES.PAUSE_MENU)
 
 func interpolate_camera_pos(delta):
 	var camera_pos = prev_pos.lerp(position, delta * 70)

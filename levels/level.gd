@@ -41,10 +41,6 @@ func handle_leaderboard(result, response_code, headers, body):
 		leaderboard += run.username + " | " + str(snapped(run.time_ms / 1000, 0.01)) + "s\n"
 
 func player_started(col):
-	
-	if !started:
-		audio_player.stream = track1
-		#audio_player.play()
 	started = true
 
 func player_finished(col):
@@ -59,13 +55,9 @@ func player_finished(col):
 		var headers = ["Content-Type: application/json", "password: " + Settings.password]
 		
 		$PostLeaderboard.request(url + "publish", headers, HTTPClient.METHOD_POST, body)
-		$PostLeaderboard.request_completed.connect(test	)
 
 	completed = true
 
-func test(result, response_code, headers, body):
-	print(body.get_string_from_utf8())
-	
 func _process(delta):
 	if Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump"):
 		player_started({})

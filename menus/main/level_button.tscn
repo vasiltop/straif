@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5gq8plr47upv"]
+
+[ext_resource type="Script" path="res://menus/main/level_button.gd" id="1_ri4hu"]
+
+[node name="LevelButton" type="Button"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Level Name"
+script = ExtResource("1_ri4hu")
