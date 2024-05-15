@@ -64,7 +64,6 @@ func _process(delta):
 
 func handle_scene_changes():
 
-	Settings.prev_room = get_tree().current_scene.scene_file_path
 	if Input.is_action_just_pressed("restart"):
 		get_tree().reload_current_scene()
 

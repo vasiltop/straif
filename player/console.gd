@@ -30,7 +30,10 @@ func parse_command(command):
 	var split = command.split(' ')
 	match first_word(command):
 		"fullscreen", "f":
-			Settings.toggle_fullscreen()
+			if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			else:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 			output("Fullscreen toggled.")
 		"sens", "sensitivity":
 			Settings.sens = float(split[1])

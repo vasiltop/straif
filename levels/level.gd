@@ -12,7 +12,7 @@ var timer = 0
 var completed = false
 var started = false
 var map_name = ""
-var leaderboard = "Could not connect to server."
+var leaderboard = "Could not connect to server. Check if their is a newer game version, or the server is down."
 
 func _ready():
 	start_zone.get_node("Area3D").body_exited.connect(player_started)
