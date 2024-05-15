@@ -59,7 +59,7 @@ Add the following into the .env file.
 
 ```python
 PASSWORD="example" #Must match the password in the client
-DATABASE_URL="postgres://postgres:password@localhost:5432/straif"
+DATABASE_URL="postgres://example:example@example:0000/straif" #Url of your postgres server
 ```
 
 Now we setup the database and run our server.
