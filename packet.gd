@@ -45,15 +45,16 @@ func read_p2p_packet() -> void:
 		var packet_sender: int = packet.steam_id_remote
 		var packet_code: PackedByteArray = packet.data
 		var readable_data: Dictionary = bytes_to_var(packet_code)
-		print(packet_sender, readable_data)
+		#print(packet_sender, readable_data)
 		
 		match readable_data.type:
 			PACKET.HANDSHAKE:
 				pass
 			PACKET.POSITION:
+				if get_tree().current_scene == null: return
 				var map_name = get_tree().current_scene.name
 				var player_object = SteamClient.is_id_spawned(packet_sender)
-				
+				print(player_object)
 				# if the map is not ours, and the player exists, delete them
 				if readable_data.map_name != map_name and player_object != null:
 					SteamClient.spawned_players.erase(player_object)
@@ -62,8 +63,11 @@ func read_p2p_packet() -> void:
 				elif readable_data.map_name == map_name and player_object == null:
 						var instance: Node3D = networked_player.instantiate()
 						add_child(instance)
+						instance.steam_id = packet_sender
 						instance.position = readable_data.pos
-						print(instance.position)
+						SteamClient.spawned_players.append(instance)
+				elif readable_data.map_name == map_name and player_object != null:
+					player_object.position = readable_data.pos
 						
 
 func _process(delta):

@@ -146,13 +146,13 @@ func _physics_process(delta):
 			if not grounded():
 				velocity = velocity.slide(col.get_normal())
 		else:
-			move_and_slide()	
+			move_and_slide()
 
 	elif grounded():
 		move_and_collide(floor_col_pos.position - global_position)
 	
 	if time_since_last_position_packet > POSITION_PACKET_DELAY:
-		Packet.send({"type": Packet.PACKET.HANDSHAKE, "map_name": get_tree().current_scene.name, "pos": position})
+		Packet.send({"type": Packet.PACKET.POSITION, "map_name": get_tree().current_scene.name, "pos": position})
 		time_since_last_position_packet = 0
 		
 func _input(event):
