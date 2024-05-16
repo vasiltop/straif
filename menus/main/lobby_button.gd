@@ -12,4 +12,4 @@ func set_id(_id: int):
 	id = _id
 
 func on_click():
-	Steam.joinLobby(id)
+	SteamClient.join_lobby(id)
