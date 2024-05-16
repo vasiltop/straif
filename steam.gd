@@ -10,8 +10,36 @@ var potential_lobby: int = 0
 func _ready():
 	Steam.lobby_joined.connect(on_lobby_joined)
 	Steam.lobby_created.connect(on_lobby_created)
+	Steam.p2p_session_request.connect(p2p_session_request)
+	Steam.p2p_session_connect_fail.connect(p2p_session_connect_fail)
 	try_connect_to_steam()
 
+func read_packet():
+	pass
+	
+func p2p_session_request(remote_id: int):
+	var this_requester: String = Steam.getFriendPersonaName(remote_id)
+	print("%s is requesting a P2P session" % this_requester)
+
+	Steam.acceptP2PSessionWithUser(remote_id)
+	Packet.make_p2p_handshake()
+	
+func p2p_session_connect_fail(steam_id: int, session_error: int):
+	if session_error == 0:
+		Notify.info("WARNING: Session failure with %s: no error given" % steam_id)
+	elif session_error == 1:
+		Notify.info("WARNING: Session failure with %s: target user not running the same game" % steam_id)
+	elif session_error == 2:
+		Notify.info("WARNING: Session failure with %s: local user doesn't own app / game" % steam_id)
+	elif session_error == 3:
+		Notify.info("WARNING: Session failure with %s: target user isn't connected to Steam" % steam_id)
+	elif session_error == 4:
+		Notify.info("WARNING: Session failure with %s: connection timed out" % steam_id)
+	elif session_error == 5:
+		Notify.info("WARNING: Session failure with %s: unused" % steam_id)
+	else:
+		Notify.info("WARNING: Session failure with %s: unknown error %s" % [steam_id, session_error])
+	
 func on_lobby_joined(id: int, permissions: int, locked: bool, response: int):
 	if response != Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 		var fail_reason: String
@@ -32,6 +60,8 @@ func on_lobby_joined(id: int, permissions: int, locked: bool, response: int):
 	lobby_id = id
 	Notify.info("Joined a lobby: %d" % lobby_id)
 	lobby_members = get_lobby_members(lobby_id)
+	Packet.make_p2p_handshake()
+	
 
 func on_lobby_created(connect: int, id: int) -> void:
 	if connect != 1: return
@@ -60,6 +90,7 @@ func try_connect_to_steam():
 		
 func _process(delta):
 	Steam.run_callbacks()
+	read_packet()
 	
 func create_lobby():
 	if lobby_id != 0: return

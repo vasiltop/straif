@@ -20,6 +20,7 @@ Settings="*res://settings.gd"
 SteamClient="*res://steam.gd"
 SceneManager="*res://scene_manager.gd"
 Notify="*res://notify.gd"
+Packet="*res://packet.gd"
 
 [display]
 
