@@ -48,7 +48,7 @@ func read_p2p_packet() -> void:
 		
 		match readable_data.type:
 			PACKET.HANDSHAKE:
-				print("handshake")
+				send({"type": PACKET.HANDSHAKE}, true, packet_sender)
 
 func _process(delta):
 	if SteamClient.lobby_id != 0:
