@@ -31,6 +31,9 @@ var time_since_landing = 0
 
 var url = Settings.base_url + "longjump/publish"
 
+const POSITION_PACKET_DELAY: float = 0.04
+var time_since_last_position_packet: float = 0
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	prev_pos = camera.position
@@ -77,6 +80,7 @@ func interpolate_camera_pos(delta):
 	prev_pos = camera_pos
 
 func update_timers(delta):
+	time_since_last_position_packet += delta
 	if not jumped and grounded():
 		time_since_landing += delta
 
@@ -146,7 +150,11 @@ func _physics_process(delta):
 
 	elif grounded():
 		move_and_collide(floor_col_pos.position - global_position)
-
+	
+	if time_since_last_position_packet > POSITION_PACKET_DELAY:
+		Packet.send({"type": Packet.PACKET.HANDSHAKE, "map_name": get_tree().current_scene.name, "pos": position})
+		time_since_last_position_packet = 0
+		
 func _input(event):
 	if $Console.visible: return
 	

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdknereei3gma"]
+
+[ext_resource type="Script" path="res://networked_player/networked_player.gd" id="1_5k5qw"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6mxks"]
+
+[node name="NetworkedPlayer" type="Node3D"]
+script = ExtResource("1_5k5qw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_6mxks")

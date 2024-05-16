@@ -7,6 +7,8 @@ var lobby_members: Array = []
 
 var potential_lobby: int = 0
 
+var spawned_players: Array = []
+
 func _ready():
 	Steam.lobby_joined.connect(on_lobby_joined)
 	Steam.lobby_created.connect(on_lobby_created)
@@ -141,3 +143,8 @@ func join_lobby(id: int):
 	leave_lobby()
 	Steam.joinLobby(id)
 	
+func is_id_spawned(id: int) -> Node3D :
+	for player in spawned_players:
+		if player.steam_id == id:
+			return player
+	return null

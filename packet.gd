@@ -1,7 +1,9 @@
 extends Node
 
-enum PACKET { HANDSHAKE }
+enum PACKET { HANDSHAKE, POSITION }
 const PACKET_READ_LIMIT: int = 5
+
+var networked_player = preload("res://networked_player/networked_player.tscn")
 
 func send(data: Dictionary, reliable: bool = false, target: int = 0) -> void:
 	# Set the send_type and channel
@@ -48,6 +50,21 @@ func read_p2p_packet() -> void:
 		match readable_data.type:
 			PACKET.HANDSHAKE:
 				pass
+			PACKET.POSITION:
+				var map_name = get_tree().current_scene.name
+				var player_object = SteamClient.is_id_spawned(packet_sender)
+				
+				# if the map is not ours, and the player exists, delete them
+				if readable_data.map_name != map_name and player_object != null:
+					SteamClient.spawned_players.erase(player_object)
+					player_object.queue_free()
+				# else, if the map is ours and they dont exist, spawn them
+				elif readable_data.map_name == map_name and player_object == null:
+						var instance: Node3D = networked_player.instantiate()
+						add_child(instance)
+						instance.position = readable_data.pos
+						print(instance.position)
+						
 
 func _process(delta):
 	if SteamClient.lobby_id != 0:
