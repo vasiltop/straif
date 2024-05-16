@@ -12,6 +12,7 @@ func _ready():
 	Steam.lobby_created.connect(on_lobby_created)
 	Steam.p2p_session_request.connect(p2p_session_request)
 	Steam.p2p_session_connect_fail.connect(p2p_session_connect_fail)
+	Steam.lobby_chat_update.connect(on_lobby_chat_update)
 	try_connect_to_steam()
 
 func read_packet():
@@ -61,7 +62,6 @@ func on_lobby_joined(id: int, permissions: int, locked: bool, response: int):
 	Notify.info("Joined a lobby: %d" % lobby_id)
 	lobby_members = get_lobby_members(lobby_id)
 	Packet.make_p2p_handshake()
-	
 
 func on_lobby_created(connect: int, id: int) -> void:
 	if connect != 1: return
@@ -117,3 +117,27 @@ func leave_lobby():
 			Steam.closeP2PSessionWithUser(member['steam_id'])
 
 	lobby_members.clear()
+
+func on_lobby_chat_update(this_lobby_id: int, change_id: int, making_change_id: int, chat_state: int) -> void:
+	# Get the user who has made the lobby change
+	var changer_name: String = Steam.getFriendPersonaName(change_id)
+
+	# If a player has joined the lobby
+	if chat_state == Steam.CHAT_MEMBER_STATE_CHANGE_ENTERED:
+		lobby_members.append(change_id)
+		Packet.make_p2p_handshake()
+		Notify.info("%s has joined the lobby." % changer_name)
+	else:
+		lobby_members.erase(change_id)
+
+	# Else if a player has left the lobby
+	if chat_state == Steam.CHAT_MEMBER_STATE_CHANGE_LEFT:
+		Notify.info("%s has left the lobby." % changer_name)
+
+	# Else if a player has been kicked
+	elif chat_state == Steam.CHAT_MEMBER_STATE_CHANGE_KICKED:
+		Notify.info("%s has been kicked from the lobby." % changer_name)
+
+	# Else if a player has been banned
+	elif chat_state == Steam.CHAT_MEMBER_STATE_CHANGE_BANNED:
+		Notify.info("%s has been banned from the lobby." % changer_name)

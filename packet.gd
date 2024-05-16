@@ -21,7 +21,6 @@ func send(data: Dictionary, reliable: bool = false, target: int = 0) -> void:
 		
 func make_p2p_handshake() -> void:
 	print("Sending P2P handshake to the lobby")
-
 	send({"type": PACKET.HANDSHAKE})
 
 func read_all_p2p_packets(read_count: int = 0):
@@ -48,7 +47,7 @@ func read_p2p_packet() -> void:
 		
 		match readable_data.type:
 			PACKET.HANDSHAKE:
-				send({"type": PACKET.HANDSHAKE}, true, packet_sender)
+				pass
 
 func _process(delta):
 	if SteamClient.lobby_id != 0:
