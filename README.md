@@ -28,15 +28,12 @@ In the settings.gd file, we must add a few variables for configuration, here is 
 extends Node
 
 var sens = 0.001
-var uuid = ""
-
-var save_file = "user://straif.data"
 var base_url = "https://example.com/" #Url of the server
 var password = "example" #Password for the server to authenticate the client
 ```
 
 Make sure it is in this exact format, or the game might not run properly.
-Then we can run the game.
+Then we can run the game (Steam must be running).
 
 ```bash
 godot

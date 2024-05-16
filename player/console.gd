@@ -6,9 +6,6 @@ var time_alive = 0
 var prev_commands = []
 const MAX_COMMAND_LABEL_LENGTH = 25
 
-func _ready():
-	pass
-
 func _process(delta):
 	
 	if !visible: 
@@ -45,10 +42,6 @@ func parse_command(command):
 			else:
 				var name = split[1]
 				get_tree().change_scene_to_file("res://levels/" + name + ".tscn")
-		"logout":
-			DirAccess.remove_absolute(Settings.save_file)
-			Settings.uuid = ""
-			get_tree().change_scene_to_file("res://menus/account/account.tscn")
 		"quit":
 			get_tree().quit()
 		"baseurl":
