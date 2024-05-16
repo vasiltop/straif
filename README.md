@@ -19,10 +19,10 @@ Straif is a fast-paced time trial game inspired by the movement mechanics of the
 ```bash
 git clone https://github.com/vasiltop/straif
 cd straif
-vim settings.gd
+godot -e
 ```
 
-In the settings.gd file, we must add a few variables for configuration, here is an example.
+In godot, make a new script called settings.gd (in the root folder). In the settings.gd file, we must add a few variables for configuration, here is an example.
 
 ```python
 extends Node
