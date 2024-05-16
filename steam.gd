@@ -70,9 +70,7 @@ func get_lobby_members(id: int) -> Array:
 	var num_of_members: int = Steam.getNumLobbyMembers(id)
 	var members = []
 	for i in range(num_of_members):
-		
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(id, i)
-		print(member_steam_id)
 		var member_steam_name: String = Steam.getFriendPersonaName(member_steam_id)
 		members.append({"steam_id":member_steam_id, "steam_name":member_steam_name})
 	

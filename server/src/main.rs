@@ -20,7 +20,6 @@ async fn main() {
 		.unwrap();
 
 	let app = Router::new()
-		.nest("/user", routes::user::router().with_state(pool.clone()))
 		.nest("/bhop", routes::bhop::router().with_state(pool.clone()))
 		.nest(
 			"/longjump",

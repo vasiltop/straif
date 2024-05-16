@@ -10,7 +10,6 @@ use axum::{
 };
 use serde::Deserialize;
 use serde::Serialize;
-use sqlx::types::Uuid;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -37,7 +36,8 @@ struct LongjumpOutput {
 
 #[derive(Deserialize)]
 struct LongjumpInput {
-	user_id: Uuid,
+	user_id: i64,
+	username: String,
 	length: i16,
 }
 
@@ -57,9 +57,10 @@ async fn publish(
 	}
 
 	sqlx::query!(
-		"INSERT INTO placement_longjump VALUES ($1, $2) ON CONFLICT (user_id) DO UPDATE SET length = $2 WHERE placement_longjump.length< $2 ",
+		"INSERT INTO placement_longjump VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET length = $2 WHERE placement_longjump.length< $2 ",
 		jump.user_id,
-		jump.length
+		jump.length,
+		jump.username
 	)
 	.execute(&pool)
 	.await

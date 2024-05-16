@@ -48,8 +48,9 @@ func player_finished(col):
 	if not completed:
 		var body = JSON.stringify({
 				"map_name": map_name,
-				"user_id": Settings.uuid,
-				"time": floor(timer * 1000)
+				"user_id": SteamClient.steam_id,
+				"time": floor(timer * 1000),
+				"username": Steam.getPersonaName()
 		})
 		
 		var headers = ["Content-Type: application/json", "password: " + Settings.password]

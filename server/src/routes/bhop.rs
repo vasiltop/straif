@@ -42,7 +42,8 @@ struct RunOutput {
 #[derive(Deserialize)]
 struct RunInput {
 	map_name: String,
-	user_id: Uuid,
+	user_id: i64,
+	username: String,
 	time: i32,
 }
 
@@ -74,12 +75,13 @@ async fn publish(
 		.await
 		.map_err(|_| Error::InvalidMapName)?;
 	sqlx::query!(
-		"INSERT INTO placement_bhop VALUES ($1, $2, $3, $4) ON CONFLICT (user_id, map_id) DO UPDATE SET time_ms = $4 WHERE placement_bhop.time_ms > $4 ",
+		"INSERT INTO placement_bhop VALUES ($1, $2, $3, $4, $5) ON CONFLICT (user_id, map_id) DO UPDATE SET time_ms = $4 WHERE placement_bhop.time_ms > $4 ",
 		run.user_id,
 		map_id.id,
 		//TODO: Make this Vector an actual viewable run
 		Vec::new(),
-		run.time
+		run.time,
+		run.username
 	)
 	.execute(&pool)
 	.await
