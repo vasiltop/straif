@@ -9,6 +9,7 @@ func _ready():
 	
 	$Navbar/Actions/CreateLobby.pressed.connect(SteamClient.create_lobby)
 	$Navbar/Actions/CreateLobby.pressed.connect(view_lobby_info)
+	$Navbar/Actions/Settings.pressed.connect(open_settings)
 
 func _process(delta):
 	
@@ -19,5 +20,7 @@ func _process(delta):
 		
 func view_lobby_info():
 	if button.text != "Lobby Info": return
-	
 	SceneManager.change_scene(SceneManager.SCENES.LOBBY_MENU)
+
+func open_settings():
+	SceneManager.change_scene(SceneManager.SCENES.SETTINGS_MENU)

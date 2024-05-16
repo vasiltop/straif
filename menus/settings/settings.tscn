@@ -1,0 +1,234 @@
+[gd_scene load_steps=15 format=3 uid="uid://mxjspdkeqg5q"]
+
+[ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="1_ahrkf"]
+[ext_resource type="Script" path="res://menus/settings/settings.gd" id="1_isan4"]
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="2_flb51"]
+[ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="3_qow7f"]
+[ext_resource type="PackedScene" uid="uid://dhrwk6tthy3r8" path="res://props/medium_box.tscn" id="4_15p68"]
+[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="5_jgg1q"]
+[ext_resource type="PackedScene" uid="uid://nn4mtur3ev0n" path="res://props/small_box.tscn" id="6_kbdh2"]
+[ext_resource type="PackedScene" uid="uid://gdrhguyyuy8i" path="res://props/large.tscn" id="7_ss0v4"]
+[ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://props/small.tscn" id="8_j85nf"]
+[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="9_7544e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
+albedo_texture = ExtResource("2_flb51")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
+sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
+sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+sky_energy_multiplier = 0.85
+ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
+ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+ground_curve = 0.0627669
+sun_angle_max = 14.4
+sun_curve = 0.0724453
+
+[sub_resource type="Sky" id="Sky_sau2u"]
+sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
+radiance_size = 2
+
+[sub_resource type="Environment" id="Environment_l4w43"]
+background_mode = 2
+background_energy_multiplier = 2.35
+sky = SubResource("Sky_sau2u")
+ambient_light_source = 3
+ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
+ambient_light_energy = 0.0
+fog_enabled = true
+fog_light_color = Color(0.379747, 0.573999, 0.7309, 1)
+fog_light_energy = 0.79
+fog_sun_scatter = 0.21
+fog_density = 0.0399
+fog_height_density = 0.0155
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_isan4")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Content" type="VSplitContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 85
+dragger_visibility = 1
+
+[node name="Navbar" type="Control" parent="MarginContainer/Content"]
+layout_mode = 2
+
+[node name="MenuName" type="Label" parent="MarginContainer/Content/Navbar"]
+layout_mode = 1
+offset_right = 1152.0
+offset_bottom = 23.0
+text = "Settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Content/Navbar"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="Back" type="Button" parent="MarginContainer/Content/Navbar/HBoxContainer"]
+layout_mode = 2
+text = "Back
+"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 256
+theme_override_constants/margin_right = 256
+
+[node name="Settings" type="VBoxContainer" parent="MarginContainer/Content/Margin"]
+layout_mode = 2
+
+[node name="Sensitivity" type="HSplitContainer" parent="MarginContainer/Content/Margin/Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Margin/Settings/Sensitivity"]
+layout_mode = 2
+text = "Sensitivity"
+
+[node name="Sens" type="LineEdit" parent="MarginContainer/Content/Margin/Settings/Sensitivity"]
+layout_mode = 2
+
+[node name="Level" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.86084, 8.61067, 8.22009)
+use_collision = true
+
+[node name="StartZone" parent="Level" instance=ExtResource("1_ahrkf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
+material = SubResource("StandardMaterial3D_ivg4n")
+
+[node name="EndZone" parent="Level" instance=ExtResource("3_qow7f")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -38.8121, 0.231246, -30.9255)
+size = Vector3(8, 0.1, 7.91748)
+
+[node name="CSGBox3D" parent="Level" instance=ExtResource("4_15p68")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.673327, -5.23566)
+
+[node name="CSGBox3D2" parent="Level" instance=ExtResource("4_15p68")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59054, -0.673327, -8.97234)
+
+[node name="CSGBox3D18" parent="Level" instance=ExtResource("4_15p68")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.9243, 1.08099, -30.9107)
+size = Vector3(0.374023, 5.29581, 8.38428)
+
+[node name="CSGBox3D10" parent="Level" instance=ExtResource("4_15p68")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.45659, -0.673327, -8.98821)
+
+[node name="CSGBox3D3" parent="Level" instance=ExtResource("4_15p68")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.673327, -12.8669)
+
+[node name="CSGBox3D32" parent="Level" instance=ExtResource("4_15p68")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.3555, 6.71608, -27.9842)
+
+[node name="CSGBox3D4" parent="Level" instance=ExtResource("5_jgg1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0263157, 0.0387263, -27.6048)
+
+[node name="CSGBox3D5" parent="Level" instance=ExtResource("5_jgg1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.30785, -48.1878)
+
+[node name="CSGBox3D6" parent="Level" instance=ExtResource("5_jgg1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7303, 4.79818, -48.1878)
+
+[node name="CSGBox3D7" parent="Level" instance=ExtResource("5_jgg1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7303, 7.1242, -30.2122)
+
+[node name="CSGBox3D8" parent="Level" instance=ExtResource("5_jgg1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.497971, 6.6647, -30.2122)
+
+[node name="CSGBox3D9" parent="Level" instance=ExtResource("5_jgg1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.9509, 6.6647, -30.2165)
+
+[node name="CSGBox3D11" parent="Level" instance=ExtResource("6_kbdh2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0067637, 0, -17.9742)
+
+[node name="CSGBox3D12" parent="Level" instance=ExtResource("6_kbdh2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0067637, 0, -21.3622)
+
+[node name="CSGBox3D13" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.661698, -34.1364)
+
+[node name="CSGBox3D14" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.04452, 1.18946, -36.8712)
+
+[node name="CSGBox3D15" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.301679, 1.68099, -39.8945)
+
+[node name="CSGBox3D20" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.6546, 5.24801, -41.0637)
+
+[node name="CSGBox3D26" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.4295, 5.66242, -39.2302)
+
+[node name="CSGBox3D27" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.4295, 5.99345, -34.4555)
+
+[node name="CSGBox3D28" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7831, 6.20748, -35.7042)
+
+[node name="CSGBox3D29" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.5791, 6.20748, -37.6409)
+
+[node name="CSGBox3D30" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.8513, 6.59832, -32.8935)
+
+[node name="CSGBox3D31" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.8815, 6.78617, -29.7782)
+
+[node name="CSGBox3D21" parent="Level" instance=ExtResource("8_j85nf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.9394, 4.79289, -53.1355)
+
+[node name="CSGBox3D16" parent="Level" instance=ExtResource("7_ss0v4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.01164, 1.98809, -43.1715)
+
+[node name="CSGBox3D22" parent="Level" instance=ExtResource("9_7544e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.50542, 2.96852, -51.0642)
+
+[node name="CSGBox3D34" parent="Level" instance=ExtResource("9_7544e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.94965, 6.86537, -30.3)
+
+[node name="CSGBox3D35" parent="Level" instance=ExtResource("9_7544e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0113, 6.86537, -30.3)
+
+[node name="CSGBox3D23" parent="Level" instance=ExtResource("9_7544e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.835, 3.72639, -59.6145)
+
+[node name="CSGBox3D36" parent="Level" instance=ExtResource("9_7544e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.66842, 3.37731, -54.6679)
+
+[node name="CSGBox3D24" parent="Level" instance=ExtResource("9_7544e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5159, 4.31786, -57.7846)
+
+[node name="CSGBox3D25" parent="Level" instance=ExtResource("9_7544e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.7649, 4.5291, -53.707)
+
+[node name="CSGBox3D19" parent="Level" instance=ExtResource("6_kbdh2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7887, 3.07516, -58.1625)
+
+[node name="CSGBox3D33" parent="Level" instance=ExtResource("6_kbdh2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.10351, 6.82637, -31.2878)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l4w43")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.709968, -0.425305, 0.561303, 0.0148966, 0.805932, 0.591821, -0.704076, -0.411813, 0.578521, 23.2138, 17.9031, 0)
