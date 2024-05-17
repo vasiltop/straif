@@ -9,3 +9,8 @@ script = ExtResource("1_5k5qw")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_6mxks")
+
+[node name="Username" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38683, 0)
+billboard = 1
+text = "username"

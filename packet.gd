@@ -65,6 +65,7 @@ func read_p2p_packet() -> void:
 						add_child(instance)
 						instance.steam_id = packet_sender
 						instance.position = readable_data.pos
+						instance.get_node("Username").text = Steam.getFriendPersonaName(packet_sender)
 						SteamClient.spawned_players.append(instance)
 				elif readable_data.map_name == map_name and player_object != null:
 					player_object.position = readable_data.pos
