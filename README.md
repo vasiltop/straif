@@ -57,6 +57,7 @@ Add the following into the .env file.
 ```python
 PASSWORD="example" #Must match the password in the client
 DATABASE_URL="postgres://example:example@example:0000/straif" #Url of your postgres server
+STEAM_API_KEY="steam-web-api-key"
 ```
 
 Now we setup the database and run our server.
