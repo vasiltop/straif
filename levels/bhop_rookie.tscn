@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c3ghsggtvier5"]
+[gd_scene load_steps=14 format=3 uid="uid://c3ghsggtvier5"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_cipox"]
 [ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player/player.tscn" id="2_ff6vw"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="6_diav7"]
 [ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="7_s4jwc"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="8_ui1q8"]
+[ext_resource type="PackedScene" uid="uid://4xxni1fwwie6" path="res://levels/recorder.tscn" id="9_js5k0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_hxe3l")
@@ -111,3 +112,5 @@ offset_right = -10.0
 offset_bottom = 23.0
 grow_horizontal = 0
 text = "munost 0.0001"
+
+[node name="Recorder" parent="." instance=ExtResource("9_js5k0")]

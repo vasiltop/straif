@@ -8,6 +8,8 @@ axum = { version = "0.7.5", features = ["json", "macros"] }
 bcrypt = "0.15.1"
 dotenv = "0.15.0"
 dotenv_codegen = "0.15.0"
+prost = "0.12.6"
+prost-build = "0.12.6"
 reqwest = { version = "0.12.4", features = ["json"] }
 serde = { version = "1.0.198", features = ["derive"] }
 serde_valid = "0.19.0"
@@ -16,4 +18,7 @@ thiserror = "1.0.59"
 tokio = { version = "1.37.0", features = ["macros", "rt-multi-thread"] }
 uuid = { version = "1.8.0", features = ["serde"] }
 validator = { version = "0.18.1", features = ["derive"] }
+
+[build-dependencies]
+prost-build = { version = "0.12.6" }
 

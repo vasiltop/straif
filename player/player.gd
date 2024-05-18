@@ -90,10 +90,9 @@ func submit_to_leaderboard(length):
 	var body = JSON.stringify({
 		"user_id": SteamClient.steam_id,
 		"length": floor(last_jump * 1000),
-		"auth_ticket": SteamClient.auth_ticket_hex,
 		"username": Steam.getPersonaName()
 	})
-	var headers = ["Content-Type: application/json", "password: " + Settings.password]
+	var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
 	$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
 
 func _physics_process(delta):

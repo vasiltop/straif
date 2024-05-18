@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://4xxni1fwwie6"]
+
+[ext_resource type="Script" path="res://levels/recorder.gd" id="1_ehk58"]
+
+[node name="Recorder" type="Node"]
+script = ExtResource("1_ehk58")

@@ -830,6 +830,26 @@ class Run:
 		service.func_ref = Callable(self, "add_frames")
 		data[__frames.tag] = service
 		
+		__steam_id = PBField.new("steam_id", PB_DATA_TYPE.INT64, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT64])
+		service = PBServiceField.new()
+		service.field = __steam_id
+		data[__steam_id.tag] = service
+		
+		__value = PBField.new("value", PB_DATA_TYPE.INT64, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT64])
+		service = PBServiceField.new()
+		service.field = __value
+		data[__value.tag] = service
+		
+		__username = PBField.new("username", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 4, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __username
+		data[__username.tag] = service
+		
+		__map_name = PBField.new("map_name", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 5, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __map_name
+		data[__map_name.tag] = service
+		
 	var data = {}
 	
 	var __frames: PBField
@@ -842,6 +862,42 @@ class Run:
 		var element = Frame.new()
 		__frames.value.append(element)
 		return element
+	
+	var __steam_id: PBField
+	func get_steam_id() -> int:
+		return __steam_id.value
+	func clear_steam_id() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__steam_id.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT64]
+	func set_steam_id(value : int) -> void:
+		__steam_id.value = value
+	
+	var __value: PBField
+	func get_value() -> int:
+		return __value.value
+	func clear_value() -> void:
+		data[3].state = PB_SERVICE_STATE.UNFILLED
+		__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT64]
+	func set_value(value : int) -> void:
+		__value.value = value
+	
+	var __username: PBField
+	func get_username() -> String:
+		return __username.value
+	func clear_username() -> void:
+		data[4].state = PB_SERVICE_STATE.UNFILLED
+		__username.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_username(value : String) -> void:
+		__username.value = value
+	
+	var __map_name: PBField
+	func get_map_name() -> String:
+		return __map_name.value
+	func clear_map_name() -> void:
+		data[5].state = PB_SERVICE_STATE.UNFILLED
+		__map_name.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_map_name(value : String) -> void:
+		__map_name.value = value
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)

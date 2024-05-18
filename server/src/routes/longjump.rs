@@ -1,7 +1,8 @@
-use crate::AppState;
-
+use crate::run::Run;
 use crate::steam::SteamAuth;
+use crate::AppState;
 use axum::{
+	body::Bytes,
 	extract::{Json, State},
 	http::HeaderMap,
 	http::HeaderValue,
@@ -10,6 +11,7 @@ use axum::{
 	routing::{get, post},
 	Router,
 };
+use prost::Message;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -36,14 +38,6 @@ struct LongjumpOutput {
 	length: Option<i16>,
 }
 
-#[derive(Deserialize)]
-struct LongjumpInput {
-	user_id: i64,
-	username: String,
-	auth_ticket: String,
-	length: i16,
-}
-
 pub fn router() -> Router<AppState> {
 	Router::new()
 		.route("/publish", post(publish))
@@ -53,39 +47,45 @@ pub fn router() -> Router<AppState> {
 async fn publish(
 	State(pool): State<AppState>,
 	headers: HeaderMap,
-	Json(jump): Json<LongjumpInput>,
+	jump_bytes: Bytes,
 ) -> Result<(), crate::error::Error> {
 	if Some(HeaderValue::from_static(dotenv!("PASSWORD"))) != headers.get("password").cloned() {
 		return Err(crate::error::Error::Longjump(Error::InvalidSubmission));
 	}
-	let steam_id: SteamAuth = reqwest::Client::default()
-		.get("https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1/")
-		.query(&[
-			("key", dotenv!("STEAM_API_KEY")),
-			("appid", "480"),
-			("ticket", &jump.auth_ticket),
-			("identity", "munost"),
-		])
-		.send()
-		.await?
-		.json()
-		.await?;
 
-	let steam_id = steam_id.response.params.steamid.parse::<i64>().unwrap();
+	if let Some(auth_ticket) = headers.get("auth_ticket") {
+		let jump: Run = Message::decode(jump_bytes.clone()).unwrap();
+		let steam_id: SteamAuth = reqwest::Client::default()
+			.get("https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1/")
+			.query(&[
+				("key", dotenv!("STEAM_API_KEY")),
+				("appid", "480"),
+				(
+					"ticket",
+					auth_ticket.to_str().map_err(|_| Error::InvalidSubmission)?,
+				),
+				("identity", "munost"),
+			])
+			.send()
+			.await?
+			.json()
+			.await?;
 
-	if steam_id != jump.user_id {
-		return Err(Error::InvalidSubmission.into());
-	}
-	sqlx::query!(
+		let steam_id = steam_id.response.params.steamid.parse::<i64>().unwrap();
+
+		if steam_id != jump.steam_id {
+			return Err(Error::InvalidSubmission.into());
+		}
+		sqlx::query!(
 		"INSERT INTO placement_longjump VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET length = $2 WHERE placement_longjump.length< $2 ",
-		jump.user_id,
-		jump.length,
+		jump.steam_id,
+		i16::try_from(jump.value).map_err(|_| Error::InvalidSubmission)?,
 		jump.username
 	)
 	.execute(&pool)
 	.await
 	.map_err(|_| Error::InvalidSubmission)?;
-
+	}
 	Ok(())
 }
 

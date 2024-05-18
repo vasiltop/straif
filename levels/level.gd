@@ -5,11 +5,8 @@ extends Node3D
 @onready var timer_label = $Timer
 @onready var audio_player = $Music
 
-@onready var player = $Player
-@onready var camera = player.get_node("Camera3D")
-
 var track1 = preload("res://sound/track1.wav")
-
+const run = preload("res://run.gd")
 var url = Settings.base_url + "bhop/"
 var timer = 0
 var completed = false
@@ -17,11 +14,9 @@ var started = false
 var map_name = ""
 var leaderboard = "Could not connect to server. Check if their is a newer game version, or the server is down."
 
-const run = preload("res://run.gd")
-var current_run: run.Run = run.Run.new()
-
 var replaying: bool = false
-var replay_index: int = 0
+
+var current_run: run.Run = run.Run.new()
 
 func _ready():
 	start_zone.get_node("Area3D").body_exited.connect(player_started)
@@ -30,9 +25,7 @@ func _ready():
 	
 	get_leaderboard()
 	$PostLeaderboard.request_completed.connect(test)
-	
-	
-	
+
 func test(result, response_code, headers, body):
 	var json = body.get_string_from_utf8()
 	print(json)
@@ -62,17 +55,15 @@ func player_started(col):
 func player_finished(col):
 
 	if not completed:
-		var body = JSON.stringify({
-				"map_name": map_name,
-				"user_id": SteamClient.steam_id,
-				"time": floor(timer * 1000),
-				"auth_ticket": SteamClient.auth_ticket_hex,
-				"username": Steam.getPersonaName()
-		})
+		current_run.set_steam_id(SteamClient.steam_id)
+		current_run.set_username(Steam.getPersonaName())
+		current_run.set_value(floor(timer * 1000))
+		current_run.set_map_name(map_name)
+
+		var body = current_run.to_bytes()
+		var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
 		
-		var headers = ["Content-Type: application/json", "password: " + Settings.password]
-		
-		$PostLeaderboard.request(url + "publish", headers, HTTPClient.METHOD_POST, body)
+		$PostLeaderboard.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
 		
 		Settings.previous_run = current_run.get_frames()
 		current_run.clear_frames()
@@ -94,49 +85,6 @@ func _process(delta):
 		$Leaderboard.text = ""
 		
 	if Input.is_action_just_pressed("replay"):
+		
 		$Player.movement_paused = true
 		replaying = true
-		
-
-func _physics_process(delta):
-	if replaying:
-		if replay_index >= len(Settings.previous_run) - 1:
-			get_tree().reload_current_scene()
-			return
-			
-		var front: run.Frame = Settings.previous_run[replay_index]
-		
-		player.position.x = front.get_position().get_x()
-		player.position.y = front.get_position().get_y()
-		player.position.z = front.get_position().get_z()
-		
-		player.rotation.x = front.get_playerRotation().get_x()
-		player.rotation.y = front.get_playerRotation().get_y()
-		player.rotation.z = front.get_playerRotation().get_z()
-
-		player.get_node("Camera3D").rotation.x = front.get_cameraRotation().get_x()
-		player.get_node("Camera3D").rotation.y = front.get_cameraRotation().get_y()
-		player.get_node("Camera3D").rotation.z = front.get_cameraRotation().get_z()
-		
-		replay_index += 1
-
-	else:
-		record_run()
-	
-
-func record_run():
-	if not started or completed: return
-	
-	var frame: run.Frame = current_run.add_frames()
-
-	var position = frame.new_position()
-	var player_rotation = frame.new_playerRotation()
-	var camera_rotation = frame.new_cameraRotation()
-	
-	var pos = player.position
-	position.set_x(pos.x)
-	position.set_y(pos.y)
-	position.set_z(pos.z)
-	
-	player_rotation.set_y(player.rotation.y)
-	camera_rotation.set_x(camera.rotation.x)
