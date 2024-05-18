@@ -71,7 +71,7 @@ func handle_scene_changes():
 		get_tree().reload_current_scene()
 		
 	if Input.is_action_just_pressed("pause"):
-		SceneManager.change_scene(SceneManager.SCENES.PAUSE_MENU)
+		SceneManager.change_scene(SceneManager.SCENES.MAIN_MENU)
 
 func interpolate_camera_pos(delta):
 	var camera_pos = prev_pos.lerp(position, delta * 70)

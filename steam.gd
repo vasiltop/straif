@@ -4,7 +4,8 @@ var steam_id: int = 0
 var steam_username: String = ""
 var lobby_id: int = 0
 var lobby_members: Array = []
-
+var auth_ticket: Dictionary = {}
+var auth_ticket_hex: String = ""
 var potential_lobby: int = 0
 
 var spawned_players: Array = []
@@ -15,11 +16,14 @@ func _ready():
 	Steam.p2p_session_request.connect(p2p_session_request)
 	Steam.p2p_session_connect_fail.connect(p2p_session_connect_fail)
 	Steam.lobby_chat_update.connect(on_lobby_chat_update)
+	Steam.get_ticket_for_web_api.connect(on_get_auth_session_ticket)
 	try_connect_to_steam()
-
-func read_packet():
-	pass
 	
+	Steam.getAuthTicketForWebApi("munost")
+	
+func on_get_auth_session_ticket(auth_ticket: int, result: int, ticket_size: int, ticket_buffer: Array):
+	auth_ticket_hex = PackedByteArray(ticket_buffer).hex_encode()
+
 func p2p_session_request(remote_id: int):
 	var this_requester: String = Steam.getFriendPersonaName(remote_id)
 	print("%s is requesting a P2P session" % this_requester)
@@ -92,8 +96,7 @@ func try_connect_to_steam():
 		
 func _process(delta):
 	Steam.run_callbacks()
-	read_packet()
-	
+
 func create_lobby():
 	if lobby_id != 0: return
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 10)

@@ -8,6 +8,8 @@ pub enum Error {
 	Bhop(#[from] crate::routes::bhop::Error),
 	#[error("longjump error: {0}")]
 	Longjump(#[from] crate::routes::longjump::Error),
+	#[error("invalid steam request")]
+	SteamRequest(#[from] reqwest::Error),
 }
 
 impl IntoResponse for Error {
@@ -16,6 +18,7 @@ impl IntoResponse for Error {
 			Self::ValidationError(e) => (StatusCode::BAD_REQUEST, e.to_string()),
 			Self::Bhop(e) => (e.status(), e.to_string()),
 			Self::Longjump(e) => (e.status(), e.to_string()),
+			Self::SteamRequest(_) => (StatusCode::INTERNAL_SERVER_ERROR, "lol".into()),
 		};
 
 		(status, error).into_response()

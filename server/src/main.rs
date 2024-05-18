@@ -1,5 +1,6 @@
 pub mod error;
 pub mod routes;
+pub mod steam;
 
 use axum::Router;
 use dotenv::dotenv;

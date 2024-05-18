@@ -2,6 +2,7 @@ extends VSplitContainer
 @onready var button = $Navbar/Actions/CreateLobby
 
 func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	$Navbar/Username.text = "Hello, " + SteamClient.steam_username + "!"
 	$Navbar/GameData/GamemodeBhop.pressed.connect($Margin/LevelSelect.set_gamemode_bhop)
 	$Navbar/GameData/GamemodeLongjump.pressed.connect($Margin/LevelSelect.set_gamemode_longjump)

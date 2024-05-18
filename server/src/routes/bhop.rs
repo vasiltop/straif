@@ -1,3 +1,4 @@
+use crate::steam::SteamAuth;
 use crate::AppState;
 use axum::{
 	extract::{Json, State},
@@ -11,7 +12,6 @@ use axum::{
 use serde::Deserialize;
 use serde::Serialize;
 use sqlx::types::Uuid;
-
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
 	#[error("invalid map name")]
@@ -44,6 +44,7 @@ struct RunInput {
 	map_name: String,
 	user_id: i64,
 	username: String,
+	auth_ticket: String,
 	time: i32,
 }
 
@@ -68,8 +69,28 @@ async fn publish(
 	Json(run): Json<RunInput>,
 ) -> Result<(), crate::error::Error> {
 	if Some(HeaderValue::from_static(dotenv!("PASSWORD"))) != headers.get("password").cloned() {
-		return Err(crate::error::Error::Bhop(Error::InvalidSubmission));
+		return Err(Error::InvalidSubmission.into());
 	}
+
+	let steam_id: SteamAuth = reqwest::Client::default()
+		.get("https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1/")
+		.query(&[
+			("key", dotenv!("STEAM_API_KEY")),
+			("appid", "480"),
+			("ticket", &run.auth_ticket),
+			("identity", "munost"),
+		])
+		.send()
+		.await?
+		.json()
+		.await?;
+
+	let steam_id = steam_id.response.params.steamid.parse::<i64>().unwrap();
+
+	if steam_id != run.user_id {
+		return Err(Error::InvalidSubmission.into());
+	}
+
 	let map_id = sqlx::query_as!(MapId, "SELECT id FROM map WHERE name = $1", run.map_name)
 		.fetch_one(&pool)
 		.await

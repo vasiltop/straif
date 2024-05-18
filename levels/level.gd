@@ -20,6 +20,11 @@ func _ready():
 	map_name = get_tree().current_scene.name
 	
 	get_leaderboard()
+	$PostLeaderboard.request_completed.connect(test)
+	
+func test(result, response_code, headers, body):
+	var json = body.get_string_from_utf8()
+	print(json)
 	
 func get_leaderboard():
 	$GetLeaderboard.request_completed.connect(handle_leaderboard)
@@ -50,6 +55,7 @@ func player_finished(col):
 				"map_name": map_name,
 				"user_id": SteamClient.steam_id,
 				"time": floor(timer * 1000),
+				"auth_ticket": SteamClient.auth_ticket_hex,
 				"username": Steam.getPersonaName()
 		})
 		
