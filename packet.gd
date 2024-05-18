@@ -45,7 +45,7 @@ func read_p2p_packet() -> void:
 		var packet_sender: int = packet.steam_id_remote
 		var packet_code: PackedByteArray = packet.data
 		var readable_data: Dictionary = bytes_to_var(packet_code)
-		#print(packet_sender, readable_data)
+		
 		
 		match readable_data.type:
 			PACKET.HANDSHAKE:
@@ -54,7 +54,7 @@ func read_p2p_packet() -> void:
 				if get_tree().current_scene == null: return
 				var map_name = get_tree().current_scene.name
 				var player_object = SteamClient.is_id_spawned(packet_sender)
-				print(player_object)
+
 				# if the map is not ours, and the player exists, delete them
 				if readable_data.map_name != map_name and player_object != null:
 					SteamClient.spawned_players.erase(player_object)

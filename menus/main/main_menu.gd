@@ -1,4 +1,5 @@
 extends VSplitContainer
+
 @onready var button = $Navbar/Actions/CreateLobby
 
 func _ready():

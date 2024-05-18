@@ -31,8 +31,10 @@ var time_since_landing = 0
 
 var url = Settings.base_url + "longjump/publish"
 
-const POSITION_PACKET_DELAY: float = 0.04
+const POSITION_PACKET_DELAY: float = 0.01
 var time_since_last_position_packet: float = 0
+
+var movement_paused: bool = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -86,16 +88,16 @@ func update_timers(delta):
 
 func submit_to_leaderboard(length):
 	var body = JSON.stringify({
-		# Multiply by 100 to keep accuracy, this is bad and will change
 		"user_id": SteamClient.steam_id,
 		"length": floor(last_jump * 1000),
+		"auth_ticket": SteamClient.auth_ticket_hex,
 		"username": Steam.getPersonaName()
 	})
 	var headers = ["Content-Type: application/json", "password: " + Settings.password]
 	$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
 
 func _physics_process(delta):
-	if $Console.visible: return
+	if movement_paused: return
 	
 	var wish_dir = Input.get_vector("left", "right", "up", "down")
 	wish_dir = wish_dir.rotated(-rotation.y)
@@ -156,7 +158,7 @@ func _physics_process(delta):
 		time_since_last_position_packet = 0
 		
 func _input(event):
-	if $Console.visible: return
+	if movement_paused: return
 	
 	if event is InputEventMouseMotion:
 		rotate_player(event)
