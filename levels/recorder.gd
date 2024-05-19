@@ -66,7 +66,7 @@ func replay_run():
 	replay_index += 1
 		
 func _physics_process(delta):
-	print(len(current_run.get_frames()))
+
 	if recording:
 		record_run()
 	elif replaying:

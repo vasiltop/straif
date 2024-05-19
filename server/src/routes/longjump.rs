@@ -85,12 +85,10 @@ async fn publish(
 async fn leaderboard(
 	State(pool): State<AppState>,
 ) -> Result<impl IntoResponse, crate::error::Error> {
-	let runs = sqlx::query_scalar!(
-		"SELECT jump FROM longjump_leaderboard WHERE jump IS NOT NULL LIMIT 10"
-	)
-	.fetch_one(&pool)
-	.await
-	.map_err(|_| Error::InternalError)?;
+	let runs = sqlx::query_scalar!("SELECT jump FROM longjump_leaderboard LIMIT 10")
+		.fetch_all(&pool)
+		.await
+		.map_err(|_| Error::InternalError)?;
 
 	Ok(Json(runs))
 }
