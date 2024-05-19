@@ -14,10 +14,6 @@ var started = false
 var map_name = ""
 var leaderboard = "Could not connect to server. Check if their is a newer game version, or the server is down."
 
-var replaying: bool = false
-
-var current_run: run.Run = run.Run.new()
-
 func _ready():
 	start_zone.get_node("Area3D").body_exited.connect(player_started)
 	end_zone.get_node("Area3D").body_entered.connect(player_finished)
@@ -50,26 +46,27 @@ func handle_leaderboard(result, response_code, headers, body):
 		leaderboard += run.username + " | " + str(snapped(run.time_ms / 1000, 0.01)) + "s\n"
 
 func player_started(col):
+	if completed or $Recorder.replaying: return
+	
 	started = true
+	$Recorder.start()
 
 func player_finished(col):
 
 	if not completed:
-		current_run.set_steam_id(SteamClient.steam_id)
-		current_run.set_username(Steam.getPersonaName())
-		current_run.set_value(floor(timer * 1000))
-		current_run.set_map_name(map_name)
+		$Recorder.stop()
+		$Recorder.save()
+		$Recorder.current_run.set_steam_id(SteamClient.steam_id)
+		$Recorder.current_run.set_username(Steam.getPersonaName())
+		$Recorder.current_run.set_value(floor(timer * 1000))
+		$Recorder.current_run.set_map_name(map_name)
 
-		var body = current_run.to_bytes()
+		var body = $Recorder.current_run.to_bytes()
 		var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
 		
 		$PostLeaderboard.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
 		
-		Settings.previous_run = current_run.get_frames()
-		current_run.clear_frames()
-		
 	completed = true
-	
 
 func _process(delta):
 	if Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump"):
@@ -85,6 +82,5 @@ func _process(delta):
 		$Leaderboard.text = ""
 		
 	if Input.is_action_just_pressed("replay"):
-		
 		$Player.movement_paused = true
-		replaying = true
+		$Recorder.replay()

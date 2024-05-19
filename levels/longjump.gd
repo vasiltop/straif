@@ -21,3 +21,7 @@ func _process(delta):
 		$Leaderboard.text = leaderboard
 	else:
 		$Leaderboard.text = ""
+		
+	if Input.is_action_just_pressed("replay"):
+		$Player.movement_paused = true
+		$Recorder.replay()

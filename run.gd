@@ -853,7 +853,7 @@ class Run:
 	var data = {}
 	
 	var __frames: PBField
-	func get_frames() -> Array[Frame]:
+	func get_frames() -> Array:
 		return __frames.value
 	func clear_frames() -> void:
 		data[1].state = PB_SERVICE_STATE.UNFILLED

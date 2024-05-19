@@ -36,6 +36,9 @@ var time_since_last_position_packet: float = 0
 
 var movement_paused: bool = false
 
+var longjump_counts = false
+
+@onready var recorder = get_parent().get_node("Recorder")
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	prev_pos = camera.position
@@ -110,12 +113,14 @@ func _physics_process(delta):
 			audio_player.stream = landing
 			audio_player.play()
 			jumped = false
-			
-			if time_since_landing > 0.1 and snapped(global_position.y, 0.01) == snapped(last_jump_pos.y, 0.01):
+			if time_since_landing > 0.6 and snapped(global_position.y, 0.01) == snapped(last_jump_pos.y, 0.01) and longjump_counts:
 				last_jump = last_jump_pos.distance_to(global_position)
 				last_jump_label.text = str(snapped(last_jump, 0.01)) + " u"
 				submit_to_leaderboard(last_jump)
-
+				longjump_counts = false
+				recorder.stop()
+				recorder.save()
+			
 			time_since_landing = 0
 		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 		
@@ -127,8 +132,12 @@ func _physics_process(delta):
 	var max_accel = MAX_G_ACCEL if grounded() else MAX_A_ACCEL
 	var add_speed = clamp(max_speed - current_speed, 0.0, max_accel * delta)
 	vel_planar += wish_dir * add_speed
-		
+	
+	var v = abs(velocity.x) + abs(velocity.z)
 	if (Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")) and grounded():
+		if v < 11:
+			recorder.start()
+			longjump_counts = true
 		last_jump_pos = global_position
 		vel_vertical = JUMP_FORCE
 		jumped = true

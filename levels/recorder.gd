@@ -6,14 +6,37 @@ var camera = null
 var level = null
 
 var replay_index: int = 0
+
 const run = preload("res://run.gd")
+
+var current_run: run.Run = run.Run.new()
+var recording = false
+var replaying = false
 
 func _ready():
 	player = get_parent().get_node("Player")
 	camera = player.get_node("Camera3D")
 	level = get_parent()
 
+func start():
+	if recording:
+		current_run.clear_frames()
+	
+	recording = true
+
+func stop():
+	recording = false
+
+func save():
+	Settings.previous_run = current_run.get_frames()
+	current_run.clear_frames()
+
 func replay():
+	replaying = true
+	recording = false
+
+func replay_run():
+
 	if replay_index >= len(Settings.previous_run) - 1:
 		get_tree().reload_current_scene()
 		return
@@ -35,15 +58,15 @@ func replay():
 	replay_index += 1
 		
 func _physics_process(delta):
-	if level.replaying:
-		replay()
-	else:
+	if recording:
 		record_run()
+	elif replaying:
+		replay_run()
 
 func record_run():
-	if not level.started or level.completed: return
+	if not recording: return
 	
-	var frame: run.Frame = level.current_run.add_frames()
+	var frame: run.Frame = current_run.add_frames()
 
 	var position = frame.new_position()
 	var player_rotation = frame.new_playerRotation()

@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bfcah5t4kll2w"]
+[gd_scene load_steps=9 format=3 uid="uid://bfcah5t4kll2w"]
 
 [ext_resource type="Script" path="res://levels/longjump.gd" id="1_1a867"]
 [ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="2_w42xh"]
 [ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player/player.tscn" id="3_jri5y"]
+[ext_resource type="PackedScene" uid="uid://4xxni1fwwie6" path="res://levels/recorder.tscn" id="4_g50kq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d7fd4"]
 albedo_texture = ExtResource("2_w42xh")
@@ -80,3 +81,7 @@ offset_top = 10.0
 offset_right = -10.0
 offset_bottom = 33.0
 grow_horizontal = 0
+
+[node name="Recorder" parent="." instance=ExtResource("4_g50kq")]
+
+[node name="PostLeaderboard" type="HTTPRequest" parent="."]
