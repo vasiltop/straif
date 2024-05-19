@@ -5,6 +5,7 @@ pub mod steam;
 use axum::Router;
 use dotenv::dotenv;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
+use tower_http::trace::TraceLayer;
 
 type AppState = Pool<Postgres>;
 
@@ -13,7 +14,9 @@ extern crate dotenv_codegen;
 
 #[tokio::main]
 async fn main() {
+	tracing_subscriber::fmt::init();
 	dotenv().ok();
+
 	let pool = PgPoolOptions::new()
 		.max_connections(5)
 		.connect("postgres://postgres:root@localhost:5432/straif")
@@ -26,6 +29,7 @@ async fn main() {
 			"/longjump",
 			routes::longjump::router().with_state(pool.clone()),
 		)
+		.layer(TraceLayer::new_for_http())
 		.with_state(pool);
 
 	let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();

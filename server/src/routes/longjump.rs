@@ -12,6 +12,8 @@ use axum::{
 	Router,
 };
 use prost::Message;
+use serde::Deserialize;
+use serde::Serialize;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -19,6 +21,14 @@ pub enum Error {
 	InternalError,
 	#[error("invalid submission")]
 	InvalidSubmission,
+}
+
+#[derive(Serialize, Deserialize)]
+struct LongjumpOutput {
+	username: Option<String>,
+	length: Option<i16>,
+	#[serde(serialize_with = "super::format_option_display")]
+	user_id: Option<i64>,
 }
 
 impl Error {
@@ -34,6 +44,7 @@ pub fn router() -> Router<AppState> {
 	Router::new()
 		.route("/publish", post(publish))
 		.route("/leaderboard", get(leaderboard))
+		.route("/demo", post(demo))
 }
 
 async fn publish(
@@ -85,10 +96,33 @@ async fn publish(
 async fn leaderboard(
 	State(pool): State<AppState>,
 ) -> Result<impl IntoResponse, crate::error::Error> {
-	let runs = sqlx::query_scalar!("SELECT jump FROM longjump_leaderboard LIMIT 10")
-		.fetch_all(&pool)
-		.await
-		.map_err(|_| Error::InternalError)?;
+	let runs = sqlx::query_as!(
+		LongjumpOutput,
+		"SELECT username, length, user_id FROM longjump_leaderboard LIMIT 10"
+	)
+	.fetch_all(&pool)
+	.await
+	.map_err(|_| Error::InternalError)?;
 
+	Ok(Json(runs))
+}
+
+#[derive(Deserialize)]
+struct DemoInput {
+	steam_id: i64,
+}
+
+async fn demo(
+	State(pool): State<AppState>,
+	Json(input): Json<DemoInput>,
+) -> Result<impl IntoResponse, crate::error::Error> {
+	let runs = sqlx::query_scalar!(
+		"SELECT jump FROM longjump_leaderboard WHERE user_id = $1",
+		input.steam_id
+	)
+	.fetch_all(&pool)
+	.await
+	.map_err(|_| Error::InternalError)?;
+	println!("OK");
 	Ok(Json(runs))
 }

@@ -196,14 +196,12 @@ volume_db = -32.193
 
 [node name="PostLeaderboard" type="HTTPRequest" parent="."]
 
-[node name="Leaderboard" type="Label" parent="."]
+[node name="Recorder" parent="." instance=ExtResource("12_ygd7u")]
+
+[node name="Leaderboard" type="VBoxContainer" parent="."]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -124.0
-offset_right = -10.0
-offset_bottom = 23.0
+offset_left = -197.0
+offset_bottom = 40.0
 grow_horizontal = 0
-text = "munost 0.0001"
-
-[node name="Recorder" parent="." instance=ExtResource("12_ygd7u")]

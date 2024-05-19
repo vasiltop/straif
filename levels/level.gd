@@ -4,6 +4,7 @@ extends Node3D
 @onready var end_zone = $Level/EndZone
 @onready var timer_label = $Timer
 @onready var audio_player = $Music
+@onready var leaderboard = $Leaderboard
 
 var leaderboard_entry = preload("res://levels/leaderboard/entry.tscn")
 var track1 = preload("res://sound/track1.wav")
@@ -35,27 +36,13 @@ func get_leaderboard():
 	$GetLeaderboard.request(url + "leaderboard", headers, HTTPClient.METHOD_GET, body)
 
 func handle_leaderboard(result, response_code, headers, body):
-	
 	if response_code != 200: return
-	
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	
-	for n in $Leaderboard.get_children():
-		$Leaderboard.remove_child(n)
-		n.queue_free() 
-	
-	for run_bytes in json:
-		var r = run.Run.new()
-		var result_code = r.from_bytes(run_bytes)
-		if result_code == run.PB_ERR.NO_ERRORS:
-			print("OK")
-		else:
-			print("BAD")
-		
-
+	for run in json:
 		var instance = leaderboard_entry.instantiate()
-		instance.initialize(r)
-		$Leaderboard.add_child(instance)
+		instance.initialize(run.username, run.time_ms, int(run.user_id))
+		leaderboard.add_child(instance)
 
 func player_started(col):
 	if completed or $Recorder.replaying or started: return
@@ -86,7 +73,7 @@ func _process(delta):
 	
 	if Input.is_action_pressed("leaderboard"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		$Leaderboard.visible = true
+		leaderboard.visible = true
 	else:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		$Leaderboard.visible = false
+		leaderboard.visible = false

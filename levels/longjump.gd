@@ -12,22 +12,15 @@ func _ready():
 func handle_request(result, response_code, headers, body):
 	if response_code != 200: return
 	
-	var json = JSON.parse_string(body.get_string_from_utf8())
+	var json = JSON.parse_string(body.get_string_from_utf8())	
 	
-	for n in $Leaderboard.get_children():
-		$Leaderboard.remove_child(n)
-		n.queue_free() 
-	
-	for run_bytes in json:
-		var r = run.Run.new()
-		var result_code = r.from_bytes(run_bytes)
-		if result_code == run.PB_ERR.NO_ERRORS:
-			print("OK")
-		else:
-			print("BAD")
-
+	#for n in $Leaderboard.get_children():
+	#	$Leaderboard.remove_child(n)
+	#	n.queue_free() 
+			
+	for jump in json:
 		var instance = leaderboard_entry.instantiate()
-		instance.initialize(r)
+		instance.initialize(jump.username, jump.length, int(jump.user_id), true)
 		$Leaderboard.add_child(instance)
 
 func _process(delta):

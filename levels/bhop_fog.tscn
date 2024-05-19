@@ -135,17 +135,15 @@ volume_db = -42.097
 
 [node name="PostLeaderboard" type="HTTPRequest" parent="."]
 
-[node name="Leaderboard" type="Label" parent="."]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -124.0
-offset_right = -10.0
-offset_bottom = 23.0
-grow_horizontal = 0
-text = "leaderboard"
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_uytp7")
 
 [node name="Recorder" parent="." instance=ExtResource("13_0ambb")]
+
+[node name="Leaderboard" type="VBoxContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -197.0
+offset_bottom = 40.0
+grow_horizontal = 0

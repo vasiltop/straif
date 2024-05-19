@@ -36,26 +36,15 @@ impl Error {
 	}
 }
 
-#[derive(Serialize, Deserialize)]
-struct RunOutput {
-	username: Option<String>,
-	run: Option<Vec<u8>>,
-	time_ms: Option<i32>,
-}
-
-#[derive(Deserialize)]
-struct Map {
-	map_name: String,
-}
-
-struct MapId {
-	id: Uuid,
-}
-
 pub fn router() -> Router<AppState> {
 	Router::new()
 		.route("/publish", post(publish))
 		.route("/leaderboard", get(leaderboard))
+		.route("/demo", post(demo))
+}
+
+struct MapId {
+	id: Uuid,
 }
 
 async fn publish(
@@ -111,13 +100,48 @@ async fn publish(
 	Ok(())
 }
 
+#[derive(Deserialize)]
+struct Map {
+	map_name: String,
+}
+
+#[derive(Serialize, Deserialize)]
+struct RunOutput {
+	username: Option<String>,
+	#[serde(serialize_with = "super::format_option_display")]
+	user_id: Option<i64>,
+	time_ms: Option<i32>,
+}
+
 async fn leaderboard(
 	State(pool): State<AppState>,
 	Json(map): Json<Map>,
 ) -> Result<impl IntoResponse, crate::error::Error> {
-	let runs = sqlx::query_scalar!(
-		"SELECT run FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 LIMIT 10",
+	let runs = sqlx::query_as!(
+		RunOutput,
+		"SELECT username, time_ms, user_id FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 LIMIT 10",
 		map.map_name
+	)
+	.fetch_all(&pool)
+	.await.map_err(|_| Error::InvalidMapName)?;
+
+	Ok(Json(runs))
+}
+
+#[derive(Deserialize)]
+struct DemoInput {
+	map_name: String,
+	steam_id: i64,
+}
+
+async fn demo(
+	State(pool): State<AppState>,
+	Json(input): Json<DemoInput>,
+) -> Result<impl IntoResponse, crate::error::Error> {
+	let runs = sqlx::query_scalar!(
+		"SELECT run FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 AND user_id = $2",
+		input.map_name,
+		input.steam_id
 	)
 	.fetch_all(&pool)
 	.await.map_err(|_| Error::InvalidMapName)?;

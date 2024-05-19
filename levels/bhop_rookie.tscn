@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c3ghsggtvier5"]
+[gd_scene load_steps=14 format=3 uid="uid://c3ghsggtvier5"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_cipox"]
 [ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player/player.tscn" id="2_ff6vw"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="7_s4jwc"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="8_ui1q8"]
 [ext_resource type="PackedScene" uid="uid://4xxni1fwwie6" path="res://levels/recorder.tscn" id="9_js5k0"]
-[ext_resource type="PackedScene" uid="uid://chuatsd55anq8" path="res://levels/leaderboard/entry.tscn" id="10_ub3yk"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_hxe3l")
@@ -106,4 +105,10 @@ volume_db = -42.097
 
 [node name="Recorder" parent="." instance=ExtResource("9_js5k0")]
 
-[node name="Leaderboard" parent="." instance=ExtResource("10_ub3yk")]
+[node name="Leaderboard" type="VBoxContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -197.0
+offset_bottom = 40.0
+grow_horizontal = 0
