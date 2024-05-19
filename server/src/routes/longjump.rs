@@ -12,8 +12,6 @@ use axum::{
 	Router,
 };
 use prost::Message;
-use serde::Deserialize;
-use serde::Serialize;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -30,12 +28,6 @@ impl Error {
 			Self::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
 		}
 	}
-}
-
-#[derive(Serialize, Deserialize)]
-struct LongjumpOutput {
-	username: Option<String>,
-	length: Option<i16>,
 }
 
 pub fn router() -> Router<AppState> {
@@ -77,10 +69,11 @@ async fn publish(
 			return Err(Error::InvalidSubmission.into());
 		}
 		sqlx::query!(
-		"INSERT INTO placement_longjump VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET length = $2 WHERE placement_longjump.length< $2 ",
+		"INSERT INTO placement_longjump VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET length = $2, jump = $4 WHERE placement_longjump.length< $2 ",
 		jump.steam_id,
 		i16::try_from(jump.value).map_err(|_| Error::InvalidSubmission)?,
-		jump.username
+		jump.username,
+		jump_bytes.as_ref()
 	)
 	.execute(&pool)
 	.await
@@ -92,11 +85,10 @@ async fn publish(
 async fn leaderboard(
 	State(pool): State<AppState>,
 ) -> Result<impl IntoResponse, crate::error::Error> {
-	let runs = sqlx::query_as!(
-		LongjumpOutput,
-		"SELECT username, length FROM longjump_leaderboard LIMIT 10"
+	let runs = sqlx::query_scalar!(
+		"SELECT jump FROM longjump_leaderboard WHERE jump IS NOT NULL LIMIT 10"
 	)
-	.fetch_all(&pool)
+	.fetch_one(&pool)
 	.await
 	.map_err(|_| Error::InternalError)?;
 

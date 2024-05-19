@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://chuatsd55anq8"]
+
+[ext_resource type="Script" path="res://levels/leaderboard/entry.gd" id="1_4lxvi"]
+
+[node name="Leaderboard" type="Node3D"]
+script = ExtResource("1_4lxvi")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -136.0
+offset_top = 6.0
+offset_right = -52.0
+offset_bottom = 29.0
+grow_horizontal = 0
+text = "name | 0.0"
+
+[node name="Button" type="Button" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -279.0
+offset_top = 3.0
+offset_right = -178.0
+offset_bottom = 34.0
+grow_horizontal = 0
+text = "View Replay"

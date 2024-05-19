@@ -29,7 +29,7 @@ var camera_height = 0
 
 var time_since_landing = 0
 
-var url = Settings.base_url + "longjump/publish"
+var url = Settings.base_url + "longjump/"
 
 const POSITION_PACKET_DELAY: float = 0.01
 var time_since_last_position_packet: float = 0
@@ -89,14 +89,18 @@ func update_timers(delta):
 	if not jumped and grounded():
 		time_since_landing += delta
 
+func is_map_longjump():
+	return get_tree().current_scene.name == "Longjump"
+	
 func submit_to_leaderboard(length):
-	var body = JSON.stringify({
-		"user_id": SteamClient.steam_id,
-		"length": floor(last_jump * 1000),
-		"username": Steam.getPersonaName()
-	})
+	if not is_map_longjump(): return
+	
+	recorder.stop()
+	var r = recorder.save(floor(last_jump * 1000))
+	var body = r.to_bytes()
+	
 	var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
-	$PostLeaderboard.request(url, headers, HTTPClient.METHOD_POST, body)
+	$PostLeaderboard.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
 
 func _physics_process(delta):
 	if movement_paused: return
@@ -118,8 +122,7 @@ func _physics_process(delta):
 				last_jump_label.text = str(snapped(last_jump, 0.01)) + " u"
 				submit_to_leaderboard(last_jump)
 				longjump_counts = false
-				recorder.stop()
-				recorder.save()
+				
 			
 			time_since_landing = 0
 		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
@@ -135,7 +138,7 @@ func _physics_process(delta):
 	
 	var v = abs(velocity.x) + abs(velocity.z)
 	if (Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")) and grounded():
-		if v < 11:
+		if v < 11 and is_map_longjump():
 			recorder.start()
 			longjump_counts = true
 		last_jump_pos = global_position

@@ -13,6 +13,8 @@ var current_run: run.Run = run.Run.new()
 var recording = false
 var replaying = false
 
+var current_replay = null
+
 func _ready():
 	player = get_parent().get_node("Player")
 	camera = player.get_node("Camera3D")
@@ -20,28 +22,34 @@ func _ready():
 
 func start():
 	if recording:
-		current_run.clear_frames()
+		current_run = run.Run.new()
 	
 	recording = true
 
 func stop():
+	
 	recording = false
 
-func save():
-	Settings.previous_run = current_run.get_frames()
-	current_run.clear_frames()
+func save(value):
+	current_run.set_steam_id(SteamClient.steam_id)
+	current_run.set_username(Steam.getPersonaName())
+	current_run.set_value(value)
+	current_run.set_map_name(get_tree().current_scene.name)
+	
+	return current_run
 
-func replay():
+func replay(r):
 	replaying = true
 	recording = false
+	current_replay = r
 
 func replay_run():
 
-	if replay_index >= len(Settings.previous_run) - 1:
+	if replay_index >= len(current_replay) - 1:
 		get_tree().reload_current_scene()
 		return
-			
-	var front: run.Frame = Settings.previous_run[replay_index]
+	
+	var front: run.Frame = current_replay[replay_index]
 	
 	player.position.x = front.get_position().get_x()
 	player.position.y = front.get_position().get_y()
@@ -58,6 +66,7 @@ func replay_run():
 	replay_index += 1
 		
 func _physics_process(delta):
+	print(len(current_run.get_frames()))
 	if recording:
 		record_run()
 	elif replaying:

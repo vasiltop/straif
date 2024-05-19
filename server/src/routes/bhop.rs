@@ -98,7 +98,7 @@ async fn publish(
 			.await
 			.map_err(|_| Error::InvalidMapName)?;
 		sqlx::query!(
-			"INSERT INTO placement_bhop VALUES ($1, $2, $3, $4, $5) ON CONFLICT (user_id, map_id) DO UPDATE SET time_ms = $4 WHERE placement_bhop.time_ms > $4 ",
+			"INSERT INTO placement_bhop VALUES ($1, $2, $3, $4, $5) ON CONFLICT (user_id, map_id) DO UPDATE SET time_ms = $4, run = $3 WHERE placement_bhop.time_ms > $4 ",
 			run.steam_id,
 			map_id.id,
 			run_bytes.as_ref(),
@@ -115,9 +115,8 @@ async fn leaderboard(
 	State(pool): State<AppState>,
 	Json(map): Json<Map>,
 ) -> Result<impl IntoResponse, crate::error::Error> {
-	let runs = sqlx::query_as!(
-		RunOutput,
-		"SELECT username, run, time_ms FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 LIMIT 10",
+	let runs = sqlx::query_scalar!(
+		"SELECT run FROM bhop_leaderboard INNER JOIN map ON bhop_leaderboard.map_id = map.id WHERE map.name = $1 LIMIT 10",
 		map.map_name
 	)
 	.fetch_all(&pool)
