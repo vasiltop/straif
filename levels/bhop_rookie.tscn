@@ -102,3 +102,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.69105, 0)
 environment = SubResource("Environment_l4w43")
 
 [node name="LevelPack" parent="." instance=ExtResource("8_6lva0")]
+
+[node name="Player" parent="LevelPack" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.736992, 1.16769, 1.20542)
+
+[editable path="LevelPack"]

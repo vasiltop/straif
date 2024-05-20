@@ -20,6 +20,7 @@ var started = false
 var map_name = ""
 var player_is_on_first_checkpoint: bool = true
 
+@export var kz_jump_style = false
 @onready var start_pos: Vector3 = player.position 
 @onready var checkpoint_pos: Vector3 = start_pos
 
@@ -28,6 +29,7 @@ func set_checkpoint_pos(pos: Vector3):
 	player_is_on_first_checkpoint = false
 
 func _ready():
+	player.kz_jump_style = kz_jump_style
 	start_zone.get_node("Area3D").body_exited.connect(player_started)
 	end_zone.get_node("Area3D").body_entered.connect(player_finished)
 	map_name = get_tree().current_scene.name
@@ -62,7 +64,7 @@ func handle_leaderboard(result, response_code, headers, body):
 
 func player_started(col):
 	if completed or recorder.replaying or started: return
-	print("starting")
+
 	started = true
 	recorder.start()
 

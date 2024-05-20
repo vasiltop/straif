@@ -1,0 +1,74 @@
+[gd_scene load_steps=12 format=3 uid="uid://bg5mcmvg4vv7r"]
+
+[ext_resource type="Script" path="res://levels/level.gd" id="1_u01rp"]
+[ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="2_8owfx"]
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="3_cq867"]
+[ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="4_b5el7"]
+[ext_resource type="PackedScene" uid="uid://nn4mtur3ev0n" path="res://props/small_box.tscn" id="5_3owuc"]
+[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="6_206gs"]
+[ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="7_w4bfp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
+albedo_texture = ExtResource("3_cq867")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
+sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
+sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+sky_energy_multiplier = 0.85
+ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
+ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+ground_curve = 0.0627669
+sun_angle_max = 14.4
+sun_curve = 0.0724453
+
+[sub_resource type="Sky" id="Sky_gbi3k"]
+sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
+radiance_size = 2
+
+[sub_resource type="Environment" id="Environment_l4w43"]
+background_mode = 2
+background_energy_multiplier = 2.35
+sky = SubResource("Sky_gbi3k")
+ambient_light_source = 3
+ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
+ambient_light_energy = 0.0
+fog_enabled = true
+fog_light_color = Color(0.47451, 0.576471, 0.560784, 1)
+fog_light_energy = 0.79
+fog_sun_scatter = 0.21
+fog_density = 0.0399
+fog_height_density = 0.0155
+
+[node name="Gunner" type="Node3D"]
+script = ExtResource("1_u01rp")
+kz_jump_style = true
+
+[node name="Level" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="StartZone" parent="Level" instance=ExtResource("2_8owfx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
+material = SubResource("StandardMaterial3D_ivg4n")
+
+[node name="EndZone" parent="Level" instance=ExtResource("4_b5el7")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.0812871, 0.231246, -35.5112)
+
+[node name="CSGBox3D" parent="Level" instance=ExtResource("5_3owuc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.081079, -4.76837e-07, -6.26636)
+
+[node name="CSGBox3D4" parent="Level" instance=ExtResource("5_3owuc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1866, 0.394448, -7.91589)
+
+[node name="CSGBox3D5" parent="Level" instance=ExtResource("5_3owuc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.03194, 0.736585, -6.4819)
+
+[node name="CSGBox3D2" parent="Level" instance=ExtResource("6_206gs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.98643, 0, -5.98716)
+
+[node name="CSGBox3D3" parent="Level" instance=ExtResource("6_206gs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.98643, 0.972446, -5.98716)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l4w43")
+
+[node name="LevelPack" parent="." instance=ExtResource("7_w4bfp")]

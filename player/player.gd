@@ -3,72 +3,50 @@ extends CharacterBody3D
 @onready var camera = $Camera3D
 @onready var speed_label = $Speed
 @onready var last_jump_label = $LastJump
-@onready var RAY_POS = $RaycastPos.position
 @onready var audio_player = $Audio
+@onready var recorder = get_parent().get_node("Recorder")
 
 var landing = preload("res://sound/landing.wav")
 
 const MAX_G_SPEED = 5
-const MAX_G_ACCEL = MAX_G_SPEED * 13
-const MAX_A_SPEED = 1
-const MAX_A_ACCEL = 100
+const MAX_G_ACCEL = MAX_G_SPEED * 10
+const MAX_A_SPEED = 0.8
+const MAX_A_ACCEL = 90
 const MAX_SLOPE = 1
 const JUMP_FORCE = 4
 const RAY_REACH = 0.1
+const POSITION_PACKET_DELAY: float = 0.01
 
 var gravity = 11
-
 var floor_col_pos = Vector3.ZERO
-
 var last_jump = 0
 var last_jump_pos = Vector3.ZERO
-
 var jumped = false
 var prev_pos = Vector3.ZERO
 var camera_height = 0
-
 var time_since_landing = 0
-
 var url = Settings.base_url + "longjump/"
-
-const POSITION_PACKET_DELAY: float = 0.01
 var time_since_last_position_packet: float = 0
-
 var movement_paused: bool = false
-
 var longjump_counts = false
+var kz_jump_style: bool = false
 
-@onready var recorder = get_parent().get_node("Recorder")
 func _ready():
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	prev_pos = camera.position
 	camera_height = camera.position.y
 
 func grounded():
-	var origin = global_position + RAY_POS
-	var target = Vector3.DOWN * RAY_REACH
-	
-	var query = PhysicsRayQueryParameters3D.create(origin, origin + target)
-	
-	if get_world_3d() == null: return false
-	
-	var check = get_world_3d().direct_space_state.intersect_ray(query)
-	floor_col_pos = check
-	return check.size() > 0
+	return test_move(global_transform, Vector3(0, -0.01, 0))
 	
 func get_slope_angle(normal): return normal.angle_to(up_direction)
 
 func _process(delta):
 	update_timers(delta)
 	
-	if $Console.visible: return
-	
 	interpolate_camera_pos(delta)
 	handle_scene_changes()
-	
-	if Input.is_action_just_pressed("console"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		$Console.visible = true
 
 func handle_scene_changes():
 		
@@ -122,7 +100,9 @@ func _physics_process(delta):
 				
 			
 			time_since_landing = 0
-		vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
+		
+		if not Input.is_action_pressed("jump"):
+			vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 		
 		if vel_planar.length_squared() < 1.0 and wish_dir.length_squared() < 0.01:
 			vel_planar = Vector2.ZERO
@@ -134,7 +114,8 @@ func _physics_process(delta):
 	vel_planar += wish_dir * add_speed
 	
 	var v = abs(velocity.x) + abs(velocity.z)
-	if (Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")) and grounded():
+	var jump_input = (Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")) if not kz_jump_style else Input.is_action_just_pressed("jump")
+	if jump_input and grounded() and not jumped:
 		if v < 11 and is_map_longjump():
 			recorder.start()
 			longjump_counts = true
@@ -146,10 +127,10 @@ func _physics_process(delta):
 	speed_label.text = str(snapped(abs(velocity.x) + abs(velocity.z), 0.1)) + " u/s"
 	
 	var col = move_and_collide(velocity * delta)
+	print(grounded())
 
 	if col:
 		var slope_angle = get_slope_angle(col.get_normal())
-		#Surfing
 		if slope_angle < MAX_SLOPE:
 			velocity.y = 0.0
 			move_and_collide(col.get_remainder().slide(col.get_normal()))
@@ -157,10 +138,8 @@ func _physics_process(delta):
 				velocity = velocity.slide(col.get_normal())
 		else:
 			move_and_slide()
-
-	elif grounded():
-		move_and_collide(floor_col_pos.position - global_position)
 	
+		
 	if time_since_last_position_packet > POSITION_PACKET_DELAY:
 		Packet.send({"type": Packet.PACKET.POSITION, "map_name": get_tree().current_scene.name, "pos": position})
 		time_since_last_position_packet = 0
