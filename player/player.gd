@@ -126,20 +126,8 @@ func _physics_process(delta):
 	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
 	speed_label.text = str(snapped(abs(velocity.x) + abs(velocity.z), 0.1)) + " u/s"
 	
-	var col = move_and_collide(velocity * delta)
-	print(grounded())
-
-	if col:
-		var slope_angle = get_slope_angle(col.get_normal())
-		if slope_angle < MAX_SLOPE:
-			velocity.y = 0.0
-			move_and_collide(col.get_remainder().slide(col.get_normal()))
-			if not grounded():
-				velocity = velocity.slide(col.get_normal())
-		else:
-			move_and_slide()
+	move_and_slide()
 	
-		
 	if time_since_last_position_packet > POSITION_PACKET_DELAY:
 		Packet.send({"type": Packet.PACKET.POSITION, "map_name": get_tree().current_scene.name, "pos": position})
 		time_since_last_position_packet = 0

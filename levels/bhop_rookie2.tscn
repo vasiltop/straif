@@ -1,0 +1,70 @@
+[gd_scene load_steps=12 format=3 uid="uid://c3ghsggtvier5"]
+
+[ext_resource type="Script" path="res://levels/level.gd" id="1_eg883"]
+[ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="2_6g5kp"]
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="3_ir4il"]
+[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="5_bm2wt"]
+[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="6_w01yc"]
+[ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="7_wxvr3"]
+[ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="9_xm0e0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
+albedo_texture = ExtResource("3_ir4il")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
+sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
+sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+sky_energy_multiplier = 0.85
+ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
+ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+ground_curve = 0.0627669
+sun_angle_max = 14.4
+sun_curve = 0.0724453
+
+[sub_resource type="Sky" id="Sky_gbi3k"]
+sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
+radiance_size = 2
+
+[sub_resource type="Environment" id="Environment_l4w43"]
+background_mode = 2
+background_energy_multiplier = 2.35
+sky = SubResource("Sky_gbi3k")
+ambient_light_source = 3
+ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
+ambient_light_energy = 0.0
+fog_enabled = true
+fog_light_color = Color(0.47451, 0.576471, 0.560784, 1)
+fog_light_energy = 0.79
+fog_sun_scatter = 0.21
+fog_density = 0.0399
+fog_height_density = 0.0155
+
+[node name="Rookie2" type="Node3D"]
+script = ExtResource("1_eg883")
+
+[node name="Level" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="StartZone" parent="Level" instance=ExtResource("2_6g5kp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
+material = SubResource("StandardMaterial3D_ivg4n")
+
+[node name="CSGBox3D5" parent="Level" instance=ExtResource("5_bm2wt")]
+transform = Transform3D(0.730317, -0.683108, 0, 0.683108, 0.730317, 0, 0, 0, 1, -0.203426, -0.956799, -13.407)
+size = Vector3(3, 2.98813, 19.4841)
+
+[node name="CSGBox3D10" parent="Level" instance=ExtResource("6_w01yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, -27.3287)
+
+[node name="EndZone" parent="Level" instance=ExtResource("7_wxvr3")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.0812871, 0.231246, -35.5112)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l4w43")
+
+[node name="LevelPack" parent="." instance=ExtResource("9_xm0e0")]
+
+[node name="Player" parent="LevelPack" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.736992, 1.16769, 1.20542)
+
+[editable path="LevelPack"]
