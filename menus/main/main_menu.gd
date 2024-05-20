@@ -4,7 +4,7 @@ extends VSplitContainer
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	$Navbar/Username.text = "Hello, " + SteamClient.steam_username + "!"
+	$Navbar/Username.text = "Hello, " + Steam.getPersonaName() + "!"
 	$Navbar/GameData/GamemodeBhop.pressed.connect($Margin/LevelSelect.set_gamemode_bhop)
 	$Navbar/GameData/GamemodeLongjump.pressed.connect($Margin/LevelSelect.set_gamemode_longjump)
 	$Navbar/GameData/Lobbies.pressed.connect($Margin/LevelSelect.show_lobbies)

@@ -175,6 +175,8 @@ func _input(event):
 		rotate_player(event)
 
 func rotate_player(event):
+	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED: return
+	
 	rotate(Vector3(0, -1, 0), event.relative.x * Settings.sens)
 	camera.rotate_x(-event.relative.y * Settings.sens)
 	camera.rotation.y = 0

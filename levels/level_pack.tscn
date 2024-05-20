@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://wqhmh4j6psae"]
+
+[ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player/player.tscn" id="1_p6vn8"]
+[ext_resource type="PackedScene" uid="uid://4xxni1fwwie6" path="res://levels/recorder.tscn" id="2_aewhf"]
+
+[node name="LevelPack" type="Node"]
+
+[node name="Player" parent="." instance=ExtResource("1_p6vn8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.736992, 0.998674, 1.20542)
+
+[node name="Timer" type="Label" parent="."]
+offset_left = 20.0
+offset_right = 60.0
+offset_bottom = 23.0
+text = "0s"
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+volume_db = -32.193
+
+[node name="GetLeaderboard" type="HTTPRequest" parent="."]
+
+[node name="PostLeaderboard" type="HTTPRequest" parent="."]
+
+[node name="Recorder" parent="." instance=ExtResource("2_aewhf")]
+
+[node name="Leaderboard" type="VBoxContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -197.0
+offset_bottom = 40.0
+grow_horizontal = 0

@@ -1,14 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://sjq2jypm3145"]
+[gd_scene load_steps=13 format=3 uid="uid://sjq2jypm3145"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_xxibk"]
-[ext_resource type="PackedScene" uid="uid://cyt0ed0fw4xgt" path="res://player/player.tscn" id="2_0m4fl"]
 [ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_ip25n"]
 [ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="4_af7h1"]
 [ext_resource type="PackedScene" uid="uid://dhrwk6tthy3r8" path="res://props/medium_box.tscn" id="5_k07jf"]
 [ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="6_eivra"]
 [ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="7_b7aae"]
+[ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="8_d6x1m"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="8_db7ou"]
-[ext_resource type="PackedScene" uid="uid://4xxni1fwwie6" path="res://levels/recorder.tscn" id="9_nray8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_af7h1")
@@ -46,9 +45,6 @@ fog_height_density = 0.0155
 
 [node name="Swift" type="Node3D"]
 script = ExtResource("1_xxibk")
-
-[node name="Player" parent="." instance=ExtResource("2_0m4fl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.736992, 0.998674, 1.20542)
 
 [node name="Level" type="CSGCombiner3D" parent="."]
 use_collision = true
@@ -109,25 +105,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.42425, -1.15939, -60.8626)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l4w43")
 
-[node name="Timer" type="Label" parent="."]
-offset_left = 20.0
-offset_right = 60.0
-offset_bottom = 23.0
-text = "0s"
-
-[node name="Music" type="AudioStreamPlayer" parent="."]
-volume_db = -42.097
-
-[node name="GetLeaderboard" type="HTTPRequest" parent="."]
-
-[node name="PostLeaderboard" type="HTTPRequest" parent="."]
-
-[node name="Recorder" parent="." instance=ExtResource("9_nray8")]
-
-[node name="Leaderboard" type="VBoxContainer" parent="."]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -197.0
-offset_bottom = 40.0
-grow_horizontal = 0
+[node name="LevelPack" parent="." instance=ExtResource("8_d6x1m")]
