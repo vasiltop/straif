@@ -14,9 +14,9 @@ func handle_request(result, response_code, headers, body):
 	
 	var json = JSON.parse_string(body.get_string_from_utf8())	
 	
-	#for n in $Leaderboard.get_children():
-	#	$Leaderboard.remove_child(n)
-	#	n.queue_free() 
+	for n in $Leaderboard.get_children():
+		$Leaderboard.remove_child(n)
+		n.queue_free() 
 			
 	for jump in json:
 		var instance = leaderboard_entry.instantiate()
@@ -24,6 +24,10 @@ func handle_request(result, response_code, headers, body):
 		$Leaderboard.add_child(instance)
 
 func _process(delta):
+	
+	if Input.is_action_just_pressed("leaderboard"):
+		$GetLeaderboard.request(url)
+		
 	if Input.is_action_pressed("leaderboard"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		$Leaderboard.visible = true

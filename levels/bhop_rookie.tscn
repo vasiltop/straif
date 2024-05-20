@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c3ghsggtvier5"]
+[gd_scene load_steps=15 format=3 uid="uid://c3ghsggtvier5"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_cipox"]
 [ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_p58js"]
@@ -7,10 +7,14 @@
 [ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="6_diav7"]
 [ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="7_s4jwc"]
 [ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="8_6lva0"]
+[ext_resource type="Script" path="res://levels/checkpoint.gd" id="8_pm8mm"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="8_ui1q8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_hxe3l")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7r2us"]
+size = Vector3(2.97681, 3.31292, 2.98151)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
 sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
@@ -82,6 +86,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, -27.3287)
 
 [node name="EndZone" parent="Level" instance=ExtResource("8_ui1q8")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.0812871, 0.231246, -35.5112)
+
+[node name="Checkpoint" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13.4326)
+script = ExtResource("8_pm8mm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00354004, 0.932336, -0.0150452)
+shape = SubResource("BoxShape3D_7r2us")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.69105, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l4w43")

@@ -21,13 +21,11 @@ func _ready():
 	level = get_parent()
 
 func start():
-	if recording:
-		current_run = run.Run.new()
 	
+	current_run = run.Run.new()
 	recording = true
 
 func stop():
-	
 	recording = false
 
 func save(value):

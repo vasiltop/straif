@@ -8,6 +8,7 @@ extends Node3D
 @onready var get_leaderboard_request = $LevelPack/GetLeaderboard
 @onready var post_leaderboard_request = $LevelPack/PostLeaderboard
 @onready var recorder = $LevelPack/Recorder
+@onready var player = $LevelPack/Player
 
 var leaderboard_entry = preload("res://levels/leaderboard/entry.tscn")
 var track1 = preload("res://sound/track1.wav")
@@ -17,6 +18,14 @@ var timer = 0
 var completed = false
 var started = false
 var map_name = ""
+var player_is_on_first_checkpoint: bool = true
+
+@onready var start_pos: Vector3 = player.position 
+@onready var checkpoint_pos: Vector3 = start_pos
+
+func set_checkpoint_pos(pos: Vector3):
+	checkpoint_pos = pos
+	player_is_on_first_checkpoint = false
 
 func _ready():
 	start_zone.get_node("Area3D").body_exited.connect(player_started)
@@ -53,7 +62,7 @@ func handle_leaderboard(result, response_code, headers, body):
 
 func player_started(col):
 	if completed or recorder.replaying or started: return
-	
+	print("starting")
 	started = true
 	recorder.start()
 
@@ -70,13 +79,16 @@ func player_finished(col):
 		
 	completed = true
 
+func update_timer_label():
+	timer_label.text = str(snapped(timer, 0.01)) + " s"
+
 func _process(delta):
 	if Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump"):
 		player_started({})
-		
+	#print(completed, started)
 	if not completed and started:
 		timer += delta
-		timer_label.text = str(snapped(timer, 0.01)) + " s"
+		update_timer_label()
 	
 	if Input.is_action_just_pressed("leaderboard"):
 		get_leaderboard()
@@ -87,3 +99,17 @@ func _process(delta):
 	else:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		leaderboard.visible = false
+		
+	if Input.is_action_just_pressed("restart"):
+		
+		if player_is_on_first_checkpoint or completed:
+			timer = 0
+			update_timer_label()
+			started = false
+			completed = false
+			player_is_on_first_checkpoint = true
+			player.position = start_pos
+		else:
+			player.position = checkpoint_pos
+
+		player.velocity = Vector3.ZERO

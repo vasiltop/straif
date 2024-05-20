@@ -71,9 +71,6 @@ func _process(delta):
 		$Console.visible = true
 
 func handle_scene_changes():
-
-	if Input.is_action_just_pressed("restart"):
-		get_tree().reload_current_scene()
 		
 	if Input.is_action_just_pressed("pause"):
 		SceneManager.change_scene(SceneManager.SCENES.MAIN_MENU)
