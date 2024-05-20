@@ -10,8 +10,8 @@ var landing = preload("res://sound/landing.wav")
 
 const MAX_G_SPEED = 5
 const MAX_G_ACCEL = MAX_G_SPEED * 10
-const MAX_A_SPEED = 0.8
-const MAX_A_ACCEL = 90
+const MAX_A_SPEED = 0.7
+const MAX_A_ACCEL = 75
 const MAX_SLOPE = 1
 const JUMP_FORCE = 4
 const RAY_REACH = 0.1
@@ -32,7 +32,6 @@ var longjump_counts = false
 var kz_jump_style: bool = false
 
 func _ready():
-	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	prev_pos = camera.position
 	camera_height = camera.position.y
