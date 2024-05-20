@@ -77,60 +77,83 @@ func submit_to_leaderboard(length):
 	var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
 	$PostLeaderboard.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
 
+func check_for_landing():
+	if not grounded(): return
+	if not jumped: return 
+	
+	audio_player.stream = landing
+	audio_player.play()
+	jumped = false
+	if time_since_landing > 0.6 and snapped(global_position.y, 0.01) == snapped(last_jump_pos.y, 0.01) and longjump_counts:
+		last_jump = last_jump_pos.distance_to(global_position)
+		last_jump_label.text = str(snapped(last_jump, 0.01)) + " u"
+		submit_to_leaderboard(last_jump)
+		longjump_counts = false
+	time_since_landing = 0
+
+func apply_gravity(velocity_y: float, delta: float) -> float:
+	if grounded(): return velocity_y
+	return velocity_y - gravity * delta
+
+func apply_friction(vel_planar: Vector2, delta: float, wish_dir: Vector2) -> Vector2:
+	if not grounded(): return vel_planar
+	if Input.is_action_just_pressed("jump"): return vel_planar
+	
+	var v = vel_planar - vel_planar.normalized() * delta * MAX_G_ACCEL / 2
+
+	if v.length_squared() < 1.0 and wish_dir.length_squared() < 0.01:
+		return Vector2.ZERO
+	else:
+		return v
+
+func update_velocity_ground(vel_planar: Vector2, wish_dir: Vector2, delta: float):
+	var current_speed = vel_planar.dot(wish_dir)
+	var max_speed = MAX_G_SPEED if grounded() else MAX_A_SPEED
+	var max_accel = MAX_G_ACCEL if grounded() else MAX_A_ACCEL
+	var add_speed = clamp(max_speed - current_speed, 0.0, max_accel * delta)
+	return vel_planar + wish_dir * add_speed
+	
 func _physics_process(delta):
 	if movement_paused: return
 	
 	var wish_dir = Input.get_vector("left", "right", "up", "down")
 	wish_dir = wish_dir.rotated(-rotation.y)
-	var vel_planar = Vector2(velocity.x, velocity.z)
-	var vel_vertical = velocity.y
-
-	if not grounded():
-		vel_vertical -= gravity * delta
-	else:
-		if jumped:
-			audio_player.stream = landing
-			audio_player.play()
-			jumped = false
-			if time_since_landing > 0.6 and snapped(global_position.y, 0.01) == snapped(last_jump_pos.y, 0.01) and longjump_counts:
-				last_jump = last_jump_pos.distance_to(global_position)
-				last_jump_label.text = str(snapped(last_jump, 0.01)) + " u"
-				submit_to_leaderboard(last_jump)
-				longjump_counts = false
-				
-			
-			time_since_landing = 0
-		
-		if not Input.is_action_pressed("jump"):
-			vel_planar -= vel_planar.normalized() * delta * MAX_G_ACCEL / 2
-		
-		if vel_planar.length_squared() < 1.0 and wish_dir.length_squared() < 0.01:
-			vel_planar = Vector2.ZERO
-		
-	var current_speed = vel_planar.dot(wish_dir)
-	var max_speed = MAX_G_SPEED if grounded() else MAX_A_SPEED
-	var max_accel = MAX_G_ACCEL if grounded() else MAX_A_ACCEL
-	var add_speed = clamp(max_speed - current_speed, 0.0, max_accel * delta)
-	vel_planar += wish_dir * add_speed
+	var vel_planar: Vector2 = Vector2(velocity.x, velocity.z)
 	
+	check_for_landing()
+	
+	var vel_vertical = apply_gravity(velocity.y, delta)
+	vel_planar = apply_friction(vel_planar, delta, wish_dir)
+	vel_planar = update_velocity_ground(vel_planar, wish_dir, delta)
+	vel_vertical = check_for_jump(vel_vertical)
+
+	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
+	
+	update_ui()
+	move_and_slide()
+	update_position_to_lobby()
+
+func update_ui():
+	speed_label.text = str(snapped(abs(velocity.x) + abs(velocity.z), 0.1)) + " u/s"
+	
+func update_position_to_lobby():
+	if time_since_last_position_packet > POSITION_PACKET_DELAY:
+			Packet.send({"type": Packet.PACKET.POSITION, "map_name": get_tree().current_scene.name, "pos": position})
+			time_since_last_position_packet = 0
+
+func check_for_jump(vel_vertical) -> float:
 	var v = abs(velocity.x) + abs(velocity.z)
 	var jump_input = (Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")) if not kz_jump_style else Input.is_action_just_pressed("jump")
+	
 	if jump_input and grounded() and not jumped:
 		if v < 11 and is_map_longjump():
 			recorder.start()
 			longjump_counts = true
 		last_jump_pos = global_position
-		vel_vertical = JUMP_FORCE
 		jumped = true
-
-	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
-	speed_label.text = str(snapped(abs(velocity.x) + abs(velocity.z), 0.1)) + " u/s"
-	
-	move_and_slide()
-	
-	if time_since_last_position_packet > POSITION_PACKET_DELAY:
-		Packet.send({"type": Packet.PACKET.POSITION, "map_name": get_tree().current_scene.name, "pos": position})
-		time_since_last_position_packet = 0
+		return JUMP_FORCE
+	else:
+		return vel_vertical
 		
 func _input(event):
 	if movement_paused: return
