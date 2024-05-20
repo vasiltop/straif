@@ -80,7 +80,7 @@ async fn publish(
 			return Err(Error::InvalidSubmission.into());
 		}
 		sqlx::query!(
-		"INSERT INTO placement_longjump VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET length = $2, jump = $4 WHERE placement_longjump.length< $2 ",
+		"INSERT INTO placement_longjump VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET length = $2, jump = $4, username = $3 WHERE placement_longjump.length < $2 ",
 		jump.steam_id,
 		i16::try_from(jump.value).map_err(|_| Error::InvalidSubmission)?,
 		jump.username,

@@ -87,7 +87,7 @@ async fn publish(
 			.await
 			.map_err(|_| Error::InvalidMapName)?;
 		sqlx::query!(
-			"INSERT INTO placement_bhop VALUES ($1, $2, $3, $4, $5) ON CONFLICT (user_id, map_id) DO UPDATE SET time_ms = $4, run = $3 WHERE placement_bhop.time_ms > $4 ",
+			"INSERT INTO placement_bhop VALUES ($1, $2, $3, $4, $5) ON CONFLICT (user_id, map_id) DO UPDATE SET time_ms = $4, run = $3, username = $5 WHERE placement_bhop.time_ms > $4 ",
 			run.steam_id,
 			map_id.id,
 			run_bytes.as_ref(),
