@@ -96,6 +96,10 @@ text = "Bhop"
 layout_mode = 2
 text = "Longjump"
 
+[node name="GamemodeKz" type="Button" parent="MarginContainer/Content/Navbar/GameData"]
+layout_mode = 2
+text = "Kz"
+
 [node name="Lobbies" type="Button" parent="MarginContainer/Content/Navbar/GameData"]
 layout_mode = 2
 text = "Lobbies

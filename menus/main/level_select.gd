@@ -14,6 +14,10 @@ func set_gamemode_bhop():
 func set_gamemode_longjump():
 	var maps = get_maps_with_prefix("lj")
 	create_level_buttons(maps)
+	
+func set_gamemode_kz():
+	var maps = get_maps_with_prefix("kz")
+	create_level_buttons(maps)
 
 func create_level_buttons(maps: Array):
 	remove_children()

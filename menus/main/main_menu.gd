@@ -7,6 +7,7 @@ func _ready():
 	$Navbar/Username.text = "Hello, " + Steam.getPersonaName() + "!"
 	$Navbar/GameData/GamemodeBhop.pressed.connect($Margin/LevelSelect.set_gamemode_bhop)
 	$Navbar/GameData/GamemodeLongjump.pressed.connect($Margin/LevelSelect.set_gamemode_longjump)
+	$Navbar/GameData/GamemodeKz.pressed.connect($Margin/LevelSelect.set_gamemode_kz)
 	$Navbar/GameData/Lobbies.pressed.connect($Margin/LevelSelect.show_lobbies)
 	
 	$Navbar/Actions/CreateLobby.pressed.connect(SteamClient.create_lobby)

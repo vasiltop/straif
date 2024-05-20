@@ -22,7 +22,7 @@ func _ready():
 	start_zone.get_node("Area3D").body_exited.connect(player_started)
 	end_zone.get_node("Area3D").body_entered.connect(player_finished)
 	map_name = get_tree().current_scene.name
-	
+	get_leaderboard_request.request_completed.connect(handle_leaderboard)
 	get_leaderboard()
 	post_leaderboard_request.request_completed.connect(test)
 
@@ -30,7 +30,7 @@ func test(result, response_code, headers, body):
 	var json = body.get_string_from_utf8()
 	
 func get_leaderboard():
-	get_leaderboard_request.request_completed.connect(handle_leaderboard)
+	
 	var body = JSON.stringify({
 			"map_name": map_name
 	})
@@ -42,6 +42,10 @@ func handle_leaderboard(result, response_code, headers, body):
 	if response_code != 200: return
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	
+	for n in leaderboard.get_children():
+		leaderboard.remove_child(n)
+		n.queue_free()
+		
 	for run in json:
 		var instance = leaderboard_entry.instantiate()
 		instance.initialize(run.username, run.time_ms, int(run.user_id))
@@ -73,6 +77,9 @@ func _process(delta):
 	if not completed and started:
 		timer += delta
 		timer_label.text = str(snapped(timer, 0.01)) + " s"
+	
+	if Input.is_action_just_pressed("leaderboard"):
+		get_leaderboard()
 	
 	if Input.is_action_pressed("leaderboard"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
