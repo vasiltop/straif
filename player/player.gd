@@ -9,8 +9,8 @@ extends CharacterBody3D
 
 var landing = preload("res://sound/landing.wav")
 
-const MAX_G_SPEED = 5
-const MAX_G_ACCEL = MAX_G_SPEED * 10
+const MAX_G_SPEED = 4.3
+const MAX_G_ACCEL = MAX_G_SPEED * 8
 const MAX_A_SPEED = 0.7
 const MAX_A_ACCEL = 100
 const MAX_SLOPE = 1

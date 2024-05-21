@@ -37,7 +37,7 @@ fog_sun_scatter = 0.21
 fog_density = 0.0174
 fog_height_density = 0.0155
 
-[node name="Longjump" type="Node3D"]
+[node name="lj_longjump" type="Node3D"]
 script = ExtResource("1_1a867")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]

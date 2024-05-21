@@ -69,8 +69,13 @@ func player_started(col):
 	recorder.start()
 
 func player_finished(col):
-
-	if not completed:
+	
+	var time = Save.data[map_name]['pr']
+	
+	if not completed and (time == null or timer < time):
+		Save.data[map_name]['pr'] = snapped(timer, 0.001)
+		Save.save_data()
+		
 		recorder.stop()
 		var r = recorder.save(floor(timer * 1000))
 
@@ -79,10 +84,12 @@ func player_finished(col):
 		
 		post_leaderboard_request.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
 		
+		
+		
 	completed = true
 
 func update_timer_label():
-	timer_label.text = str(snapped(timer, 0.01)) + " s"
+	timer_label.text = str(snapped(timer, 0.001)) + " s"
 
 func _process(delta):
 	if Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump"):

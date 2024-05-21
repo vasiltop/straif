@@ -43,7 +43,7 @@ fog_sun_scatter = 0.21
 fog_density = 0.0399
 fog_height_density = 0.0155
 
-[node name="Purge" type="Node3D"]
+[node name="bhop_purge" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0312672, -0.00716591, 0.0513344)
 script = ExtResource("1_0pcym")
 

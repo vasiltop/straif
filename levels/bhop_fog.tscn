@@ -44,7 +44,7 @@ fog_sun_scatter = 0.21
 fog_density = 0.0399
 fog_height_density = 0.0155
 
-[node name="Fog" type="Node3D"]
+[node name="bhop_fog" type="Node3D"]
 script = ExtResource("1_r46vw")
 
 [node name="Level" type="CSGCombiner3D" parent="."]
