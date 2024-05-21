@@ -5,6 +5,7 @@ extends CharacterBody3D
 @onready var last_jump_label = $LastJump
 @onready var audio_player = $Audio
 @onready var recorder = get_parent().get_node("Recorder")
+@onready var start_volume = audio_player.volume_db
 
 var landing = preload("res://sound/landing.wav")
 
@@ -16,6 +17,7 @@ const MAX_SLOPE = 1
 const JUMP_FORCE = 4
 const RAY_REACH = 0.1
 const POSITION_PACKET_DELAY: float = 0.01
+
 
 var gravity = 11
 var floor_col_pos = Vector3.ZERO
@@ -35,6 +37,7 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	prev_pos = camera.position
 	camera_height = camera.position.y
+	audio_player.volume_db = start_volume + Settings.volume
 
 func grounded():
 	return test_move(global_transform, Vector3(0, -0.01, 0))
