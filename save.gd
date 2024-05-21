@@ -1,5 +1,7 @@
 extends Node
 
+var previous_run_replay = null
+
 var data: Dictionary =  {
 	"bhop_rookie": {
 		"pr": null,
@@ -52,3 +54,6 @@ func save_data():
 	var save_file = FileAccess.open(Settings.save_file, FileAccess.WRITE)
 	var json = JSON.stringify(data)
 	save_file.store_string(json)
+
+func get_action_string(name: String):
+	return InputMap.action_get_events(name)[0].as_text().split(" ")[02]

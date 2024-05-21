@@ -80,14 +80,14 @@ func player_finished(col):
 	completed = true
 	
 	var time = Save.data[map_name]['pr']
-	Notify.info("Map completed! Press P to view a replay.")
+	
+	Notify.info("Map completed! Press %s to view a replay." % Save.get_action_string("replay"))
+	recorder.stop()
+	var r = recorder.save(floor(timer * 1000))
+	Save.previous_run_replay = r
 	
 	if time == null or timer < time:
 		Save.data[map_name]['pr'] = snapped(timer, 0.001)
-		
-		
-		recorder.stop()
-		var r = recorder.save(floor(timer * 1000))
 		
 		Save.data[map_name]['replay'] = Array(r.to_bytes())
 		Save.save_data()
@@ -133,3 +133,6 @@ func _process(delta):
 			player.position = checkpoint_pos
 
 		player.velocity = Vector3.ZERO
+	
+	if Input.is_action_just_pressed("replay") and Save.previous_run_replay != null:
+		recorder.replay(Save.previous_run_replay.get_frames())
