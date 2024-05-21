@@ -13,6 +13,7 @@ func _ready():
 	$Navbar/Actions/CreateLobby.pressed.connect(SteamClient.create_lobby)
 	$Navbar/Actions/CreateLobby.pressed.connect(view_lobby_info)
 	$Navbar/Actions/Settings.pressed.connect(open_settings)
+	$Navbar/Actions/Quit.pressed.connect(get_tree().quit)
 
 func _process(delta):
 	

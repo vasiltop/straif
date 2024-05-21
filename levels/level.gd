@@ -25,7 +25,6 @@ var player_is_on_first_checkpoint: bool = true
 @onready var checkpoint_pos: Vector3 = start_pos
 
 func set_checkpoint_pos(pos: Vector3):
-	print(pos)
 	checkpoint_pos = pos
 	player_is_on_first_checkpoint = false
 

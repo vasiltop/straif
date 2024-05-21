@@ -11,7 +11,7 @@ var landing = preload("res://sound/landing.wav")
 const MAX_G_SPEED = 5
 const MAX_G_ACCEL = MAX_G_SPEED * 10
 const MAX_A_SPEED = 0.7
-const MAX_A_ACCEL = 75
+const MAX_A_ACCEL = 100
 const MAX_SLOPE = 1
 const JUMP_FORCE = 4
 const RAY_REACH = 0.1
@@ -96,7 +96,7 @@ func apply_gravity(velocity_y: float, delta: float) -> float:
 
 func apply_friction(vel_planar: Vector2, delta: float, wish_dir: Vector2) -> Vector2:
 	if not grounded(): return vel_planar
-	if Input.is_action_just_pressed("jump"): return vel_planar
+	if Input.is_action_pressed("jump"): return vel_planar
 	
 	var v = vel_planar - vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 
@@ -145,7 +145,7 @@ func check_for_jump(vel_vertical) -> float:
 	var jump_input = (Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")) if not kz_jump_style else Input.is_action_just_pressed("jump")
 	
 	if jump_input and grounded() and not jumped:
-		if v < 11 and is_map_longjump():
+		if v < 12 and is_map_longjump():
 			recorder.start()
 			longjump_counts = true
 		last_jump_pos = global_position
