@@ -58,3 +58,18 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Personal Record: None"
 horizontal_alignment = 1
+
+[node name="Replay" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.5
+offset_top = 66.0
+offset_right = 50.5
+offset_bottom = 97.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "View Replay"

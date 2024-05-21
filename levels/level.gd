@@ -29,6 +29,7 @@ func set_checkpoint_pos(pos: Vector3):
 	player_is_on_first_checkpoint = false
 
 func _ready():
+	
 	player.kz_jump_style = kz_jump_style
 	start_zone.get_node("Area3D").body_exited.connect(player_started)
 	end_zone.get_node("Area3D").body_entered.connect(player_finished)
@@ -36,7 +37,13 @@ func _ready():
 	get_leaderboard_request.request_completed.connect(handle_leaderboard)
 	get_leaderboard()
 	post_leaderboard_request.request_completed.connect(test)
-
+	
+	if SceneManager.replay_when_level_started:
+		SceneManager.replay_when_level_started = false
+		var r = run.Run.new()
+		var result_code = r.from_bytes(Save.data[map_name]['replay'])
+		recorder.replay(r.get_frames())
+	
 func test(result, response_code, headers, body):
 	var json = body.get_string_from_utf8()
 	
@@ -59,7 +66,7 @@ func handle_leaderboard(result, response_code, headers, body):
 		
 	for run in json:
 		var instance = leaderboard_entry.instantiate()
-		instance.initialize(run.username, run.time_ms, int(run.user_id))
+		instance.initialize(run.username, run.time_ms, int(run.user_id), map_name)
 		leaderboard.add_child(instance)
 
 func player_started(col):
@@ -69,24 +76,28 @@ func player_started(col):
 	recorder.start()
 
 func player_finished(col):
+	if completed: return
+	completed = true
 	
 	var time = Save.data[map_name]['pr']
+	Notify.info("Map completed! Press P to view a replay.")
 	
-	if not completed and (time == null or timer < time):
+	if time == null or timer < time:
 		Save.data[map_name]['pr'] = snapped(timer, 0.001)
-		Save.save_data()
+		
 		
 		recorder.stop()
 		var r = recorder.save(floor(timer * 1000))
-
+		
+		Save.data[map_name]['replay'] = Array(r.to_bytes())
+		Save.save_data()
+		
 		var body = r.to_bytes()
 		var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
 		
 		post_leaderboard_request.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
-		
-		
-		
-	completed = true
+
+	
 
 func update_timer_label():
 	timer_label.text = str(snapped(timer, 0.001)) + " s"

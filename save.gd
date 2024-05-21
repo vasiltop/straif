@@ -3,27 +3,35 @@ extends Node
 var data: Dictionary =  {
 	"bhop_rookie": {
 		"pr": null,
+		"replay": null,
 	},
 	"bhop_rookie2": {
 		"pr": null,
+		"replay": null,
 	},
 	"bhop_dawn": {
 		"pr": null,
+		"replay": null,
 	},
 	"bhop_purge": {
 		"pr": null,
+		"replay": null,
 	},
 	"bhop_swift": {
 		"pr": null,
+		"replay": null,
 	},
 	"bhop_fog": {
 		"pr": null,
+		"replay": null,
 	},
 	"lj_longjump": {
-		"pr": 0,
+		"pr": null,
+		"replay": null,
 	},
 	"kz_gunner": {
 		"pr": null,
+		"replay": null,
 	},
 }
 

@@ -3,6 +3,8 @@ enum SCENES { MAIN_MENU, PAUSE_MENU, LOBBY_MENU, SETTINGS_MENU }
 
 var previous_scene = SCENES.MAIN_MENU
 
+var replay_when_level_started: bool = false
+
 var scene_filenames = {
 	SCENES.MAIN_MENU: "res://menus/main/main.tscn",
 	SCENES.PAUSE_MENU: "res://menus/pause/pause.tscn",
