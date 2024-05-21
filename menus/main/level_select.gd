@@ -3,6 +3,41 @@ extends GridContainer
 var level_button = preload("res://menus/main/level_button.tscn")
 var lobby_button = preload("res://menus/main/lobby_button.tscn")
 
+const map_data = {
+	"bhop_rookie": {
+		"mapper": "munost",
+		"difficulty": 1
+	},
+	"bhop_rookie2": {
+		"mapper": "munost",
+		"difficulty": 1
+	},
+	"bhop_dawn": {
+		"mapper": "munost",
+		"difficulty": 2
+	},
+	"bhop_purge": {
+		"mapper": "munost",
+		"difficulty": 2
+	},
+	"bhop_swift": {
+		"mapper": "Roboglow",
+		"difficulty": 1
+	},
+	"bhop_fog": {
+		"mapper": "munost",
+		"difficulty": 2
+	},
+	"lj_longjump": {
+		"mapper": "munost",
+		"difficulty": 0
+	},
+	"kz_gunner": {
+		"mapper": "munost",
+		"difficulty": 1
+	},
+}
+
 func _ready():
 	Steam.lobby_match_list.connect(on_lobbies_received)
 	set_gamemode_bhop()
@@ -25,6 +60,8 @@ func create_level_buttons(maps: Array):
 	for map in maps:
 		var instance = level_button.instantiate()
 		instance.set_label(map)
+		instance.set_difficulty(map_data[map]['difficulty'])
+		instance.set_mapper(map_data[map]['mapper'])
 		add_child(instance)
 		
 func remove_children():
