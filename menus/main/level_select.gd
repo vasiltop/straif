@@ -4,6 +4,10 @@ var level_button = preload("res://menus/main/level_button.tscn")
 var lobby_button = preload("res://menus/main/lobby_button.tscn")
 
 const map_data = {
+	"bhop_0x": {
+		"mapper": "m",
+		"difficulty": 0
+	},
 	"bhop_rookie": {
 		"mapper": "munost",
 		"difficulty": 1
