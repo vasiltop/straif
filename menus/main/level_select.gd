@@ -6,7 +6,7 @@ var lobby_button = preload("res://menus/main/lobby_button.tscn")
 const map_data = {
 	"bhop_0x": {
 		"mapper": "m",
-		"difficulty": 0
+		"difficulty": 3
 	},
 	"bhop_rookie": {
 		"mapper": "munost",
@@ -37,6 +37,10 @@ const map_data = {
 		"difficulty": 0
 	},
 	"kz_gunner": {
+		"mapper": "munost",
+		"difficulty": 1
+	},
+	"bhop_tutorial": {
 		"mapper": "munost",
 		"difficulty": 1
 	},

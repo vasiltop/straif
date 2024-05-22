@@ -1,0 +1,180 @@
+[gd_scene load_steps=17 format=3 uid="uid://cuurnpaq3phcd"]
+
+[ext_resource type="Script" path="res://levels/level.gd" id="1_kgroc"]
+[ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="2_t5sx8"]
+[ext_resource type="PackedScene" uid="uid://nn4mtur3ev0n" path="res://props/small_box.tscn" id="3_7f4ea"]
+[ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="3_mc718"]
+[ext_resource type="PackedScene" uid="uid://dhrwk6tthy3r8" path="res://props/medium_box.tscn" id="4_x6lyv"]
+[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="5_wgeb3"]
+[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="6_wjkrk"]
+[ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="7_fv0d7"]
+[ext_resource type="Script" path="res://props/checkpoint.gd" id="8_pk7xk"]
+[ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="9_cwv3t"]
+[ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://props/small.tscn" id="10_pfacq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
+albedo_texture = ExtResource("3_mc718")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7r2us"]
+size = Vector3(6.43701, 3.31292, 4.30501)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
+sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
+sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+sky_energy_multiplier = 0.85
+ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
+ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+ground_curve = 0.0627669
+sun_angle_max = 14.4
+sun_curve = 0.0724453
+
+[sub_resource type="Sky" id="Sky_gbi3k"]
+sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
+radiance_size = 2
+
+[sub_resource type="Environment" id="Environment_l4w43"]
+background_mode = 2
+background_energy_multiplier = 2.35
+sky = SubResource("Sky_gbi3k")
+ambient_light_source = 3
+ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
+ambient_light_energy = 0.0
+fog_enabled = true
+fog_light_color = Color(0.637965, 0.618594, 0.639776, 1)
+fog_light_energy = 0.79
+fog_sun_scatter = 0.21
+fog_density = 0.0399
+fog_height_density = 0.0155
+
+[node name="bhop_tutorial" type="Node3D"]
+script = ExtResource("1_kgroc")
+
+[node name="Level" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D8" parent="Level" instance=ExtResource("5_wgeb3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.470812, 0.705132, -55.2686)
+
+[node name="CSGBox3D5" parent="Level" instance=ExtResource("5_wgeb3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.467124, -1.14577, -35.2535)
+
+[node name="CSGBox3D6" parent="Level" instance=ExtResource("3_7f4ea")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.475749, -0.650531, -42.7982)
+
+[node name="StartZone" parent="Level" instance=ExtResource("2_t5sx8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
+material = SubResource("StandardMaterial3D_ivg4n")
+
+[node name="EndZone" parent="Level" instance=ExtResource("7_fv0d7")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.765183, 0.231246, -70.9239)
+
+[node name="CSGBox3D" parent="Level" instance=ExtResource("6_wjkrk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446983, 0, -8.6235)
+
+[node name="CSGBox3D15" parent="Level" instance=ExtResource("6_wjkrk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.447715, 4.68069, -6.84215)
+size = Vector3(4.50146, 2.26008, 0.164795)
+
+[node name="Label3D" type="Label3D" parent="Level/CSGBox3D15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.089606)
+text = "Welcome to Straif, if you fall at any point
+press R to return to the latest checkpoint, or T
+to reset the entire level.a
+
+Use WASD to move
+and Space or Scroll in any direction to jump."
+
+[node name="CSGBox3D16" parent="Level" instance=ExtResource("6_wjkrk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.447715, 4.68069, -74.9572)
+size = Vector3(4.50146, 2.26008, 0.164795)
+
+[node name="Label3D" type="Label3D" parent="Level/CSGBox3D16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.089606)
+text = "You are finished! Now press Escape
+to view a complete list of gamemodes and maps!
+
+Good luck"
+
+[node name="CSGBox3D2" parent="Level" instance=ExtResource("6_wjkrk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446983, 0, -18.6166)
+
+[node name="CSGBox3D3" parent="Level" instance=ExtResource("6_wjkrk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446983, 0, -28.5527)
+
+[node name="CSGBox3D7" parent="Level" instance=ExtResource("6_wjkrk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446983, 0, -48.4385)
+
+[node name="CSGBox3D14" parent="Level" instance=ExtResource("6_wjkrk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446983, 0, -62.6213)
+
+[node name="Checkpoint" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.81528, -9.23173)
+script = ExtResource("8_pk7xk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.450317, 0, 0.782188)
+shape = SubResource("BoxShape3D_7r2us")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint"]
+
+[node name="Checkpoint2" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.81528, -19.1028)
+script = ExtResource("8_pk7xk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.450317, 0, 0.782188)
+shape = SubResource("BoxShape3D_7r2us")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint2"]
+
+[node name="Checkpoint3" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.81528, -28.7519)
+script = ExtResource("8_pk7xk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.450317, 0, 0.782188)
+shape = SubResource("BoxShape3D_7r2us")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint3"]
+
+[node name="Checkpoint4" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.81528, -48.8371)
+script = ExtResource("8_pk7xk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.450317, 0, 0.782188)
+shape = SubResource("BoxShape3D_7r2us")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Level/Checkpoint4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.450317, 0, -13.1287)
+shape = SubResource("BoxShape3D_7r2us")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint4"]
+
+[node name="CSGBox3D4" parent="Level" instance=ExtResource("4_x6lyv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.487899, -0.912219, -39.9194)
+
+[node name="CSGBox3D9" parent="Level" instance=ExtResource("10_pfacq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.460887, -0.219388, -53.37)
+
+[node name="CSGBox3D10" parent="Level" instance=ExtResource("10_pfacq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57315, -0.219388, -54.6182)
+
+[node name="CSGBox3D13" parent="Level" instance=ExtResource("10_pfacq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.46569, -0.219388, -57.2001)
+
+[node name="CSGBox3D11" parent="Level" instance=ExtResource("10_pfacq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.45834, -0.219388, -54.6182)
+
+[node name="CSGBox3D12" parent="Level" instance=ExtResource("10_pfacq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43599, -0.219388, -57.251)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l4w43")
+
+[node name="LevelPack" parent="." instance=ExtResource("9_cwv3t")]
+
+[node name="Player" parent="LevelPack" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.736992, 1.16769, 1.20542)
+
+[editable path="LevelPack"]

@@ -39,6 +39,10 @@ var data: Dictionary =  {
 		"pr": null,
 		"replay": null,
 	},
+	"bhop_tutorial": {
+		"pr": null,
+		"replay": null,
+	},
 }
 
 func _ready():
@@ -49,6 +53,7 @@ func load_data():
 	
 	if save_file == null:
 		save_data()
+		get_tree().change_scene_to_file("res://levels/bhop_tutorial.tscn")
 	else:
 		var text = save_file.get_as_text()
 		var json: Dictionary = JSON.parse_string(text)
