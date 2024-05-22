@@ -11,6 +11,8 @@ var potential_lobby: int = 0
 var spawned_players: Array = []
 
 func _ready():
+	
+	Engine.max_fps = 144
 	Steam.lobby_joined.connect(on_lobby_joined)
 	Steam.lobby_created.connect(on_lobby_created)
 	Steam.p2p_session_request.connect(p2p_session_request)

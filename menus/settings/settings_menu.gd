@@ -36,12 +36,11 @@ func initialize_sens_input():
 	sens_input.text_changed.connect(update_sens)
 	
 func initialize_fps_max_input():
-	fps_max_input.text = str(Settings.max_fps)
+	fps_max_input.text = str(Engine.max_fps)
 	fps_max_input.text_changed.connect(update_max_fps)
 	
 func update_max_fps(value: String):
 	var fps = int(value)
-	Settings.max_fps = fps
 	Engine.max_fps = fps
 	
 func initialize_screen_input():

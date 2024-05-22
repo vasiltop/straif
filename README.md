@@ -28,8 +28,11 @@ In godot, make a new script called settings.gd (in the root folder). In the sett
 extends Node
 
 var sens = 0.001
-var base_url = "https://example.com/" #Url of the server
-var password = "example" #Password for the server to authenticate the client
+var base_url = "http://localhost:8000/"
+var password = "password" #your servers password
+
+var save_file = "user://runs.save"
+var volume = 0
 ```
 
 Make sure it is in this exact format, or the game might not run properly.
