@@ -9,18 +9,15 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.736992, 0.998674, 1.20542)
 
 [node name="Timer" type="Label" parent="."]
-anchors_preset = 3
-anchor_left = 1.0
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -47.0
-offset_top = -44.0
-offset_right = -7.0
-offset_bottom = -21.0
-grow_horizontal = 0
+offset_left = 9.0
+offset_top = -28.0
+offset_right = 49.0
+offset_bottom = -5.0
 grow_vertical = 0
-text = "0s"
+text = "0 s"
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 volume_db = -32.193

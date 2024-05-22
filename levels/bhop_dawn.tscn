@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cs2j8j5lijfb7"]
+[gd_scene load_steps=18 format=3 uid="uid://cs2j8j5lijfb7"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_uq7kc"]
 [ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_m1an2"]
@@ -9,11 +9,15 @@
 [ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="8_25t8d"]
 [ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://props/small.tscn" id="9_we8jm"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="10_s2owv"]
+[ext_resource type="Script" path="res://props/checkpoint.gd" id="11_k7ewh"]
 [ext_resource type="PackedScene" uid="uid://gdrhguyyuy8i" path="res://props/large.tscn" id="11_q1ael"]
 [ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="11_yscsx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_1uvo4")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7r2us"]
+size = Vector3(6.46539, 3.31292, 5.90627)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
 sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
@@ -174,6 +178,36 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.7876, 1.92099, -17.7526)
 
 [node name="CSGBox3D40" parent="Level" instance=ExtResource("11_q1ael")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.3738, 2.43618, -13.8338)
+
+[node name="Checkpoint" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.01778, 1.90481, -27.5641)
+script = ExtResource("11_k7ewh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00516, 0, 0.619621)
+shape = SubResource("BoxShape3D_7r2us")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint"]
+
+[node name="Checkpoint2" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.2397, 1.90481, -27.5641)
+script = ExtResource("11_k7ewh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00516, 0, 0.619621)
+shape = SubResource("BoxShape3D_7r2us")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint2"]
+
+[node name="Checkpoint3" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.2397, 4.63357, -10.6517)
+script = ExtResource("11_k7ewh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00516, 0, 0.619621)
+shape = SubResource("BoxShape3D_7r2us")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint3"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l4w43")

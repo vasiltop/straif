@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://c3ghsggtvier5"]
+[gd_scene load_steps=12 format=3 uid="uid://c3ghsggtvier5"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_eg883"]
 [ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="2_6g5kp"]
 [ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="3_ir4il"]
-[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="5_bm2wt"]
 [ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="6_w01yc"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="7_wxvr3"]
 [ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="8_10vly"]
@@ -49,10 +48,6 @@ use_collision = true
 [node name="StartZone" parent="Level" instance=ExtResource("2_6g5kp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
 material = SubResource("StandardMaterial3D_ivg4n")
-
-[node name="CSGBox3D5" parent="Level" instance=ExtResource("5_bm2wt")]
-transform = Transform3D(0.730317, -0.683108, 0, 0.683108, 0.730317, 0, 0, 0, 1, -0.203426, -0.956799, -13.407)
-size = Vector3(3, 2.98813, 19.4841)
 
 [node name="CSGBox3D10" parent="Level" instance=ExtResource("6_w01yc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, -27.3287)

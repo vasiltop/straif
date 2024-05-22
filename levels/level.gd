@@ -20,6 +20,8 @@ var started = false
 var map_name = ""
 var player_is_on_first_checkpoint: bool = true
 
+var thread: Thread
+
 @export var kz_jump_style = false
 @onready var start_pos: Vector3 = player.position 
 @onready var checkpoint_pos: Vector3 = start_pos
@@ -27,9 +29,12 @@ var player_is_on_first_checkpoint: bool = true
 func set_checkpoint_pos(pos: Vector3):
 	checkpoint_pos = pos
 	player_is_on_first_checkpoint = false
-
-func _ready():
 	
+func _exit_tree():
+	thread.wait_to_finish()
+	
+func _ready():
+	thread = Thread.new()
 	player.kz_jump_style = kz_jump_style
 	start_zone.get_node("Area3D").body_exited.connect(player_started)
 	end_zone.get_node("Area3D").body_entered.connect(player_finished)
@@ -80,25 +85,22 @@ func player_started(col):
 func player_finished(col):
 	if completed: return
 	completed = true
-	
-	var time = Save.data[map_name]['pr']
-	
 	Notify.info("Map completed! Press %s to view a replay." % Save.get_action_string("replay"))
 	recorder.stop()
+	thread.start(save_and_publish_run)
+
+func save_and_publish_run():
 	var r = recorder.save(floor(timer * 1000))
+	var time = Save.data[map_name]['pr']
 	Save.previous_run_replay = r
-	
 	if time == null or timer < time:
 		Save.data[map_name]['pr'] = snapped(timer, 0.001)
-		
 		Save.data[map_name]['replay'] = Array(r.to_bytes())
 		Save.save_data()
-		
 		var body = r.to_bytes()
 		var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
-		
 		post_leaderboard_request.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
-
+	
 func update_timer_label():
 	timer_label.text = str(snapped(timer, 0.001)) + " s"
 

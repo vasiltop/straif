@@ -52,17 +52,4 @@ grow_vertical = 2
 text = "0 u/s"
 vertical_alignment = 2
 
-[node name="LastJump" type="Label" parent="."]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 16.0
-offset_top = -42.0
-offset_right = 56.0
-offset_bottom = -19.0
-grow_vertical = 0
-text = "0 u
-"
-vertical_alignment = 2
-
 [node name="PostLeaderboard" type="HTTPRequest" parent="."]

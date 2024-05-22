@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c3doptdpriaqg"]
+[gd_scene load_steps=18 format=3 uid="uid://c3doptdpriaqg"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_0pcym"]
 [ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_fj0sq"]
@@ -11,9 +11,13 @@
 [ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://props/small.tscn" id="10_yaoux"]
 [ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="11_0svoq"]
 [ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="11_2gbxu"]
+[ext_resource type="Script" path="res://props/checkpoint.gd" id="11_liabn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_jj8x5")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_msnas"]
+size = Vector3(6.46539, 3.31292, 5.90627)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
 sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
@@ -163,6 +167,56 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7887, 3.07516, -58.1625)
 
 [node name="CSGBox3D33" parent="Level" instance=ExtResource("8_3an8r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.10351, 6.82637, -31.2878)
+
+[node name="Checkpoint" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.04904, 1.91197, -27.6155)
+script = ExtResource("11_liabn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00516, 0, 0.142029)
+shape = SubResource("BoxShape3D_msnas")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint"]
+
+[node name="Checkpoint2" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.04904, 4.05564, -48.0917)
+script = ExtResource("11_liabn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00516, 0, 0.142029)
+shape = SubResource("BoxShape3D_msnas")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint2"]
+
+[node name="Checkpoint3" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7183, 6.54342, -48.0917)
+script = ExtResource("11_liabn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00516, 0, 0.142029)
+shape = SubResource("BoxShape3D_msnas")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint3"]
+
+[node name="Checkpoint4" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7183, 8.90587, -30.3363)
+script = ExtResource("11_liabn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00516, 0, 0.142029)
+shape = SubResource("BoxShape3D_msnas")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint4"]
+
+[node name="Checkpoint5" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53778, 8.41862, -30.3588)
+script = ExtResource("11_liabn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Checkpoint5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00516, 0, 0.142029)
+shape = SubResource("BoxShape3D_msnas")
+
+[node name="SpawnPoint" type="Node3D" parent="Level/Checkpoint5"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l4w43")

@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 @onready var camera = $Camera3D
 @onready var speed_label = $Speed
-@onready var last_jump_label = $LastJump
+@onready var last_jump_label = get_parent().get_node("LastJump")
 @onready var audio_player = $Audio
 @onready var recorder = get_parent().get_node("Recorder")
 @onready var start_volume = audio_player.volume_db
