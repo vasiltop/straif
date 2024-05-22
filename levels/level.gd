@@ -97,15 +97,13 @@ func player_finished(col):
 		
 		post_leaderboard_request.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
 
-	
-
 func update_timer_label():
 	timer_label.text = str(snapped(timer, 0.001)) + " s"
 
 func _process(delta):
 	if Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump"):
 		player_started({})
-	#print(completed, started)
+		
 	if not completed and started:
 		timer += delta
 		update_timer_label()
@@ -122,12 +120,12 @@ func _process(delta):
 		
 	if Input.is_action_just_pressed("restart"):
 		
-		if player_is_on_first_checkpoint or completed:
+		if completed:
 			timer = 0
 			update_timer_label()
 			started = false
 			completed = false
-			player_is_on_first_checkpoint = true
+			player_is_on_first_checkpoint = false
 			player.position = start_pos
 		else:
 			player.position = checkpoint_pos
@@ -136,3 +134,12 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("replay") and Save.previous_run_replay != null:
 		recorder.replay(Save.previous_run_replay.get_frames())
+		
+	if Input.is_action_just_pressed("reset"):
+		timer = 0
+		update_timer_label()
+		started = false
+		completed = false
+		player_is_on_first_checkpoint = true
+		player.position = start_pos
+		player.velocity = Vector3.ZERO

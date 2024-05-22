@@ -8,6 +8,12 @@ var leaderboard_entry = preload("res://levels/leaderboard/entry.tscn")
 func _ready():
 	$GetLeaderboard.request_completed.connect(handle_request)
 	$GetLeaderboard.request(url)
+	
+	if SceneManager.replay_when_level_started:
+		SceneManager.replay_when_level_started = false
+		var r = run.Run.new()
+		var result_code = r.from_bytes(Save.data['lj_longjump']['replay'])
+		$Recorder.replay(r.get_frames())
 
 func handle_request(result, response_code, headers, body):
 	if response_code != 200: return

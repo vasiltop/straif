@@ -51,11 +51,11 @@ func _process(delta):
 	handle_scene_changes()
 
 func handle_scene_changes():
-		
 	if Input.is_action_just_pressed("pause"):
 		SceneManager.change_scene(SceneManager.SCENES.MAIN_MENU)
 
 func interpolate_camera_pos(delta):
+	if Engine.max_fps < 60: return
 	var camera_pos = prev_pos.lerp(position, delta * 70)
 	camera.global_position = camera_pos
 	camera.position.y = camera_height
@@ -71,10 +71,17 @@ func is_map_longjump():
 	
 func submit_to_leaderboard(length):
 	if not is_map_longjump(): return
+	var pr = Save.data['lj_longjump']['pr']
+	
+	if pr != null and pr >= length: return
 	
 	recorder.stop()
 	var r = recorder.save(floor(last_jump * 1000))
 	var body = r.to_bytes()
+	
+	Save.data['lj_longjump']['pr'] = snapped(length, 0.001)
+	Save.data['lj_longjump']['replay'] = body
+	Save.save_data()
 	
 	var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
 	$PostLeaderboard.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
@@ -88,7 +95,7 @@ func check_for_landing():
 	jumped = false
 	if time_since_landing > 0.6 and snapped(global_position.y, 0.01) == snapped(last_jump_pos.y, 0.01) and longjump_counts:
 		last_jump = last_jump_pos.distance_to(global_position)
-		last_jump_label.text = str(snapped(last_jump, 0.01)) + " u"
+		last_jump_label.text = str(snapped(last_jump, 0.001)) + " u"
 		submit_to_leaderboard(last_jump)
 		longjump_counts = false
 	time_since_landing = 0
@@ -136,7 +143,7 @@ func _physics_process(delta):
 	update_position_to_lobby()
 
 func update_ui():
-	speed_label.text = str(snapped(abs(velocity.x) + abs(velocity.z), 0.1)) + " u/s"
+	speed_label.text = str(snapped(abs(velocity.x) + abs(velocity.z), 0.01)) + " u/s"
 	
 func update_position_to_lobby():
 	if time_since_last_position_packet > POSITION_PACKET_DELAY:

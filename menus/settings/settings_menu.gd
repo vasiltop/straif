@@ -1,6 +1,7 @@
 extends Control
 
 @onready var sens_input: LineEdit = $MarginContainer/Content/Margin/Settings/Sensitivity/Sens
+@onready var fps_max_input: LineEdit = $MarginContainer/Content/Margin/Settings/MaxFps/MaxFps
 @onready var screen_input: ItemList = $MarginContainer/Content/Margin/Settings/ScreenMode/ItemList
 @onready var volume_input: HSlider = $MarginContainer/Content/Margin/Settings/Volume/HSlider
 
@@ -11,6 +12,7 @@ func _ready():
 	initialize_sens_input()
 	initialize_screen_input()
 	initialize_volume_input()
+	initialize_fps_max_input()
 
 func update_volume(changed: bool):
 	if not changed: return
@@ -32,6 +34,15 @@ func change_screen_mode(index: int):
 func initialize_sens_input():
 	sens_input.text = str(Settings.sens)
 	sens_input.text_changed.connect(update_sens)
+	
+func initialize_fps_max_input():
+	fps_max_input.text = str(Settings.max_fps)
+	fps_max_input.text_changed.connect(update_max_fps)
+	
+func update_max_fps(value: String):
+	var fps = int(value)
+	Settings.max_fps = fps
+	Engine.max_fps = fps
 	
 func initialize_screen_input():
 	match DisplayServer.window_get_mode():

@@ -109,6 +109,16 @@ text = "Sensitivity"
 [node name="Sens" type="LineEdit" parent="MarginContainer/Content/Margin/Settings/Sensitivity"]
 layout_mode = 2
 
+[node name="MaxFps" type="HSplitContainer" parent="MarginContainer/Content/Margin/Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Margin/Settings/MaxFps"]
+layout_mode = 2
+text = "MaxFps"
+
+[node name="MaxFps" type="LineEdit" parent="MarginContainer/Content/Margin/Settings/MaxFps"]
+layout_mode = 2
+
 [node name="ScreenMode" type="HSplitContainer" parent="MarginContainer/Content/Margin/Settings"]
 layout_mode = 2
 
@@ -135,6 +145,19 @@ layout_mode = 2
 size_flags_vertical = 1
 min_value = -60.0
 max_value = 10.0
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Margin/Settings"]
+layout_mode = 2
+text = "Controls:
+
+R - Return to last checkpoint
+T - Reset the map
+P - View Previous Replay
+Escape - Main Menu
+Space / Mouse Wheel (Up/Down) - Jump
+W, A, S, D - Movement
+"
+horizontal_alignment = 1
 
 [node name="Level" type="CSGCombiner3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.86084, 8.61067, 8.22009)
