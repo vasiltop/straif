@@ -104,12 +104,6 @@ use_collision = true
 [node name="CSGBox3D" parent="Level" instance=ExtResource("3_utcvv")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 21.2177, -0.442081, -169.835)
 
-[node name="CSGBox3D2" parent="Level" instance=ExtResource("3_utcvv")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 17.2008, -0.442081, -171.965)
-
-[node name="CSGBox3D10" parent="Level" instance=ExtResource("3_utcvv")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 21.6774, -0.442081, -174.296)
-
 [node name="CSGBox3D3" parent="Level" instance=ExtResource("3_utcvv")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 17.7144, -0.442081, -176.614)
 
@@ -136,9 +130,6 @@ transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 
 
 [node name="CSGBox3D11" parent="Level" instance=ExtResource("5_cj23v")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 15.3638, 0.231246, -181.149)
-
-[node name="CSGBox3D12" parent="Level" instance=ExtResource("5_cj23v")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 13.8085, 0.231246, -184.159)
 
 [node name="CSGBox3D13" parent="Level" instance=ExtResource("6_1j3pl")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 7.95025, 0.892944, -195.51)
@@ -170,20 +161,11 @@ transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 
 [node name="CSGBox3D31" parent="Level" instance=ExtResource("6_1j3pl")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 34.7209, 7.01742, -204.438)
 
-[node name="CSGBox3D21" parent="Level" instance=ExtResource("7_1ly4d")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 16.9425, 5.02414, -221.543)
-
-[node name="CSGBox3D16" parent="Level" instance=ExtResource("6_1j3pl")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 0.238575, 2.21934, -201.695)
-
 [node name="CSGBox3D22" parent="Level" instance=ExtResource("2_t7i0q")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 5.95866, 3.19977, -213.535)
 
 [node name="CSGBox3D34" parent="Level" instance=ExtResource("2_t7i0q")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 4.42573, 7.09662, -189.371)
-
-[node name="CSGBox3D35" parent="Level" instance=ExtResource("2_t7i0q")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, -0.0710411, 7.09662, -187.047)
 
 [node name="CSGBox3D23" parent="Level" instance=ExtResource("2_t7i0q")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 11.2103, 3.95764, -225.873)
@@ -193,15 +175,6 @@ transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 
 
 [node name="CSGBox3D24" parent="Level" instance=ExtResource("2_t7i0q")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 15.3205, 4.54911, -225.938)
-
-[node name="CSGBox3D25" parent="Level" instance=ExtResource("2_t7i0q")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 20.0788, 4.76035, -223.806)
-
-[node name="CSGBox3D19" parent="Level" instance=ExtResource("5_cj23v")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 8.28213, 3.30641, -222.726)
-
-[node name="CSGBox3D33" parent="Level" instance=ExtResource("5_cj23v")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 17.3455, 7.05762, -197.159)
 
 [node name="CSGBox3D17" parent="Level" instance=ExtResource("3_utcvv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.47007, -2.66858, -7.55735)

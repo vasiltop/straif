@@ -740,16 +740,14 @@ class Frame:
 		service.func_ref = Callable(self, "new_position")
 		data[__position.tag] = service
 		
-		__playerRotation = PBField.new("playerRotation", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+		__playerRotation = PBField.new("playerRotation", PB_DATA_TYPE.FLOAT, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.FLOAT])
 		service = PBServiceField.new()
 		service.field = __playerRotation
-		service.func_ref = Callable(self, "new_playerRotation")
 		data[__playerRotation.tag] = service
 		
-		__cameraRotation = PBField.new("cameraRotation", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+		__cameraRotation = PBField.new("cameraRotation", PB_DATA_TYPE.FLOAT, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.FLOAT])
 		service = PBServiceField.new()
 		service.field = __cameraRotation
-		service.func_ref = Callable(self, "new_cameraRotation")
 		data[__cameraRotation.tag] = service
 		
 		__delta = PBField.new("delta", PB_DATA_TYPE.FLOAT, PB_RULE.OPTIONAL, 4, true, DEFAULT_VALUES_3[PB_DATA_TYPE.FLOAT])
@@ -770,24 +768,22 @@ class Frame:
 		return __position.value
 	
 	var __playerRotation: PBField
-	func get_playerRotation() -> Vec3:
+	func get_playerRotation() -> float:
 		return __playerRotation.value
 	func clear_playerRotation() -> void:
 		data[2].state = PB_SERVICE_STATE.UNFILLED
-		__playerRotation.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-	func new_playerRotation() -> Vec3:
-		__playerRotation.value = Vec3.new()
-		return __playerRotation.value
+		__playerRotation.value = DEFAULT_VALUES_3[PB_DATA_TYPE.FLOAT]
+	func set_playerRotation(value : float) -> void:
+		__playerRotation.value = value
 	
 	var __cameraRotation: PBField
-	func get_cameraRotation() -> Vec3:
+	func get_cameraRotation() -> float:
 		return __cameraRotation.value
 	func clear_cameraRotation() -> void:
 		data[3].state = PB_SERVICE_STATE.UNFILLED
-		__cameraRotation.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-	func new_cameraRotation() -> Vec3:
-		__cameraRotation.value = Vec3.new()
-		return __cameraRotation.value
+		__cameraRotation.value = DEFAULT_VALUES_3[PB_DATA_TYPE.FLOAT]
+	func set_cameraRotation(value : float) -> void:
+		__cameraRotation.value = value
 	
 	var __delta: PBField
 	func get_delta() -> float:
@@ -835,7 +831,7 @@ class Run:
 		service.field = __steam_id
 		data[__steam_id.tag] = service
 		
-		__value = PBField.new("value", PB_DATA_TYPE.INT64, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT64])
+		__value = PBField.new("value", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
 		service = PBServiceField.new()
 		service.field = __value
 		data[__value.tag] = service
@@ -853,7 +849,7 @@ class Run:
 	var data = {}
 	
 	var __frames: PBField
-	func get_frames() -> Array:
+	func get_frames() -> Array[Frame]:
 		return __frames.value
 	func clear_frames() -> void:
 		data[1].state = PB_SERVICE_STATE.UNFILLED
@@ -877,7 +873,7 @@ class Run:
 		return __value.value
 	func clear_value() -> void:
 		data[3].state = PB_SERVICE_STATE.UNFILLED
-		__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT64]
+		__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
 	func set_value(value : int) -> void:
 		__value.value = value
 	

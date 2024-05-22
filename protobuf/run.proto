@@ -8,8 +8,8 @@ message Vec3 {
 
 message Frame {
 	Vec3 position = 1;
-	Vec3 playerRotation = 2;
-	Vec3 cameraRotation = 3;
+	float playerRotation = 2;
+	float cameraRotation = 3;
 	float delta = 4;
 }
 

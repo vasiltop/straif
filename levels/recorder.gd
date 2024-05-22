@@ -53,14 +53,9 @@ func replay_run():
 	player.position.y = front.get_position().get_y()
 	player.position.z = front.get_position().get_z()
 	
-	player.rotation.x = front.get_playerRotation().get_x()
-	player.rotation.y = front.get_playerRotation().get_y()
-	player.rotation.z = front.get_playerRotation().get_z()
+	player.rotation.y = front.get_playerRotation()
+	player.get_node("Camera3D").rotation.x = front.get_cameraRotation()
 
-	player.get_node("Camera3D").rotation.x = front.get_cameraRotation().get_x()
-	player.get_node("Camera3D").rotation.y = front.get_cameraRotation().get_y()
-	player.get_node("Camera3D").rotation.z = front.get_cameraRotation().get_z()
-	
 	replay_index += 1
 		
 func _physics_process(delta):
@@ -76,13 +71,10 @@ func record_run():
 	var frame: run.Frame = current_run.add_frames()
 
 	var position = frame.new_position()
-	var player_rotation = frame.new_playerRotation()
-	var camera_rotation = frame.new_cameraRotation()
+	frame.set_playerRotation(player.rotation.y)
+	frame.set_cameraRotation(camera.rotation.x)
 	
 	var pos = player.position
 	position.set_x(pos.x)
 	position.set_y(pos.y)
 	position.set_z(pos.z)
-	
-	player_rotation.set_y(player.rotation.y)
-	camera_rotation.set_x(camera.rotation.x)

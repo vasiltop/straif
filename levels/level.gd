@@ -40,7 +40,6 @@ func _ready():
 	end_zone.get_node("Area3D").body_entered.connect(player_finished)
 	map_name = get_tree().current_scene.name
 	get_leaderboard_request.request_completed.connect(handle_leaderboard)
-	get_leaderboard()
 	post_leaderboard_request.request_completed.connect(test)
 	
 	if SceneManager.replay_when_level_started:
@@ -53,6 +52,9 @@ func _ready():
 	
 func test(result, response_code, headers, body):
 	var json = body.get_string_from_utf8()
+	
+	print(body)
+	print(response_code)
 	
 func get_leaderboard():
 	
@@ -88,19 +90,23 @@ func player_finished(col):
 	completed = true
 	Notify.info("Map completed! Press %s to view a replay." % Save.get_action_string("replay"))
 	recorder.stop()
-	thread.start(save_and_publish_run)
+	#thread.start(save_and_publish_run)
+	save_and_publish_run()
 
 func save_and_publish_run():
 	var r = recorder.save(floor(timer * 1000))
 	var time = Save.data[map_name]['pr']
 	Save.previous_run_replay = r
+	print("here")
 	if time == null or timer < time:
+		
 		Save.data[map_name]['pr'] = snapped(timer, 0.001)
 		Save.data[map_name]['replay'] = Array(r.to_bytes())
 		Save.save_data()
 		var body = r.to_bytes()
 		var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
 		post_leaderboard_request.request_raw(url + "publish", headers, HTTPClient.METHOD_POST, body)
+		print("sending")
 	
 func update_timer_label():
 	timer_label.text = str(snapped(timer, 0.001)) + " s"
