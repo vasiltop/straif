@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://copg84myay7wn"]
 
-[ext_resource type="Script" path="res://checkpoint.gd" id="1_r6iny"]
+[ext_resource type="Script" path="res://props/checkpoint.gd" id="1_r6iny"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7r2us"]
 size = Vector3(2.97681, 3.31292, 2.98151)

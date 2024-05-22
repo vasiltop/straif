@@ -21,11 +21,13 @@ func on_replay_clicked():
 func get_demo():
 	var body = null
 	var url = ""
+
 	if is_longjump:
 		url = Settings.base_url + "longjump/"
 		body = JSON.stringify({
 				"steam_id": steam_id
-		})	
+		})
+		
 	else:
 		url = Settings.base_url + "bhop/"
 		body = JSON.stringify({
@@ -36,7 +38,11 @@ func get_demo():
 	$DemoRequest.request(url + "demo", headers, HTTPClient.METHOD_POST, body)
 
 func handle_demo(result, response_code, headers, body):
-	var json = JSON.parse_string(body.get_string_from_utf8())
+	if response_code != 200: return
+	
+	var json: JSON = JSON.new()
+	json.parse(body.get_string_from_utf8())
+	var b = json.get_data()
 	var r = run.Run.new()
-	var result_code = r.from_bytes(json[0])
+	var result_code = r.from_bytes(b[0])
 	get_parent().get_parent().get_node("Recorder").replay(r.get_frames())

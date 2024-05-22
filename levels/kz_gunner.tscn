@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://nn4mtur3ev0n" path="res://props/small_box.tscn" id="5_3owuc"]
 [ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="6_206gs"]
 [ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="7_w4bfp"]
-[ext_resource type="Script" path="res://checkpoint.gd" id="9_6br2e"]
+[ext_resource type="Script" path="res://props/checkpoint.gd" id="9_6br2e"]
 [ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="9_mf6w0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]

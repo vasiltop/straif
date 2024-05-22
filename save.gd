@@ -56,4 +56,4 @@ func save_data():
 	save_file.store_string(json)
 
 func get_action_string(name: String):
-	return InputMap.action_get_events(name)[0].as_text().split(" ")[02]
+	return InputMap.action_get_events(name)[0].as_text().split(" ")[0]

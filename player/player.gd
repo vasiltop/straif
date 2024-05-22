@@ -67,7 +67,7 @@ func update_timers(delta):
 		time_since_landing += delta
 
 func is_map_longjump():
-	return get_tree().current_scene.name == "Longjump"
+	return get_tree().current_scene.name.split("_")[0] == "lj"
 	
 func submit_to_leaderboard(length):
 	if not is_map_longjump(): return
@@ -99,7 +99,7 @@ func apply_gravity(velocity_y: float, delta: float) -> float:
 
 func apply_friction(vel_planar: Vector2, delta: float, wish_dir: Vector2) -> Vector2:
 	if not grounded(): return vel_planar
-	if Input.is_action_pressed("jump"): return vel_planar
+	if Input.is_action_pressed("jump") and not kz_jump_style: return vel_planar
 	
 	var v = vel_planar - vel_planar.normalized() * delta * MAX_G_ACCEL / 2
 
@@ -146,9 +146,11 @@ func update_position_to_lobby():
 func check_for_jump(vel_vertical) -> float:
 	var v = abs(velocity.x) + abs(velocity.z)
 	var jump_input = (Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")) if not kz_jump_style else Input.is_action_just_pressed("jump")
-	
+
 	if jump_input and grounded() and not jumped:
+	
 		if v < 12 and is_map_longjump():
+			
 			recorder.start()
 			longjump_counts = true
 		last_jump_pos = global_position

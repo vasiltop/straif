@@ -20,7 +20,7 @@ func handle_request(result, response_code, headers, body):
 			
 	for jump in json:
 		var instance = leaderboard_entry.instantiate()
-		instance.initialize(jump.username, jump.length, int(jump.user_id), true)
+		instance.initialize(jump.username, jump.length, int(jump.user_id), "", true)
 		$Leaderboard.add_child(instance)
 
 func _process(delta):

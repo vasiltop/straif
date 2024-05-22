@@ -141,7 +141,7 @@ theme_override_constants/margin_bottom = 128
 layout_mode = 2
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 20
-columns = 3
+columns = 5
 script = ExtResource("2_jcakj")
 
 [node name="Level" type="CSGCombiner3D" parent="."]
