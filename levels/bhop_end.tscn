@@ -129,10 +129,13 @@ transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, -7.08625, 6.89595, -183.328)
 
 [node name="CSGBox3D11" parent="Level" instance=ExtResource("5_cj23v")]
-transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 15.3638, 0.231246, -181.149)
+transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 15.3638, -0.102961, -181.149)
 
 [node name="CSGBox3D13" parent="Level" instance=ExtResource("6_1j3pl")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 7.95025, 0.892944, -195.51)
+
+[node name="CSGBox3D16" parent="Level" instance=ExtResource("6_1j3pl")]
+transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 21.7096, 0.138574, -158.392)
 
 [node name="CSGBox3D14" parent="Level" instance=ExtResource("6_1j3pl")]
 transform = Transform3D(0.888401, 0, 0.459068, 0, 1, 0, -0.459068, 0, 0.888401, 3.10163, 1.42071, -196.083)
@@ -288,7 +291,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7454, 0.136555, -138.645)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.2285, 0.136555, -142.904)
 
 [node name="CSGBox3D64" parent="Level" instance=ExtResource("7_1ly4d")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7127, 0.136555, -146.933)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.3526, 0.136555, -147.313)
+size = Vector3(1.72021, 0.1, 1.75977)
 
 [node name="CSGBox3D65" parent="Level" instance=ExtResource("7_1ly4d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.2367, 0.136555, -151.606)
