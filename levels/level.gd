@@ -41,7 +41,9 @@ func _ready():
 	if SceneManager.replay_when_level_started:
 		SceneManager.replay_when_level_started = false
 		var r = run.Run.new()
+		print(len(Save.data[map_name]['replay']))
 		var result_code = r.from_bytes(Save.data[map_name]['replay'])
+		print("done")
 		recorder.replay(r.get_frames())
 	
 func test(result, response_code, headers, body):
