@@ -78,11 +78,12 @@ func handle_leaderboard(result, response_code, headers, body):
 
 func player_started(col):
 	if completed or recorder.replaying or started: return
-
+	if not col is CharacterBody3D: return
 	started = true
 	recorder.start()
 
 func player_finished(col):
+	if not col is CharacterBody3D: return
 	if completed: return
 	completed = true
 	Notify.info("Map completed! Press %s to view a replay." % Save.get_action_string("replay"))

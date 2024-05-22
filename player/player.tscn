@@ -52,4 +52,12 @@ grow_vertical = 2
 text = "0 u/s"
 vertical_alignment = 2
 
+[node name="Fps" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 48.0
+offset_bottom = 31.0
+text = "60 fps"
+vertical_alignment = 2
+
 [node name="PostLeaderboard" type="HTTPRequest" parent="."]

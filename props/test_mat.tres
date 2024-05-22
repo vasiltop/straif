@@ -4,3 +4,6 @@
 
 [resource]
 albedo_texture = ExtResource("1_dydhc")
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.02
+backlight = Color(1, 1, 1, 1)

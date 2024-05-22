@@ -78,16 +78,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.8625, -39.949, -27.4557)
 size = Vector3(1.4325, 0.1, 1.45068)
 
 [node name="CSGBox3D17" parent="Level" instance=ExtResource("6_nyv5r")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.744, -20.7176, -23.9757)
-size = Vector3(16.8973, 41.6127, 0.293945)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.8141, -20.7176, -23.9757)
+size = Vector3(21.0374, 41.6127, 0.293945)
 
 [node name="CSGBox3D18" parent="Level" instance=ExtResource("6_nyv5r")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.7542, -20.702, -30.7249)
-size = Vector3(16.9176, 41.5815, 0.293945)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.9723, -20.702, -30.7249)
+size = Vector3(21.3538, 41.5815, 0.293945)
 
 [node name="CSGBox3D19" parent="Level" instance=ExtResource("6_nyv5r")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 37.1511, -18.1277, -27.2936)
-size = Vector3(7, 36.4329, 10.2217)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 39.3657, -18.1277, -27.2936)
+size = Vector3(7, 36.4329, 14.651)
 
 [node name="CSGBox3D20" parent="Level" instance=ExtResource("6_nyv5r")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 25.3338, -20.4597, -27.2936)

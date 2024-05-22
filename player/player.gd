@@ -49,6 +49,7 @@ func _process(delta):
 	
 	interpolate_camera_pos(delta)
 	handle_scene_changes()
+	$Fps.text = "%d fps" % Engine.get_frames_per_second()
 
 func handle_scene_changes():
 	if Input.is_action_just_pressed("pause"):
@@ -93,6 +94,7 @@ func check_for_landing():
 	audio_player.stream = landing
 	audio_player.play()
 	jumped = false
+	print(snapped(global_position.y, 0.01), snapped(last_jump_pos.y, 0.01))
 	if time_since_landing > 0.6 and snapped(global_position.y, 0.01) == snapped(last_jump_pos.y, 0.01) and longjump_counts:
 		last_jump = last_jump_pos.distance_to(global_position)
 		last_jump_label.text = str(snapped(last_jump, 0.001)) + " u"

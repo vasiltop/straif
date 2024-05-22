@@ -40,3 +40,6 @@ func _process(delta):
 	else:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		$Leaderboard.visible = false
+		
+	if $Player.position.y < -4:
+		get_tree().reload_current_scene()

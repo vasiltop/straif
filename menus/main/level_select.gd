@@ -14,7 +14,7 @@ const map_data = {
 	},
 	"bhop_rookie2": {
 		"mapper": "munost",
-		"difficulty": 1
+		"difficulty": 2
 	},
 	"bhop_dawn": {
 		"mapper": "munost",
@@ -47,6 +47,10 @@ const map_data = {
 	"bhop_taurus": {
 		"mapper": "munost",
 		"difficulty": 4
+	},
+	"bhop_end": {
+		"mapper": "munost",
+		"difficulty": 5
 	},
 }
 

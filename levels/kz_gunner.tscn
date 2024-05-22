@@ -20,13 +20,13 @@ size = Vector3(1.73248, 3.31292, 1.84525)
 sky_energy_multiplier = 1.65
 ground_energy_multiplier = 2.05
 
-[sub_resource type="Sky" id="Sky_xycut"]
+[sub_resource type="Sky" id="Sky_wc731"]
 sky_material = SubResource("ProceduralSkyMaterial_nsfqw")
 
 [sub_resource type="Environment" id="Environment_l4w43"]
 background_mode = 2
 background_color = Color(0, 0.608403, 0.539033, 1)
-sky = SubResource("Sky_xycut")
+sky = SubResource("Sky_wc731")
 ambient_light_source = 3
 ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
 ambient_light_energy = 0.0
