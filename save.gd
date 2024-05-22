@@ -51,7 +51,20 @@ func load_data():
 		save_data()
 	else:
 		var text = save_file.get_as_text()
-		var json = JSON.parse_string(text)
+		var json: Dictionary = JSON.parse_string(text)
+
+
+		for key in data:
+			if key not in json:
+				json[key] = {
+					"pr": null,
+					"replay": null,
+				}
+
+		for key in json:
+			if key not in data:
+				json.erase(key)
+				print(key)
 		data = json
 
 func save_data():
