@@ -15,7 +15,7 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_4jv77")
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5epxh"]
 sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
 sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
 sky_energy_multiplier = 0.85
@@ -25,19 +25,19 @@ ground_curve = 0.0627669
 sun_angle_max = 14.4
 sun_curve = 0.0724453
 
-[sub_resource type="Sky" id="Sky_ny1r7"]
-sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
+[sub_resource type="Sky" id="Sky_gbi3k"]
+sky_material = SubResource("ProceduralSkyMaterial_5epxh")
 radiance_size = 2
 
-[sub_resource type="Environment" id="Environment_l4w43"]
+[sub_resource type="Environment" id="Environment_qr4ug"]
 background_mode = 2
 background_energy_multiplier = 2.35
-sky = SubResource("Sky_ny1r7")
+sky = SubResource("Sky_gbi3k")
 ambient_light_source = 3
 ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
 ambient_light_energy = 0.0
 fog_enabled = true
-fog_light_color = Color(0.379747, 0.573999, 0.7309, 1)
+fog_light_color = Color(0.637965, 0.618594, 0.639776, 1)
 fog_light_energy = 0.79
 fog_sun_scatter = 0.21
 fog_density = 0.0399
@@ -262,8 +262,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7887, 3.07516, -58.1625)
 [node name="CSGBox3D33" parent="Level" instance=ExtResource("8_xnx4i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.10351, 6.82637, -31.2878)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_l4w43")
-
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.709968, -0.425305, 0.561303, 0.0148966, 0.805932, 0.591821, -0.704076, -0.411813, 0.578521, 23.2138, 17.9031, 0)
+
+[node name="s" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qr4ug")

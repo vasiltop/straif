@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c3ghsggtvier5"]
+[gd_scene load_steps=13 format=3 uid="uid://c3ghsggtvier5"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_eg883"]
 [ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="2_6g5kp"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="5_bm2wt"]
 [ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="6_w01yc"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="7_wxvr3"]
+[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="8_10vly"]
 [ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="9_xm0e0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
@@ -66,5 +67,11 @@ environment = SubResource("Environment_l4w43")
 
 [node name="Player" parent="LevelPack" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.736992, 1.16769, 1.20542)
+
+[node name="killzone" parent="." groups=["kill"] instance=ExtResource("8_10vly")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.227556, -7.80238, -38.7497)
+visible = false
+use_collision = true
+size = Vector3(97.6299, 0.776526, 120.577)
 
 [editable path="LevelPack"]

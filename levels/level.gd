@@ -123,14 +123,9 @@ func _process(delta):
 	if Input.is_action_just_pressed("restart"):
 		
 		if completed:
-			timer = 0
-			update_timer_label()
-			started = false
-			completed = false
-			player_is_on_first_checkpoint = false
-			player.position = start_pos
+			reset_level()
 		else:
-			player.position = checkpoint_pos
+			return_to_checkpoint()
 
 		player.velocity = Vector3.ZERO
 	
@@ -138,10 +133,21 @@ func _process(delta):
 		recorder.replay(Save.previous_run_replay.get_frames())
 		
 	if Input.is_action_just_pressed("reset"):
-		timer = 0
-		update_timer_label()
-		started = false
-		completed = false
-		player_is_on_first_checkpoint = true
-		player.position = start_pos
+		reset_level()
+
+func return_to_checkpoint():
+	
+	if player_is_on_first_checkpoint:
+		reset_level()
+	else:
+		player.position = checkpoint_pos
 		player.velocity = Vector3.ZERO
+
+func reset_level():
+	timer = 0
+	update_timer_label()
+	started = false
+	completed = false
+	player_is_on_first_checkpoint = true
+	player.position = start_pos
+	player.velocity = Vector3.ZERO

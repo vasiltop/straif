@@ -16,32 +16,26 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_igim7")
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3yr51"]
-sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
-sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
-sky_energy_multiplier = 0.85
-ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
-ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
-ground_curve = 0.0627669
-sun_angle_max = 14.4
-sun_curve = 0.0724453
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yms3f"]
+sky_energy_multiplier = 1.65
+ground_energy_multiplier = 2.05
 
-[sub_resource type="Sky" id="Sky_21rtc"]
-sky_material = SubResource("ProceduralSkyMaterial_3yr51")
-radiance_size = 2
+[sub_resource type="Sky" id="Sky_lq42n"]
+sky_material = SubResource("ProceduralSkyMaterial_yms3f")
 
-[sub_resource type="Environment" id="Environment_uytp7"]
+[sub_resource type="Environment" id="Environment_koo07"]
 background_mode = 2
-background_energy_multiplier = 2.35
-sky = SubResource("Sky_21rtc")
+background_color = Color(0, 0.608403, 0.539033, 1)
+sky = SubResource("Sky_lq42n")
 ambient_light_source = 3
 ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
 ambient_light_energy = 0.0
 fog_enabled = true
-fog_light_color = Color(0.67451, 0.376471, 0.384314, 1)
+fog_light_color = Color(0.544589, 0.373147, 0.375003, 1)
 fog_light_energy = 0.79
 fog_sun_scatter = 0.21
-fog_density = 0.0399
+fog_density = 0.0
+fog_sky_affect = 0.8
 fog_height_density = 0.0155
 
 [node name="bhop_fog" type="Node3D"]
@@ -118,7 +112,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.4931, 0, -68.3693)
 [node name="CSGBox3D20" parent="Level" instance=ExtResource("9_asa2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.3803, 0, -74.9227)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_uytp7")
-
 [node name="LevelPack" parent="." instance=ExtResource("12_vjek7")]
+
+[node name="killzone" parent="." groups=["kill"] instance=ExtResource("7_0khkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8472, -4.52589, -37.0439)
+visible = false
+use_collision = true
+size = Vector3(116.502, 0.776526, 179.032)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_koo07")

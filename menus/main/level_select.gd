@@ -44,6 +44,10 @@ const map_data = {
 		"mapper": "munost",
 		"difficulty": 1
 	},
+	"bhop_taurus": {
+		"mapper": "munost",
+		"difficulty": 4
+	},
 }
 
 func _ready():

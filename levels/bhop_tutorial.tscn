@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cuurnpaq3phcd"]
+[gd_scene load_steps=18 format=3 uid="uid://cuurnpaq3phcd"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_kgroc"]
 [ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="2_t5sx8"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://props/checkpoint.gd" id="8_pk7xk"]
 [ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="9_cwv3t"]
 [ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://props/small.tscn" id="10_pfacq"]
+[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="11_qj01p"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("3_mc718")
@@ -28,14 +29,14 @@ ground_curve = 0.0627669
 sun_angle_max = 14.4
 sun_curve = 0.0724453
 
-[sub_resource type="Sky" id="Sky_gbi3k"]
+[sub_resource type="Sky" id="Sky_m71h6"]
 sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
 radiance_size = 2
 
 [sub_resource type="Environment" id="Environment_l4w43"]
 background_mode = 2
 background_energy_multiplier = 2.35
-sky = SubResource("Sky_gbi3k")
+sky = SubResource("Sky_m71h6")
 ambient_light_source = 3
 ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
 ambient_light_energy = 0.0
@@ -78,8 +79,8 @@ size = Vector3(4.50146, 2.26008, 0.164795)
 [node name="Label3D" type="Label3D" parent="Level/CSGBox3D15"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.089606)
 text = "Welcome to Straif, if you fall at any point
-press R to return to the latest checkpoint, or T
-to reset the entire level.a
+press R to return to the latest checkpoint, 
+or T to reset the entire level.
 
 Use WASD to move
 and Space or Scroll in any direction to jump."
@@ -171,6 +172,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43599, -0.219388, -57.251)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l4w43")
+
+[node name="killzone" parent="WorldEnvironment" groups=["kill"] instance=ExtResource("11_qj01p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.22954, -5.05291, -33.7558)
+visible = false
+use_collision = true
+size = Vector3(97.6299, 0.776526, 120.577)
 
 [node name="LevelPack" parent="." instance=ExtResource("9_cwv3t")]
 

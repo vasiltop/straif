@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://7fwgtjgx32po"]
+[gd_scene load_steps=16 format=3 uid="uid://7fwgtjgx32po"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_cipox"]
 [ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_p58js"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="8_6lva0"]
 [ext_resource type="Script" path="res://props/checkpoint.gd" id="8_pm8mm"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="8_ui1q8"]
+[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="9_wc6n3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_hxe3l")
@@ -26,14 +27,14 @@ ground_curve = 0.0627669
 sun_angle_max = 14.4
 sun_curve = 0.0724453
 
-[sub_resource type="Sky" id="Sky_gbi3k"]
+[sub_resource type="Sky" id="Sky_hpyxj"]
 sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
 radiance_size = 2
 
 [sub_resource type="Environment" id="Environment_l4w43"]
 background_mode = 2
 background_energy_multiplier = 2.35
-sky = SubResource("Sky_gbi3k")
+sky = SubResource("Sky_hpyxj")
 ambient_light_source = 3
 ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
 ambient_light_energy = 0.0
@@ -100,6 +101,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.69105, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l4w43")
+
+[node name="killzone" parent="WorldEnvironment" groups=["kill"] instance=ExtResource("9_wc6n3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.41855, -3.12782, -38.7497)
+visible = false
+use_collision = true
+size = Vector3(97.6299, 0.776526, 120.577)
 
 [node name="LevelPack" parent="." instance=ExtResource("8_6lva0")]
 

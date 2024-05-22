@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://sjq2jypm3145"]
+[gd_scene load_steps=14 format=3 uid="uid://sjq2jypm3145"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_xxibk"]
 [ext_resource type="PackedScene" uid="uid://cuxlf7dpvwh46" path="res://props/start_zone.tscn" id="3_ip25n"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://props/extra_large.tscn" id="7_b7aae"]
 [ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="8_d6x1m"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="8_db7ou"]
+[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="9_6ig1o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivg4n"]
 albedo_texture = ExtResource("4_af7h1")
@@ -37,11 +38,11 @@ glow_enabled = true
 glow_normalized = true
 glow_bloom = 0.03
 fog_enabled = true
-fog_light_color = Color(0.737381, 0.418574, 0.698004, 1)
+fog_light_color = Color(0.614051, 0.454256, 0.708936, 1)
 fog_light_energy = 0.79
 fog_sun_scatter = 0.21
-fog_density = 0.0399
-fog_height_density = 0.0155
+fog_density = 0.0255
+fog_sky_affect = 0.736
 
 [node name="bhop_swift" type="Node3D"]
 script = ExtResource("1_xxibk")
@@ -106,3 +107,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.42425, -1.15939, -60.8626)
 environment = SubResource("Environment_l4w43")
 
 [node name="LevelPack" parent="." instance=ExtResource("8_d6x1m")]
+
+[node name="killzone" parent="." groups=["kill"] instance=ExtResource("9_6ig1o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.88438, -5.66181, -30.6342)
+visible = false
+use_collision = true
+size = Vector3(97.6299, 0.776526, 120.577)

@@ -34,14 +34,13 @@ background_mode = 2
 background_energy_multiplier = 2.35
 sky = SubResource("Sky_uwpxi")
 ambient_light_source = 3
-ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
+ambient_light_color = Color(0.341176, 0.654902, 0.690196, 1)
 ambient_light_energy = 0.0
 fog_enabled = true
-fog_light_color = Color(0.47451, 0.576471, 0.560784, 1)
-fog_light_energy = 0.79
-fog_sun_scatter = 0.21
+fog_light_color = Color(0.827848, 0.783401, 0.749716, 1)
+fog_light_energy = 0.34
 fog_density = 0.0399
-fog_height_density = 0.0155
+fog_height_density = 16.0
 
 [node name="bhop_dawn" type="Node3D"]
 script = ExtResource("1_uq7kc")
@@ -180,3 +179,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.3738, 2.43618, -13.8338)
 environment = SubResource("Environment_l4w43")
 
 [node name="LevelPack" parent="." instance=ExtResource("11_yscsx")]
+
+[node name="killzone" parent="." groups=["kill"] instance=ExtResource("8_25t8d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.56897, -3.43744, -38.7497)
+visible = false
+use_collision = true
+size = Vector3(97.6299, 0.776526, 120.577)

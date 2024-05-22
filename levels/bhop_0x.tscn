@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://b5ghka2jvrhjw"]
+[gd_scene load_steps=14 format=3 uid="uid://b5ghka2jvrhjw"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_ijcai"]
 [ext_resource type="Texture2D" uid="uid://bea85agqgbffi" path="res://images/texture_01.png" id="3_me3dd"]
 [ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://props/large_box.tscn" id="5_1noib"]
 [ext_resource type="PackedScene" uid="uid://nn4mtur3ev0n" path="res://props/small_box.tscn" id="7_72iwe"]
+[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://props/medium.tscn" id="7_xe6qc"]
 [ext_resource type="PackedScene" uid="uid://rsls7ibrad26" path="res://props/end_zone.tscn" id="9_xvp15"]
 [ext_resource type="PackedScene" uid="uid://wqhmh4j6psae" path="res://levels/level_pack.tscn" id="11_ku0ax"]
 
@@ -16,32 +17,26 @@ albedo_texture = ExtResource("3_me3dd")
 [sub_resource type="BoxShape3D" id="BoxShape3D_xlu5o"]
 size = Vector3(1.16478, 3.29059, 2.4637)
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
-sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
-sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
-sky_energy_multiplier = 0.85
-ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
-ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
-ground_curve = 0.0627669
-sun_angle_max = 14.4
-sun_curve = 0.0724453
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yxl25"]
+sky_energy_multiplier = 1.65
+ground_energy_multiplier = 2.05
 
-[sub_resource type="Sky" id="Sky_uwpxi"]
-sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
-radiance_size = 2
+[sub_resource type="Sky" id="Sky_ij2cd"]
+sky_material = SubResource("ProceduralSkyMaterial_yxl25")
 
-[sub_resource type="Environment" id="Environment_l4w43"]
+[sub_resource type="Environment" id="Environment_2dtua"]
 background_mode = 2
-background_energy_multiplier = 2.35
-sky = SubResource("Sky_uwpxi")
+background_color = Color(0, 0.608403, 0.539033, 1)
+sky = SubResource("Sky_ij2cd")
 ambient_light_source = 3
 ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
 ambient_light_energy = 0.0
 fog_enabled = true
-fog_light_color = Color(0.826016, 0.940671, 0.93114, 1)
+fog_light_color = Color(0.928024, 0.859651, 0.858745, 1)
 fog_light_energy = 0.79
 fog_sun_scatter = 0.21
-fog_density = 0.0399
+fog_density = 0.0
+fog_sky_affect = 0.8
 fog_height_density = 0.0155
 
 [node name="bhop_0x" type="Node3D"]
@@ -84,7 +79,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.9361, 0, -11.0202)
 transform = Transform3D(0.353573, 0, -0.935407, 0, 1, 0, 0.935407, 0, 0.353573, -1.22418, 0.161454, -18.3035)
 size = Vector3(0.235, 0.1, 12.2871)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_l4w43")
-
 [node name="LevelPack" parent="." instance=ExtResource("11_ku0ax")]
+
+[node name="killzone" parent="." groups=["kill"] instance=ExtResource("7_xe6qc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.3903, -4.8907, -29.7386)
+visible = false
+use_collision = true
+size = Vector3(97.6299, 0.776526, 120.577)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2dtua")

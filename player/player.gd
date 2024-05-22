@@ -12,7 +12,7 @@ var landing = preload("res://sound/landing.wav")
 const MAX_G_SPEED = 4.3
 const MAX_G_ACCEL = MAX_G_SPEED * 8
 const MAX_A_SPEED = 0.7
-const MAX_A_ACCEL = 100
+const MAX_A_ACCEL = 200
 const MAX_SLOPE = 1
 const JUMP_FORCE = 4
 const RAY_REACH = 0.1
@@ -80,7 +80,7 @@ func submit_to_leaderboard(length):
 	var body = r.to_bytes()
 	
 	Save.data['lj_longjump']['pr'] = snapped(length, 0.001)
-	Save.data['lj_longjump']['replay'] = body
+	Save.data['lj_longjump']['replay'] = Array(body)
 	Save.save_data()
 	
 	var headers = ["Content-Type: application/json", "password: " + Settings.password, "auth_ticket: " + SteamClient.auth_ticket_hex]
@@ -140,6 +140,11 @@ func _physics_process(delta):
 	
 	update_ui()
 	move_and_slide()
+	
+	var col = get_last_slide_collision()
+	if col and col.get_collider().is_in_group("kill"):
+		get_parent().get_parent().return_to_checkpoint()
+			
 	update_position_to_lobby()
 
 func update_ui():

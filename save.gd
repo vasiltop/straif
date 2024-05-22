@@ -43,6 +43,10 @@ var data: Dictionary =  {
 		"pr": null,
 		"replay": null,
 	},
+	"bhop_taurus": {
+		"pr": null,
+		"replay": null,
+	},
 }
 
 func _ready():
