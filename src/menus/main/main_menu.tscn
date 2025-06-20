@@ -1,0 +1,236 @@
+[gd_scene load_steps=3 format=3 uid="uid://taw7qljauqyg"]
+
+[ext_resource type="Script" uid="uid://c3c48ot8m7wcr" path="res://src/menus/main/main_menu.gd" id="1_cput1"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
+size = Vector2(64, 64)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cput1")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Content" type="VSplitContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+split_offset = 90
+dragger_visibility = 2
+
+[node name="Header" type="Control" parent="MarginContainer/Content"]
+layout_mode = 2
+
+[node name="Left" type="HBoxContainer" parent="MarginContainer/Content/Header"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 80.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="Avatar" type="TextureRect" parent="MarginContainer/Content/Header/Left"]
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_yrkwj")
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Header/Left"]
+layout_mode = 2
+text = "Username"
+
+[node name="Center" type="HBoxContainer" parent="MarginContainer/Content/Header"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Right" type="HBoxContainer" parent="MarginContainer/Content/Header"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Quit" type="Button" parent="MarginContainer/Content/Header/Right"]
+layout_mode = 2
+text = "Quit"
+
+[node name="Body" type="TabContainer" parent="MarginContainer/Content"]
+layout_mode = 2
+current_tab = 1
+
+[node name="Play" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Lobby" type="Control" parent="MarginContainer/Content/Body"]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Content/Body/Lobby"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="LobbySplit" type="HSplitContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="MyLobby" type="VSplitContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit"]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="Title" type="HBoxContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Title"]
+layout_mode = 2
+text = "My Lobby"
+
+[node name="Button" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Title"]
+layout_mode = 2
+text = "Leave"
+
+[node name="Players" type="VBoxContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby"]
+layout_mode = 2
+
+[node name="CreateLobby" type="VSplitContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit"]
+visible = false
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="Title" type="Label" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby"]
+layout_mode = 2
+text = "Create Lobby"
+
+[node name="Form" type="VBoxContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Name" type="HBoxContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/Name"]
+layout_mode = 2
+text = "Name:"
+
+[node name="Name" type="LineEdit" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/Name"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="Type" type="HBoxContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/Type"]
+layout_mode = 2
+text = "Lobby Type:"
+
+[node name="Type" type="OptionButton" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/Type"]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Private"
+popup/item_0/id = 0
+popup/item_1/text = "Friends Only"
+popup/item_1/id = 1
+popup/item_2/text = "Public"
+popup/item_2/id = 2
+popup/item_3/text = "Invisible"
+popup/item_3/id = 3
+
+[node name="MaxMembers" type="HBoxContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/MaxMembers"]
+layout_mode = 2
+text = "Max Members:"
+
+[node name="MaxMembers" type="SpinBox" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/MaxMembers"]
+layout_mode = 2
+
+[node name="Create" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
+layout_mode = 2
+text = "Create"
+
+[node name="Lobbies" type="VSplitContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit"]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="Title" type="HBoxContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
+layout_mode = 2
+text = "Lobbies"
+
+[node name="Name" type="LineEdit" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+placeholder_text = "Name"
+
+[node name="Button" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
+layout_mode = 2
+text = "Refresh"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies"]
+layout_mode = 2
+
+[node name="Container" type="GridContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/ScrollContainer"]
+layout_mode = 2
+columns = 5
+
+[node name="Create" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="Settings" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
