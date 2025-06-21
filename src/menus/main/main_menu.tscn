@@ -1,6 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://taw7qljauqyg"]
+[gd_scene load_steps=5 format=3 uid="uid://taw7qljauqyg"]
 
 [ext_resource type="Script" uid="uid://c3c48ot8m7wcr" path="res://src/menus/main/main_menu.gd" id="1_cput1"]
+[ext_resource type="Script" uid="uid://dfh54fgplrf7y" path="res://src/maps/map_data.gd" id="2_d31rl"]
+
+[sub_resource type="Resource" id="Resource_87ivk"]
+script = ExtResource("2_d31rl")
+name = "Test Map"
+tier = 1
+metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
 size = Vector2(64, 64)
@@ -13,6 +20,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cput1")
+maps = Array[ExtResource("2_d31rl")]([SubResource("Resource_87ivk")])
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -44,6 +52,7 @@ offset_top = -20.0
 offset_right = 80.0
 offset_bottom = 20.0
 grow_vertical = 2
+theme_override_constants/separation = 10
 
 [node name="Avatar" type="TextureRect" parent="MarginContainer/Content/Header/Left"]
 layout_mode = 2
@@ -86,14 +95,33 @@ text = "Quit"
 
 [node name="Body" type="TabContainer" parent="MarginContainer/Content"]
 layout_mode = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Play" type="Control" parent="MarginContainer/Content/Body"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Content/Body/Play"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Content/Body/Play/MarginContainer"]
+layout_mode = 2
+
+[node name="Maps" type="GridContainer" parent="MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer"]
+layout_mode = 2
+columns = 5
+
 [node name="Lobby" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -225,12 +253,7 @@ layout_mode = 2
 layout_mode = 2
 columns = 5
 
-[node name="Create" type="Control" parent="MarginContainer/Content/Body"]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 2
-
 [node name="Settings" type="Control" parent="MarginContainer/Content/Body"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 3
+metadata/_tab_index = 2

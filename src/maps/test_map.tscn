@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://vgkw2amsc3xw"]
+
+[ext_resource type="Texture2D" uid="uid://cfb1wf4ed68xi" path="res://src/textures/graybox.png" id="1_cx201"]
+[ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="2_qrlkj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qrlkj"]
+albedo_texture = ExtResource("1_cx201")
+uv1_scale = Vector3(20, 20, 20)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qrlkj"]
+
+[sub_resource type="Sky" id="Sky_kctwv"]
+sky_material = SubResource("ProceduralSkyMaterial_qrlkj")
+
+[sub_resource type="Environment" id="Environment_mn54f"]
+background_mode = 2
+sky = SubResource("Sky_kctwv")
+
+[node name="TestMap" type="Node3D"]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.357178, 0)
+size = Vector3(50, 0.1, 50)
+material = SubResource("StandardMaterial3D_qrlkj")
+
+[node name="Player" parent="." instance=ExtResource("2_qrlkj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.9393, 0.882036, 9.63002)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mn54f")

@@ -13,6 +13,9 @@ class_name MainMenu extends Control
 @onready var lobby_list_container: GridContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/ScrollContainer/Container
 @onready var leave_lobby_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Title/Button
 @onready var my_lobby_members_container: VBoxContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Players
+@onready var map_container: GridContainer = $MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer/Maps
+
+@export var maps: Array[MapData]
 
 func _ready() -> void:
 	Steam.avatar_loaded.connect(_on_loaded_avatar)
@@ -31,6 +34,20 @@ func _ready() -> void:
 	create_lobby_control.visible = true
 
 	_on_refresh_lobby_search()
+	_instantiate_maps()	
+
+func _instantiate_maps() -> void:
+	for map in maps:
+		var btn := Button.new()
+		btn.text = "%s\n Tier: %s/5" % [map.name, map.tier]
+		btn.custom_minimum_size = Vector2(100, 100)
+		map_container.add_child(btn)
+		btn.pressed.connect(
+			func() -> void:
+				var base_path := "res://src/maps/"
+				var path := base_path + map.name.to_lower().replace(" ", "_") + ".tscn"
+				get_tree().change_scene_to_file(path)
+		)
 
 func _on_my_lobby_changed() -> void:
 	_on_refresh_lobby_search()
