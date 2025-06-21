@@ -1,6 +1,9 @@
 class_name Player extends CharacterBody3D
 
+signal jumped
+
 @onready var camera: Camera3D = $Camera
+@onready var timer_label: Label = $UI/Timer
 
 const MAX_G_SPEED := 4.3
 const MAX_G_ACCEL := MAX_G_SPEED * 8
@@ -8,6 +11,7 @@ const MAX_A_SPEED := 0.7
 const MAX_A_ACCEL: float = 200
 const MAX_SLOPE: float = 1
 const JUMP_FORCE: float = 4
+
 var gravity: float = 11
 
 func _ready() -> void:
@@ -17,7 +21,14 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("toggle_mouse_mode"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE else Input.MOUSE_MODE_VISIBLE
 
+	if Input.is_action_just_pressed("main_menu"):
+		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 	_movement_process(delta)
+
+func set_timer(value: float) -> void:
+	timer_label.text = str(snapped(value, 0.001)) + " s"
 
 func _movement_process(delta: float) -> void:
 	var wish_dir := Input.get_vector("left", "right", "up", "down")
@@ -62,6 +73,7 @@ func _check_for_jump(vel_vertical: float) -> float:
 	var jump_input := Input.is_action_pressed("jump")
 
 	if jump_input and grounded():
+		jumped.emit()
 		return JUMP_FORCE
 
 	return vel_vertical

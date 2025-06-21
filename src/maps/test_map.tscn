@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://vgkw2amsc3xw"]
+[gd_scene load_steps=9 format=3 uid="uid://vgkw2amsc3xw"]
 
 [ext_resource type="Texture2D" uid="uid://cfb1wf4ed68xi" path="res://src/textures/graybox.png" id="1_cx201"]
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_kctwv"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="2_qrlkj"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qrlkj"]
@@ -16,18 +17,38 @@ sky_material = SubResource("ProceduralSkyMaterial_qrlkj")
 background_mode = 2
 sky = SubResource("Sky_kctwv")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_kctwv"]
+size = Vector3(8, 5, 5)
+
 [node name="TestMap" type="Node3D"]
+script = ExtResource("1_kctwv")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.357178, 0)
-size = Vector3(50, 0.1, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.061, -0.357178, 2.88524)
+size = Vector3(7.87799, 0.1, 44.2295)
 material = SubResource("StandardMaterial3D_qrlkj")
 
 [node name="Player" parent="." instance=ExtResource("2_qrlkj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.9393, 0.882036, 9.63002)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.3965, 0.882036, 22.1175)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_mn54f")
+
+[node name="Targets" type="Node" parent="."]
+
+[node name="EndZone" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.0101, 0, -16.9347)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EndZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01821, 0)
+shape = SubResource("BoxShape3D_kctwv")
+
+[node name="StartZone" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.0101, 0, 22.5265)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StartZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01821, 0)
+shape = SubResource("BoxShape3D_kctwv")

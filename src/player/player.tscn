@@ -19,3 +19,10 @@ shape = SubResource("CapsuleShape3D_4anbu")
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Timer" type="Label" parent="UI"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "0.00s"
