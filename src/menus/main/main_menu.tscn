@@ -95,10 +95,9 @@ text = "Quit"
 
 [node name="Body" type="TabContainer" parent="MarginContainer/Content"]
 layout_mode = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Play" type="Control" parent="MarginContainer/Content/Body"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -122,6 +121,7 @@ layout_mode = 2
 columns = 5
 
 [node name="Lobby" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -224,6 +224,15 @@ layout_mode = 2
 layout_mode = 2
 text = "Create"
 
+[node name="OR" type="Label" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
+layout_mode = 2
+text = "OR"
+horizontal_alignment = 1
+
+[node name="HostLocal" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
+layout_mode = 2
+text = "Host Local"
+
 [node name="Lobbies" type="VSplitContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit"]
 layout_mode = 2
 dragging_enabled = false
@@ -242,9 +251,13 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 placeholder_text = "Name"
 
-[node name="Button" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
+[node name="Refresh" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
 layout_mode = 2
 text = "Refresh"
+
+[node name="JoinLocal" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
+layout_mode = 2
+text = "Join Local"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies"]
 layout_mode = 2

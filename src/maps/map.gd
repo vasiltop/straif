@@ -50,8 +50,9 @@ func _win() -> void:
 
 func restart() -> void:
 	player.global_position = start_pos
+	player.velocity = Vector3.ZERO
 	timer = 0.0
 	player.set_timer(timer)
+
 	completed = false
 	running = false
-	player.velocity = Vector3.ZERO

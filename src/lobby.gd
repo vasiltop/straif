@@ -4,15 +4,16 @@ signal my_lobby_changed
 
 var lobby_id: int
 var lobby_members: Array[Member]
-var peer: SteamMultiplayerPeer = SteamMultiplayerPeer.new()
+var peer: MultiplayerPeer
+var lobby_name: String
+
+enum NETWORK_TYPE { ENET, STEAM }
+var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
 
 func _ready() -> void:
-	peer.lobby_joined.connect(_on_lobby_joined)
-	peer.lobby_chat_update.connect(_on_lobby_chat_update)
-	multiplayer.peer_connected.connect(func() -> void: print("connected"))
+	Steam.lobby_joined.connect(_on_lobby_joined)
 
 func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
-	print("joined")
 	lobby_members.clear()
 
 	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
@@ -20,7 +21,7 @@ func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, resp
 		update_lobby_members()
 		my_lobby_changed.emit()
 
-func _on_lobby_chat_update() -> void:
+func _on_steam_lobby_chat_update() -> void:
 	pass
 
 func update_lobby_members() -> void:
@@ -32,24 +33,81 @@ func update_lobby_members() -> void:
 		var member_steam_name := Steam.getFriendPersonaName(member_steam_id)
 		lobby_members.append(Member.new(member_steam_id, member_steam_name))
 
+func set_lobby_name(lname: String) -> void:
+	self.lobby_name = lname 
+
 func leave() -> void:
 	if lobby_id == 0: return
 
 	Steam.leaveLobby(Lobby.lobby_id)
 	lobby_id = 0
 	lobby_members.clear()
-	peer.close()
+	multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer = null
 	my_lobby_changed.emit()
 
-func join(lid: int) -> void:
+func join_steam_lobby(lid: int) -> void:
 	leave()
-	peer.connect_lobby(lid)
-	multiplayer.multiplayer_peer = peer
+	var steam_peer := SteamMultiplayerPeer.new()
+	steam_peer.connect_lobby(lid)
+	multiplayer.multiplayer_peer = steam_peer
+	_init_steam_callbacks(steam_peer)
 
-func create(type: SteamMultiplayerPeer.LobbyType, max_members: int) -> void:
-	peer.create_lobby(type, max_members)
-	multiplayer.multiplayer_peer = peer
+func create_steam_lobby(type: SteamMultiplayerPeer.LobbyType, max_members: int) -> void:
+	var steam_peer := SteamMultiplayerPeer.new()
+	steam_peer.create_lobby(type, max_members)
+	multiplayer.multiplayer_peer = steam_peer
+	_init_steam_callbacks(steam_peer)
+
+func _init_steam_callbacks(p: SteamMultiplayerPeer) -> void:
+	p.lobby_chat_update.connect(_on_steam_lobby_chat_update)
+	p.lobby_created.connect(_on_steam_lobby_created)
+
+func _init_enet_callbacks(p: ENetMultiplayerPeer) -> void:
+	p.peer_connected.connect(_on_enet_peer_connected)
+	p.peer_disconnected.connect(_on_enet_peer_disconnected)
+
+func _on_enet_peer_connected(id: int) -> void:
+	print("Connected: %s" % id)
+	lobby_members.append(Member.new(id, "Unnamed Player"))
+	my_lobby_changed.emit()
+
+func _on_enet_peer_disconnected(id: int) -> void:
+	print("Disconnected: %s" % id)
+	for i in range(len(lobby_members)):
+		var m := lobby_members[i]
+		if m.id == id:
+			lobby_members.remove_at(i)
+			my_lobby_changed.emit()
+			return
+
+func _on_steam_lobby_created(result: int, this_lobby_id: int) -> void:
+	if result != 1: return
+
+	Lobby.lobby_id = this_lobby_id
+	print("Created steam lobby: %s" % this_lobby_id)
+	Steam.setLobbyJoinable(this_lobby_id, true)
+	Steam.setLobbyData(this_lobby_id, "name", lobby_name)
+	Steam.allowP2PPacketRelay(true)
+
+func create_enet_lobby() -> void:
+	var enet_peer := ENetMultiplayerPeer.new()
+	enet_peer.create_client("127.0.0.1", 8008)
+	multiplayer.multiplayer_peer = enet_peer
+	_init_enet_lobby(enet_peer)
+	
+func _init_enet_lobby(p: ENetMultiplayerPeer) -> void:
+	lobby_members.clear()
+	lobby_id = -1
+	lobby_members.append(Member.new(multiplayer.get_unique_id(), "Unnamed Player"))
+	my_lobby_changed.emit()
+	_init_enet_callbacks(p)
+
+func join_enet_lobby() -> void:
+	var enet_peer := ENetMultiplayerPeer.new()
+	enet_peer.create_server(8008, 10)
+	multiplayer.multiplayer_peer = enet_peer
+	_init_enet_lobby(enet_peer)
 
 class Member:
 	var id: int

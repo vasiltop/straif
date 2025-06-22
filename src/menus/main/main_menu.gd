@@ -9,11 +9,14 @@ class_name MainMenu extends Control
 @onready var max_members_input: SpinBox = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/MaxMembers/MaxMembers
 @onready var my_lobby_control: Control = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby
 @onready var create_lobby_control: Control = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby
-@onready var refresh_lobby_search_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title/Button
+@onready var refresh_lobby_search_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title/Refresh
 @onready var lobby_list_container: GridContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/ScrollContainer/Container
 @onready var leave_lobby_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Title/Button
 @onready var my_lobby_members_container: VBoxContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Players
 @onready var map_container: GridContainer = $MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer/Maps
+@onready var host_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/HostLocal
+@onready var join_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title/JoinLocal
+@onready var _lobby_refresh_timer := BetterTimer.new(self, 1.0, _on_refresh_lobby_search)
 
 @export var maps: Array[MapData]
 
@@ -22,12 +25,11 @@ func _ready() -> void:
 	quit_btn.pressed.connect(get_tree().quit)
 	create_lobby_btn.pressed.connect(_on_create_lobby)
 	refresh_lobby_search_btn.pressed.connect(_on_refresh_lobby_search)
-
-	Lobby.peer.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
-
 	Lobby.my_lobby_changed.connect(_on_my_lobby_changed)
 	leave_lobby_btn.pressed.connect(Lobby.leave)
+	host_local_btn.pressed.connect(Lobby.create_enet_lobby)
+	join_local_btn.pressed.connect(Lobby.join_enet_lobby)
 
 	Steam.getPlayerAvatar()
 	username_label.text = Steam.getPersonaName()
@@ -35,7 +37,7 @@ func _ready() -> void:
 	my_lobby_control.visible = false
 	create_lobby_control.visible = true
 
-	_on_refresh_lobby_search()
+	_lobby_refresh_timer.start()
 	_instantiate_maps()	
 
 func _instantiate_maps() -> void:
@@ -70,9 +72,8 @@ func _on_lobby_match_list(lobbies: Array) -> void:
 
 	for lobby_id: int in lobbies:
 		var lobby_name := Steam.getLobbyData(lobby_id, "name")
-		if lobby_name == "": continue
+		if lobby_name == "": lobby_name = "Unnamed Lobby"
 		if len(lobby_name) >= 32: lobby_name = lobby_name.substr(0, 32)
-		#var num_members := Steam.getNumLobbyMembers(lobby_id)
 
 		var btn := Button.new()
 		btn.text = lobby_name
@@ -82,7 +83,7 @@ func _on_lobby_match_list(lobbies: Array) -> void:
 		btn.pressed.connect(
 			func() -> void:
 				if lobby_id != Lobby.lobby_id:
-					Lobby.join(lobby_id)
+					Lobby.join_steam_lobby(lobby_id)
 		)
 
 func _on_refresh_lobby_search() -> void:
@@ -109,22 +110,5 @@ func _on_create_lobby() -> void:
 		3: lobby_type = SteamMultiplayerPeer.LobbyType.LOBBY_TYPE_INVISIBLE
 
 	var max_members := int(max_members_input.get_line_edit().text)
-	Lobby.create(lobby_type, max_members)
-	_on_refresh_lobby_search()
-
-func _on_lobby_created(result: int, this_lobby_id: int) -> void:
-	if result != 1: return
-
-	Lobby.lobby_id = this_lobby_id
-	print("Created a lobby: %s" % this_lobby_id)
-
-	Steam.setLobbyJoinable(this_lobby_id, true)
-	Steam.setLobbyData(this_lobby_id, "name", lobby_name_input.text)
-	Steam.allowP2PPacketRelay(true)
-
-	Lobby.lobby_id = this_lobby_id
-	Lobby.update_lobby_members()
-	_on_my_lobby_changed()
-
-	my_lobby_control.visible = true
-	create_lobby_control.visible = false
+	Lobby.create_steam_lobby(lobby_type, max_members)
+	Lobby.set_lobby_name(lobby_name_input.text)
