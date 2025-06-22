@@ -22,8 +22,10 @@ func _ready() -> void:
 	quit_btn.pressed.connect(get_tree().quit)
 	create_lobby_btn.pressed.connect(_on_create_lobby)
 	refresh_lobby_search_btn.pressed.connect(_on_refresh_lobby_search)
-	Steam.lobby_created.connect(_on_lobby_created)
+
+	Lobby.peer.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
+
 	Lobby.my_lobby_changed.connect(_on_my_lobby_changed)
 	leave_lobby_btn.pressed.connect(Lobby.leave)
 
@@ -80,8 +82,7 @@ func _on_lobby_match_list(lobbies: Array) -> void:
 		btn.pressed.connect(
 			func() -> void:
 				if lobby_id != Lobby.lobby_id:
-					Lobby.leave()
-					Steam.joinLobby(lobby_id)
+					Lobby.join(lobby_id)
 		)
 
 func _on_refresh_lobby_search() -> void:
@@ -100,15 +101,15 @@ func _on_create_lobby() -> void:
 	if Lobby.lobby_id != 0: return
 
 	var selected_lobby_type := lobby_type_input.get_selected_id()
-	var lobby_type: Steam.LobbyType
+	var lobby_type: SteamMultiplayerPeer.LobbyType
 	match selected_lobby_type:
-		0: lobby_type = Steam.LobbyType.LOBBY_TYPE_PRIVATE
-		1: lobby_type = Steam.LobbyType.LOBBY_TYPE_FRIENDS_ONLY
-		2: lobby_type = Steam.LobbyType.LOBBY_TYPE_PUBLIC
-		3: lobby_type = Steam.LobbyType.LOBBY_TYPE_INVISIBLE
+		0: lobby_type = SteamMultiplayerPeer.LobbyType.LOBBY_TYPE_PRIVATE
+		1: lobby_type = SteamMultiplayerPeer.LobbyType.LOBBY_TYPE_FRIENDS_ONLY
+		2: lobby_type = SteamMultiplayerPeer.LobbyType.LOBBY_TYPE_PUBLIC
+		3: lobby_type = SteamMultiplayerPeer.LobbyType.LOBBY_TYPE_INVISIBLE
 
 	var max_members := int(max_members_input.get_line_edit().text)
-	Steam.createLobby(lobby_type, max_members)
+	Lobby.create(lobby_type, max_members)
 	_on_refresh_lobby_search()
 
 func _on_lobby_created(result: int, this_lobby_id: int) -> void:
@@ -120,6 +121,10 @@ func _on_lobby_created(result: int, this_lobby_id: int) -> void:
 	Steam.setLobbyJoinable(this_lobby_id, true)
 	Steam.setLobbyData(this_lobby_id, "name", lobby_name_input.text)
 	Steam.allowP2PPacketRelay(true)
+
+	Lobby.lobby_id = this_lobby_id
+	Lobby.update_lobby_members()
+	_on_my_lobby_changed()
 
 	my_lobby_control.visible = true
 	create_lobby_control.visible = false

@@ -95,9 +95,10 @@ text = "Quit"
 
 [node name="Body" type="TabContainer" parent="MarginContainer/Content"]
 layout_mode = 2
-current_tab = 0
+current_tab = 1
 
 [node name="Play" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -121,7 +122,6 @@ layout_mode = 2
 columns = 5
 
 [node name="Lobby" type="Control" parent="MarginContainer/Content/Body"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -144,6 +144,7 @@ dragging_enabled = false
 dragger_visibility = 1
 
 [node name="MyLobby" type="VSplitContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit"]
+visible = false
 layout_mode = 2
 dragging_enabled = false
 dragger_visibility = 1
@@ -163,7 +164,6 @@ text = "Leave"
 layout_mode = 2
 
 [node name="CreateLobby" type="VSplitContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit"]
-visible = false
 layout_mode = 2
 dragging_enabled = false
 dragger_visibility = 1
