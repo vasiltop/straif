@@ -1,14 +1,24 @@
 extends Node
 
 signal my_lobby_changed
+signal player_switched_map(pid: int, map: MapData)
 
 var lobby_id: int
 var lobby_members: Array[Member]
 var peer: MultiplayerPeer
 var lobby_name: String
+var current_map: MapData
 
-enum NETWORK_TYPE { ENET, STEAM }
-var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
+# enum NETWORK_TYPE { ENET, STEAM }
+# var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
+
+@rpc("any_peer", "call_local", "reliable")
+func switched_map(mid: int) -> void:
+	var mm: Maps = MapManager
+
+	var data := mm.get_map_with_id(mid)
+	if not data: return
+	player_switched_map.emit(multiplayer.get_remote_sender_id(), data)
 
 func _ready() -> void:
 	Steam.lobby_joined.connect(_on_lobby_joined)
@@ -62,18 +72,20 @@ func create_steam_lobby(type: SteamMultiplayerPeer.LobbyType, max_members: int) 
 func _init_steam_callbacks(p: SteamMultiplayerPeer) -> void:
 	p.lobby_chat_update.connect(_on_steam_lobby_chat_update)
 	p.lobby_created.connect(_on_steam_lobby_created)
+	p.peer_connected.connect(_on_enet_peer_connected)
+	p.peer_disconnected.connect(_on_enet_peer_disconnected)
 
 func _init_enet_callbacks(p: ENetMultiplayerPeer) -> void:
 	p.peer_connected.connect(_on_enet_peer_connected)
 	p.peer_disconnected.connect(_on_enet_peer_disconnected)
 
 func _on_enet_peer_connected(id: int) -> void:
-	print("Connected: %s" % id)
+	print("Enet peer Connected: %s" % id)
 	lobby_members.append(Member.new(id, "Unnamed Player"))
 	my_lobby_changed.emit()
 
 func _on_enet_peer_disconnected(id: int) -> void:
-	print("Disconnected: %s" % id)
+	print("Enet peer Disconnected: %s" % id)
 	for i in range(len(lobby_members)):
 		var m := lobby_members[i]
 		if m.id == id:
@@ -99,7 +111,7 @@ func create_enet_lobby() -> void:
 func _init_enet_lobby(p: ENetMultiplayerPeer) -> void:
 	lobby_members.clear()
 	lobby_id = -1
-	lobby_members.append(Member.new(multiplayer.get_unique_id(), "Unnamed Player"))
+	lobby_members.append(Member.new(multiplayer.get_unique_id(), "Me"))
 	my_lobby_changed.emit()
 	_init_enet_callbacks(p)
 

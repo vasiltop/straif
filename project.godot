@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Main="*res://src/main.gd"
 Lobby="*res://src/lobby.gd"
+MapManager="*res://src/map_manager/map_manager.tscn"
 
 [debug]
 

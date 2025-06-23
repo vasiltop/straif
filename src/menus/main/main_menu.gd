@@ -18,8 +18,6 @@ class_name MainMenu extends Control
 @onready var join_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title/JoinLocal
 @onready var _lobby_refresh_timer := BetterTimer.new(self, 1.0, _on_refresh_lobby_search)
 
-@export var maps: Array[MapData]
-
 func _ready() -> void:
 	Steam.avatar_loaded.connect(_on_loaded_avatar)
 	quit_btn.pressed.connect(get_tree().quit)
@@ -41,7 +39,9 @@ func _ready() -> void:
 	_instantiate_maps()	
 
 func _instantiate_maps() -> void:
-	for map in maps:
+	var mm: Maps = MapManager
+
+	for map in mm.maps:
 		var btn := Button.new()
 		btn.text = "%s\n Tier: %s/5" % [map.name, map.tier]
 		btn.custom_minimum_size = Vector2(100, 100)
