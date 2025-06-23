@@ -4,6 +4,7 @@ signal jumped
 
 @onready var camera: Camera3D = $Camera
 @onready var timer_label: Label = $UI/Timer
+@onready var map: Map = $".."
 
 const MAX_G_SPEED := 4.3
 const MAX_G_ACCEL := MAX_G_SPEED * 8
@@ -26,6 +27,11 @@ func _process(delta: float) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 	_movement_process(delta)
+
+func _physics_process(_delta: float) -> void:
+	for member in Lobby.lobby_members:
+		if map.player_exists(member.id):
+			map.moved.rpc(global_position)
 
 func set_timer(value: float) -> void:
 	timer_label.text = str(snapped(value, 0.001)) + " s"

@@ -51,6 +51,7 @@ func _instantiate_maps() -> void:
 				var base_path := "res://src/maps/"
 				var path := base_path + map.name.to_lower().replace(" ", "_") + ".tscn"
 				get_tree().change_scene_to_file(path)
+				Lobby.current_map = map
 		)
 
 func _on_my_lobby_changed() -> void:

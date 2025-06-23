@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bo604shg5pmf8"]
+
+[ext_resource type="Script" uid="uid://bwgdcwyn27goc" path="res://src/dummy_player/dummy_player.gd" id="1_2c7fg"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5d4im"]
+radius = 0.25
+
+[node name="DummyPlayer" type="Node3D"]
+script = ExtResource("1_2c7fg")
+metadata/_custom_type_script = "uid://bwgdcwyn27goc"
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_5d4im")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+billboard = 2
+text = "Unnamed Player"

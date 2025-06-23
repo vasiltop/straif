@@ -2,6 +2,7 @@ extends Node
 
 signal my_lobby_changed
 signal player_switched_map(pid: int, map: MapData)
+signal player_diconnected(pid: int)
 
 var lobby_id: int
 var lobby_members: Array[Member]
@@ -12,14 +13,14 @@ var current_map: MapData
 enum NETWORK_TYPE { ENET, STEAM }
 var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
 
-@rpc("any_peer", "call_local", "reliable")
+@rpc("any_peer", "call_remote", "reliable")
 func switched_map(mid: int) -> void:
 	var mm: Maps = MapManager
-
 	var data := mm.get_map_with_id(mid)
 	if not data: return
-	player_switched_map.emit(multiplayer.get_remote_sender_id(), data)
 
+	player_switched_map.emit(multiplayer.get_remote_sender_id(), data)
+	print("Player %d switched to map %s" % [multiplayer.get_remote_sender_id(), data.name])
 
 func _ready() -> void:
 	Steam.lobby_joined.connect(_on_lobby_joined)
@@ -89,6 +90,9 @@ func _on_enet_peer_connected(id: int) -> void:
 
 	my_lobby_changed.emit()	
 
+	if current_map:
+		switched_map.rpc(current_map.mid)
+
 func _on_enet_peer_disconnected(id: int) -> void:
 	if network_type == NETWORK_TYPE.ENET:
 		print("Enet peer Disconnected: %s" % id)
@@ -101,6 +105,7 @@ func _on_enet_peer_disconnected(id: int) -> void:
 		update_lobby_members()
 	
 	my_lobby_changed.emit()
+	player_diconnected.emit(id)
 
 func _on_steam_lobby_created(result: int, this_lobby_id: int) -> void:
 	if result != 1: return
