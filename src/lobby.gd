@@ -9,8 +9,8 @@ var peer: MultiplayerPeer
 var lobby_name: String
 var current_map: MapData
 
-# enum NETWORK_TYPE { ENET, STEAM }
-# var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
+enum NETWORK_TYPE { ENET, STEAM }
+var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
 
 @rpc("any_peer", "call_local", "reliable")
 func switched_map(mid: int) -> void:
@@ -20,12 +20,11 @@ func switched_map(mid: int) -> void:
 	if not data: return
 	player_switched_map.emit(multiplayer.get_remote_sender_id(), data)
 
+
 func _ready() -> void:
 	Steam.lobby_joined.connect(_on_lobby_joined)
 
 func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
-	lobby_members.clear()
-
 	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 		lobby_id = this_lobby_id
 		update_lobby_members()
@@ -62,15 +61,17 @@ func join_steam_lobby(lid: int) -> void:
 	steam_peer.connect_lobby(lid)
 	multiplayer.multiplayer_peer = steam_peer
 	_init_steam_callbacks(steam_peer)
+	network_type = NETWORK_TYPE.STEAM
 
 func create_steam_lobby(type: SteamMultiplayerPeer.LobbyType, max_members: int) -> void:
 	var steam_peer := SteamMultiplayerPeer.new()
 	steam_peer.create_lobby(type, max_members)
 	multiplayer.multiplayer_peer = steam_peer
 	_init_steam_callbacks(steam_peer)
+	network_type = NETWORK_TYPE.STEAM
 
 func _init_steam_callbacks(p: SteamMultiplayerPeer) -> void:
-	p.lobby_chat_update.connect(_on_steam_lobby_chat_update)
+	#p.lobby_chat_update.connect(_on_steam_lobby_chat_update)
 	p.lobby_created.connect(_on_steam_lobby_created)
 	p.peer_connected.connect(_on_enet_peer_connected)
 	p.peer_disconnected.connect(_on_enet_peer_disconnected)
@@ -80,18 +81,26 @@ func _init_enet_callbacks(p: ENetMultiplayerPeer) -> void:
 	p.peer_disconnected.connect(_on_enet_peer_disconnected)
 
 func _on_enet_peer_connected(id: int) -> void:
-	print("Enet peer Connected: %s" % id)
-	lobby_members.append(Member.new(id, "Unnamed Player"))
-	my_lobby_changed.emit()
+	if network_type == NETWORK_TYPE.ENET:
+		print("Enet peer Connected: %s" % id)
+		lobby_members.append(Member.new(id, "Unnamed Player"))
+	else:
+		update_lobby_members()
+
+	my_lobby_changed.emit()	
 
 func _on_enet_peer_disconnected(id: int) -> void:
-	print("Enet peer Disconnected: %s" % id)
-	for i in range(len(lobby_members)):
-		var m := lobby_members[i]
-		if m.id == id:
-			lobby_members.remove_at(i)
-			my_lobby_changed.emit()
-			return
+	if network_type == NETWORK_TYPE.ENET:
+		print("Enet peer Disconnected: %s" % id)
+		for i in range(len(lobby_members)):
+			var m := lobby_members[i]
+			if m.id == id:
+				lobby_members.remove_at(i)
+				break	
+	else:
+		update_lobby_members()
+	
+	my_lobby_changed.emit()
 
 func _on_steam_lobby_created(result: int, this_lobby_id: int) -> void:
 	if result != 1: return
@@ -107,6 +116,7 @@ func create_enet_lobby() -> void:
 	enet_peer.create_client("127.0.0.1", 8008)
 	multiplayer.multiplayer_peer = enet_peer
 	_init_enet_lobby(enet_peer)
+	network_type = NETWORK_TYPE.ENET
 	
 func _init_enet_lobby(p: ENetMultiplayerPeer) -> void:
 	lobby_members.clear()
@@ -120,6 +130,8 @@ func join_enet_lobby() -> void:
 	enet_peer.create_server(8008, 10)
 	multiplayer.multiplayer_peer = enet_peer
 	_init_enet_lobby(enet_peer)
+	network_type = NETWORK_TYPE.ENET
+	
 
 class Member:
 	var id: int
