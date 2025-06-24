@@ -29,6 +29,7 @@ func _process(delta: float) -> void:
 	_movement_process(delta)
 
 func _physics_process(_delta: float) -> void:
+	Lobby.test.rpc_id(1)
 	for member in Lobby.lobby_members:
 		if map.player_exists(member.id):
 			map.moved.rpc(global_position)

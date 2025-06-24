@@ -36,6 +36,7 @@ func _on_player_switched_map(pid: int, map: MapData) -> void:
 		inst.name = str(pid)
 		inst.pid = pid
 		inst.global_position = start_pos
+		inst.set_name_label("Player: %d" % pid)
 
 @rpc("any_peer", "call_remote", "unreliable")
 func moved(pos: Vector3) -> void:

@@ -14,6 +14,10 @@ enum NETWORK_TYPE { ENET, STEAM }
 var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
 
 @rpc("any_peer", "call_remote", "reliable")
+func test() -> void:
+	print("received test")
+
+@rpc("any_peer", "call_remote", "reliable")
 func switched_map(mid: int) -> void:
 	var mm: Maps = MapManager
 	var data := mm.get_map_with_id(mid)
