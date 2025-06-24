@@ -23,6 +23,7 @@ func _process(delta: float) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE else Input.MOUSE_MODE_VISIBLE
 
 	if Input.is_action_just_pressed("main_menu"):
+		Lobby.switched_map.rpc(-1)
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
@@ -30,6 +31,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	for member in map.get_players():
+		print("sending")
 		map.moved.rpc_id(member.pid, global_position)
 
 func set_timer(value: float) -> void:

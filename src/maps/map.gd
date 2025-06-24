@@ -19,6 +19,7 @@ func _ready() -> void:
 	player.jumped.connect(_on_player_jump)
 	Lobby.player_switched_map.connect(_on_player_switched_map)
 	Lobby.player_diconnected.connect(_on_player_disconnected)
+	Lobby.player_left_map.connect(_on_player_disconnected)
 	Lobby.switched_map.rpc(Lobby.current_map.mid)
 
 func _on_player_disconnected(pid: int) -> void:

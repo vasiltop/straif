@@ -3,6 +3,7 @@ extends Node
 signal my_lobby_changed
 signal player_switched_map(pid: int, map: MapData)
 signal player_diconnected(pid: int)
+signal player_left_map(pid: int)
 
 var lobby_id: int
 var lobby_members: Array[Member]
@@ -14,6 +15,9 @@ var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
 
 @rpc("any_peer", "call_remote", "reliable")
 func switched_map(mid: int) -> void:
+	if mid == -1:
+		player_left_map.emit(multiplayer.get_remote_sender_id())	
+
 	var mm: Maps = MapManager
 	var data := mm.get_map_with_id(mid)
 	if not data: return
