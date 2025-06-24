@@ -31,7 +31,6 @@ func _process(delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	for member in map.get_players():
-		print("sending")
 		map.moved.rpc_id(member.pid, global_position)
 
 func set_timer(value: float) -> void:

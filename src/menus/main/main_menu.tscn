@@ -214,6 +214,7 @@ text = "Max Members:"
 
 [node name="MaxMembers" type="SpinBox" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/MaxMembers"]
 layout_mode = 2
+value = 5.0
 
 [node name="Create" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
 layout_mode = 2
