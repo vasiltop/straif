@@ -9,6 +9,7 @@ radius = 0.25
 radius = 0.25
 
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 2
 script = ExtResource("1_4anbu")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
@@ -26,3 +27,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 offset_right = 40.0
 offset_bottom = 23.0
 text = "0.00s"
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)
+billboard = 2
+text = "Unnamed Player"

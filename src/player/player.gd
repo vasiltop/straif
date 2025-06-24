@@ -4,7 +4,8 @@ signal jumped
 
 @onready var camera: Camera3D = $Camera
 @onready var timer_label: Label = $UI/Timer
-@onready var map: Map = $".."
+@onready var ui: CanvasLayer = $UI
+@onready var name_label: Label3D = $Name
 
 const MAX_G_SPEED := 4.3
 const MAX_G_ACCEL := MAX_G_SPEED * 8
@@ -14,11 +15,22 @@ const MAX_SLOPE: float = 1
 const JUMP_FORCE: float = 4
 
 var gravity: float = 11
+var pid: int
+
+func is_me() -> bool:
+	return multiplayer.get_unique_id() == pid
+
+func set_name_label(value: String) -> void:
+	name_label.text = value
 
 func _ready() -> void:
+	camera.current = false
+	ui.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _process(delta: float) -> void:
+	if not is_me(): return
+
 	if Input.is_action_just_pressed("toggle_mouse_mode"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE else Input.MOUSE_MODE_VISIBLE
 
@@ -30,6 +42,9 @@ func _process(delta: float) -> void:
 	_movement_process(delta)
 
 func _physics_process(_delta: float) -> void:
+	if not is_me(): return
+
+	var map: Map = get_parent()
 	for member in map.get_players():
 		map.moved.rpc_id(member.pid, global_position)
 

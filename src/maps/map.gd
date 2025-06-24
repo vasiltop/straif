@@ -8,6 +8,7 @@ class_name Map extends Node
 @onready var player_container: Node = $Players
 
 const DummyPlayerScene := preload("res://src/dummy_player/dummy_player.tscn")
+const PlayerScene := preload("res://src/player/player.tscn")
 
 var timer: float = 0.0
 var completed: bool = false
@@ -22,12 +23,17 @@ func _ready() -> void:
 	Lobby.player_left_map.connect(_on_player_disconnected)
 	Lobby.switched_map.rpc(Lobby.current_map.mid)
 
+	player.camera.make_current()
+	player.ui.visible = true
+	player.pid = multiplayer.get_unique_id()
+
 func _on_player_disconnected(pid: int) -> void:
 	var p := find_player(pid)
 	if p == null: return
 	p.queue_free()
 
 func _on_player_switched_map(pid: int, map: MapData) -> void:
+	print("Player %d switched to map %s" % [pid, map.name])
 	if Lobby.current_map.mid != map.mid: return
 
 	_received_switch.rpc_id(pid)
@@ -40,7 +46,7 @@ func _received_switch() -> void:
 		spawn_player(multiplayer.get_remote_sender_id())
 
 func spawn_player(pid: int) -> void:
-	var inst: DummyPlayer = DummyPlayerScene.instantiate()
+	var inst: Player = PlayerScene.instantiate()
 	player_container.add_child(inst)
 	inst.name = str(pid)
 	inst.pid = pid
@@ -54,21 +60,20 @@ func moved(pos: Vector3) -> void:
 
 	p.global_position = pos
 
-func find_player(pid: int) -> DummyPlayer:
+func find_player(pid: int) -> Player:
 	var players := player_container.get_children()
 
 	for p in players:
-		if p is DummyPlayer:
-			var dp := p as DummyPlayer
+		if p is Player:
+			var dp := p as Player 
 			if dp.pid == pid:
 				return dp
 
 	return null
 
-func get_players() -> Array[DummyPlayer]:
-	var ret: Array[DummyPlayer]
+func get_players() -> Array[Player]:
+	var ret: Array[Player]
 	ret.assign(player_container.get_children())
-
 	return ret
 
 func player_exists(pid: int) -> bool:
