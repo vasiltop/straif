@@ -56,6 +56,12 @@ func find_player(pid: int) -> DummyPlayer:
 
 	return null
 
+func get_players() -> Array[DummyPlayer]:
+	var ret: Array[DummyPlayer]
+	ret.assign(player_container.get_children())
+
+	return ret
+
 func player_exists(pid: int) -> bool:
 	return find_player(pid) != null
 

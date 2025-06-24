@@ -6,7 +6,6 @@ signal player_diconnected(pid: int)
 
 var lobby_id: int
 var lobby_members: Array[Member]
-var peer: MultiplayerPeer
 var lobby_name: String
 var current_map: MapData
 
@@ -45,7 +44,9 @@ func update_lobby_members() -> void:
 	for i in range(0, num_members):
 		var member_steam_id := Steam.getLobbyMemberByIndex(lobby_id, i)
 		var member_steam_name := Steam.getFriendPersonaName(member_steam_id)
-		lobby_members.append(Member.new(member_steam_id, member_steam_name))
+		var steam_peer: SteamMultiplayerPeer = multiplayer.multiplayer_peer 
+		var peer_id := steam_peer.get_peer_id_from_steam64(member_steam_id)
+		lobby_members.append(Member.new(member_steam_id, member_steam_name, peer_id))
 
 func set_lobby_name(lname: String) -> void:
 	self.lobby_name = lname 
@@ -88,7 +89,7 @@ func _init_enet_callbacks(p: ENetMultiplayerPeer) -> void:
 func _on_enet_peer_connected(id: int) -> void:
 	if network_type == NETWORK_TYPE.ENET:
 		print("Enet peer Connected: %s" % id)
-		lobby_members.append(Member.new(id, "Unnamed Player"))
+		lobby_members.append(Member.new(id, "Unnamed Player", id))
 	else:
 		update_lobby_members()
 
@@ -130,9 +131,12 @@ func create_enet_lobby() -> void:
 func _init_enet_lobby(p: ENetMultiplayerPeer) -> void:
 	lobby_members.clear()
 	lobby_id = -1
-	lobby_members.append(Member.new(multiplayer.get_unique_id(), "Me"))
+	lobby_members.append(Member.new(multiplayer.get_unique_id(), "Me", net_id()))
 	my_lobby_changed.emit()
 	_init_enet_callbacks(p)
+
+func net_id() -> int:
+	return multiplayer.get_unique_id()
 
 func join_enet_lobby() -> void:
 	var enet_peer := ENetMultiplayerPeer.new()
@@ -145,7 +149,9 @@ func join_enet_lobby() -> void:
 class Member:
 	var id: int
 	var name: String
+	var net_id: int
 
-	func _init(m_id: int, m_name: String) -> void:
+	func _init(m_id: int, m_name: String, pnet_id: int) -> void:
 		self.id = m_id
 		self.name = m_name
+		self.net_id = pnet_id

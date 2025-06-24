@@ -29,10 +29,8 @@ func _process(delta: float) -> void:
 	_movement_process(delta)
 
 func _physics_process(_delta: float) -> void:
-	Lobby.test.rpc_id(1)
-	for member in Lobby.lobby_members:
-		if map.player_exists(member.id):
-			map.moved.rpc(global_position)
+	for member in map.get_players():
+		map.moved.rpc_id(member.pid, global_position)
 
 func set_timer(value: float) -> void:
 	timer_label.text = str(snapped(value, 0.001)) + " s"
