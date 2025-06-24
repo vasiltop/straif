@@ -29,14 +29,22 @@ func _on_player_disconnected(pid: int) -> void:
 func _on_player_switched_map(pid: int, map: MapData) -> void:
 	if Lobby.current_map.mid != map.mid: return
 
+	_received_switch.rpc_id(pid)
 	if not player_exists(pid):
-		Lobby.switched_map.rpc_id(pid, Lobby.current_map.mid)
-		var inst: DummyPlayer = DummyPlayerScene.instantiate()
-		player_container.add_child(inst)
-		inst.name = str(pid)
-		inst.pid = pid
-		inst.global_position = start_pos
-		inst.set_name_label("Player: %d" % pid)
+		spawn_player(pid)
+
+@rpc("any_peer", "call_remote", "reliable")
+func _received_switch() -> void:
+	if not player_exists(multiplayer.get_remote_sender_id()):
+		spawn_player(multiplayer.get_remote_sender_id())
+
+func spawn_player(pid: int) -> void:
+	var inst: DummyPlayer = DummyPlayerScene.instantiate()
+	player_container.add_child(inst)
+	inst.name = str(pid)
+	inst.pid = pid
+	inst.global_position = start_pos
+	inst.set_name_label("Player: %d" % pid)
 
 @rpc("any_peer", "call_remote", "unreliable")
 func moved(pos: Vector3) -> void:

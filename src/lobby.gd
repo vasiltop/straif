@@ -13,17 +13,12 @@ enum NETWORK_TYPE { ENET, STEAM }
 var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
 
 @rpc("any_peer", "call_remote", "reliable")
-func test() -> void:
-	print("received test")
-
-@rpc("any_peer", "call_remote", "reliable")
 func switched_map(mid: int) -> void:
 	var mm: Maps = MapManager
 	var data := mm.get_map_with_id(mid)
 	if not data: return
 
 	player_switched_map.emit(multiplayer.get_remote_sender_id(), data)
-	print("Player %d switched to map %s" % [multiplayer.get_remote_sender_id(), data.name])
 
 func _ready() -> void:
 	Steam.lobby_joined.connect(_on_lobby_joined)
