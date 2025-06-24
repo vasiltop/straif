@@ -38,6 +38,9 @@ func _ready() -> void:
 	_lobby_refresh_timer.start()
 	_instantiate_maps()	
 
+	if Lobby.lobby_id != 0 && Lobby.network_type == Lobby.NETWORK_TYPE.STEAM:
+		Lobby.update_lobby_members()
+
 func _instantiate_maps() -> void:
 	var mm: Maps = MapManager
 

@@ -46,6 +46,8 @@ func update_lobby_members() -> void:
 		var steam_peer: SteamMultiplayerPeer = multiplayer.multiplayer_peer 
 		var peer_id := steam_peer.get_peer_id_from_steam64(member_steam_id)
 		lobby_members.append(Member.new(member_steam_id, member_steam_name, peer_id))
+	
+	my_lobby_changed.emit()
 
 func set_lobby_name(lname: String) -> void:
 	self.lobby_name = lname 
