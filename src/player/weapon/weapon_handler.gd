@@ -4,15 +4,18 @@ const RAY_LENGTH := 1000
 
 @onready var player: Player = $"../.."
 @onready var weapon_scene: Node3D = null
-
+@onready var raycast: RayCast3D = $RayCast
 @onready var r_hand_ik: SkeletonIK3D = $arms/ArmArmature/Skeleton3D/RHandIk
 @onready var l_hand_ik: SkeletonIK3D = $arms/ArmArmature/Skeleton3D/LHandIk
 @onready var start_pos := position
+@onready var audio_player: AudioStreamPlayer3D = $AudioPlayer
 
 @export var sway_left: Vector3
 @export var sway_right: Vector3
 @export var sway_left_rot: Vector3
 @export var sway_right_rot: Vector3
+
+var hit_sound: AudioStreamPlayer = AudioStreamPlayer.new()
 
 const MAX_SWAY := 5
 const SWAY_LERP := 1
@@ -46,6 +49,7 @@ func _process(delta: float) -> void:
 	
 	_sway(delta)
 
+
 func _sway(delta: float) -> void:
 	var sway := start_pos
 	var sway_rot := Vector3.ZERO
@@ -70,25 +74,19 @@ func _try_shoot() -> void:
 	
 	time_since_last_shot = 0
 
-	var anim: AnimationPlayer = weapon_scene.get_node("Anim")
+	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 	anim.play("shoot")
 
-	var space_state := get_world_3d().direct_space_state
-	var cam := player.camera
-	var mouse_pos := get_viewport().get_mouse_position()
-
-	var origin := cam.project_ray_origin(mouse_pos)
-	var end := origin + cam.project_ray_normal(mouse_pos) * RAY_LENGTH
-	var query := PhysicsRayQueryParameters3D.create(origin, end)
-	var result := space_state.intersect_ray(query)
+	audio_player.stream = current_weapon.shoot_sound
+	audio_player.play()
+	player.camera.shake(0.1, 0.005)
 	
-	if not result.has("collider"): return
-
-	var collider: Object = result.collider
+	var collider := raycast.get_collider()
+	if not collider: return
 
 	if collider is BodyPart:
 		var body_part: BodyPart = collider
-		body_part.apply_damage(current_weapon.damage)
+		body_part.apply_damage(hit_sound, current_weapon.damage)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:

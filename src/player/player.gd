@@ -2,7 +2,7 @@ class_name Player extends CharacterBody3D
 
 signal jumped
 
-@onready var camera: Camera3D = $Camera
+@onready var camera: PlayerCamera = $Camera
 @onready var gun_camera: Camera3D = $Camera/GunVPContainer/GunVP/GunCam
 @onready var gun_vp: SubViewport = $Camera/GunVPContainer/GunVP
 @onready var timer_label: Label = $UI/Timer
@@ -36,6 +36,7 @@ func setup(map: Map) -> void:
 
 	# temp, should be set by the map later
 	weapon_handler.set_weapon(weapon_handler.current_weapon)
+	weapon_handler.add_child(weapon_handler.hit_sound)
 
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_on_viewport_resized()

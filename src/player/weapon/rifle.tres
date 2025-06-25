@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3 uid="uid://dy8rc6oycy3vk"]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3 uid="uid://dy8rc6oycy3vk"]
 
 [ext_resource type="PackedScene" uid="uid://cmxw7fs0sd46u" path="res://src/player/weapon/scenes/rifle.tscn" id="1_0cw4v"]
 [ext_resource type="Script" uid="uid://bmwqlto471f6e" path="res://src/player/weapon/weapon_data.gd" id="1_f5ypd"]
+[ext_resource type="AudioStream" uid="uid://oaxwt706t7l1" path="res://src/sounds/shoot.mp3" id="3_jbptj"]
 
 [resource]
 script = ExtResource("1_f5ypd")
@@ -9,4 +10,5 @@ name = "Rifle"
 weapon_shot_delay = 0.3
 damage = 50.0
 scene = ExtResource("1_0cw4v")
+shoot_sound = ExtResource("3_jbptj")
 metadata/_custom_type_script = "uid://bmwqlto471f6e"

@@ -93,7 +93,7 @@ layers = 2
 mesh = SubResource("ArrayMesh_goxyr")
 skeleton = NodePath("")
 
-[node name="Anim" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_sff3o")
 }

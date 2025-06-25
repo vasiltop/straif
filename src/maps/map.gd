@@ -132,5 +132,8 @@ func restart() -> void:
 	completed = false
 	running = false
 
+	for node in target_container.get_children():
+		node.queue_free()
+
 	for spawn in get_target_spawns():
 		spawn_target(spawn.global_position)

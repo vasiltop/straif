@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=4 uid="uid://j1px6ey07p2f"]
+[gd_scene load_steps=10 format=4 uid="uid://j1px6ey07p2f"]
 
 [ext_resource type="Script" uid="uid://ds6cq7tyxjvrc" path="res://src/player/player.gd" id="1_4anbu"]
+[ext_resource type="Script" uid="uid://bocfext65sbpj" path="res://src/player/camera.gd" id="2_244u8"]
 [ext_resource type="Script" uid="uid://dys3s0o8myw2e" path="res://src/player/weapon/weapon_handler.gd" id="2_rxibo"]
 [ext_resource type="Texture2D" uid="uid://droeve8x6utep" path="res://src/player/arms_cowboy.jpg" id="4_244u8"]
 
@@ -69,6 +70,7 @@ script = ExtResource("1_4anbu")
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 cull_mask = 1048573
+script = ExtResource("2_244u8")
 
 [node name="WeaponHandler" type="Node3D" parent="Camera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 0.177)
@@ -77,6 +79,10 @@ sway_left = Vector3(-0.1, 0, 0)
 sway_right = Vector3(0.1, 0, 0)
 sway_left_rot = Vector3(0, 0, 0.1)
 sway_right_rot = Vector3(0, 0, -0.1)
+
+[node name="RayCast" type="RayCast3D" parent="Camera/WeaponHandler"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -0.177)
+target_position = Vector3(0, 0, -100)
 
 [node name="arms" type="Node3D" parent="Camera/WeaponHandler"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.253972, -0.353189, -0.32675)
@@ -146,6 +152,8 @@ tip_bone = &"hand.r"
 [node name="LHandIk" type="SkeletonIK3D" parent="Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
 root_bone = &"middle"
 tip_bone = &"hand.l"
+
+[node name="AudioPlayer" type="AudioStreamPlayer3D" parent="Camera/WeaponHandler"]
 
 [node name="GunVPContainer" type="SubViewportContainer" parent="Camera"]
 anchors_preset = 15
