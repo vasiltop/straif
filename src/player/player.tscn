@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://j1px6ey07p2f"]
+[gd_scene load_steps=5 format=3 uid="uid://j1px6ey07p2f"]
 
 [ext_resource type="Script" uid="uid://ds6cq7tyxjvrc" path="res://src/player/player.gd" id="1_4anbu"]
+[ext_resource type="Script" uid="uid://dys3s0o8myw2e" path="res://src/player/weapon/weapon_handler.gd" id="2_rxibo"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qnmj6"]
 radius = 0.25
@@ -28,7 +29,35 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "0.00s"
 
+[node name="Crosshair" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="ColorRect" type="ColorRect" parent="UI/Crosshair"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 2.0
+offset_bottom = 8.0
+
+[node name="ColorRect2" type="ColorRect" parent="UI/Crosshair"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -2.0
+offset_right = 8.0
+offset_bottom = 2.0
+
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)
 billboard = 2
 text = "Unnamed Player"
+
+[node name="WeaponHandler" type="Node3D" parent="."]
+script = ExtResource("2_rxibo")

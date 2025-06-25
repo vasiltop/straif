@@ -6,9 +6,10 @@ class_name Map extends Node
 @onready var target_container: Node = $Targets
 @onready var start_pos: Vector3 = player.global_position
 @onready var player_container: Node = $Players
+@onready var target_spawns_container: Node = $TargetSpawns
 
-const DummyPlayerScene := preload("res://src/dummy_player/dummy_player.tscn")
 const PlayerScene := preload("res://src/player/player.tscn")
+const TargetScene := preload("res://src/target/target.tscn")
 
 var timer: float = 0.0
 var completed: bool = false
@@ -26,6 +27,7 @@ func _ready() -> void:
 	player.camera.make_current()
 	player.ui.visible = true
 	player.pid = multiplayer.get_unique_id()
+	player.map = self
 
 func _on_player_disconnected(pid: int) -> void:
 	var p := find_player(pid)
@@ -76,6 +78,11 @@ func get_players() -> Array[Player]:
 	ret.assign(player_container.get_children())
 	return ret
 
+func get_target_spawns() -> Array[Node3D]:
+	var ret: Array[Node3D]
+	ret.assign(target_spawns_container.get_children())
+	return ret
+
 func player_exists(pid: int) -> bool:
 	return find_player(pid) != null
 
@@ -112,6 +119,11 @@ func _win() -> void:
 
 	print("Map finished in: %s" % timer)
 
+func spawn_target(pos: Vector3) -> void:
+	var inst: Target = TargetScene.instantiate()
+	target_container.add_child(inst)
+	inst.global_position = pos
+
 func restart() -> void:
 	player.global_position = start_pos
 	player.velocity = Vector3.ZERO
@@ -120,3 +132,6 @@ func restart() -> void:
 
 	completed = false
 	running = false
+
+	for spawn in get_target_spawns():
+		spawn_target(spawn.global_position)

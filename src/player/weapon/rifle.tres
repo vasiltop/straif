@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://dy8rc6oycy3vk"]
+
+[ext_resource type="Script" uid="uid://bmwqlto471f6e" path="res://src/player/weapon/weapon_data.gd" id="1_f5ypd"]
+
+[resource]
+script = ExtResource("1_f5ypd")
+name = "Rifle"
+weapon_shot_delay = 0.2
+damage = 50.0
+metadata/_custom_type_script = "uid://bmwqlto471f6e"

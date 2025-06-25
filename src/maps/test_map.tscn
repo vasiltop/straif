@@ -41,6 +41,7 @@ environment = SubResource("Environment_mn54f")
 
 [node name="EndZone" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.0101, 0, -16.9347)
+collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="EndZone"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01821, 0)
@@ -54,3 +55,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01821, 0)
 shape = SubResource("BoxShape3D_kctwv")
 
 [node name="Players" type="Node" parent="."]
+
+[node name="TargetSpawns" type="Node" parent="."]
+
+[node name="Spawn" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.6875, 1.11347, 0)

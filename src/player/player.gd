@@ -16,6 +16,7 @@ const JUMP_FORCE: float = 4
 
 var gravity: float = 11
 var pid: int
+var map: Map
 
 func is_me() -> bool:
 	return multiplayer.get_unique_id() == pid

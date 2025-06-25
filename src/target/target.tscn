@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://voqeaw37jglb"]
+
+[ext_resource type="Script" uid="uid://ddc5clobxxwp2" path="res://src/target/target.gd" id="1_i0tq7"]
+[ext_resource type="Script" uid="uid://daiqu1ltgie0e" path="res://src/target/head_body_part.gd" id="2_0tpb1"]
+[ext_resource type="Script" uid="uid://cuhfu4wnvmo3h" path="res://src/target/body_part.gd" id="2_5hcwb"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5hcwb"]
+radius = 0.25
+height = 0.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5hcwb"]
+radius = 0.25
+height = 0.5
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i0tq7"]
+radius = 0.25
+height = 1.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_i0tq7"]
+radius = 0.25
+height = 1.5
+
+[node name="Target" type="Node3D"]
+script = ExtResource("1_i0tq7")
+
+[node name="Head" type="StaticBody3D" parent="."]
+script = ExtResource("2_0tpb1")
+metadata/_custom_type_script = "uid://daiqu1ltgie0e"
+
+[node name="HeadCollider" type="CollisionShape3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+shape = SubResource("CapsuleShape3D_5hcwb")
+
+[node name="HeadMesh" type="MeshInstance3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("CapsuleMesh_5hcwb")
+skeleton = NodePath("../..")
+
+[node name="Torso" type="StaticBody3D" parent="."]
+script = ExtResource("2_5hcwb")
+
+[node name="BodyCollider" type="CollisionShape3D" parent="Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+shape = SubResource("CapsuleShape3D_i0tq7")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("CapsuleMesh_i0tq7")
+skeleton = NodePath("../..")
