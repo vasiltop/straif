@@ -24,11 +24,7 @@ func _ready() -> void:
 	Lobby.player_diconnected.connect(_on_player_disconnected)
 	Lobby.player_left_map.connect(_on_player_disconnected)
 	Lobby.switched_map.rpc(Lobby.current_map.mid)
-
-	player.camera.make_current()
-	player.ui.visible = true
-	player.pid = multiplayer.get_unique_id()
-	player.map = self
+	player.setup(self)
 
 func _on_player_disconnected(pid: int) -> void:
 	var p := find_player(pid)

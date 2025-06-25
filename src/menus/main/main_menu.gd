@@ -76,7 +76,7 @@ func _on_lobby_match_list(lobbies: Array) -> void:
 
 	for lobby_id: int in lobbies:
 		var lobby_name := Steam.getLobbyData(lobby_id, "name")
-		if lobby_name == "": lobby_name = "Unnamed Lobby"
+		if lobby_name == "": continue #lobby_name = "Unnamed Lobby"
 		if len(lobby_name) >= 32: lobby_name = lobby_name.substr(0, 32)
 
 		var btn := Button.new()
