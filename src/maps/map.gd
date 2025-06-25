@@ -5,6 +5,7 @@ class_name Map extends Node
 @onready var start_zone: Area3D = $StartZone
 @onready var target_container: Node = $Targets
 @onready var start_pos: Vector3 = player.global_position
+@onready var start_rotation: Vector3 = player.global_rotation
 @onready var player_container: Node = $Players
 @onready var target_spawns_container: Node = $TargetSpawns
 
@@ -126,6 +127,8 @@ func spawn_target(pos: Vector3) -> void:
 
 func restart() -> void:
 	player.global_position = start_pos
+	player.global_rotation = start_rotation
+	player.camera.global_rotation = start_rotation
 	player.velocity = Vector3.ZERO
 	timer = 0.0
 	player.set_timer(timer)
