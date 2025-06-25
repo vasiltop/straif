@@ -10,6 +10,7 @@ signal jumped
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Camera/WeaponHandler
 
+const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 4.3
 const MAX_G_ACCEL := MAX_G_SPEED * 8
 const MAX_A_SPEED := 0.7
@@ -20,6 +21,7 @@ const JUMP_FORCE: float = 4
 var gravity: float = 11
 var pid: int
 var map: Map
+var _run_audio_player := AudioStreamPlayer.new()
 
 func is_me() -> bool:
 	return multiplayer.get_unique_id() == pid
@@ -37,6 +39,8 @@ func setup(map: Map) -> void:
 	# temp, should be set by the map later
 	weapon_handler.set_weapon(weapon_handler.current_weapon)
 	weapon_handler.add_child(weapon_handler.hit_sound)
+
+	add_child(_run_audio_player)
 
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_on_viewport_resized()
@@ -88,6 +92,10 @@ func _movement_process(delta: float) -> void:
 
 	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
 	
+	if velocity.length() > 0 and not _run_audio_player.playing and grounded():
+		_run_audio_player.stream = RunSound
+		_run_audio_player.play()
+
 	move_and_slide()
 
 func _apply_gravity(velocity_y: float, delta: float) -> float:
