@@ -49,6 +49,7 @@ shape = SubResource("BoxShape3D_kctwv")
 
 [node name="StartZone" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.0101, 0, 22.5265)
+collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StartZone"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01821, 0)
