@@ -67,12 +67,14 @@ radius = 0.25
 collision_layer = 2
 script = ExtResource("1_4anbu")
 
-[node name="Camera" type="Camera3D" parent="."]
+[node name="Eye" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-cull_mask = 1048573
+
+[node name="Camera" type="Camera3D" parent="Eye"]
+cull_mask = 1
 script = ExtResource("2_244u8")
 
-[node name="WeaponHandler" type="Node3D" parent="Camera"]
+[node name="WeaponHandler" type="Node3D" parent="Eye/Camera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 0.177)
 script = ExtResource("2_rxibo")
 sway_left = Vector3(-0.1, 0, 0)
@@ -80,16 +82,16 @@ sway_right = Vector3(0.1, 0, 0)
 sway_left_rot = Vector3(0, 0, 0.1)
 sway_right_rot = Vector3(0, 0, -0.1)
 
-[node name="RayCast" type="RayCast3D" parent="Camera/WeaponHandler"]
+[node name="RayCast" type="RayCast3D" parent="Eye/Camera/WeaponHandler"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -0.177)
 target_position = Vector3(0, 0, -100)
 
-[node name="arms" type="Node3D" parent="Camera/WeaponHandler"]
+[node name="arms" type="Node3D" parent="Eye/Camera/WeaponHandler"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.253972, -0.353189, -0.32675)
 
-[node name="ArmArmature" type="Node3D" parent="Camera/WeaponHandler/arms"]
+[node name="ArmArmature" type="Node3D" parent="Eye/Camera/WeaponHandler/arms"]
 
-[node name="Skeleton3D" type="Skeleton3D" parent="Camera/WeaponHandler/arms/ArmArmature"]
+[node name="Skeleton3D" type="Skeleton3D" parent="Eye/Camera/WeaponHandler/arms/ArmArmature"]
 bones/0/name = "middle"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00573138, -0.670571, 9.00972e-08)
@@ -140,35 +142,35 @@ bones/6/position = Vector3(3.4459e-08, 0.54399, 6.39488e-14)
 bones/6/rotation = Quaternion(-4.21509e-08, 6.53409e-08, -0.0900786, 0.995935)
 bones/6/scale = Vector3(1, 1, 1)
 
-[node name="CowboyArms" type="MeshInstance3D" parent="Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
+[node name="CowboyArms" type="MeshInstance3D" parent="Eye/Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
 layers = 2
 mesh = SubResource("ArrayMesh_eypsm")
 skin = SubResource("Skin_3gm4d")
 
-[node name="RHandIk" type="SkeletonIK3D" parent="Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
+[node name="RHandIk" type="SkeletonIK3D" parent="Eye/Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
 root_bone = &"middle"
 tip_bone = &"hand.r"
 
-[node name="LHandIk" type="SkeletonIK3D" parent="Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
+[node name="LHandIk" type="SkeletonIK3D" parent="Eye/Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
 root_bone = &"middle"
 tip_bone = &"hand.l"
 
-[node name="AudioPlayer" type="AudioStreamPlayer3D" parent="Camera/WeaponHandler"]
+[node name="AudioPlayer" type="AudioStreamPlayer3D" parent="Eye/Camera/WeaponHandler"]
 
-[node name="GunVPContainer" type="SubViewportContainer" parent="Camera"]
+[node name="GunVPContainer" type="SubViewportContainer" parent="Eye/Camera"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GunVP" type="SubViewport" parent="Camera/GunVPContainer"]
+[node name="GunVP" type="SubViewport" parent="Eye/Camera/GunVPContainer"]
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
-[node name="GunCam" type="Camera3D" parent="Camera/GunVPContainer/GunVP"]
+[node name="GunCam" type="Camera3D" parent="Eye/Camera/GunVPContainer/GunVP"]
 top_level = true
 cull_mask = 2
 

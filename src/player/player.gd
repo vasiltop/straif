@@ -2,13 +2,13 @@ class_name Player extends CharacterBody3D
 
 signal jumped
 
-@onready var camera: PlayerCamera = $Camera
-@onready var gun_camera: Camera3D = $Camera/GunVPContainer/GunVP/GunCam
-@onready var gun_vp: SubViewport = $Camera/GunVPContainer/GunVP
+@onready var camera: PlayerCamera = $Eye/Camera
+@onready var gun_camera: Camera3D = $Eye/Camera/GunVPContainer/GunVP/GunCam
+@onready var gun_vp: SubViewport = $Eye/Camera/GunVPContainer/GunVP
 @onready var timer_label: Label = $UI/Timer
 @onready var ui: CanvasLayer = $UI
 @onready var name_label: Label3D = $Name
-@onready var weapon_handler: WeaponHandler = $Camera/WeaponHandler
+@onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 4.3
@@ -31,9 +31,11 @@ func set_name_label(value: String) -> void:
 
 func setup(map: Map) -> void:
 	camera.make_current()
+	gun_camera.make_current()
 	ui.visible = true
 	pid = multiplayer.get_unique_id()
 	self.map = map
+	
 	weapon_handler.visible = true
 
 	# temp, should be set by the map later
@@ -51,6 +53,7 @@ func _on_viewport_resized() ->  void:
 
 func _ready() -> void:
 	camera.current = false
+	gun_camera.current = false
 	ui.visible = false
 	weapon_handler.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

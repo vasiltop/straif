@@ -14,7 +14,5 @@ func apply_damage(audio_player: AudioStreamPlayer, amount: float) -> void:
 	audio_player.stream = DamageSound
 	audio_player.play()
 
-	print(owned_by.health)
-
 	if owned_by.health <= 0:
 		owned_by.queue_free()

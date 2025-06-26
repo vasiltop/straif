@@ -1,8 +1,6 @@
 class_name WeaponHandler extends Node3D
 
-const RAY_LENGTH := 1000
-
-@onready var player: Player = $"../.."
+@onready var player: Player = $"../../.."
 @onready var weapon_scene: Node3D = null
 @onready var raycast: RayCast3D = $RayCast
 @onready var r_hand_ik: SkeletonIK3D = $arms/ArmArmature/Skeleton3D/RHandIk
@@ -15,11 +13,11 @@ const RAY_LENGTH := 1000
 @export var sway_left_rot: Vector3
 @export var sway_right_rot: Vector3
 
-var hit_sound: AudioStreamPlayer = AudioStreamPlayer.new()
-
 const MAX_SWAY := 5
 const SWAY_LERP := 1
+const RAY_LENGTH := 1000
 
+var hit_sound: AudioStreamPlayer = AudioStreamPlayer.new()
 var current_weapon: WeaponData = preload("res://src/player/weapon/rifle.tres") as WeaponData
 var mouse_mov := 0.0
 var time_since_last_shot: float = 0
@@ -77,11 +75,19 @@ func _try_shoot() -> void:
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 	anim.play("shoot")
 
+	var muzzle_flash: GPUParticles3D = weapon_scene.get_node("MuzzleFlash")
+	muzzle_flash.emitting = true
+
 	audio_player.stream = current_weapon.shoot_sound
 	audio_player.play()
 	player.camera.shake(0.1, 0.005)
 	
 	var collider := raycast.get_collider()
+	var hit_pos := Vector3.ZERO
+	hit_pos = raycast.get_collision_point()
+	
+	BulletTracer.spawn(self, muzzle_flash.global_position, hit_pos)
+	
 	if not collider: return
 
 	if collider is BodyPart:
@@ -89,6 +95,8 @@ func _try_shoot() -> void:
 		body_part.apply_damage(hit_sound, current_weapon.damage)
 
 func _input(event: InputEvent) -> void:
+	if not player.is_me(): return
+
 	if event is InputEventMouseMotion:
 		var motion: InputEventMouseMotion = event
 		mouse_mov = -motion.relative.x
