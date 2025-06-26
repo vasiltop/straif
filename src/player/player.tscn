@@ -66,8 +66,9 @@ bind/6/name = &"hand.r"
 bind/6/bone = -1
 bind/6/pose = Transform3D(-0.985888, 0.167415, 3.79832e-07, -0.167416, -0.985887, 1.32462e-07, 3.96649e-07, 6.70033e-08, 1, 1.34053, -0.94301, -4.70195e-07)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_244u8"]
-size = Vector3(0.5, 2.1, 0.5)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_244u8"]
+radius = 0.3
+height = 2.1
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -84,7 +85,7 @@ mesh = SubResource("BoxMesh_5f2sf")
 surface_material_override/0 = SubResource("StandardMaterial3D_244u8")
 
 [node name="Eye" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.854334, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
 
 [node name="Camera" type="Camera3D" parent="Eye"]
 cull_mask = 1
@@ -194,7 +195,7 @@ fov = 90.0
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
-shape = SubResource("BoxShape3D_244u8")
+shape = SubResource("CapsuleShape3D_244u8")
 
 [node name="UI" type="CanvasLayer" parent="."]
 

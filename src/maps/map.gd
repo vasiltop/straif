@@ -15,9 +15,11 @@ const TargetScene := preload("res://src/target/target.tscn")
 var timer: float = 0.0
 var completed: bool = false
 var running: bool = false
+var recorder := Recorder.new()
 
 func _ready() -> void:
 	restart()
+	add_child(recorder)
 	start_zone.body_exited.connect(_on_start_zone_exited)
 	player.jumped.connect(_on_player_jump)
 	Lobby.player_switched_map.connect(_on_player_switched_map)
@@ -25,6 +27,7 @@ func _ready() -> void:
 	Lobby.player_left_map.connect(_on_player_disconnected)
 	Lobby.switched_map.rpc(Lobby.current_map.mid)
 	player.setup(self)
+	recorder.player_cam = player.camera
 
 func _on_player_disconnected(pid: int) -> void:
 	var p := find_player(pid)
@@ -51,6 +54,10 @@ func spawn_player(pid: int) -> void:
 	inst.pid = pid
 	inst.global_position = start_pos
 	inst.set_name_label("Player: %d" % pid)
+
+func _physics_process(_delta: float) -> void:
+	if running:
+		recorder.add_frame(player.global_position, player.global_rotation.y)
 
 @rpc("any_peer", "call_remote", "unreliable")
 func moved(pos: Vector3, y_rot: float) -> void:
@@ -119,6 +126,8 @@ func _win() -> void:
 	running = false
 
 	print("Map finished in: %s" % timer)
+	var bytes := recorder.to_bytes()
+	recorder.play_bytes(bytes)
 
 func spawn_target(pos: Vector3) -> void:
 	var inst: Target = TargetScene.instantiate()
@@ -149,3 +158,5 @@ func restart() -> void:
 
 	for spawn in get_target_spawns():
 		spawn_target(spawn.global_position)
+	
+	recorder.clear()
