@@ -1,0 +1,17 @@
+class_name WeaponPickup extends Area3D
+
+@onready var weapon_spawn: Node3D = $WeaponSpawn
+@export var weapon: WeaponData
+
+func _ready() -> void:
+	var inst: Node3D = weapon.scene.instantiate()
+	add_child(inst)
+	inst.scale *= 0.5
+	inst.global_position = weapon_spawn.global_position
+
+	var gun_mesh: MeshInstance3D = inst.get_node("Mesh")
+	gun_mesh.set_layer_mask_value(1, true)
+	gun_mesh.set_layer_mask_value(2, false)
+
+func _process(delta: float) -> void:
+	return

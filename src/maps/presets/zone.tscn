@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://c70q15bb5j4yo"]
+
+[ext_resource type="PackedScene" uid="uid://u6rbolrlsdj6" path="res://src/maps/tiles/pad.glb" id="1_8u567"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sconu"]
+size = Vector3(1.5, 2.5, 1.5)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8u567"]
+emission_shape = 3
+emission_box_extents = Vector3(0.7, 0.1, 0.7)
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_8u567"]
+colors = PackedColorArray(1, 1, 1, 0.294118, 1, 1, 1, 0.345098)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ok2f4"]
+gradient = SubResource("Gradient_8u567")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ok2f4"]
+transparency = 1
+albedo_texture = SubResource("GradientTexture1D_ok2f4")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 16.0
+emission_texture = SubResource("GradientTexture1D_ok2f4")
+billboard_mode = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_8u567"]
+material = SubResource("StandardMaterial3D_ok2f4")
+size = Vector2(0.03, 0.03)
+
+[node name="Zone" type="Area3D"]
+collision_mask = 2
+
+[node name="pad" parent="." instance=ExtResource("1_8u567")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.40091, 0.00308228)
+shape = SubResource("BoxShape3D_sconu")
+
+[node name="Particles" type="GPUParticles3D" parent="."]
+amount = 35
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_8u567")
+draw_pass_1 = SubResource("QuadMesh_8u567")

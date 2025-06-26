@@ -53,11 +53,12 @@ func spawn_player(pid: int) -> void:
 	inst.set_name_label("Player: %d" % pid)
 
 @rpc("any_peer", "call_remote", "unreliable")
-func moved(pos: Vector3) -> void:
+func moved(pos: Vector3, y_rot: float) -> void:
 	var p := find_player(multiplayer.get_remote_sender_id())
 	if p == null: return
 
 	p.global_position = pos
+	p.global_rotation.y = y_rot
 
 func find_player(pid: int) -> Player:
 	var players := player_container.get_children()
@@ -106,6 +107,9 @@ func _is_player_in_end_zone() -> bool:
 
 	for body in bodies:
 		if body is Player:
+			var p: Player = body
+			if not p.is_me(): continue
+
 			return true
 
 	return false
@@ -126,6 +130,7 @@ func restart() -> void:
 	player.global_rotation = start_rotation
 	player.camera.global_rotation = start_rotation
 	player.velocity = Vector3.ZERO
+	player.weapon_handler.set_weapon(null)
 	timer = 0.0
 	player.set_timer(timer)
 
@@ -134,6 +139,10 @@ func restart() -> void:
 
 	for node in get_tree().get_nodes_in_group("decal"):
 		node.queue_free()
+
+	for node in get_tree().get_nodes_in_group("weapon_pickup"):
+		var wp: WeaponPickup = node
+		wp.reset()
 
 	for node in target_container.get_children():
 		node.queue_free()

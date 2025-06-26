@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://vgkw2amsc3xw"]
+[gd_scene load_steps=16 format=3 uid="uid://vgkw2amsc3xw"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_kctwv"]
 [ext_resource type="PackedScene" uid="uid://c8wwxgcisn8cf" path="res://src/maps/tiles/floor.glb" id="2_kctwv"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://neg7l0cupgoh" path="res://src/maps/tiles/ramp.glb" id="5_8cck6"]
 [ext_resource type="PackedScene" uid="uid://ch1h3i7xcnasn" path="res://src/maps/tiles/doorway.glb" id="6_xaagr"]
 [ext_resource type="PackedScene" uid="uid://c0navpiksf4ty" path="res://src/maps/tiles/corner.glb" id="7_iyvra"]
+[ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="8_fkouh"]
+[ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="9_82fug"]
+[ext_resource type="Resource" uid="uid://dy8rc6oycy3vk" path="res://src/player/weapon/rifle.tres" id="10_j86gu"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iyvra"]
 
@@ -25,12 +28,6 @@ background_mode = 2
 sky = SubResource("Sky_fkouh")
 tonemap_mode = 2
 fog_sky_affect = 0.385
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_kctwv"]
-size = Vector3(3, 3, 3)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_iyvra"]
-size = Vector3(5, 3, 3)
 
 [node name="TestMap" type="Node3D"]
 script = ExtResource("1_kctwv")
@@ -1061,23 +1058,21 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13, 2
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 2, -14)
 
 [node name="Player" parent="." instance=ExtResource("2_qrlkj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3965, 0.882036, -0.8825)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -1)
 
 [node name="Targets" type="Node" parent="."]
 
-[node name="EndZone" type="Area3D" parent="."]
-collision_mask = 2
+[node name="EndZone" parent="." instance=ExtResource("8_fkouh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 10)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="EndZone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.01821, 10)
-shape = SubResource("BoxShape3D_kctwv")
+[node name="Collider" parent="EndZone" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
 
-[node name="StartZone" type="Area3D" parent="."]
-collision_mask = 2
+[node name="StartZone" parent="." instance=ExtResource("8_fkouh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StartZone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
-shape = SubResource("BoxShape3D_iyvra")
+[node name="Collider" parent="StartZone" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
 
 [node name="Players" type="Node" parent="."]
 
@@ -1104,3 +1099,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.113, 15)
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.522499, -0.40029, 0.752837, 0, 0, 0)
 shadow_enabled = true
+
+[node name="Zone" parent="." instance=ExtResource("9_82fug")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
+weapon = ExtResource("10_j86gu")
+
+[editable path="EndZone"]
+[editable path="StartZone"]

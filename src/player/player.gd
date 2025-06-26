@@ -37,15 +37,13 @@ func setup(map: Map) -> void:
 	self.map = map
 	
 	weapon_handler.visible = true
-
-	# temp, should be set by the map later
-	weapon_handler.set_weapon(weapon_handler.current_weapon)
 	weapon_handler.add_child(weapon_handler.hit_sound)
-
 	add_child(_run_audio_player)
-
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_on_viewport_resized()
+
+	(get_node("HeadMesh") as Node3D).visible = false
+	(get_node("BodyMesh") as Node3D).visible = false
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size
@@ -76,7 +74,7 @@ func _physics_process(delta: float) -> void:
 
 	var map: Map = get_parent()
 	for member in map.get_players():
-		map.moved.rpc_id(member.pid, global_position)
+		map.moved.rpc_id(member.pid, global_position, global_rotation.y)
 	
 	_movement_process(delta)
 

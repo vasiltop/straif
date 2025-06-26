@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://cmxw7fs0sd46u"]
+[gd_scene load_steps=14 format=4 uid="uid://cmxw7fs0sd46u"]
 
 [ext_resource type="Texture2D" uid="uid://bnqh0ynfj32wa" path="res://src/player/weapon/models/dmr_dmr.jpg" id="1_thuwb"]
 
@@ -56,10 +56,22 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_thuwb"]
 resource_name = "shoot"
-length = 0.2
+length = 0.15
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -67,15 +79,56 @@ tracks/0/path = NodePath(".:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.0666667, 0.133333),
 "transitions": PackedFloat32Array(1, 1.1487, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0.0523599, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.14), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mn5u8"]
+resource_name = "inspect"
+length = 3.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.833333, 1.33333, 1.93333, 2.46667, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.35961, -0.453786), Vector3(0, 1.35961, -0.453786), Vector3(0, 1.12225, 1.309), Vector3(0, 1.12225, 1.309), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.833333, 1.33333, 1.93333, 2.46667, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.575, 0, -0.4), Vector3(-0.575, 0, -0.4), Vector3(-0.575, -0.2, -0.4), Vector3(-0.575, -0.2, -0.4), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sff3o"]
 _data = {
 &"RESET": SubResource("Animation_sff3o"),
+&"inspect": SubResource("Animation_mn5u8"),
 &"shoot": SubResource("Animation_thuwb")
 }
 
@@ -115,13 +168,13 @@ size = Vector2(0.4, 0.4)
 [node name="Rifle" type="Node3D"]
 
 [node name="RHandTarget" type="Node3D" parent="."]
-transform = Transform3D(-0.616205, -0.111654, -0.312769, 0.310871, 0.0379991, -0.626032, 0.116834, -0.689993, 0.0161351, 0.354071, 0.158502, -0.653828)
+transform = Transform3D(-0.616205, -0.111654, -0.312769, 0.310871, 0.0379991, -0.626032, 0.116834, -0.689993, 0.0161351, 0.0823273, -0.222294, 0.556316)
 
 [node name="LHandTarget" type="Node3D" parent="."]
-transform = Transform3D(0.294908, 0.592987, 0.226708, -0.628524, 0.30791, 0.0122167, -0.0893732, -0.208706, 0.662159, 0.2975, 0.1822, -1.411)
+transform = Transform3D(0.452639, 0.432269, 0.313467, -0.533495, 0.383355, 0.241709, -0.0224083, -0.3952, 0.577335, -0.0893551, -0.114712, -0.347778)
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.7, 0, -1.05697e-07, 0, 0.7, 0, 1.05697e-07, 0, -0.7, 0.413, 0.297, -1.264)
+transform = Transform3D(-0.7, 0, -1.05697e-07, 0, 0.7, 0, 1.05697e-07, 0, -0.7, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_goxyr")
 skeleton = NodePath("")
@@ -132,7 +185,7 @@ libraries = {
 }
 
 [node name="MuzzleFlash" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.413303, 0.35101, -2.4972)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00196323, 0.06666, -1.25902)
 layers = 2
 emitting = false
 lifetime = 0.07

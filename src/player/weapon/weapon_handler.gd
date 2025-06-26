@@ -3,10 +3,12 @@ class_name WeaponHandler extends Node3D
 @onready var player: Player = $"../../.."
 @onready var weapon_scene: Node3D = null
 @onready var raycast: RayCast3D = $RayCast
-@onready var r_hand_ik: SkeletonIK3D = $arms/ArmArmature/Skeleton3D/RHandIk
-@onready var l_hand_ik: SkeletonIK3D = $arms/ArmArmature/Skeleton3D/LHandIk
+@onready var r_hand_ik: SkeletonIK3D = $Arms/ArmArmature/Skeleton3D/RHandIk
+@onready var l_hand_ik: SkeletonIK3D = $Arms/ArmArmature/Skeleton3D/LHandIk
 @onready var start_pos := position
 @onready var audio_player: AudioStreamPlayer3D = $AudioPlayer
+@onready var gun_container: Node3D = $GunContainer
+@onready var arms: Node3D = $Arms
 
 @export var sway_left: Vector3
 @export var sway_right: Vector3
@@ -19,7 +21,7 @@ const RAY_LENGTH := 1000
 const BulletHoleScene := preload("res://src/player/weapon/bullet_hole.tscn")
 
 var hit_sound: AudioStreamPlayer = AudioStreamPlayer.new()
-var current_weapon: WeaponData = preload("res://src/player/weapon/rifle.tres") as WeaponData
+var current_weapon: WeaponData
 var mouse_mov := 0.0
 var time_since_last_shot: float = 0
 
@@ -34,9 +36,13 @@ func set_weapon(weapon: WeaponData) -> void:
 	if weapon_scene:
 		weapon_scene.queue_free()
 
-	weapon_scene = weapon.scene.instantiate()
-	add_child(weapon_scene)
-	init_ik()
+	if current_weapon != null:
+		weapon_scene = weapon.scene.instantiate()
+		gun_container.add_child(weapon_scene)
+		init_ik()
+		arms.visible = true
+	else:
+		arms.visible = false
 
 func _process(delta: float) -> void:
 	if not player.is_me(): return
@@ -44,6 +50,10 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("attack"):
 		_try_shoot()
 	
+	if Input.is_action_just_pressed("inspect"):
+		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
+		anim.play("inspect")
+
 	time_since_last_shot += delta
 	
 	_sway(delta)
@@ -84,12 +94,19 @@ func _try_shoot() -> void:
 	player.camera.shake(0.1, 0.005)
 	
 	var collider := raycast.get_collider()
-	var hit_pos := Vector3.ZERO
-	hit_pos = raycast.get_collision_point()
 	
-	BulletTracer.spawn(self, muzzle_flash.global_position, hit_pos)
-	
+	# temp recoil
+	player.camera.rotate_x(deg_to_rad(current_weapon.recoil))
+
+	var rad := deg_to_rad(current_weapon.recoil / 2)
+	player.camera.rotate_y(randf_range(-rad, rad))
+	player.camera.rotation.x = clamp(player.camera.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))
+
 	if not collider: return
+
+	var hit_pos := raycast.get_collision_point()
+
+	BulletTracer.spawn(self, muzzle_flash.global_position, hit_pos)
 
 	var inst: Decal = BulletHoleScene.instantiate()
 	player.map.add_child(inst)

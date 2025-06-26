@@ -1,9 +1,18 @@
-[gd_scene load_steps=10 format=4 uid="uid://j1px6ey07p2f"]
+[gd_scene load_steps=12 format=4 uid="uid://j1px6ey07p2f"]
 
 [ext_resource type="Script" uid="uid://ds6cq7tyxjvrc" path="res://src/player/player.gd" id="1_4anbu"]
 [ext_resource type="Script" uid="uid://bocfext65sbpj" path="res://src/player/camera.gd" id="2_244u8"]
 [ext_resource type="Script" uid="uid://dys3s0o8myw2e" path="res://src/player/weapon/weapon_handler.gd" id="2_rxibo"]
 [ext_resource type="Texture2D" uid="uid://droeve8x6utep" path="res://src/player/arms_cowboy.jpg" id="4_244u8"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_244u8"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_244u8"]
+albedo_color = Color(0.366595, 0.366595, 0.366595, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5f2sf"]
+size = Vector3(0.5, 1.5, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uiqqt"]
 resource_name = "Cowboy.002"
@@ -57,25 +66,31 @@ bind/6/name = &"hand.r"
 bind/6/bone = -1
 bind/6/pose = Transform3D(-0.985888, 0.167415, 3.79832e-07, -0.167416, -0.985887, 1.32462e-07, 3.96649e-07, 6.70033e-08, 1, 1.34053, -0.94301, -4.70195e-07)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_qnmj6"]
-radius = 0.25
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4anbu"]
-radius = 0.25
+[sub_resource type="BoxShape3D" id="BoxShape3D_244u8"]
+size = Vector3(0.5, 2.1, 0.5)
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
 script = ExtResource("1_4anbu")
 
+[node name="HeadMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("BoxMesh_244u8")
+surface_material_override/0 = SubResource("StandardMaterial3D_244u8")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("BoxMesh_5f2sf")
+surface_material_override/0 = SubResource("StandardMaterial3D_244u8")
+
 [node name="Eye" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.854334, 0)
 
 [node name="Camera" type="Camera3D" parent="Eye"]
 cull_mask = 1
 script = ExtResource("2_244u8")
 
 [node name="WeaponHandler" type="Node3D" parent="Eye/Camera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 0.177)
 script = ExtResource("2_rxibo")
 sway_left = Vector3(-0.1, 0, 0)
 sway_right = Vector3(0.1, 0, 0)
@@ -83,15 +98,14 @@ sway_left_rot = Vector3(0, 0, 0.1)
 sway_right_rot = Vector3(0, 0, -0.1)
 
 [node name="RayCast" type="RayCast3D" parent="Eye/Camera/WeaponHandler"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -0.177)
 target_position = Vector3(0, 0, -100)
 
-[node name="arms" type="Node3D" parent="Eye/Camera/WeaponHandler"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.253972, -0.353189, -0.32675)
+[node name="Arms" type="Node3D" parent="Eye/Camera/WeaponHandler"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.202352, -1.0376, 0.182167)
 
-[node name="ArmArmature" type="Node3D" parent="Eye/Camera/WeaponHandler/arms"]
+[node name="ArmArmature" type="Node3D" parent="Eye/Camera/WeaponHandler/Arms"]
 
-[node name="Skeleton3D" type="Skeleton3D" parent="Eye/Camera/WeaponHandler/arms/ArmArmature"]
+[node name="Skeleton3D" type="Skeleton3D" parent="Eye/Camera/WeaponHandler/Arms/ArmArmature"]
 bones/0/name = "middle"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00573138, -0.670571, 9.00972e-08)
@@ -142,20 +156,23 @@ bones/6/position = Vector3(3.4459e-08, 0.54399, 6.39488e-14)
 bones/6/rotation = Quaternion(-4.21509e-08, 6.53409e-08, -0.0900786, 0.995935)
 bones/6/scale = Vector3(1, 1, 1)
 
-[node name="CowboyArms" type="MeshInstance3D" parent="Eye/Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
+[node name="CowboyArms" type="MeshInstance3D" parent="Eye/Camera/WeaponHandler/Arms/ArmArmature/Skeleton3D"]
 layers = 2
 mesh = SubResource("ArrayMesh_eypsm")
 skin = SubResource("Skin_3gm4d")
 
-[node name="RHandIk" type="SkeletonIK3D" parent="Eye/Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
+[node name="RHandIk" type="SkeletonIK3D" parent="Eye/Camera/WeaponHandler/Arms/ArmArmature/Skeleton3D"]
 root_bone = &"middle"
 tip_bone = &"hand.r"
 
-[node name="LHandIk" type="SkeletonIK3D" parent="Eye/Camera/WeaponHandler/arms/ArmArmature/Skeleton3D"]
+[node name="LHandIk" type="SkeletonIK3D" parent="Eye/Camera/WeaponHandler/Arms/ArmArmature/Skeleton3D"]
 root_bone = &"middle"
 tip_bone = &"hand.l"
 
 [node name="AudioPlayer" type="AudioStreamPlayer3D" parent="Eye/Camera/WeaponHandler"]
+
+[node name="GunContainer" type="Node3D" parent="Eye/Camera/WeaponHandler"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.347699, -0.392556, -0.757384)
 
 [node name="GunVPContainer" type="SubViewportContainer" parent="Eye/Camera"]
 anchors_preset = 15
@@ -173,12 +190,11 @@ render_target_update_mode = 4
 [node name="GunCam" type="Camera3D" parent="Eye/Camera/GunVPContainer/GunVP"]
 top_level = true
 cull_mask = 2
-
-[node name="Mesh" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_qnmj6")
+fov = 90.0
 
 [node name="Collider" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_4anbu")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+shape = SubResource("BoxShape3D_244u8")
 
 [node name="UI" type="CanvasLayer" parent="."]
 

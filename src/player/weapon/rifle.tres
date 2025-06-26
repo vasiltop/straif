@@ -7,8 +7,9 @@
 [resource]
 script = ExtResource("1_f5ypd")
 name = "Rifle"
-weapon_shot_delay = 0.3
+weapon_shot_delay = 0.2
 damage = 50.0
 scene = ExtResource("1_0cw4v")
 shoot_sound = ExtResource("3_jbptj")
+recoil = 0.3
 metadata/_custom_type_script = "uid://bmwqlto471f6e"
