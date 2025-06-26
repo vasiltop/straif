@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0hu1wi3ere2n"]
+
+[ext_resource type="Texture2D" uid="uid://cymstqh142smk" path="res://src/textures/bullet_hole.png" id="1_3ilv6"]
+[ext_resource type="Script" uid="uid://ykd8rtsp1dx3" path="res://src/player/weapon/destroy_after.gd" id="2_i6dw2"]
+
+[node name="BulletHole" type="Decal" groups=["decal"]]
+size = Vector3(0.1, 0.1, 0.1)
+texture_albedo = ExtResource("1_3ilv6")
+script = ExtResource("2_i6dw2")
+ttl = 5.0

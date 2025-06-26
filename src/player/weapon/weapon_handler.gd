@@ -16,6 +16,7 @@ class_name WeaponHandler extends Node3D
 const MAX_SWAY := 5
 const SWAY_LERP := 1
 const RAY_LENGTH := 1000
+const BulletHoleScene := preload("res://src/player/weapon/bullet_hole.tscn")
 
 var hit_sound: AudioStreamPlayer = AudioStreamPlayer.new()
 var current_weapon: WeaponData = preload("res://src/player/weapon/rifle.tres") as WeaponData
@@ -89,6 +90,18 @@ func _try_shoot() -> void:
 	BulletTracer.spawn(self, muzzle_flash.global_position, hit_pos)
 	
 	if not collider: return
+
+	var inst: Decal = BulletHoleScene.instantiate()
+	player.map.add_child(inst)
+	inst.global_position = hit_pos
+
+	# no clue what this does lol took it from reddit
+	var normal :=  raycast.get_collision_normal()
+	if normal != Vector3.UP:
+		inst.look_at(hit_pos + normal, Vector3.UP)
+		inst.transform = inst.transform.rotated_local(Vector3.RIGHT, PI/2.0)
+
+	inst.rotate(normal, randf_range(0, 2*PI))
 
 	if collider is BodyPart:
 		var body_part: BodyPart = collider

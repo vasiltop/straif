@@ -11,7 +11,7 @@ signal jumped
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 
 const RunSound := preload("res://src/sounds/run.mp3")
-const MAX_G_SPEED := 4.3
+const MAX_G_SPEED := 5.5
 const MAX_G_ACCEL := MAX_G_SPEED * 8
 const MAX_A_SPEED := 0.7
 const MAX_A_ACCEL: float = 200

@@ -132,6 +132,9 @@ func restart() -> void:
 	completed = false
 	running = false
 
+	for node in get_tree().get_nodes_in_group("decal"):
+		node.queue_free()
+
 	for node in target_container.get_children():
 		node.queue_free()
 
