@@ -4,14 +4,19 @@ import { z } from 'zod';
 import { runs } from '../db/schema.ts';
 import { desc, asc, eq, sql } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator'
+import { steam_auth } from '../middleware.ts';
 
-const app = new Hono();
+type Variables = {
+  steam_id: number 
+}
+
+const app = new Hono<{ Variables: Variables }>();
 
 const RunInput = z.object({
-	steam_id: z.number(),
 	recording: z.string(),
 	map_name: z.string(),
 	time_ms: z.number(),
+	username: z.string(),
 });
 
 app.get('/:map_name', async (c) => {
@@ -20,7 +25,8 @@ app.get('/:map_name', async (c) => {
 
 	const runsResult = await db.select({
 															time_ms: runs.time_ms,
-															steam_id: runs.steam_id
+															steam_id: runs.steam_id,
+															username: runs.username
 														})
 														.from(runs)
 														.where(eq(runs.map_name, mapName))
@@ -36,22 +42,23 @@ app.post('/',
 		'json',
 		RunInput,
 	),
+	steam_auth,
 	async (c) => {
 		const body = c.req.valid('json');
-
-		// TODO: Accept steam ticket instead of the steam_id, then verify the player
-		// Accept the player's name as well
 		
 		await db.insert(runs).values({
-			steam_id: body.steam_id,
+			steam_id: c.get('steam_id'),
 			map_name: body.map_name,
 			recording: body.recording,
 			time_ms: body.time_ms,
+			username: body.username,
 		}).onConflictDoUpdate({
 			target: [runs.steam_id, runs.map_name],
 			set: {
 				time_ms: body.time_ms,
 				recording: body.recording,
+				username: body.username,
+				created_at: new Date(),
 			},
 			setWhere: sql`${runs.time_ms} > ${body.time_ms}`
 		})

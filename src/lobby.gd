@@ -9,6 +9,8 @@ var lobby_id: int
 var lobby_members: Array[Member]
 var lobby_name: String
 var current_map: MapData
+var auth_ticket: Dictionary 
+var auth_ticket_hex: String
 
 enum NETWORK_TYPE { ENET, STEAM }
 var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM

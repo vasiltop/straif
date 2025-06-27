@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 		for run: Dictionary in runs:
 			var inst := Label.new()
 			entries.add_child(inst)
-			inst.text = "%d | %d - %s" % [run_position, run.steam_id, str(snapped(run.time_ms / 1000, 0.001))]
+			inst.text = "%d | %s - %s" % [run_position, run.username, str(snapped(run.time_ms / 1000, 0.001))]
 			run_position += 1
 
 		
