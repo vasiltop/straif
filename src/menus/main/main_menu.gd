@@ -47,7 +47,7 @@ func _instantiate_maps() -> void:
 	for map in mm.maps:
 		var btn := Button.new()
 		btn.text = "%s\n Tier: %s/5" % [map.name, map.tier]
-		btn.custom_minimum_size = Vector2(100, 100)
+		btn.custom_minimum_size = Vector2(150, 150)
 		map_container.add_child(btn)
 		btn.pressed.connect(
 			func() -> void:

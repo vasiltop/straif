@@ -9,8 +9,6 @@ var current_frame: int
 var paused := true
 var camera := Camera3D.new()
 
-func _init() -> void:
-	return
 
 func _ready() -> void:
 	add_child(camera)

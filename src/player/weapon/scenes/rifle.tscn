@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://cmxw7fs0sd46u"]
+[gd_scene load_steps=15 format=4 uid="uid://cmxw7fs0sd46u"]
 
 [ext_resource type="Texture2D" uid="uid://bnqh0ynfj32wa" path="res://src/player/weapon/models/dmr_dmr.jpg" id="1_thuwb"]
 
@@ -125,9 +125,38 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0), Vector3(-0.575, 0, -0.4), Vector3(-0.575, 0, -0.4), Vector3(-0.575, -0.2, -0.4), Vector3(-0.575, -0.2, -0.4), Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_7pjcx"]
+resource_name = "equip"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -1, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.872665, 0, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sff3o"]
 _data = {
 &"RESET": SubResource("Animation_sff3o"),
+&"equip": SubResource("Animation_7pjcx"),
 &"inspect": SubResource("Animation_mn5u8"),
 &"shoot": SubResource("Animation_thuwb")
 }

@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 Main="*res://src/main.gd"
 Lobby="*res://src/lobby.gd"
 MapManager="*res://src/maps/map_manager/map_manager.tscn"
+Http="*res://src/http.gd"
 
 [debug]
 

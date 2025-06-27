@@ -41,6 +41,9 @@ func set_weapon(weapon: WeaponData) -> void:
 		gun_container.add_child(weapon_scene)
 		init_ik()
 		arms.visible = true
+
+		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
+		anim.play("equip")
 	else:
 		arms.visible = false
 

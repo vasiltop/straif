@@ -5,7 +5,7 @@
 
 [sub_resource type="Resource" id="Resource_650st"]
 script = ExtResource("2_u1fwk")
-name = "Test Map"
+name = "Test_Map"
 tier = 2
 mid = 0
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"

@@ -109,6 +109,15 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("restart"):
 		restart()
 	
+	if Input.is_action_just_pressed("replay"):
+		var data := await Http.get_runs(Lobby.current_map.name, 0)
+
+		if data is Dictionary:
+			print((data.data as Array).size())
+			#var b64: String = data.data[0].recording
+			#var pba := Marshalls.base64_to_raw(b64)
+			#recorder.play_bytes(pba)
+
 func _is_player_in_end_zone() -> bool:
 	var bodies := end_zone.get_overlapping_bodies()
 
@@ -127,7 +136,8 @@ func _win() -> void:
 
 	print("Map finished in: %s" % timer)
 	var bytes := recorder.to_bytes()
-	recorder.play_bytes(bytes)
+	Http.publish_run(bytes, Lobby.current_map.name, int(timer * 1000))
+	#recorder.play_bytes(bytes)
 
 func spawn_target(pos: Vector3) -> void:
 	var inst: Target = TargetScene.instantiate()
