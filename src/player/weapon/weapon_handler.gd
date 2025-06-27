@@ -53,7 +53,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("attack"):
 		_try_shoot()
 	
-	if Input.is_action_just_pressed("inspect"):
+	if Input.is_action_just_pressed("inspect") and current_weapon:
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 		anim.play("inspect")
 

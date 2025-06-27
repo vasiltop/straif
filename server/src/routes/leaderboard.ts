@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import db from '../db/index.ts'
 import { z } from 'zod';
 import { runs } from '../db/schema.ts';
-import { desc, eq, sql } from 'drizzle-orm';
+import { desc, asc, eq, sql } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator'
 
 const app = new Hono();
@@ -18,10 +18,13 @@ app.get('/:map_name', async (c) => {
 	const mapName = c.req.param('map_name');
 	const page = parseInt(c.req.query('page')!);
 
-	const runsResult = await db.select()
+	const runsResult = await db.select({
+															time_ms: runs.time_ms,
+															steam_id: runs.steam_id
+														})
 														.from(runs)
 														.where(eq(runs.map_name, mapName))
-														.orderBy(desc(runs.time_ms))
+														.orderBy(asc(runs.time_ms))
 														.limit(10)
 														.offset(page * 10)
 	

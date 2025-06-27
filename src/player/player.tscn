@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=4 uid="uid://j1px6ey07p2f"]
+[gd_scene load_steps=13 format=4 uid="uid://j1px6ey07p2f"]
 
 [ext_resource type="Script" uid="uid://ds6cq7tyxjvrc" path="res://src/player/player.gd" id="1_4anbu"]
 [ext_resource type="Script" uid="uid://bocfext65sbpj" path="res://src/player/camera.gd" id="2_244u8"]
 [ext_resource type="Script" uid="uid://dys3s0o8myw2e" path="res://src/player/weapon/weapon_handler.gd" id="2_rxibo"]
 [ext_resource type="Texture2D" uid="uid://droeve8x6utep" path="res://src/player/arms_cowboy.jpg" id="4_244u8"]
+[ext_resource type="Script" uid="uid://csum5yrscsfdx" path="res://src/player/leaderboard.gd" id="5_5f2sf"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_244u8"]
 size = Vector3(0.5, 0.5, 0.5)
@@ -228,6 +229,63 @@ offset_left = -8.0
 offset_top = -2.0
 offset_right = 8.0
 offset_bottom = 2.0
+
+[node name="Leaderboard" type="Panel" parent="UI"]
+custom_minimum_size = Vector2(600, 400)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_5f2sf")
+
+[node name="Label" type="Label" parent="UI/Leaderboard"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.0
+offset_top = 30.0
+offset_right = 50.0
+offset_bottom = 53.0
+grow_horizontal = 2
+text = "Leaderboard"
+
+[node name="Entries" type="VBoxContainer" parent="UI/Leaderboard"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/Leaderboard/Entries"]
+layout_mode = 2
+text = "1 | munost - 0.98321"
+
+[node name="Label2" type="Label" parent="UI/Leaderboard/Entries"]
+layout_mode = 2
+text = "2 | munost - 0.98321"
+
+[node name="Label3" type="Label" parent="UI/Leaderboard/Entries"]
+layout_mode = 2
+text = "3 | munost - 0.98321"
+
+[node name="Label4" type="Label" parent="UI/Leaderboard/Entries"]
+layout_mode = 2
+text = "4 | munost - 0.98321"
+
+[node name="Label5" type="Label" parent="UI/Leaderboard/Entries"]
+layout_mode = 2
+text = " 5 | munost - 0.98321"
 
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)
