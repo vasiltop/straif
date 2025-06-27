@@ -19,5 +19,3 @@ func publish_run(recording: PackedByteArray, map_name: String, time_ms: int) -> 
 			"time_ms": time_ms,
 			"username": Steam.getPersonaName(),
 		}).header("auth-ticket", str(Lobby.auth_ticket_hex)).send()
-
-	#var json: Dictionary = await res.json()

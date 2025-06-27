@@ -39,6 +39,10 @@ func set_weapon(weapon: WeaponData) -> void:
 	if current_weapon != null:
 		weapon_scene = weapon.scene.instantiate()
 		gun_container.add_child(weapon_scene)
+
+		# move it out of the way so it doesnt flicker
+		weapon_scene.global_position = Vector3.ZERO
+
 		init_ik()
 		arms.visible = true
 
@@ -100,10 +104,10 @@ func _try_shoot() -> void:
 	
 	# temp recoil
 	player.camera.rotate_x(deg_to_rad(current_weapon.recoil))
+	player.camera.rotation.x = clamp(player.camera.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 	var rad := deg_to_rad(current_weapon.recoil / 2)
 	player.camera.rotate_y(randf_range(-rad, rad))
-	player.camera.rotation.x = clamp(player.camera.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 	if not collider: return
 

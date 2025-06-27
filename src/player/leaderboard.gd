@@ -20,7 +20,6 @@ func _process(_delta: float) -> void:
 			entries.add_child(inst)
 			inst.text = "%d | %s - %s" % [run_position, run.username, str(snapped(run.time_ms / 1000, 0.001))]
 			run_position += 1
-
 		
 	elif Input.is_action_just_released("leaderboard"):
 		visible = false
