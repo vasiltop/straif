@@ -18,7 +18,7 @@ const MAX_A_ACCEL: float = 200
 const MAX_SLOPE: float = 1
 const JUMP_FORCE: float = 4
 
-var gravity: float = 11
+var gravity: float = 12
 var pid: int
 var map: Map
 var _run_audio_player := AudioStreamPlayer.new()
