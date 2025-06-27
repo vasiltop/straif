@@ -4,6 +4,7 @@ signal my_lobby_changed
 signal player_switched_map(pid: int, map: MapData)
 signal player_diconnected(pid: int)
 signal player_left_map(pid: int)
+signal replay_requested(data: String)
 
 var lobby_id: int
 var lobby_members: Array[Member]
@@ -11,6 +12,7 @@ var lobby_name: String
 var current_map: MapData
 var auth_ticket: Dictionary 
 var auth_ticket_hex: String
+var admin: bool
 
 enum NETWORK_TYPE { ENET, STEAM }
 var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
@@ -28,6 +30,15 @@ func switched_map(mid: int) -> void:
 
 func _ready() -> void:
 	Steam.lobby_joined.connect(_on_lobby_joined)
+	Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
+	Steam.getAuthTicketForWebApi("munost")
+
+	#auth_ticket_hex = PackedByteArray(Lobby.auth_ticket.buffer as Array).hex_encode()
+	#admin = await Http.check_admin()
+
+func _on_get_ticket_for_web_api(_auth_ticket: int, _result: int, _ticket_size: int, ticket_buffer: Array) -> void:
+	auth_ticket_hex = PackedByteArray(ticket_buffer).hex_encode()
+	admin = await Http.check_admin()
 
 func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
 	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:

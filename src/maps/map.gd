@@ -26,8 +26,12 @@ func _ready() -> void:
 	Lobby.player_diconnected.connect(_on_player_disconnected)
 	Lobby.player_left_map.connect(_on_player_disconnected)
 	Lobby.switched_map.rpc(Lobby.current_map.mid)
+	Lobby.replay_requested.connect(_on_replay_requested)
 	player.setup(self)
 	recorder.player_cam = player.camera
+
+func _on_replay_requested(data: String) -> void:
+	recorder.play_bytes(Marshalls.base64_to_raw(data))
 
 func _on_player_disconnected(pid: int) -> void:
 	var p := find_player(pid)

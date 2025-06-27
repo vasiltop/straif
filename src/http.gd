@@ -19,3 +19,21 @@ func publish_run(recording: PackedByteArray, map_name: String, time_ms: int) -> 
 			"time_ms": time_ms,
 			"username": Steam.getPersonaName(),
 		}).header("auth-ticket", str(Lobby.auth_ticket_hex)).send()
+
+func check_admin() -> bool:
+	var res := await client.http_get("/leaderboard/admin").header("auth-ticket", str(Lobby.auth_ticket_hex)).send()
+
+	print(res.status())
+	if res.status() == 200:
+		return true
+	
+	return false
+
+func get_replay(map_name: String, steam_id: int) -> String:
+	var res := await client.http_get("/leaderboard/" + map_name + "/" + str(steam_id) + "/recording").header("auth-ticket", str(Lobby.auth_ticket_hex)).send()
+
+	if res.status() != 200:
+		return ""
+	
+	var json: Dictionary = await res.json()
+	return json.data.recording

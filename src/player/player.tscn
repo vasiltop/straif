@@ -98,6 +98,9 @@ sway_left = Vector3(-0.1, 0, 0)
 sway_right = Vector3(0.1, 0, 0)
 sway_left_rot = Vector3(0, 0, 0.1)
 sway_right_rot = Vector3(0, 0, -0.1)
+sway_forward = Vector3(0, 0, -0.1)
+sway_backward = Vector3(0, 0, 0.1)
+sway_vertical = Vector3(0, 0.06, 0)
 
 [node name="RayCast" type="RayCast3D" parent="Eye/Camera/WeaponHandler"]
 target_position = Vector3(0, 0, -100)

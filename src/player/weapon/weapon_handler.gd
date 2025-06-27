@@ -14,6 +14,9 @@ class_name WeaponHandler extends Node3D
 @export var sway_right: Vector3
 @export var sway_left_rot: Vector3
 @export var sway_right_rot: Vector3
+@export var sway_forward: Vector3
+@export var sway_backward: Vector3
+@export var sway_vertical: Vector3
 
 const MAX_SWAY := 5
 const SWAY_LERP := 1
@@ -67,15 +70,22 @@ func _process(delta: float) -> void:
 
 
 func _sway(delta: float) -> void:
-	var sway := start_pos
 	var sway_rot := Vector3.ZERO
+	var sway_add := Vector3.ZERO
 
-	if mouse_mov > MAX_SWAY:
-		sway = sway_left + start_pos
-		sway_rot = sway_left_rot
-	elif mouse_mov < -MAX_SWAY:
-		sway = sway_right + start_pos
-		sway_rot = sway_right_rot
+	if mouse_mov > MAX_SWAY || Input.is_action_pressed("left"):
+		sway_add += sway_left
+		sway_rot += sway_left_rot
+	if mouse_mov < -MAX_SWAY || Input.is_action_pressed("right"):
+		sway_add += sway_right
+		sway_rot += sway_right_rot
+	if Input.is_action_pressed("up"):
+		sway_add += sway_forward
+	if Input.is_action_pressed("down"):
+		sway_add += sway_backward
+	
+	sway_add += sway_vertical * sign(player.velocity.y)
+	var sway := start_pos + sway_add
 
 	position = position.lerp(sway, SWAY_LERP * delta)
 	rotation = rotation.lerp(sway_rot, SWAY_LERP * delta)

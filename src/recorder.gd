@@ -30,6 +30,8 @@ func _physics_process(_delta: float) -> void:
 	if paused: return
 	
 	var frame := currently_playing[current_frame]
+	if not frame: return
+	
 	camera.global_position = frame.position
 	camera.global_position.y += EYE_HEIGHT
 	camera.global_rotation.y = frame.rot_y

@@ -10,9 +10,13 @@ export const runs = pgTable("runs", {
 	time_ms: integer("time_ms").notNull(),
 	recording: text().notNull(),
 	map_name: text("map_name").notNull(),
-	steam_id: bigint("steam_id", { mode: "number" }).notNull(),
+	steam_id: text("steam_id").notNull(),
 	username: text("username").notNull(),
 	created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 }, (table) => [
 	primaryKey({ columns: [table.map_name, table.steam_id] }),
 ]);
+
+export const admins = pgTable("admins", {
+	steam_id: text("steam_id").notNull().primaryKey(),
+});
