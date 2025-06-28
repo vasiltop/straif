@@ -19,7 +19,7 @@ class_name WeaponHandler extends Node3D
 @export var sway_vertical: Vector3
 
 const MAX_SWAY := 5
-const SWAY_LERP := 1
+const SWAY_LERP := 2
 const RAY_LENGTH := 1000
 const BulletHoleScene := preload("res://src/player/weapon/bullet_hole.tscn")
 

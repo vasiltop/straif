@@ -142,7 +142,7 @@ func _input(event: InputEvent) -> void:
 func _look(event: InputEventMouseMotion) -> void:
 	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED: return
 
-	var sens := 0.0006
+	var sens: float = Settings.value("Controls", "sensitivity") / 1000
 	rotate(Vector3(0, -1, 0), event.relative.x * sens)
 	camera.rotate_x(-event.relative.y * sens)
 	camera.rotation.y = 0

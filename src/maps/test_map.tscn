@@ -1092,6 +1092,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.113, 15)
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.522499, -0.40029, 0.752837, 0, 0, 0)
+light_energy = 2.0
 shadow_enabled = true
 
 [node name="Zone" parent="." instance=ExtResource("9_82fug")]

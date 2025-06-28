@@ -21,6 +21,7 @@ Main="*res://src/main.gd"
 Http="*res://src/http.gd"
 Lobby="*res://src/lobby.gd"
 MapManager="*res://src/maps/map_manager/map_manager.tscn"
+Settings="*res://src/settings.gd"
 
 [debug]
 
