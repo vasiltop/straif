@@ -1,6 +1,7 @@
 extends Node
 
-const API_URL := "http://localhost:3000/"
+#const API_URL := "http://localhost:3000/"
+const API_URL := "http://209.38.2.30:3000"
 @onready var client := BetterHTTPClient.new(self, BetterHTTPURL.parse(API_URL))
 
 func get_runs(map_name: String, page: int) -> Dictionary:
