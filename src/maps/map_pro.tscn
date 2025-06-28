@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="7_g8tvg"]
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="8_m14mc"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="9_2637t"]
-[ext_resource type="Resource" uid="uid://dy8rc6oycy3vk" path="res://src/player/weapon/rifle.tres" id="10_17q7x"]
+[ext_resource type="Resource" uid="uid://dy8rc6oycy3vk" path="res://src/player/weapon/resources/rifle.tres" id="10_17q7x"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iyvra"]
 

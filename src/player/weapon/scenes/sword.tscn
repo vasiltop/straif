@@ -1,0 +1,312 @@
+[gd_scene load_steps=19 format=4 uid="uid://bq0862rf1x8o6"]
+
+[ext_resource type="AudioStream" uid="uid://1b8ialksq1w6" path="res://src/sounds/sword.mp3" id="1_fowdb"]
+[ext_resource type="Texture2D" uid="uid://bs0mgldpd3qqq" path="res://src/player/weapon/models/sword_sword.jpg" id="2_fowdb"]
+
+[sub_resource type="Animation" id="Animation_sff3o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_7pjcx"]
+resource_name = "equip"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.277573, 0.4),
+"transitions": PackedFloat32Array(1, 0.554785, 2.37841),
+"update": 0,
+"values": [Vector3(0, -1, 0), Vector3(0, 0.075, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.277573, 0.4),
+"transitions": PackedFloat32Array(1, 0.554785, 2.37841),
+"update": 0,
+"values": [Vector3(-0.872665, 1.03673, 0), Vector3(0.0645772, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mn5u8"]
+resource_name = "inspect"
+length = 2.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.425003, 0.869278, 1.1, 1.525, 1.93333, 2.06667, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.35961, -0.453786), Vector3(0, 1.35961, -0.488692), Vector3(0, 1.35961, -0.453786), Vector3(0, 1.12225, 1.309), Vector3(0, 1.12225, 1.3439), Vector3(0, 1.12225, 1.309), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.425003, 0.869278, 1.1, 1.53333, 1.93333, 2.06667, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.575, 0, -0.4), Vector3(-0.575, 0, -0.41), Vector3(-0.575, 0, -0.4), Vector3(-0.575, -0.2, -0.4), Vector3(-0.575, -0.2, -0.39), Vector3(-0.575, -0.2, -0.4), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_thuwb"]
+resource_name = "shoot"
+length = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0764312, 0.149107),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.0872665, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0764312, 0.149107),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.2), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_keirp"]
+resource_name = "swing"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.4, 0.7, 1, 1.16667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.785, -0.2, 0), Vector3(1.11, -0.2, 0.305), Vector3(-0.967, -0.2, 0), Vector3(-1.362, -0.26, 0.16), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.4, 0.566667, 1, 1.16667),
+"transitions": PackedFloat32Array(1, 1, 1.31951, 0.68302, 0.68302, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.174533, -0.31765), Vector3(0, -0.462512, -0.31765), Vector3(-0.619592, 1.08559, -0.579449), Vector3(-1.09607, 2.35794, -0.158825), Vector3(0, 0, 0)]
+}
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("1_fowdb")
+}],
+"times": PackedFloat32Array(0.233333)
+}
+tracks/2/use_blend = true
+
+[sub_resource type="Animation" id="Animation_fowdb"]
+resource_name = "inspect_sword"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.533333, 3.46667, 3.96667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.31765, 0.15708, 0), Vector3(-0.31765, 0.15708, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.566667, 3.43333, 3.93333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.2), Vector3(0, 0, -0.2), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sff3o"]
+_data = {
+&"RESET": SubResource("Animation_sff3o"),
+&"equip": SubResource("Animation_7pjcx"),
+&"inspect": SubResource("Animation_mn5u8"),
+&"inspect_sword": SubResource("Animation_fowdb"),
+&"shoot": SubResource("Animation_thuwb"),
+&"swing": SubResource("Animation_keirp")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2qutc"]
+resource_name = "sword"
+cull_mode = 2
+albedo_texture = ExtResource("2_fowdb")
+roughness = 0.5
+texture_filter = 2
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_gy302"]
+_surfaces = [{
+"aabb": AABB(-0.0716388, -1.30216, -1.54528, 0.143278, 1.99762, 4.45225),
+"format": 34896613377,
+"index_count": 324,
+"index_data": PackedByteArray("GAACAAAAAwAAAAIAAgAEAAMAAwAFAAAAGQAFAAMAAwAEABkABQAaAAAABQAbABoAAAAaABwAAAAcABgAHQAaABsAHQAcABoAHgAbAAUAHgAdABsAGQAeAAUAHwAcAB0AIAAdAB4AIAAfAB0AIQAgAB4AIQAeABkACQAfACAACgAgACEACgAJACAAHwAiABwAGAAcACIACQAHAB8ABwAiAB8ABwAGACIACAAHAAkACAAGAAcAIwAiAAYAIwAGAAgAGAAiACMACwAIAAkACwAJAAoACAAkACMACAALACQAIwAlABgAIwAkACUAGAAlAAIACgAMAAsACwAMACQAJQABAAIAJAAmACUAJQAmAAEAAgABAAQAJAAnACYAJAAMACcAJgARAAEAAQAQAAQAAQARABAAJgAoABEAJwAoACYADAApACcAJwApACgACgANAAwAIQANAAoADAAOACkADQAOAAwAIQAqAA0AGQAqACEADQAPAA4AKgAPAA0AGQArACoAGQAEACsAKgAsAA8AKwAsACoABAAtACsAKwAtACwABAAQAC0ADwAVAA4ALAAXAA8ADwAXABUALQAuACwALAAuABcAEAAvAC0ALQAvAC4AEAASAC8AEQASABAALgAwABcAEQATABIAKAATABEALwAxAC4ALgAxADAAFwAwADIAMgAwADEAFwAyABUAKAAzABMAKQAzACgAMwAWABMAKQA0ADMADgA0ACkADgAVADQAFQAyADUAFQA1ADQAMgAxADUANAA2ADMAMwA2ABYANAA1ADYANQAxADcANQA3ADYALwA3ADEAEgA3AC8ANgA3ABQAEgAUADcANgAUABYAEwAUABIAEwAWABQA"),
+"lods": [0.049945, PackedByteArray("AAABAAIAAwAAAAIAAgAEAAMAAgABAAQAAwAFAAAABAAFAAMABQAGAAAABQAHAAYAAAAGAAgACAAGAAcACAABAAAACQAHAAUACAAHAAkACgAJAAUACgAFAAQACwAIAAkACwAJAAoACAALAAEACgAMAAsACwAMAAEABAANAAoACgANAAwADQAOAAwADAAOAAEABAAPAA0ADQAPAA4AAQAQAAQABAAQAA8AAQARABAAAQAOABEAEAASAA8AEQASABAADgATABEAEQATABIAEwAUABIADgAVABMADwAVAA4AEwAWABQAFQAWABMAEgAUABcAFgAXABQADwASABcAFwAWABUADwAXABUA")],
+"name": "sword",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 56,
+"vertex_data": PackedByteArray("12TYOr/wAAAAAJPKKTgAANdkBeY2PgAAJ5sF5jY+AAD//5PKKTgAACeb2Dq/8AAAAACEDNn/AAD//4QM2f8AAJ9gAABc6gAAX58AAFzqAABfn1KhQTIAAJ9gUqFBMgAAAAAOwDA2AAD//w7AMDYAAFQ5OemcCgAAqsY56ZwKAACqxkbyeQwAAFQ5RvJ5DAAAqsb//zoFAABUOf//OgUAAKrGIP7nAgAAVDnd6ZwBAABUOSD+5wIAAKrG3emcAQAAAAC/L/vvAAD//xLaIzwAAAAAOQ7//wAA//85Dv//AAAAAKcN8v8AAP//pw3y/wAA//+/L/vvAAD//xYN5v8AAP//Iw4I7QAA//+4sgk1AAAAABYN5v8AAAAAIw4I7QAAAAC4sgk1AAAAABLaIzwAAAAAEceBNwAAAACQw9k2AABUOULv2gsAAFQ5Pew7CwAA//+Qw9k2AAD//xHHgTcAAKrGPew7CwAAqsZC79oLAACqxj7x0AIAAKrGnvgFBAAAqsbr8AAAAACqxlL19wAAAFQ56/AAAAAAVDme+AUEAABUOT7x0AIAAFQ5UvX3AAAAVDm5+e8BAACqxrn57wEAAA==")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_bqs3v"]
+resource_name = "sword_Cube"
+_surfaces = [{
+"aabb": AABB(-0.0716388, -1.30216, -1.54528, 0.143278, 1.99762, 4.45225),
+"attribute_data": PackedByteArray("lBkouCm9y1FCuCFAVA361cIeCN7zwVlsw76QWOLkHTtf40k1P+l1LC7sszoh66ktKb3LUZQZKLhCuCFAwh4I3lQN+tXzwVlsw76QWOLkHTtf40k1P+l1LC7sszoh66ktm3EsjrFlv5E3cZGMhWdTmemiRE+TLaqqd6ONUQYtYKiorWFKoRe5uAity0dBGFC7iIk8fJCPGXIWiWB6ZJGteSOZZG7Yk9J3hpkAcASSP3Du5X4zterUNPHmrTey6aYwtcXTUfDa0zrgw0BK89sBP9rCAkz72rlArsSWU/jZijzp5/I2lOs6L+bmwzKW7Gkzr+eLN2bryi+t5l0zaez5M7LppjDq6+szterUNOjqvC9MPuiyRDQRwL4+xLRvMn64MhpNv5QZKLjwudJHSI4HfGSRrXmIiTx8NZIPefC50keUGSi4MhpNvxdmc5HrZwaZOr5PVmHkLDmhlYNtBJI/cCOZZG4ykd1wsr0NVODjOzc6vk9WYeQsOTnqNDHq634w4OM7N1/jSTVh5Cw5M+v0NeLkHTuz7FMzfO0pNmHkLDni5B07M+v0NXztKTbg4zs3s+xTMznqNDFf40k16ut+MF/qkTBi68A0WOlYMVvqhjVS6B4yVOlNNlLoHjJU6U02yWcgmRdmc5HrZwaZ9WWMkadnOZnTZaaRMhpNvzYN4NRADT7Vlhzu1EoNnNVADT7VMhpNvzYN4NQyGk2/Sg2c1ZYc7tRADT7V8LnSR7O/JmGyvQ1UOr5PVkoNnNWWHO7Ulhzu1EANPtUyGk2/Sg2c1bO/JmHwudJHOr5PVrK9DVTTZaaRp2c5mWHkLDk6vk9WFolgepCPGXJ0jHN0YZB7ceDjOzeyvQ1UYeQsOTq+T1aWHO7Us78mYcIeCN6GmQBw2JPSd3WXF3UHk3B4wh4I3rO/JmGWHO7U"),
+"format": 34896613399,
+"index_count": 324,
+"index_data": PackedByteArray("SAACAEkASABKAAIASwBMAE0ASwBOAEwATwBQAA4ATwBRAFAAGABSABoAGABTAFIAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAVAATABIAVABVABMAJAAlACYAJAAnACUAKAApACoAKAArACkAVgBXAFgAVgBZAFcALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUAWgAIAAEAWgBbAAgAXABbAFoAXABdAFsAXgALAAkAXgBfAAsAYABeAAkAYAAJAGEAYgBeAGAAYwBfAF4AYgBjAF4AZABjAGIAYwBlAF8AZAAKAGMACgBlAGMACgBmAGUAZwAWAGgAZwBpABYAaQBqABYAawBpAGcAaQBsAGoAawBtAGkAbQBsAGkAbgBtAGsAbQBvAGwAbgAVAG0AFQBvAG0AFQAXAG8AOAA5ADoAOAA7ADkAcAA/AD0AcABxAD8AcgBxAHAAcgBzAHEAdABzAHIAdAB1AHMAPAB2AD4APAB3AHYAQABBAEIAQABDAEEAeAB5AHoAeAB7AHkAfAB7AHgAfAB9AHsAfgB/AA0AfgCAAH8AgQADAAQAgQCCAAMARABFAEYARABHAEUAAACDAIQAAACFAIMAhgCHAIgAhgCJAIcAiACKAIYAiACLAIoAiwCMAIoAiwCNAIwADwCOAI8ADwAQAI4AkACRAJIAkACTAJEAlACQAJIAlACSAJUAlQCWAJQAlQCXAJYAGwCYAJkAGwAZAJgABgCaAJsABgAHAJoAnACdAJ4AngCdAJ8ADACgAKEADAAUAKAAoQCgAKIAoQCiAKMAEQCkAKUAEQCmAKQApwCoAKkAqQCoAKoAqwCsAK0AqwAFAKwA"),
+"lods": [0.049945, PackedByteArray("AAABAAIAAAADAAQABAABAAAABAAFAAEABQAGAAEABgAHAAEAAQAHAAgABwAJAAgABwAKAAkACgALAAkADAANAA4ADwAQAA0AEQAPAA0AEQANAAwADAASABEADAATABIADAAUABMAFAAVABMAEwAVABYAFQAXABYAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUAOAA5ADoAOAA7ADkAPAA9AD4APQA8AD8AQABBAEIAQABDAEEARABFAEYARABHAEUA")],
+"material": SubResource("StandardMaterial3D_2qutc"),
+"name": "sword",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 174,
+"vertex_data": PackedByteArray("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")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_gy302")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_keirp"]
+points = PackedVector3Array(0.0550773, 0.489494, -0.36878, -0.053487, -1.3203, 2.45411, -0.0896988, -1.24788, 2.49013, -0.053487, 0.489494, -1.52693, 0.091289, -0.0174701, -0.585824, 0.091289, -1.13894, 2.9251, -0.0896988, -0.777222, 2.45411, -0.0896988, 0.452985, -0.440835, -0.053487, -0.125808, -0.585824, 0.0550773, -1.24788, 2.27353, 0.0550773, 0.706765, -1.52693, 0.091289, -0.777222, 2.45411, -0.0896988, 0.0188409, -0.658318, 0.091289, 0.452985, -0.440835, -0.053487, -0.813136, 2.67159, 0.0550773, -0.0896951, -0.658318, -0.0896988, -1.21137, 2.9251, 0.091289, -1.24788, 2.5266, -0.053487, 0.706765, -1.41841, -0.053487, 0.452985, -0.260258, 0.0550773, -0.813136, 2.67159, 0.0550773, 0.489494, -1.52693, -0.0896988, 0.489494, -1.02035, 0.0550773, -1.3203, 2.63512, 0.091289, 0.417071, -1.02035, 0.091289, -1.24788, 2.88819, -0.0896988, -1.13894, 2.9251, -0.053487, 0.634341, -1.5634, 0.0550773, 0.706765, -1.41841, -0.0896988, -1.24788, 2.88819, 0.091289, -1.17545, 2.30956, -0.0896988, 0.344449, -1.05638)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_thuwb"]
+angle_min = -90.0
+angle_max = 90.0
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 0.1
+initial_velocity_max = 0.7
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_thuwb"]
+colors = PackedColorArray(0.807843, 0.694118, 0.254902, 0.294118, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sff3o"]
+gradient = SubResource("Gradient_thuwb")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sff3o"]
+transparency = 1
+blend_mode = 1
+albedo_texture = SubResource("GradientTexture2D_sff3o")
+roughness = 0.0
+emission_enabled = true
+emission_energy_multiplier = 3.08
+emission_texture = SubResource("GradientTexture2D_sff3o")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_thuwb"]
+material = SubResource("StandardMaterial3D_sff3o")
+size = Vector2(0.4, 0.4)
+
+[node name="Sword" type="Node3D"]
+
+[node name="RHandTarget" type="Node3D" parent="."]
+transform = Transform3D(-0.324917, -0.587885, -0.197029, 0.310871, 0.0379991, -0.626032, 0.536459, -0.378084, 0.243443, -0.0820307, -0.256674, -0.0359859)
+
+[node name="LHandTarget" type="Node3D" parent="."]
+transform = Transform3D(0.452639, 0.432269, 0.313467, -0.505173, 0.479792, 0.0678268, -0.172971, -0.27008, 0.622205, -0.42098, -0.515316, 0.0735675)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_sff3o")
+}
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.296376, 0.189059, 0.355553, 0.213388, -0.300658, 0.337743, 0.341506, 0.351939, 0.0975298, -0.0266931, 0.153716, -0.0588546)
+layers = 2
+mesh = SubResource("ArrayMesh_bqs3v")
+skeleton = NodePath("")
+
+[node name="Hitbox" type="Area3D" parent="Mesh"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/Hitbox"]
+transform = Transform3D(1, 0, 0, 2.98023e-08, 1, 5.96046e-08, 0, 0, 1, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_keirp")
+
+[node name="MuzzleFlash" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00196323, 0.06666, -1.25902)
+layers = 2
+emitting = false
+lifetime = 0.07
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_thuwb")
+draw_pass_1 = SubResource("QuadMesh_thuwb")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = 10.0

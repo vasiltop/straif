@@ -103,7 +103,7 @@ sway_backward = Vector3(0, 0, 0.1)
 sway_vertical = Vector3(0, 0.06, 0)
 
 [node name="RayCast" type="RayCast3D" parent="Eye/Camera/WeaponHandler"]
-target_position = Vector3(0, 0, -100)
+target_position = Vector3(0, 0, -5)
 
 [node name="Arms" type="Node3D" parent="Eye/Camera/WeaponHandler"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.202352, -1.0376, 0.182167)

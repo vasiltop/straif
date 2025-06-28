@@ -160,7 +160,6 @@ func restart() -> void:
 
 	for spawn in get_target_spawns():
 		spawn_target(spawn.global_position)
-		print(target_container.get_child_count())
 	
 	recorder.clear()
 

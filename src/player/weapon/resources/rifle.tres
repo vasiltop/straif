@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3 uid="uid://dy8rc6oycy3vk"]
+
+[ext_resource type="PackedScene" uid="uid://cmxw7fs0sd46u" path="res://src/player/weapon/scenes/rifle.tscn" id="1_mn6la"]
+[ext_resource type="Script" uid="uid://bmwqlto471f6e" path="res://src/player/weapon/weapon_data.gd" id="2_wqtay"]
+[ext_resource type="AudioStream" uid="uid://oaxwt706t7l1" path="res://src/sounds/shoot.mp3" id="3_bgraj"]
+
+[resource]
+script = ExtResource("2_wqtay")
+name = "Rifle"
+weapon_shot_delay = 0.2
+damage = 50.0
+scene = ExtResource("1_mn6la")
+shoot_sound = ExtResource("3_bgraj")
+recoil = 0.3
+attack_range = 100.0
+is_melee = false
+attack_anim = "shoot"
+inspect_anim = "inspect"
+metadata/_custom_type_script = "uid://bmwqlto471f6e"

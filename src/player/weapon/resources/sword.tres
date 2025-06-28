@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3 uid="uid://b1nvo3kd1wr3p"]
+
+[ext_resource type="PackedScene" uid="uid://bq0862rf1x8o6" path="res://src/player/weapon/scenes/sword.tscn" id="1_w14qs"]
+[ext_resource type="Script" uid="uid://bmwqlto471f6e" path="res://src/player/weapon/weapon_data.gd" id="2_yx0at"]
+
+[resource]
+script = ExtResource("2_yx0at")
+name = "Rifle"
+weapon_shot_delay = 0.1
+damage = 50.0
+scene = ExtResource("1_w14qs")
+recoil = 0.3
+attack_range = 3.0
+is_melee = true
+attack_anim = "swing"
+inspect_anim = "inspect_sword"
+metadata/_custom_type_script = "uid://bmwqlto471f6e"

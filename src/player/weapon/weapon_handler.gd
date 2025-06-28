@@ -51,8 +51,36 @@ func set_weapon(weapon: WeaponData) -> void:
 
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 		anim.play("equip")
+
+		raycast.target_position.z = -current_weapon.attack_range
+
+		if current_weapon.is_melee:
+			var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
+			hitbox.monitoring = false
+			anim.animation_started.connect(_on_animation_started)
+			anim.animation_finished.connect(_on_animation_finished)
+			hitbox.body_entered.connect(_on_sword_hit)
 	else:
 		arms.visible = false
+
+func _on_animation_started(anim_name: String) -> void:
+	if anim_name == "swing": 
+		var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
+		hitbox.monitoring = true
+
+func _on_animation_finished(anim_name: String) -> void:
+	if anim_name == "swing": 
+		var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
+		hitbox.monitoring = false
+
+func _on_sword_hit(body: Node3D) -> void:
+	if body is BodyPart:
+		var body_part: BodyPart = body
+		body_part.apply_damage(hit_sound, current_weapon.damage)
+		player.camera.shake(0.1, 0.03)
+	#else:
+		#var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
+		#anim.stop()
 
 func _process(delta: float) -> void:
 	if not player.is_me(): return
@@ -62,12 +90,17 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("inspect") and current_weapon:
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
-		anim.play("inspect")
+
+		if anim.is_playing() and anim.current_animation == current_weapon.attack_anim and current_weapon.is_melee:
+			var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
+			hitbox.monitoring = false
+
+		anim.play(current_weapon.inspect_anim)
+
 
 	time_since_last_shot += delta
 	
 	_sway(delta)
-
 
 func _sway(delta: float) -> void:
 	var sway_rot := Vector3.ZERO
@@ -101,18 +134,28 @@ func _try_shoot() -> void:
 	time_since_last_shot = 0
 
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
-	anim.play("shoot")
+	anim.play(current_weapon.attack_anim)
 
-	var muzzle_flash: GPUParticles3D = weapon_scene.get_node("MuzzleFlash")
-	muzzle_flash.emitting = true
+	var tracer_pos := Vector3.ZERO
+	if not current_weapon.is_melee:
+		var muzzle_flash: GPUParticles3D = weapon_scene.get_node("MuzzleFlash")
+		muzzle_flash.emitting = true
+		tracer_pos = muzzle_flash.global_position
 
-	audio_player.stream = current_weapon.shoot_sound
-	audio_player.play()
-	player.camera.shake(0.1, 0.005)
+	if current_weapon.shoot_sound:
+		audio_player.stream = current_weapon.shoot_sound
+		audio_player.play()
+
 	
+	if current_weapon.is_melee: 
+		return
+
+	# only for guns
+
 	var collider := raycast.get_collider()
 	
 	# temp recoil
+	player.camera.shake(0.1, 0.005)
 	player.camera.rotate_x(deg_to_rad(current_weapon.recoil))
 	player.camera.rotation.x = clamp(player.camera.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
@@ -123,7 +166,8 @@ func _try_shoot() -> void:
 
 	var hit_pos := raycast.get_collision_point()
 
-	BulletTracer.spawn(self, muzzle_flash.global_position, hit_pos)
+	if not current_weapon.is_melee:
+		BulletTracer.spawn(self, tracer_pos, hit_pos)
 
 	var inst: Decal = BulletHoleScene.instantiate()
 	player.map.add_child(inst)

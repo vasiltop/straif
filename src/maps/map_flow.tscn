@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="5_b2emv"]
 [ext_resource type="PackedScene" uid="uid://c0navpiksf4ty" path="res://src/maps/tiles/corner.glb" id="6_avumo"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="9_jug4b"]
-[ext_resource type="Resource" uid="uid://dy8rc6oycy3vk" path="res://src/player/weapon/rifle.tres" id="10_j17js"]
+[ext_resource type="Resource" uid="uid://b1nvo3kd1wr3p" path="res://src/player/weapon/resources/sword.tres" id="10_jug4b"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iyvra"]
 
@@ -1510,7 +1510,7 @@ shadow_enabled = true
 
 [node name="WeaponPickup" parent="." instance=ExtResource("9_jug4b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
-weapon = ExtResource("10_j17js")
+weapon = ExtResource("10_jug4b")
 
 [editable path="EndZone"]
 [editable path="StartZone"]
