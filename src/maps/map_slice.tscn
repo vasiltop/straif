@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://bd3b3tyas3ywb"]
+
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_35f2p"]
+[ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="4_5k2js"]
+[ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="5_wfext"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iyvra"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iyvra"]
+seamless = true
+noise = SubResource("FastNoiseLite_iyvra")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eiimb"]
+sky_cover = SubResource("NoiseTexture2D_iyvra")
+
+[sub_resource type="Sky" id="Sky_fkouh"]
+sky_material = SubResource("ProceduralSkyMaterial_eiimb")
+
+[sub_resource type="Environment" id="Environment_eiimb"]
+background_mode = 2
+sky = SubResource("Sky_fkouh")
+tonemap_mode = 2
+fog_sky_affect = 0.385
+
+[node name="TestMap" type="Node3D"]
+script = ExtResource("1_35f2p")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_eiimb")
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("4_5k2js")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -2)
+
+[node name="Targets" type="Node" parent="."]
+
+[node name="EndZone" parent="." instance=ExtResource("5_wfext")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -24)
+
+[node name="Collider" parent="EndZone" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
+
+[node name="StartZone" parent="." instance=ExtResource("5_wfext")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="Collider" parent="StartZone" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
+
+[node name="Players" type="Node" parent="."]
+
+[node name="TargetSpawns" type="Node" parent="."]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.522499, -0.40029, 0.752837, 0, 0, 0)
+light_energy = 2.0
+shadow_enabled = true
+
+[editable path="EndZone"]
+[editable path="StartZone"]

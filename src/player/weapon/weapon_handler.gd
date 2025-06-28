@@ -2,7 +2,7 @@ class_name WeaponHandler extends Node3D
 
 @onready var player: Player = $"../../.."
 @onready var weapon_scene: Node3D = null
-@onready var raycast: RayCast3D = $RayCast
+@onready var raycast: RayCast3D = $"../RayCast"
 @onready var r_hand_ik: SkeletonIK3D = $Arms/ArmArmature/Skeleton3D/RHandIk
 @onready var l_hand_ik: SkeletonIK3D = $Arms/ArmArmature/Skeleton3D/LHandIk
 @onready var start_pos := position
