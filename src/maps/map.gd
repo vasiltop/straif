@@ -16,11 +16,13 @@ var timer: float = 0.0
 var completed: bool = false
 var running: bool = false
 var recorder := Recorder.new()
+var can_win: bool = false
 
 func _ready() -> void:
 	restart()
 	add_child(recorder)
 	start_zone.body_exited.connect(_on_start_zone_exited)
+	end_zone.body_entered.connect(func(_body: Node3D) -> void: can_win = true)
 	player.jumped.connect(_on_player_jump)
 	Lobby.player_switched_map.connect(_on_player_switched_map)
 	Lobby.player_diconnected.connect(_on_player_disconnected)
@@ -103,18 +105,18 @@ func _on_start_zone_exited(body: Node3D) -> void:
 		running = true
 
 func _process(delta: float) -> void:
-	if not completed and _is_player_in_end_zone() and target_container.get_child_count() == 0:
+	if Input.is_action_just_pressed("restart"):
+		restart()
+
+	if not completed and _is_player_in_zone(end_zone) and target_container.get_child_count() == 0 and can_win:
 		_win()
 	
 	if running:
 		timer += delta
 		player.set_timer(timer)
 
-	if Input.is_action_just_pressed("restart"):
-		restart()
-	
-func _is_player_in_end_zone() -> bool:
-	var bodies := end_zone.get_overlapping_bodies()
+func _is_player_in_zone(zone: Area3D) -> bool:
+	var bodies := zone.get_overlapping_bodies()
 
 	for body in bodies:
 		if body is Player:
@@ -129,6 +131,7 @@ func _win() -> void:
 	completed = true
 	running = false
 
+	print("win")
 	var bytes := recorder.to_bytes()
 	Http.publish_run(bytes, Lobby.current_map.name, int(timer * 1000))
 
@@ -143,11 +146,7 @@ func restart() -> void:
 	player.camera.global_rotation = start_rotation
 	player.velocity = Vector3.ZERO
 	player.weapon_handler.set_weapon(null)
-	timer = 0.0
-	player.set_timer(timer)
-
-	completed = false
-	running = false
+	can_win = false
 
 	for node in get_tree().get_nodes_in_group("decal"):
 		node.queue_free()
@@ -161,5 +160,11 @@ func restart() -> void:
 
 	for spawn in get_target_spawns():
 		spawn_target(spawn.global_position)
+		print(target_container.get_child_count())
 	
 	recorder.clear()
+
+	completed = false
+	running = false
+	timer = 0.0
+	player.set_timer(timer)
