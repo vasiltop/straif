@@ -1,15 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfyv2hjl6xu7"]
+[gd_scene load_steps=5 format=3 uid="uid://cfyv2hjl6xu7"]
 
 [ext_resource type="Script" uid="uid://d2pj3u758e007" path="res://src/maps/map_manager/map_manager.gd" id="1_onrs4"]
 [ext_resource type="Script" uid="uid://dfh54fgplrf7y" path="res://src/maps/map_data.gd" id="2_u1fwk"]
 
+[sub_resource type="Resource" id="Resource_j6djh"]
+script = ExtResource("2_u1fwk")
+name = "map_simple"
+tier = 1
+mid = 0
+metadata/_custom_type_script = "uid://dfh54fgplrf7y"
+
 [sub_resource type="Resource" id="Resource_650st"]
 script = ExtResource("2_u1fwk")
-name = "Test_Map"
-tier = 2
+name = "map_pro"
+tier = 1
 mid = 0
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [node name="MapManager" type="Node"]
 script = ExtResource("1_onrs4")
-maps = Array[ExtResource("2_u1fwk")]([SubResource("Resource_650st")])
+maps = Array[ExtResource("2_u1fwk")]([SubResource("Resource_j6djh"), SubResource("Resource_650st")])

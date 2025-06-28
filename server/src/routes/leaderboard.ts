@@ -40,6 +40,22 @@ app.get(
 );
 
 app.get(
+	'/:steam_id/runs',
+	async (c) => {
+		const steam_id = c.req.param('steam_id');
+
+		const player_runs = await db.select({
+			time_ms: runs.time_ms,
+			map_name: runs.map_name,
+		}).from(runs).where(
+			eq(runs.steam_id, steam_id)
+		);
+
+		return c.json({ data: player_runs });
+	}
+)
+
+app.get(
 	'/admin',
 	admin_auth,
 )

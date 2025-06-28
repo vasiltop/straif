@@ -45,11 +45,19 @@ func _ready() -> void:
 
 func _instantiate_maps() -> void:
 	var mm: Maps = MapManager
+	var runs := await Http.get_my_runs()
 
 	for map in mm.maps:
+		
+		var time: float
+		for run: Dictionary in runs:
+			if run.map_name == map.name:
+				time = run.time_ms / 1000
+				break
+
 		var btn := Button.new()
-		btn.text = "%s\n Tier: %s/5" % [map.name, map.tier]
-		btn.custom_minimum_size = Vector2(150, 150)
+		btn.text = "%s\n Tier: %s/5\n Personal Best: %s" % [map.name, map.tier, str(snapped(time, 0.01))]
+		btn.custom_minimum_size = Vector2(160, 160)
 		map_container.add_child(btn)
 		btn.pressed.connect(
 			func() -> void:

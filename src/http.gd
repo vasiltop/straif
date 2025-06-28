@@ -5,7 +5,8 @@ const API_URL := "http://localhost:3000/"
 
 func get_runs(map_name: String, page: int) -> Dictionary:
 	var res := await client.http_get("/leaderboard/" + map_name + "?page=" + str(page)).send()
-
+	if res == null: return { "data": [] }
+	
 	if res.status() != 200:
 		return { "data": [] }
 
@@ -22,8 +23,8 @@ func publish_run(recording: PackedByteArray, map_name: String, time_ms: int) -> 
 
 func check_admin() -> bool:
 	var res := await client.http_get("/leaderboard/admin").header("auth-ticket", str(Lobby.auth_ticket_hex)).send()
-
-	print(res.status())
+	if res == null: return false
+	
 	if res.status() == 200:
 		return true
 	
@@ -31,9 +32,20 @@ func check_admin() -> bool:
 
 func get_replay(map_name: String, steam_id: int) -> String:
 	var res := await client.http_get("/leaderboard/" + map_name + "/" + str(steam_id) + "/recording").header("auth-ticket", str(Lobby.auth_ticket_hex)).send()
-
+	if res == null: return ""
+	
 	if res.status() != 200:
 		return ""
 	
 	var json: Dictionary = await res.json()
 	return json.data.recording
+
+func get_my_runs() -> Array:
+	var res := await client.http_get("/leaderboard/" + str(Steam.getSteamID()) + "/runs").send()
+	if res == null: return []
+
+	if res.status() != 200:
+		return []
+
+	var json: Dictionary = await res.json()
+	return json.data

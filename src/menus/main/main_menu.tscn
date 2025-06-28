@@ -112,10 +112,9 @@ text = "Quit"
 
 [node name="Body" type="TabContainer" parent="MarginContainer/Content"]
 layout_mode = 2
-current_tab = 2
+current_tab = 0
 
 [node name="Play" type="Control" parent="MarginContainer/Content/Body"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -290,6 +289,7 @@ size_flags_vertical = 3
 columns = 6
 
 [node name="Settings" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -310,11 +310,11 @@ layout_mode = 2
 
 [node name="Save" type="Button" parent="MarginContainer/Content/Body/Settings"]
 layout_mode = 0
-offset_left = 10.0
+offset_left = 50.0
 offset_top = 10.0
-offset_right = 54.0
+offset_right = 94.0
 offset_bottom = 41.0
-text = "Save"
+text = "Save Settings"
 
 [node name="Background" type="Node3D" parent="."]
 
