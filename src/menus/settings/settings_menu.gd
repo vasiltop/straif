@@ -15,28 +15,13 @@ func _ready() -> void:
 	max_fps_input.value_changed.connect(_on_max_fps_changed)
 
 func _set_init_values() -> void:
-	# sens
 	var sens: float = Settings.value("Controls", "sensitivity")
 	sens_slider.value = sens
 	sens_label.text = str(sens)
 
-	# display mode
-	var index := 0
-
-	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		index = 0
-	elif DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
-		index = 1
-	else:
-		index = 2
-
-	window_mode_input.selected = index
-
-	#fps
-	max_fps_input.value = Engine.max_fps
-
-	#audio
-	volume_slider.value = AudioServer.get_bus_volume_db(0)
+	window_mode_input.selected = Settings.value("Display", "mode")
+	max_fps_input.value = Settings.value("Display", "max_fps")
+	volume_slider.value = Settings.value("Audio", "master_volume")
 
 func _on_volume_slider_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(0, value)

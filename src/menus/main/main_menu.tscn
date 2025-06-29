@@ -112,9 +112,10 @@ text = "Quit"
 
 [node name="Body" type="TabContainer" parent="MarginContainer/Content"]
 layout_mode = 2
-current_tab = 0
+current_tab = 2
 
 [node name="Play" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -289,7 +290,6 @@ size_flags_vertical = 3
 columns = 6
 
 [node name="Settings" type="Control" parent="MarginContainer/Content/Body"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -309,11 +309,13 @@ theme_override_constants/margin_bottom = 50
 layout_mode = 2
 
 [node name="Save" type="Button" parent="MarginContainer/Content/Body/Settings"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 10.0
-offset_right = 94.0
-offset_bottom = 41.0
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 26
 text = "Save Settings"
 
 [node name="Background" type="Node3D" parent="."]
