@@ -10,10 +10,10 @@ class_name MainMenu extends Control
 @onready var my_lobby_control: Control = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby
 @onready var create_lobby_control: Control = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby
 @onready var refresh_lobby_search_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title/Refresh
-@onready var lobby_list_container: GridContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/ScrollContainer/Container
+@onready var lobby_list_container: HFlowContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/ScrollContainer/Container
 @onready var leave_lobby_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Title/Button
 @onready var my_lobby_members_container: VBoxContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Players
-@onready var map_container: GridContainer = $MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer/Maps
+@onready var map_container: HFlowContainer = $MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer/Maps
 @onready var host_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/HostLocal
 @onready var join_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title/JoinLocal
 @onready var _lobby_refresh_timer := BetterTimer.new(self, 1.0, _on_refresh_lobby_search)

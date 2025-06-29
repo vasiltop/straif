@@ -1,12 +1,17 @@
-[gd_scene load_steps=14 format=3 uid="uid://taw7qljauqyg"]
+[gd_scene load_steps=16 format=3 uid="uid://taw7qljauqyg"]
 
 [ext_resource type="Script" uid="uid://c3c48ot8m7wcr" path="res://src/menus/main/main_menu.gd" id="1_cput1"]
+[ext_resource type="FontFile" uid="uid://bl7puveojbll1" path="res://src/fonts/m5x7.ttf" id="1_dbfwp"]
 [ext_resource type="PackedScene" uid="uid://by16065lffyyh" path="res://src/maps/tiles/wall.glb" id="2_8duqe"]
 [ext_resource type="PackedScene" uid="uid://bl08qnvut26i8" path="res://src/menus/settings/settings_menu.tscn" id="2_juxiq"]
 [ext_resource type="PackedScene" uid="uid://c8wwxgcisn8cf" path="res://src/maps/tiles/floor.glb" id="3_juxiq"]
 [ext_resource type="PackedScene" uid="uid://neg7l0cupgoh" path="res://src/maps/tiles/ramp.glb" id="4_dbfwp"]
 [ext_resource type="PackedScene" uid="uid://ch1h3i7xcnasn" path="res://src/maps/tiles/doorway.glb" id="5_s1l6x"]
 [ext_resource type="PackedScene" uid="uid://c0navpiksf4ty" path="res://src/maps/tiles/corner.glb" id="6_dwrk1"]
+
+[sub_resource type="Theme" id="Theme_juxiq"]
+default_font = ExtResource("1_dbfwp")
+default_font_size = 35
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
 size = Vector2(64, 64)
@@ -36,6 +41,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_juxiq")
 script = ExtResource("1_cput1")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -45,9 +51,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 300
+theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 300
+theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
 [node name="Content" type="VSplitContainer" parent="MarginContainer"]
@@ -112,10 +118,9 @@ text = "Quit"
 
 [node name="Body" type="TabContainer" parent="MarginContainer/Content"]
 layout_mode = 2
-current_tab = 2
+current_tab = 0
 
 [node name="Play" type="Control" parent="MarginContainer/Content/Body"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -134,11 +139,10 @@ theme_override_constants/margin_bottom = 50
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Content/Body/Play/MarginContainer"]
 layout_mode = 2
 
-[node name="Maps" type="GridContainer" parent="MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer"]
+[node name="Maps" type="HFlowContainer" parent="MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-columns = 7
 
 [node name="Lobby" type="Control" parent="MarginContainer/Content/Body"]
 visible = false
@@ -283,13 +287,13 @@ text = "Join Local"
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies"]
 layout_mode = 2
 
-[node name="Container" type="GridContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/ScrollContainer"]
+[node name="Container" type="HFlowContainer" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-columns = 6
 
 [node name="Settings" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -315,7 +319,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 31.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 40
 text = "Save Settings"
 
 [node name="Background" type="Node3D" parent="."]
