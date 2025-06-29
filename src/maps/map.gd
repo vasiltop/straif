@@ -59,7 +59,7 @@ func spawn_player(pid: int) -> void:
 	inst.name = str(pid)
 	inst.pid = pid
 	inst.global_position = start_pos
-	inst.set_name_label("Player: %d" % pid)
+	inst.set_name_label(Lobby.get_player_name(pid))
 
 func _physics_process(_delta: float) -> void:
 	if running:

@@ -77,7 +77,12 @@ func _on_my_lobby_changed() -> void:
 
 	for member in Lobby.lobby_members:
 		var name_label := Label.new()
-		name_label.text = member.name
+		var map_status := "Main Menu"
+
+		if member.current_map_id != -1:
+			map_status = MapManager.get_map_with_id(member.current_map_id).name
+
+		name_label.text = member.name + " - In " + map_status
 		my_lobby_members_container.add_child(name_label)
 
 func _on_lobby_match_list(lobbies: Array) -> void:

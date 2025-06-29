@@ -61,9 +61,6 @@ func _process(_delta: float) -> void:
 
 	gun_camera.global_transform = camera.global_transform
 
-	if Input.is_action_just_pressed("toggle_mouse_mode"):
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE else Input.MOUSE_MODE_VISIBLE
-
 	if Input.is_action_just_pressed("main_menu"):
 		Lobby.switched_map.rpc(-1)
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")

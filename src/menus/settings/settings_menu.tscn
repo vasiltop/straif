@@ -8,10 +8,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 2
 script = ExtResource("1_orxww")
 
 [node name="Controls" type="ScrollContainer" parent="."]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -39,10 +40,10 @@ theme_override_constants/separation = 10
 layout_mode = 2
 text = "Sensitivity"
 
-[node name="TextInput" type="LineEdit" parent="Controls/Margin/V/Sensitivity"]
+[node name="SensLabel" type="Label" parent="Controls/Margin/V/Sensitivity"]
+custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
 text = "0.0"
-alignment = 1
 
 [node name="SliderInput" type="HSlider" parent="Controls/Margin/V/Sensitivity"]
 custom_minimum_size = Vector2(300, 50)
@@ -119,7 +120,6 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.646029, 0.646029, 0.646029, 1)
 
 [node name="Audio" type="ScrollContainer" parent="."]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

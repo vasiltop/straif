@@ -27,14 +27,36 @@ func switched_map(mid: int) -> void:
 	if not data: return
 
 	player_switched_map.emit(multiplayer.get_remote_sender_id(), data)
+	
+	var sender := multiplayer.get_remote_sender_id()
+
+	if network_type == NETWORK_TYPE.STEAM:
+		var steam_peer: SteamMultiplayerPeer = multiplayer.multiplayer_peer 
+		sender = steam_peer.get_steam64_from_peer_id(sender)
+	
+	get_player(sender).current_map_id = mid	
+	my_lobby_changed.emit()
 
 func _ready() -> void:
 	Steam.lobby_joined.connect(_on_lobby_joined)
 	Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
 	Steam.getAuthTicketForWebApi("munost")
 
-	#auth_ticket_hex = PackedByteArray(Lobby.auth_ticket.buffer as Array).hex_encode()
-	#admin = await Http.check_admin()
+func get_player(id: int) -> Member:
+	for member in lobby_members:
+		if member.id == id:
+			return member
+	
+	return null
+
+func get_player_name(peer_id: int) -> String:
+	print(network_type)
+	if network_type == NETWORK_TYPE.STEAM:
+		var steam_peer: SteamMultiplayerPeer = multiplayer.multiplayer_peer 
+		var steam_id := steam_peer.get_steam64_from_peer_id(peer_id)
+		return Steam.getFriendPersonaName(steam_id)
+	else:
+		return str(peer_id)
 
 func _on_get_ticket_for_web_api(_auth_ticket: int, _result: int, _ticket_size: int, ticket_buffer: Array) -> void:
 	auth_ticket_hex = PackedByteArray(ticket_buffer).hex_encode()
@@ -45,9 +67,6 @@ func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, resp
 		lobby_id = this_lobby_id
 		update_lobby_members()
 		my_lobby_changed.emit()
-
-func _on_steam_lobby_chat_update() -> void:
-	pass
 
 func update_lobby_members() -> void:
 	lobby_members.clear()
@@ -164,8 +183,10 @@ class Member:
 	var id: int
 	var name: String
 	var net_id: int
+	var current_map_id: int	
 
-	func _init(m_id: int, m_name: String, pnet_id: int) -> void:
+	func _init(m_id: int, m_name: String, pnet_id: int, current_map_id := -1) -> void:
 		self.id = m_id
 		self.name = m_name
 		self.net_id = pnet_id
+		self.current_map_id = current_map_id
