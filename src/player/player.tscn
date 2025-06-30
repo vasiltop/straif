@@ -231,6 +231,7 @@ offset_right = 8.0
 offset_bottom = 2.0
 
 [node name="Leaderboard" type="Panel" parent="UI"]
+visible = false
 z_index = 5
 custom_minimum_size = Vector2(600, 400)
 anchors_preset = 8
@@ -289,6 +290,7 @@ layout_mode = 2
 text = " 5 | munost - 0.98321"
 
 [node name="RunStats" type="Panel" parent="UI"]
+visible = false
 custom_minimum_size = Vector2(400, 200)
 anchors_preset = 8
 anchor_left = 0.5
