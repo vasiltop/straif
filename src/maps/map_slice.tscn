@@ -1320,10 +1320,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 5, -29)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 5, -29)
 
 [node name="Node3D6" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -41)
-
-[node name="Node3D7" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 5, -41)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, -41)
 
 [node name="Node3D8" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 9, -54)

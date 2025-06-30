@@ -405,6 +405,22 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 40
 text = "Save Settings"
 
+[node name="VersionError" type="Panel" parent="MarginContainer"]
+visible = false
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VersionError"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VersionError/CenterContainer"]
+layout_mode = 2
+text = "ERROR: Incorrect Game Version, please download the latest version."
+
 [node name="Background" type="Node3D" parent="."]
 
 [node name="wall" parent="Background" instance=ExtResource("2_8duqe")]
@@ -1431,7 +1447,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1, -20)
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 0, -14)
 
 [node name="weapons" type="Node3D" parent="Background"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.6184, 1.10126, -13.629)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -14.6184, 0.595297, -13.629)
 
 [node name="dmr" type="MeshInstance3D" parent="Background/weapons"]
 transform = Transform3D(8.1802e-09, -0.44008, 0.897959, 1, -4.2222e-08, 1.49012e-08, 5.1029e-08, 0.897959, 0.44008, -0.494222, -1.00501, 0)
@@ -1439,7 +1455,7 @@ mesh = SubResource("ArrayMesh_hreeo")
 skeleton = NodePath("")
 
 [node name="sword" type="MeshInstance3D" parent="Background/weapons"]
-transform = Transform3D(3.63912e-08, 0.832535, -0.553973, 1, -4.37114e-08, 0, -2.42149e-08, -0.553973, -0.832535, -1.33057, -1.03707, 0.971009)
+transform = Transform3D(-0.0335826, 0.830942, -0.555345, 0.997623, 0.0613272, 0.0314338, 0.0601775, -0.552969, -0.831026, -1.33057, -1.03707, 0.971008)
 mesh = SubResource("ArrayMesh_cersk")
 skeleton = NodePath("")
 

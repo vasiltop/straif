@@ -14,7 +14,7 @@ func _process(_delta: float) -> void:
 			child.queue_free()
 		
 		var run_position := 1
-		var runs: Array = (await Http.get_runs(Lobby.current_map.name, 0)).data
+		var runs: Array = await Http.get_runs(Lobby.current_map.name, 0)
 
 		for run: Dictionary in runs:
 			var inst := Label.new()

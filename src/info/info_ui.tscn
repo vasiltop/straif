@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://bl135tiyyob7c"]
+
+[ext_resource type="Script" uid="uid://xcnyv7n0iyty" path="res://src/info/info_ui.gd" id="1_nty2f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nty2f"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="InfoUi" type="Panel"]
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nty2f")
+script = ExtResource("1_nty2f")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CenterContainer"]
+layout_mode = 2
+text = "Message"

@@ -18,6 +18,7 @@ class_name MainMenu extends Control
 @onready var join_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title/JoinLocal
 @onready var _lobby_refresh_timer := BetterTimer.new(self, 1.0, _on_refresh_lobby_search)
 @onready var save_settings_btn: Button = $MarginContainer/Content/Body/Settings/Save
+@onready var version_error: Control = $MarginContainer/VersionError
 
 func _ready() -> void:
 	Steam.avatar_loaded.connect(_on_loaded_avatar)
@@ -30,6 +31,7 @@ func _ready() -> void:
 	host_local_btn.pressed.connect(Lobby.create_enet_lobby)
 	join_local_btn.pressed.connect(Lobby.join_enet_lobby)
 	save_settings_btn.pressed.connect(Settings.save)
+	Http.invalid_version.connect(func() -> void: version_error.visible = true)
 
 	Steam.getPlayerAvatar()
 	username_label.text = Steam.getPersonaName()

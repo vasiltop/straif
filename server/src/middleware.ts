@@ -24,11 +24,15 @@ async function get_steam_id_from_ticket(ticket: string): Promise<string> {
 	return json.response.params.steamid;
 }
 
+export const hash_compare = createMiddleware(async (c, next) => {
+	return next();
+});
+
 export const steam_auth = createMiddleware(async (c, next) => {
 	const auth_ticket = c.req.header('auth-ticket');
 
 	if (!auth_ticket) {
-		return c.body(null, 401);
+		return c.json({ error: "Invalid authentication ticket" }, 401);
 	}
 
 	c.set('steam_id', await get_steam_id_from_ticket(auth_ticket));
@@ -40,7 +44,7 @@ export const admin_auth = createMiddleware(async (c, next) => {
 	const auth_ticket = c.req.header('auth-ticket');
 
 	if (!auth_ticket) {
-		return c.body(null, 401);
+		return c.json({ error: "You are not an administrator" }, 401);
 	}
 
 	const steam_id = await get_steam_id_from_ticket(auth_ticket);

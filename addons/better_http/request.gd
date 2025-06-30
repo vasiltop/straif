@@ -46,6 +46,8 @@ func send_with_http(http: HTTPClient) -> BetterHTTPResponse:
 		await self._scene.process_frame
 
 	#assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
+	if http.get_status() != HTTPClient.STATUS_CONNECTED:
+		return null
 
 	return await self._internal_send_with_http_no_connect(http)
 
