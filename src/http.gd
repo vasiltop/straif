@@ -2,20 +2,24 @@ extends Node
 
 signal invalid_version
 
-@onready var client := BetterHTTPClient.new(self, BetterHTTPURL.parse(API_URL))
-
-const API_URL := "http://localhost:3000"
-#const API_URL := "http://209.38.2.30:3000"
 const GAME_VERSION := 1
 const FILE_CHUNK_SIZE := 1024
 const DOWNLOAD_URL := "https://munost.itch.io/straif-2/download/A7Cj5QebP4wvf18G6oMGKwwbRFPT9pPofQ3i0C_X"
 
+var client: BetterHTTPClient 
+var api_url: String
 var game_hash := "hash1"
 
 func _show_connection_error() -> void:
 	Info.alert("Unable to connect to \nthe game server.")
 
 func _ready() -> void:
+	if OS.has_feature("editor"):
+		api_url = "http://localhost:3000"
+	else:
+		api_url = "http://209.38.2.30:3000"
+	client = BetterHTTPClient.new(self, BetterHTTPURL.parse(api_url))
+
 	_generate_game_hash()
 
 	var res := await client.http_get("/leaderboard/version").header("game-hash", game_hash).send()
