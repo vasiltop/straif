@@ -4,7 +4,6 @@ signal invalid_version
 
 const GAME_VERSION := 1
 const FILE_CHUNK_SIZE := 1024
-const DOWNLOAD_URL := "https://munost.itch.io/straif-2/download/A7Cj5QebP4wvf18G6oMGKwwbRFPT9pPofQ3i0C_X"
 
 var client: BetterHTTPClient 
 var api_url: String
@@ -30,7 +29,6 @@ func _ready() -> void:
 	
 	if res.status() != 200:
 		invalid_version.emit()
-		OS.shell_open(DOWNLOAD_URL)
 		return
 	
 	print("Validated game hash!")

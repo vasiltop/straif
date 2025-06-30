@@ -10,19 +10,19 @@ config_version=5
 
 [application]
 
-config/name="straif2"
+config/name="straif"
 run/main_scene="uid://taw7qljauqyg"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
+Info="*res://src/info.gd"
 Main="*res://src/main.gd"
 Http="*res://src/http.gd"
 Lobby="*res://src/lobby.gd"
 MapManager="*res://src/maps/map_manager/map_manager.tscn"
 Settings="*res://src/settings.gd"
-Info="*res://src/info.gd"
 
 [debug]
 

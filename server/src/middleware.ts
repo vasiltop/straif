@@ -1,6 +1,5 @@
 import 'dotenv/config'
 import { createMiddleware } from 'hono/factory';
-import { auth } from 'hono/utils/basic-auth';
 import db from './db/index.ts';
 import { admins } from './db/schema.ts';
 import { eq } from 'drizzle-orm';
@@ -12,7 +11,7 @@ const BASE_URL = "https://api.steampowered.com"
 async function get_steam_id_from_ticket(ticket: string): Promise<string> {
 	const params = new URLSearchParams({
 		key: STEAM_API_KEY,
-		appid: '480',
+		appid: '3850480',
 		ticket,
 		identity: 'munost'
 	});
@@ -20,7 +19,8 @@ async function get_steam_id_from_ticket(ticket: string): Promise<string> {
 	const url = BASE_URL + `/ISteamUserAuth/AuthenticateUserTicket/v1/?${params.toString()}`;
 	const res = await fetch(url);
 	const json = await res.json();
-
+	
+	// todo: not safe
 	return json.response.params.steamid;
 }
 
