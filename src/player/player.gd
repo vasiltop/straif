@@ -5,7 +5,7 @@ signal jumped
 @onready var camera: PlayerCamera = $Eye/Camera
 @onready var gun_camera: Camera3D = $Eye/Camera/GunVPContainer/GunVP/GunCam
 @onready var gun_vp: SubViewport = $Eye/Camera/GunVPContainer/GunVP
-@onready var timer_label: Label = $UI/Timer
+@onready var timer_label: Label = $UI/GameState/Timer
 @onready var ui: CanvasLayer = $UI
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
@@ -76,7 +76,12 @@ func _physics_process(delta: float) -> void:
 	_movement_process(delta)
 
 func set_timer(value: float) -> void:
-	timer_label.text = str(snapped(value, 0.001)) + " s"
+	timer_label.text = str(snapped(value, 0.001)) #+ " s"
+
+@onready var target_label: Label = $UI/GameState/EnemiesLeft
+
+func set_target_status(left: int, total: int) -> void:
+	target_label.text = "%d/%d" % [left, total]
 
 func _movement_process(delta: float) -> void:
 	var wish_dir := Input.get_vector("left", "right", "up", "down")

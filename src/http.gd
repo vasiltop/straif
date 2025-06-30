@@ -18,6 +18,7 @@ func _ready() -> void:
 		api_url = "http://localhost:3000"
 	else:
 		api_url = "http://209.38.2.30:3000"
+
 	client = BetterHTTPClient.new(self, BetterHTTPURL.parse(api_url))
 
 	_generate_game_hash()
@@ -29,7 +30,7 @@ func _ready() -> void:
 	
 	if res.status() != 200:
 		invalid_version.emit()
-		#OS.shell_open(DOWNLOAD_URL)
+		OS.shell_open(DOWNLOAD_URL)
 		return
 	
 	print("Validated game hash!")
@@ -39,7 +40,7 @@ func _generate_game_hash() -> void:
 	var pck := path.get_basename() + ".pck"
 
 	if OS.has_feature("editor"):
-		pck = "res://bin/straif2.pck"
+		pck = "res://bin/linux/straif2.pck"
 
 	game_hash = _gen_hash(pck)
 

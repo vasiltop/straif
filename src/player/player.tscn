@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://j1px6ey07p2f"]
+[gd_scene load_steps=14 format=4 uid="uid://j1px6ey07p2f"]
 
 [ext_resource type="Script" uid="uid://ds6cq7tyxjvrc" path="res://src/player/player.gd" id="1_4anbu"]
 [ext_resource type="Script" uid="uid://bocfext65sbpj" path="res://src/player/camera.gd" id="2_244u8"]
@@ -70,6 +70,8 @@ bind/6/pose = Transform3D(-0.985888, 0.167415, 3.79832e-07, -0.167416, -0.985887
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_244u8"]
 radius = 0.3
 height = 2.1
+
+[sub_resource type="Theme" id="Theme_5f2sf"]
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -203,11 +205,6 @@ shape = SubResource("CapsuleShape3D_244u8")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Timer" type="Label" parent="UI"]
-offset_right = 40.0
-offset_bottom = 23.0
-text = "0.00s"
-
 [node name="Crosshair" type="Control" parent="UI"]
 layout_mode = 3
 anchors_preset = 8
@@ -289,6 +286,29 @@ text = "4 | munost - 0.98321"
 [node name="Label5" type="Label" parent="UI/Leaderboard/Entries"]
 layout_mode = 2
 text = " 5 | munost - 0.98321"
+
+[node name="GameState" type="VBoxContainer" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -34.5
+offset_top = -50.0
+offset_right = 34.5
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("Theme_5f2sf")
+
+[node name="EnemiesLeft" type="Label" parent="UI/GameState"]
+layout_mode = 2
+text = "0/0"
+horizontal_alignment = 1
+
+[node name="Timer" type="Label" parent="UI/GameState"]
+layout_mode = 2
+text = "0.00"
+horizontal_alignment = 1
 
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)

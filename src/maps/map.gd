@@ -1,5 +1,7 @@
 class_name Map extends Node
 
+signal target_killed
+
 @onready var player: Player = $Player
 @onready var end_zone: Area3D = $EndZone
 @onready var start_zone: Area3D = $StartZone
@@ -29,8 +31,13 @@ func _ready() -> void:
 	Lobby.player_left_map.connect(_on_player_disconnected)
 	Lobby.switched_map.rpc(Lobby.current_map.mid)
 	Lobby.replay_requested.connect(_on_replay_requested)
+	target_killed.connect(_on_target_killed)
 	player.setup(self)
+	_on_target_killed()
 	recorder.player_cam = player.camera
+
+func _on_target_killed() -> void:
+	player.set_target_status(target_container.get_child_count(), target_spawns_container.get_child_count())
 
 func _on_replay_requested(data: String) -> void:
 	recorder.play_bytes(Marshalls.base64_to_raw(data))
@@ -161,8 +168,9 @@ func restart() -> void:
 	for spawn in get_target_spawns():
 		spawn_target(spawn.global_position)
 	
-	recorder.clear()
+	_on_target_killed()
 
+	recorder.clear()
 	completed = false
 	running = false
 	timer = 0.0
