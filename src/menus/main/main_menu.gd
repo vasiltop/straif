@@ -50,12 +50,13 @@ func _instantiate_maps() -> void:
 	var runs := await Http.get_my_runs()
 
 	for map in mm.maps:
-		
 		var time: float
 		for run: Dictionary in runs:
 			if run.map_name == map.name:
 				time = run.time_ms / 1000
 				break
+
+		Lobby.map_name_to_time[map.name] = time if time != 0 else INF
 
 		var btn := Button.new()
 		btn.text = "%s\n Tier: %s/5\n Personal Best: %s" % [map.name, map.tier, str(snapped(time, 0.01))]
@@ -69,6 +70,7 @@ func _instantiate_maps() -> void:
 				Lobby.current_map = map
 		)
 
+	print(Lobby.map_name_to_time)
 func _on_my_lobby_changed() -> void:
 	_on_refresh_lobby_search()
 	my_lobby_control.visible = Lobby.lobby_id != 0

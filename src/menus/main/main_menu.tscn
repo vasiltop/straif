@@ -1,7 +1,6 @@
-[gd_scene load_steps=24 format=4 uid="uid://taw7qljauqyg"]
+[gd_scene load_steps=23 format=4 uid="uid://taw7qljauqyg"]
 
 [ext_resource type="Script" uid="uid://c3c48ot8m7wcr" path="res://src/menus/main/main_menu.gd" id="1_cput1"]
-[ext_resource type="FontFile" uid="uid://bl7puveojbll1" path="res://src/fonts/m5x7.ttf" id="1_dbfwp"]
 [ext_resource type="PackedScene" uid="uid://by16065lffyyh" path="res://src/maps/tiles/wall.glb" id="2_8duqe"]
 [ext_resource type="PackedScene" uid="uid://bl08qnvut26i8" path="res://src/menus/settings/settings_menu.tscn" id="2_juxiq"]
 [ext_resource type="PackedScene" uid="uid://c8wwxgcisn8cf" path="res://src/maps/tiles/floor.glb" id="3_juxiq"]
@@ -12,8 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://i0gj41gk6t7a" path="res://src/textures/sword.jpeg" id="10_qg8fl"]
 
 [sub_resource type="Theme" id="Theme_juxiq"]
-default_font = ExtResource("1_dbfwp")
-default_font_size = 35
+default_font_size = 20
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
 size = Vector2(64, 64)
@@ -402,7 +400,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 31.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 20
 text = "Save Settings"
 
 [node name="VersionError" type="Panel" parent="MarginContainer"]

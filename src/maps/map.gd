@@ -138,9 +138,9 @@ func _win() -> void:
 	completed = true
 	running = false
 
-	print("win")
 	var bytes := recorder.to_bytes()
 	Http.publish_run(bytes, Lobby.current_map.name, int(timer * 1000))
+	player.show_end_run_stats(timer)
 
 func spawn_target(pos: Vector3) -> void:
 	var inst: Target = TargetScene.instantiate()
@@ -153,6 +153,8 @@ func restart() -> void:
 	player.camera.global_rotation = start_rotation
 	player.velocity = Vector3.ZERO
 	player.weapon_handler.set_weapon(null)
+	player.run_stats.visible = false
+
 	can_win = false
 
 	for node in get_tree().get_nodes_in_group("decal"):

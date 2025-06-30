@@ -14,6 +14,8 @@ var auth_ticket: Dictionary
 var auth_ticket_hex: String
 var admin: bool
 
+var map_name_to_time: Dictionary = {}
+
 enum NETWORK_TYPE { ENET, STEAM }
 var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
 

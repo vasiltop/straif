@@ -231,6 +231,7 @@ offset_right = 8.0
 offset_bottom = 2.0
 
 [node name="Leaderboard" type="Panel" parent="UI"]
+z_index = 5
 custom_minimum_size = Vector2(600, 400)
 anchors_preset = 8
 anchor_left = 0.5
@@ -286,6 +287,37 @@ text = "4 | munost - 0.98321"
 [node name="Label5" type="Label" parent="UI/Leaderboard/Entries"]
 layout_mode = 2
 text = " 5 | munost - 0.98321"
+
+[node name="RunStats" type="Panel" parent="UI"]
+custom_minimum_size = Vector2(400, 200)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/RunStats"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -11.5
+offset_right = 50.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Run completed in 10.000s, new PB!
+Press Enter to close."
+horizontal_alignment = 1
 
 [node name="GameState" type="VBoxContainer" parent="UI"]
 anchors_preset = 7
