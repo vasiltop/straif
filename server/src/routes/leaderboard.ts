@@ -2,9 +2,9 @@ import { Hono } from 'hono'
 import db from '../db/index.ts'
 import { z } from 'zod';
 import { runs } from '../db/schema.ts';
-import { desc, asc, eq, sql, and } from 'drizzle-orm';
+import { asc, eq, sql, and } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator'
-import { admin_auth, steam_auth } from '../middleware.ts';
+import { admin_auth, hash_compare, steam_auth } from '../middleware.ts';
 
 type Variables = {
 	steam_id: string,
@@ -44,10 +44,8 @@ app.get(
 
 app.get(
 	'/version',
-	async (c) => {
-		return c.json({ data: process.env.GAME_VERSION });
-	}
-)
+	hash_compare,
+);
 
 app.get(
 	'/:steam_id/runs',

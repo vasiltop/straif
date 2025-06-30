@@ -2,45 +2,45 @@ extends Node
 
 signal invalid_version
 
+@onready var client := BetterHTTPClient.new(self, BetterHTTPURL.parse(API_URL))
+
 const API_URL := "http://localhost:3000"
 #const API_URL := "http://209.38.2.30:3000"
 const GAME_VERSION := 1
 const FILE_CHUNK_SIZE := 1024
 const DOWNLOAD_URL := "https://munost.itch.io/straif-2/download/A7Cj5QebP4wvf18G6oMGKwwbRFPT9pPofQ3i0C_X"
 
-@onready var client := BetterHTTPClient.new(self, BetterHTTPURL.parse(API_URL))
-
-var game_hash: String
+var game_hash := "hash1"
 
 func _show_connection_error() -> void:
 	Info.alert("Unable to connect to \nthe game server.")
 
 func _ready() -> void:
-	if not OS.is_debug_build():
-		_generate_game_hash()
+	_generate_game_hash()
 
-	var res := await client.http_get("/leaderboard/version").send()
+	var res := await client.http_get("/leaderboard/version").header("game-hash", game_hash).send()
 	if res == null: 
 		_show_connection_error()
 		return
 	
 	if res.status() != 200:
+		invalid_version.emit()
+		#OS.shell_open(DOWNLOAD_URL)
 		return
 	
-	var json: Dictionary = await res.json()
-	var version := int(json.data as String)
-	
-	if version != GAME_VERSION:
-		invalid_version.emit()
-		OS.shell_open(DOWNLOAD_URL)
-	
-	#_gen_hash("res://bin/straif2.pck")
+	print("Validated game hash!")
 
 func _generate_game_hash() -> void:
 	var path := OS.get_executable_path()
 	var pck := path.get_basename() + ".pck"
-	print("Pck file hash: ")
-	print(_gen_hash(pck))
+
+	if OS.has_feature("editor"):
+		pck = "res://bin/straif2.pck"
+
+	game_hash = _gen_hash(pck)
+
+	if OS.has_feature("editor"):
+		print("Debug hash: " + game_hash)
 
 func _gen_hash(path: String) -> String:
 	if not FileAccess.file_exists(path):

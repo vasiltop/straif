@@ -25,6 +25,18 @@ async function get_steam_id_from_ticket(ticket: string): Promise<string> {
 }
 
 export const hash_compare = createMiddleware(async (c, next) => {
+	const game_hash = c.req.header('game-hash')
+
+	if (!game_hash) {
+		return c.json({ error: "Invalid game hash" }, 401);
+	}
+
+	console.log(`Comparing server hash ${process.env.GAME_HASH} and ${game_hash}`)
+
+	if (game_hash != process.env.GAME_HASH) {
+		return c.json({ error: "Invalid game hash" }, 401);
+	}
+
 	return next();
 });
 
