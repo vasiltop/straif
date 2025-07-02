@@ -7,7 +7,7 @@ const FILE_CHUNK_SIZE := 1024
 
 var client: BetterHTTPClient 
 var api_url: String
-var game_hash := "hash1"
+var game_hash := "dev"
 
 func _show_connection_error() -> void:
 	Info.alert("Unable to connect to \nthe game server.")
@@ -37,13 +37,8 @@ func _generate_game_hash() -> void:
 	var path := OS.get_executable_path()
 	var pck := path.get_basename() + ".pck"
 
-	if OS.has_feature("editor"):
-		pck = "res://bin/linux/straif2.pck"
-
-	game_hash = _gen_hash(pck)
-
-	if OS.has_feature("editor"):
-		print("Debug hash: " + game_hash)
+	if not OS.has_feature("editor"):
+		game_hash = _gen_hash(pck)
 
 func _gen_hash(path: String) -> String:
 	if not FileAccess.file_exists(path):

@@ -13,7 +13,7 @@ class_name MainMenu extends Control
 @onready var lobby_list_container: HFlowContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/ScrollContainer/Container
 @onready var leave_lobby_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Title/Button
 @onready var my_lobby_members_container: VBoxContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Players
-@onready var map_container: HFlowContainer = $MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer/Maps
+@onready var map_container: VBoxContainer = $MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer/Maps
 @onready var host_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/HostLocal
 @onready var join_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title/JoinLocal
 @onready var _lobby_refresh_timer := BetterTimer.new(self, 1.0, _on_refresh_lobby_search)
@@ -46,6 +46,21 @@ func _ready() -> void:
 		Lobby.update_lobby_members()
 
 func _instantiate_maps() -> void:
+
+	var tiers := 5
+	var tier_labels := {}
+	var tier_to_container := {}
+
+	for tier in tiers + 1:
+		var label := Label.new()
+		map_container.add_child(label)
+		label.text = "Tier %d Maps: " % tier
+		tier_labels[tier] = label
+
+		var container := HFlowContainer.new()
+		map_container.add_child(container)
+		tier_to_container[tier] = container
+
 	var mm: Maps = MapManager
 	var runs := await Http.get_my_runs()
 
@@ -59,9 +74,11 @@ func _instantiate_maps() -> void:
 		Lobby.map_name_to_time[map.name] = time if time != 0 else INF
 
 		var btn := Button.new()
-		btn.text = "%s\n Tier: %s/5\n Personal Best: %s" % [map.name, map.tier, str(snapped(time, 0.01))]
+		btn.text = "%s\nPersonal Best: %s" % [map.name, str(snapped(time, 0.01))]
 		btn.custom_minimum_size = Vector2(160, 160)
-		map_container.add_child(btn)
+
+		(tier_to_container[map.tier] as Control).add_child(btn)
+
 		btn.pressed.connect(
 			func() -> void:
 				var base_path := "res://src/maps/"
@@ -70,7 +87,14 @@ func _instantiate_maps() -> void:
 				Lobby.current_map = map
 		)
 
-	print(Lobby.map_name_to_time)
+	for tier: int in tier_to_container:
+		var container: Control = tier_to_container[tier]
+		var label: Label = tier_labels[tier]
+
+		if container.get_child_count() == 0:
+			label.queue_free()
+			container.queue_free()
+
 func _on_my_lobby_changed() -> void:
 	_on_refresh_lobby_search()
 	my_lobby_control.visible = Lobby.lobby_id != 0

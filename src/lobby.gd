@@ -26,9 +26,9 @@ func switched_map(mid: int) -> void:
 
 	var mm: Maps = MapManager
 	var data := mm.get_map_with_id(mid)
-	if not data: return
 
-	player_switched_map.emit(multiplayer.get_remote_sender_id(), data)
+	if data:
+		player_switched_map.emit(multiplayer.get_remote_sender_id(), data)
 	
 	var sender := multiplayer.get_remote_sender_id()
 
@@ -52,7 +52,6 @@ func get_player(id: int) -> Member:
 	return null
 
 func get_player_name(peer_id: int) -> String:
-	print(network_type)
 	if network_type == NETWORK_TYPE.STEAM:
 		var steam_peer: SteamMultiplayerPeer = multiplayer.multiplayer_peer 
 		var steam_id := steam_peer.get_steam64_from_peer_id(peer_id)
