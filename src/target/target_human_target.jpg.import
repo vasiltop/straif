@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ep6l0jeghvk5"
-path.s3tc="res://.godot/imported/air_duct.jpg-b552bacdeccd94392f16e8a3cf1714a8.s3tc.ctex"
+uid="uid://qdqvm0oywsi6"
+path.s3tc="res://.godot/imported/target_human_target.jpg-0cb10d033560e6d62c951a6ab992f9a4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "c0733732097421d2000402885e514d42"
+}
 
 [deps]
 
-source_file="res://src/textures/air_duct.jpg"
-dest_files=["res://.godot/imported/air_duct.jpg-b552bacdeccd94392f16e8a3cf1714a8.s3tc.ctex"]
+source_file="res://src/target/target_human_target.jpg"
+dest_files=["res://.godot/imported/target_human_target.jpg-0cb10d033560e6d62c951a6ab992f9a4.s3tc.ctex"]
 
 [params]
 
@@ -22,7 +25,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

@@ -1,46 +1,37 @@
-[gd_scene load_steps=8 format=3 uid="uid://voqeaw37jglb"]
+[gd_scene load_steps=7 format=3 uid="uid://voqeaw37jglb"]
 
 [ext_resource type="Script" uid="uid://ddc5clobxxwp2" path="res://src/target/target.gd" id="1_i0tq7"]
 [ext_resource type="Script" uid="uid://daiqu1ltgie0e" path="res://src/target/head_body_part.gd" id="2_0tpb1"]
 [ext_resource type="Script" uid="uid://cuhfu4wnvmo3h" path="res://src/target/body_part.gd" id="2_5hcwb"]
+[ext_resource type="PackedScene" uid="uid://bv73fv6rqmser" path="res://src/target/target.glb" id="4_s6ky1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0tpb1"]
-size = Vector3(0.5, 0.5, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_s6ky1"]
-size = Vector3(0.5, 0.5, 0.5)
+size = Vector3(0.246576, 0.364221, 0.103931)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_s6ky1"]
-size = Vector3(0.5, 1.5, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_0tpb1"]
-size = Vector3(0.5, 1.5, 0.5)
+size = Vector3(0.767578, 1.02228, 0.139648)
 
 [node name="Target" type="Node3D"]
 script = ExtResource("1_i0tq7")
 
 [node name="Head" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09486, 0)
 script = ExtResource("2_0tpb1")
 metadata/_custom_type_script = "uid://daiqu1ltgie0e"
 
 [node name="HeadCollider" type="CollisionShape3D" parent="Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000601187, 0.894129, -0.00369873)
 shape = SubResource("BoxShape3D_0tpb1")
 
-[node name="HeadMesh" type="MeshInstance3D" parent="Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-mesh = SubResource("BoxMesh_s6ky1")
-skeleton = NodePath("../..")
-
 [node name="Torso" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.994858, 0)
 script = ExtResource("2_5hcwb")
 
 [node name="BodyCollider" type="CollisionShape3D" parent="Torso"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00292969, 0.297272, 0.000488281)
 shape = SubResource("BoxShape3D_s6ky1")
 
-[node name="BodyMesh" type="MeshInstance3D" parent="Torso"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-mesh = SubResource("BoxMesh_0tpb1")
-skeleton = NodePath("../..")
+[node name="target2" parent="." instance=ExtResource("4_s6ky1")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 1.50447, 0)
+
+[editable path="target2"]

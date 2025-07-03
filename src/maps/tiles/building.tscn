@@ -14,7 +14,7 @@ shader_parameter/texture_roof = ExtResource("2_6mcr5")
 shader_parameter/wall_texture_scale = 0.03
 shader_parameter/roof_texture_scale = 0.225
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_n0bts"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_6mcr5"]
 
 [node name="Building" type="StaticBody3D"]
 
@@ -23,4 +23,4 @@ mesh = SubResource("BoxMesh_iqbt6")
 surface_material_override/0 = SubResource("ShaderMaterial_b8it3")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_n0bts")
+shape = SubResource("BoxShape3D_6mcr5")
