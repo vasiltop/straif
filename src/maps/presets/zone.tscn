@@ -1,6 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c70q15bb5j4yo"]
-
-[ext_resource type="PackedScene" uid="uid://u6rbolrlsdj6" path="res://src/maps/tiles/pad.glb" id="1_8u567"]
+[gd_scene load_steps=7 format=3 uid="uid://c70q15bb5j4yo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sconu"]
 size = Vector3(1.5, 2.5, 1.5)
@@ -36,9 +34,6 @@ size = Vector2(0.03, 0.03)
 
 [node name="Zone" type="Area3D"]
 collision_mask = 2
-
-[node name="pad" parent="." instance=ExtResource("1_8u567")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.40091, 0.00308228)

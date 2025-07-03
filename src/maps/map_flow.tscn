@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b5ksery7y1mf"]
+[gd_scene load_steps=17 format=3 uid="uid://b5ksery7y1mf"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_rij1j"]
 [ext_resource type="PackedScene" uid="uid://c8wwxgcisn8cf" path="res://src/maps/tiles/floor.glb" id="2_xg1qd"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://c0navpiksf4ty" path="res://src/maps/tiles/corner.glb" id="6_avumo"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="9_jug4b"]
 [ext_resource type="Resource" uid="uid://dy8rc6oycy3vk" path="res://src/player/weapon/resources/rifle.tres" id="10_jug4b"]
+[ext_resource type="PackedScene" uid="uid://cpgalek8pubhp" path="res://src/maps/tiles/building.tscn" id="11_j17js"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iyvra"]
 
@@ -29,6 +30,8 @@ background_mode = 2
 sky = SubResource("Sky_fkouh")
 tonemap_mode = 2
 fog_sky_affect = 0.385
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0133
 
 [node name="TestMap" type="Node3D"]
 script = ExtResource("1_rij1j")
@@ -1443,8 +1446,26 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 34, -2
 [node name="corner10" parent="Map" instance=ExtResource("6_avumo")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 38, 0, -34)
 
+[node name="Building" parent="Map" instance=ExtResource("11_j17js")]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -22.7633, 1, -7.77718)
+
+[node name="Building2" parent="Map" instance=ExtResource("11_j17js")]
+transform = Transform3D(45.6332, 0, 0, 0, 42.8809, 0, 0, 0, 30, -3.03988, 1, -41.6865)
+
+[node name="Building3" parent="Map" instance=ExtResource("11_j17js")]
+transform = Transform3D(18.9052, 0, 0, 0, 73.3344, 0, 0, 0, 30, 60.7235, 1, -41.6865)
+
+[node name="Building4" parent="Map" instance=ExtResource("11_j17js")]
+transform = Transform3D(18.9052, 0, 0, 0, 73.3344, 0, 0, 0, 30, 54.4533, -10.7516, -11.8868)
+
+[node name="Building5" parent="Map" instance=ExtResource("11_j17js")]
+transform = Transform3D(55.97, 0, 0, 0, 73.3344, 0, 0, 0, 30, 17.469, -26.5818, 16.6325)
+
+[node name="Building6" parent="Map" instance=ExtResource("11_j17js")]
+transform = Transform3D(55.97, 0, 0, 0, 73.3344, 0, 0, 0, 30, 34.7687, -26.5818, -60.3453)
+
 [node name="Player" parent="." instance=ExtResource("4_avumo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.0585, 5.54132)
 
 [node name="Targets" type="Node" parent="."]
 
@@ -1505,7 +1526,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, -1, -42)
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.522499, -0.40029, 0.752837, 0, 0, 0)
-light_energy = 2.0
+light_energy = 0.7
 shadow_enabled = true
 
 [node name="WeaponPickup" parent="." instance=ExtResource("9_jug4b")]

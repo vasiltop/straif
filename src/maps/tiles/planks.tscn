@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://s1gi6bk381wf"]
+
+[ext_resource type="Texture2D" uid="uid://dpnaakw8qsoh2" path="res://src/textures/wood.jpeg" id="1_ut0n0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_2rp3g"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ut0n0"]
+albedo_texture = ExtResource("1_ut0n0")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2rp3g"]
+
+[node name="Planks" type="StaticBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_2rp3g")
+surface_material_override/0 = SubResource("StandardMaterial3D_ut0n0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_2rp3g")

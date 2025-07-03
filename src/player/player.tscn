@@ -67,8 +67,8 @@ bind/6/name = &"hand.r"
 bind/6/bone = -1
 bind/6/pose = Transform3D(-0.985888, 0.167415, 3.79832e-07, -0.167416, -0.985887, 1.32462e-07, 3.96649e-07, 6.70033e-08, 1, 1.34053, -0.94301, -4.70195e-07)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_244u8"]
-radius = 0.3
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5f2sf"]
+radius = 0.25
 height = 2.1
 
 [sub_resource type="Theme" id="Theme_5f2sf"]
@@ -201,9 +201,10 @@ fov = 90.0
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
-shape = SubResource("CapsuleShape3D_244u8")
+shape = SubResource("CapsuleShape3D_5f2sf")
 
 [node name="UI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Crosshair" type="Control" parent="UI"]
 layout_mode = 3
@@ -343,6 +344,11 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "0.00"
 horizontal_alignment = 1
+
+[node name="Fps" type="Label" parent="UI"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "60 fps"
 
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)

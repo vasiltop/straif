@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://cpgalek8pubhp"]
+
+[ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="1_rbyu4"]
+[ext_resource type="Texture2D" uid="uid://c3suaqcwwqgym" path="res://src/textures/building_roof.jpg" id="2_6mcr5"]
+[ext_resource type="Texture2D" uid="uid://lyuaxdiowkrl" path="res://src/textures/windows.jpg" id="3_lahfk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_iqbt6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b8it3"]
+render_priority = 0
+shader = ExtResource("1_rbyu4")
+shader_parameter/texture_wall = ExtResource("3_lahfk")
+shader_parameter/texture_roof = ExtResource("2_6mcr5")
+shader_parameter/wall_texture_scale = 0.03
+shader_parameter/roof_texture_scale = 0.225
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n0bts"]
+
+[node name="Building" type="StaticBody3D"]
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_iqbt6")
+surface_material_override/0 = SubResource("ShaderMaterial_b8it3")
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_n0bts")

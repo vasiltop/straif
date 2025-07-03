@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://dafd7bewek8ax"]
+
+[ext_resource type="PackedScene" uid="uid://cvwt6p56j7cn" path="res://src/maps/tiles/vent1.glb" id="1_ou7by"]
+[ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="2_6f4tv"]
+[ext_resource type="Texture2D" uid="uid://bptdgfqp3nlsn" path="res://src/maps/tiles/vent1_air_duct.jpg" id="3_msfq5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eukqi"]
+render_priority = 0
+shader = ExtResource("2_6f4tv")
+shader_parameter/texture_wall = ExtResource("3_msfq5")
+shader_parameter/texture_roof = ExtResource("3_msfq5")
+shader_parameter/wall_texture_scale = 0.25
+shader_parameter/roof_texture_scale = 0.25
+
+[node name="vent1" instance=ExtResource("1_ou7by")]
+
+[node name="vent-1" parent="." index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_eukqi")

@@ -1,20 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://vodocwrquswx"]
+[gd_scene load_steps=3 format=3 uid="uid://vodocwrquswx"]
 
 [ext_resource type="Script" uid="uid://cednn8oa0j8s3" path="res://src/maps/presets/weapon_pickup.gd" id="1_o1512"]
-[ext_resource type="PackedScene" uid="uid://u6rbolrlsdj6" path="res://src/maps/tiles/pad.glb" id="1_p0i8n"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p0i8n"]
-size = Vector3(1.5, 2.5, 1.5)
+size = Vector3(2, 2.5, 2)
 
 [node name="WeaponPickup" type="Area3D" groups=["weapon_pickup"]]
 collision_mask = 2
 script = ExtResource("1_o1512")
 
-[node name="pad" parent="." instance=ExtResource("1_p0i8n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
-
 [node name="Collider" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.40091, 0.00308228)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 shape = SubResource("BoxShape3D_p0i8n")
 
 [node name="WeaponSpawn" type="Node3D" parent="."]

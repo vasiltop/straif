@@ -78,6 +78,8 @@ func _process(_delta: float) -> void:
 
 	if Input.is_key_pressed(KEY_ENTER) and run_stats.visible:
 		run_stats.visible = false
+	
+	(get_node("UI/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
 
 func _physics_process(delta: float) -> void:
 	if not is_me(): return

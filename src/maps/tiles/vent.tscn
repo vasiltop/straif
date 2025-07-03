@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://t8r6jl03nerq"]
+
+[ext_resource type="Texture2D" uid="uid://ep6l0jeghvk5" path="res://src/textures/air_duct.jpg" id="1_qtk7y"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_hrb5u"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tq8hf"]
+albedo_texture = ExtResource("1_qtk7y")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hrb5u"]
+
+[node name="Vent" type="StaticBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_hrb5u")
+surface_material_override/0 = SubResource("StandardMaterial3D_tq8hf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_hrb5u")
