@@ -39,11 +39,10 @@ func _process(delta: float) -> void:
 			var p: Player = body
 			if not p.is_me(): continue
 
-			if Input.is_action_just_pressed("interact"):
+			if Input.is_action_just_pressed("interact") or p.weapon_handler.current_weapon == null:
 				p.weapon_handler.set_weapon(weapon)
 				weapon_scene.visible = false
 				active = false
 				audio_player.stream = EquipSound
 				audio_player.play()
 				
-

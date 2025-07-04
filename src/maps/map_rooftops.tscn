@@ -1,10 +1,10 @@
-[gd_scene load_steps=44 format=3 uid="uid://0iqul1ywtg5k"]
+[gd_scene load_steps=45 format=3 uid="uid://0iqul1ywtg5k"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_rlx2p"]
 [ext_resource type="PackedScene" uid="uid://cpgalek8pubhp" path="res://src/maps/tiles/building.tscn" id="2_5dabj"]
 [ext_resource type="PackedScene" uid="uid://t8r6jl03nerq" path="res://src/maps/tiles/vent.tscn" id="3_fouvj"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="4_rvscv"]
-[ext_resource type="Resource" uid="uid://dy8rc6oycy3vk" path="res://src/player/weapon/resources/rifle.tres" id="5_j4wv0"]
+[ext_resource type="Resource" uid="uid://civ014pfd2p5f" path="res://src/player/weapon/resources/usp.tres" id="5_3c63a"]
 [ext_resource type="PackedScene" uid="uid://cg2q5d4wxad0y" path="res://src/maps/tiles/road_straight.glb" id="6_jkioo"]
 [ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="6_rvscv"]
 [ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="7_iqbt6"]
@@ -21,23 +21,23 @@
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iyvra"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iyvra"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3c63a"]
 seamless = true
 noise = SubResource("FastNoiseLite_iyvra")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eiimb"]
 sky_horizon_color = Color(0.731576, 0.780598, 0.846291, 1)
-sky_cover = SubResource("NoiseTexture2D_iyvra")
+sky_cover = SubResource("NoiseTexture2D_3c63a")
 ground_bottom_color = Color(0.616254, 0.805669, 0.920459, 1)
 ground_horizon_color = Color(0.733333, 0.780392, 0.847059, 1)
 ground_energy_multiplier = 1.72
 
-[sub_resource type="Sky" id="Sky_fkouh"]
+[sub_resource type="Sky" id="Sky_qbt4t"]
 sky_material = SubResource("ProceduralSkyMaterial_eiimb")
 
 [sub_resource type="Environment" id="Environment_eiimb"]
 background_mode = 2
-sky = SubResource("Sky_fkouh")
+sky = SubResource("Sky_qbt4t")
 tonemap_mode = 2
 fog_enabled = true
 fog_light_color = Color(0.163713, 0.181478, 0.209408, 1)
@@ -140,7 +140,11 @@ shader_parameter/texture_roof = ExtResource("7_j4wv0")
 shader_parameter/wall_texture_scale = 0.3
 shader_parameter/roof_texture_scale = 1.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_hrb5u"]
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_50qeu"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_3c63a"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n0bts"]
 size = Vector3(300, 40, 300)
@@ -173,7 +177,7 @@ transform = Transform3D(-1.26896e-06, 0, 7.2, 0, 90, 0, -29.0304, 0, -3.14722e-0
 
 [node name="WeaponPickup" parent="Map" instance=ExtResource("4_rvscv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.01998, 2.15757, -6.8633)
-weapon = ExtResource("5_j4wv0")
+weapon = ExtResource("5_3c63a")
 
 [node name="Planks10" parent="Map/WeaponPickup" instance=ExtResource("16_3c63a")]
 transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 0, 0, 0)
@@ -391,7 +395,8 @@ mesh = SubResource("BoxMesh_hrb5u")
 surface_material_override/0 = SubResource("ShaderMaterial_qbt4t")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/roofthing"]
-shape = SubResource("BoxShape3D_hrb5u")
+transform = Transform3D(1.23945, 0, 0, 0, 4.31254, 0, 0, 0, 1, 0.19471, 1.72809, 0)
+shape = SubResource("ConvexPolygonShape3D_50qeu")
 
 [node name="roofthing2" type="StaticBody3D" parent="Map"]
 transform = Transform3D(11.4684, 0, 0, 0, 1, 0, 0, 0, 14.1242, -19.0789, 6.45153, -16.336)
@@ -402,7 +407,8 @@ mesh = SubResource("BoxMesh_hrb5u")
 surface_material_override/0 = SubResource("ShaderMaterial_qbt4t")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/roofthing2"]
-shape = SubResource("BoxShape3D_hrb5u")
+transform = Transform3D(1.23945, 0, 0, 0, 4.31254, 0, 0, 0, 1, 0.19471, 1.72809, 0)
+shape = SubResource("ConvexPolygonShape3D_3c63a")
 
 [node name="Vent8" parent="Map" instance=ExtResource("3_fouvj")]
 transform = Transform3D(6.34873, 0, 0, 0, 1.70356, 0, 0, 0, 6.17075, -76.537, -53.819, -94.579)
