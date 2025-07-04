@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://0iqul1ywtg5k"]
+[gd_scene load_steps=42 format=3 uid="uid://0iqul1ywtg5k"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_rlx2p"]
 [ext_resource type="PackedScene" uid="uid://cpgalek8pubhp" path="res://src/maps/tiles/building.tscn" id="2_5dabj"]
@@ -12,7 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://ckroljdwfcumu" path="res://src/textures/HighRiseGlass.jpg" id="8_jkioo"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="8_y68ki"]
 [ext_resource type="Texture2D" uid="uid://bd8o837h8vsu3" path="res://src/textures/apartment3.jpg" id="9_iqbt6"]
-[ext_resource type="Texture2D" uid="uid://d1lrx5nsqvy0b" path="res://src/textures/apartment.jpg" id="9_j4wv0"]
 [ext_resource type="Texture2D" uid="uid://dcss7r8hf1do1" path="res://src/textures/apartment2.jpg" id="9_jkioo"]
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="9_n0bts"]
 [ext_resource type="PackedScene" uid="uid://dafd7bewek8ax" path="res://src/maps/tiles/vent_1.tscn" id="14_y68ki"]
@@ -81,9 +80,9 @@ points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j4wv0"]
 render_priority = 0
 shader = ExtResource("6_rvscv")
-shader_parameter/texture_wall = ExtResource("9_j4wv0")
+shader_parameter/texture_wall = ExtResource("9_iqbt6")
 shader_parameter/texture_roof = ExtResource("7_j4wv0")
-shader_parameter/wall_texture_scale = 0.05
+shader_parameter/wall_texture_scale = 0.04
 shader_parameter/roof_texture_scale = 0.225
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jprij"]
@@ -104,7 +103,7 @@ render_priority = 0
 shader = ExtResource("6_rvscv")
 shader_parameter/texture_wall = ExtResource("8_jkioo")
 shader_parameter/texture_roof = ExtResource("7_j4wv0")
-shader_parameter/wall_texture_scale = 0.1
+shader_parameter/wall_texture_scale = 0.04
 shader_parameter/roof_texture_scale = 0.225
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6q0ys"]
@@ -116,9 +115,9 @@ points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jkioo"]
 render_priority = 0
 shader = ExtResource("6_rvscv")
-shader_parameter/texture_wall = ExtResource("9_j4wv0")
+shader_parameter/texture_wall = ExtResource("9_jkioo")
 shader_parameter/texture_roof = ExtResource("7_j4wv0")
-shader_parameter/wall_texture_scale = 0.05
+shader_parameter/wall_texture_scale = 0.04
 shader_parameter/roof_texture_scale = 0.225
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ybqsr"]
@@ -209,23 +208,24 @@ shape = SubResource("ConcavePolygonShape3D_3c63a")
 transform = Transform3D(78, 0, 0, 0, 147, 0, 0, 0, 50, 21, -81.1277, -118)
 
 [node name="Mesh" type="MeshInstance3D" parent="Map/Building8"]
-transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, 0.0037187, -0.0072788, -5.19753e-05)
+transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463402, -0.00727886, 0.297337)
 mesh = SubResource("BoxMesh_iqbt6")
 surface_material_override/0 = SubResource("ShaderMaterial_3c63a")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Building8"]
-transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, 0.0037187, -0.0072788, -5.19753e-05)
+transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463402, -0.00727886, 0.297337)
 shape = SubResource("ConvexPolygonShape3D_qbt4t")
 
 [node name="Building9" type="StaticBody3D" parent="Map"]
 transform = Transform3D(78, 0, 0, 0, 147, 0, 0, 0, 50, 61, -57.6077, -103)
 
 [node name="Mesh" type="MeshInstance3D" parent="Map/Building9"]
-transform = Transform3D(1, 0, 0, 0, 1.04966, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1.04966, 0, 0, 0, 1, -0.00835264, 0, 0.29739)
 mesh = SubResource("BoxMesh_jprij")
 surface_material_override/0 = SubResource("ShaderMaterial_j4wv0")
 
 [node name="Collider" type="CollisionShape3D" parent="Map/Building9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00835264, 0, 0.29739)
 shape = SubResource("BoxShape3D_jprij")
 
 [node name="Building10" type="StaticBody3D" parent="Map"]
@@ -250,12 +250,12 @@ transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, -11, 6.00621, 3)
 transform = Transform3D(101.4, 0, 0, 0, 315, 0, 0, 0, 50, -60, -50.8286, -102)
 
 [node name="Mesh" type="MeshInstance3D" parent="Map/Building11"]
-transform = Transform3D(0.45, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.128205, -0.0215208, -0.6)
+transform = Transform3D(0.45, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.128205, -0.0215208, 0.023097)
 mesh = SubResource("BoxMesh_jprij")
 surface_material_override/0 = SubResource("ShaderMaterial_iqbt6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Building11"]
-transform = Transform3D(0.45, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.128205, -0.0215208, -0.6)
+transform = Transform3D(0.45, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.128205, -0.0215208, 0.023097)
 shape = SubResource("ConvexPolygonShape3D_6q0ys")
 
 [node name="Mesh2" type="MeshInstance3D" parent="Map/Building11"]
@@ -368,7 +368,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -13)
 
 [node name="road_straight8" parent="Map" instance=ExtResource("6_jkioo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -97, -85)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.3485, -97, -70.1305)
 
 [node name="Sidewalk" type="MeshInstance3D" parent="Map"]
 transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -16, -97, -61)
@@ -410,7 +410,7 @@ transform = Transform3D(6.34873, 0, 0, 0, 5.94431, 0, 0, 0, 6.17075, -76.537, -2
 transform = Transform3D(1.15412, 0, -17.4896, 0, 1, 0, 0.559789, 0, 36.0584, 18.616, 6.59232, -32.8577)
 
 [node name="Vent3" parent="Map" instance=ExtResource("3_fouvj")]
-transform = Transform3D(-2.56495e-07, 0, -19.3939, 0, 2.46697, 0, 5.86792, 0, -8.47736e-07, 3.16536, -7.69715, -104.125)
+transform = Transform3D(-2.56495e-07, 0, -19.3939, 0, 2.46697, 0, 5.86792, 0, -8.47736e-07, 2.51385, -7.69715, -89.2555)
 
 [node name="vent1" parent="Map" instance=ExtResource("14_y68ki")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 5.77624, 2.19651, -52.7068)
@@ -425,58 +425,58 @@ transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 23.7762, 9.94177, -68.5
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 11.6735, 16.4551, 9.66911)
 
 [node name="vent4" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -20.6585, -8.64227, -95.8157)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -21.31, -8.64227, -80.9462)
 
 [node name="vent5" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -1.698, -8.64227, -95.8157)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -2.34951, -8.64227, -80.9462)
 
 [node name="vent6" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 17.302, -8.64227, -95.8157)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 16.6505, -8.64227, -80.9462)
 
 [node name="vent7" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -21.2389, -8.64227, -115.046)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -21.8904, -8.64227, -100.177)
 
 [node name="vent8" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -1.44901, -8.64227, -115.046)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -2.10052, -8.64227, -100.177)
 
 [node name="vent9" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 16.551, -8.64227, -115.046)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 15.8995, -8.64227, -100.177)
 
 [node name="vent10" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 16.551, -8.64227, -135.046)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 15.8995, -8.64227, -120.177)
 
 [node name="vent11" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -1.44901, -8.64227, -135.046)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -2.10052, -8.64227, -120.177)
 
 [node name="vent12" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -20.449, -8.64227, -135.046)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -21.1005, -8.64227, -120.177)
 
 [node name="vent13" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 26.5263, 19.5665, -81.41)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 25.8748, 19.5665, -66.5405)
 
 [node name="vent14" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 45.4868, 19.5665, -81.41)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 44.8353, 19.5665, -66.5405)
 
 [node name="vent15" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 64.4868, 19.5665, -81.41)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 63.8353, 19.5665, -66.5405)
 
 [node name="vent16" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 25.9459, 19.5665, -100.641)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 25.2944, 19.5665, -85.7715)
 
 [node name="vent17" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 45.7358, 19.5665, -100.641)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 45.0843, 19.5665, -85.7715)
 
 [node name="vent18" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 63.7358, 19.5665, -100.641)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 63.0843, 19.5665, -85.7715)
 
 [node name="vent19" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 63.7358, 19.5665, -120.641)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 63.0843, 19.5665, -105.772)
 
 [node name="vent20" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 45.7358, 19.5665, -120.641)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 45.0843, 19.5665, -105.772)
 
 [node name="vent21" parent="Map" instance=ExtResource("14_y68ki")]
-transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 26.7358, 19.5665, -120.641)
+transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 26.0843, 19.5665, -105.772)
 
 [node name="vent22" parent="Map" instance=ExtResource("14_y68ki")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -145.134, 7.56467, -91.8497)
@@ -560,16 +560,16 @@ transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 
 transform = Transform3D(1.06066, 0, -0.777817, 0, 1.7, 0, 1.06066, 0, 0.777818, 3.09045, 3.14467, -47.546)
 
 [node name="vent60" parent="Map" instance=ExtResource("15_n0bts")]
-transform = Transform3D(1.06066, 0, -0.777817, 0, 1.7, 0, 1.06066, 0, 0.777818, -10.2045, -8.06524, -125.596)
+transform = Transform3D(1.06066, 0, -0.777817, 0, 1.7, 0, 1.06066, 0, 0.777818, -10.856, -8.06524, -110.727)
 
 [node name="vent62" parent="Map" instance=ExtResource("15_n0bts")]
-transform = Transform3D(1.49966, 0, 0.0232863, 0, 1.7, 0, -0.031754, 0, 1.09975, 12.2444, -8.06524, -125.596)
+transform = Transform3D(1.49966, 0, 0.0232863, 0, 1.7, 0, -0.031754, 0, 1.09975, 11.5929, -8.06524, -110.727)
 
 [node name="vent63" parent="Map" instance=ExtResource("15_n0bts")]
-transform = Transform3D(1.26447, 0, -0.591742, 0, 1.7, 0, 0.80692, 0, 0.927276, 35.2185, 20.0937, -91.6287)
+transform = Transform3D(1.26447, 0, -0.591742, 0, 1.7, 0, 0.80692, 0, 0.927276, 34.567, 20.0937, -76.7592)
 
 [node name="vent61" parent="Map" instance=ExtResource("15_n0bts")]
-transform = Transform3D(1.38282, 0, 0.426214, 0, 1.7, 0, -0.581201, 0, 1.01407, -16.6873, -8.06524, -105.235)
+transform = Transform3D(1.38282, 0, 0.426214, 0, 1.7, 0, -0.581201, 0, 1.01407, -17.3388, -8.06524, -90.3655)
 
 [node name="vent47" parent="Map" instance=ExtResource("15_n0bts")]
 transform = Transform3D(1.06066, 0, -0.777817, 0, 1.7, 0, 1.06066, 0, 0.777818, 19.0905, 8.14467, -19.546)
@@ -702,7 +702,6 @@ transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.603208, -0.271481, 0.749959, 0, 0.940288, 0.34038, -0.797584, 0.20532, -0.567189, -16, 14, 0)
-visible = false
 light_energy = 1.5
 shadow_enabled = true
 
