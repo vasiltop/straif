@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://0iqul1ywtg5k"]
+[gd_scene load_steps=44 format=3 uid="uid://0iqul1ywtg5k"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_rlx2p"]
 [ext_resource type="PackedScene" uid="uid://cpgalek8pubhp" path="res://src/maps/tiles/building.tscn" id="2_5dabj"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://dafd7bewek8ax" path="res://src/maps/tiles/vent_1.tscn" id="14_y68ki"]
 [ext_resource type="PackedScene" uid="uid://b01o82sp4jlmx" path="res://src/maps/tiles/vent_2.tscn" id="15_n0bts"]
 [ext_resource type="PackedScene" uid="uid://s1gi6bk381wf" path="res://src/maps/tiles/planks.tscn" id="16_3c63a"]
+[ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="18_3c63a"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iyvra"]
 
@@ -140,6 +141,9 @@ shader_parameter/wall_texture_scale = 0.3
 shader_parameter/roof_texture_scale = 1.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hrb5u"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n0bts"]
+size = Vector3(300, 40, 300)
 
 [node name="TestMap" type="Node3D"]
 script = ExtResource("1_rlx2p")
@@ -665,45 +669,38 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.003082
 [node name="TargetSpawns" type="Node" parent="."]
 
 [node name="Spawn" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, -4.921, 2.15, -10.31)
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, -4.921, 2.15, -13.2171)
 
 [node name="Spawn2" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 6.281, 2.15, -19.108)
-
-[node name="Spawn4" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -6.416, 2.15, -40.061)
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 6.281, 2.15, -22.7305)
 
 [node name="Spawn5" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 2.939, 2.15, -53.346)
-
-[node name="Spawn6" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -22.839, 2.15, -50.677)
-
-[node name="Spawn7" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -39.317, 2.15, -52.273)
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0.493556, 2.15, -54.4436)
 
 [node name="Spawn8" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.544, 6, -22.467)
 
-[node name="Spawn9" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.197, 6, -21.646)
-
 [node name="Spawn10" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.197, 6, -11.547)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5934, 6, -7.76625)
 
 [node name="Spawn11" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.033, 6, 5.104)
-
-[node name="Spawn12" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.956, 6, -6.763)
-
-[node name="Spawn3" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 8.931, 7.2, -24.144)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.1926, 6, 6.31539)
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.603208, -0.271481, 0.749959, 0, 0.940288, 0.34038, -0.797584, 0.20532, -0.567189, -16, 14, 0)
 light_energy = 1.5
 shadow_enabled = true
+
+[node name="KillZones" type="Node" parent="."]
+
+[node name="Killzone" type="Area3D" parent="KillZones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -65.0698, 0)
+collision_mask = 2
+script = ExtResource("18_3c63a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KillZones/Killzone"]
+shape = SubResource("BoxShape3D_n0bts")
+debug_fill = false
 
 [editable path="EndZone"]
 [editable path="StartZone"]

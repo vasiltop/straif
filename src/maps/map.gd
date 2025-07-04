@@ -142,11 +142,10 @@ func _win() -> void:
 	Http.publish_run(bytes, Lobby.current_map.name, int(timer * 1000))
 	player.show_end_run_stats(timer)
 
-func spawn_target(pos: Vector3, rot: Vector3) -> void:
+func spawn_target(pos: Vector3) -> void:
 	var inst: Target = TargetScene.instantiate()
 	target_container.add_child(inst)
 	inst.global_position = pos
-	inst.global_rotation = rot
 
 func restart() -> void:
 	player.global_position = start_pos
@@ -169,7 +168,7 @@ func restart() -> void:
 		node.queue_free()
 
 	for spawn in get_target_spawns():
-		spawn_target(spawn.global_position, spawn.rotation)
+		spawn_target(spawn.global_position)
 	
 	_on_target_killed()
 
