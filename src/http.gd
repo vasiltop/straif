@@ -7,7 +7,7 @@ const FILE_CHUNK_SIZE := 1024
 
 var client: BetterHTTPClient 
 var api_url: String
-var game_hash := "dev"
+var version := "dev" if OS.has_feature("editor") else "0.01"
 
 func _show_connection_error() -> void:
 	Info.alert("Unable to connect to \nthe game server.")
@@ -20,9 +20,7 @@ func _ready() -> void:
 
 	client = BetterHTTPClient.new(self, BetterHTTPURL.parse(api_url))
 
-	_generate_game_hash()
-
-	var res := await client.http_get("/leaderboard/version").header("game-hash", game_hash).send()
+	var res := await client.http_get("/leaderboard/version").header("version", version).send()
 	if res == null: 
 		_show_connection_error()
 		return
@@ -31,14 +29,12 @@ func _ready() -> void:
 		invalid_version.emit()
 		return
 	
-	print("Validated game hash!")
-
 func _generate_game_hash() -> void:
 	var path := OS.get_executable_path()
 	var pck := path.get_basename() + ".pck"
 
 	if not OS.has_feature("editor"):
-		game_hash = _gen_hash(pck)
+		version = _gen_hash(pck)
 
 func _gen_hash(path: String) -> String:
 	if not FileAccess.file_exists(path):

@@ -20,21 +20,21 @@ async function get_steam_id_from_ticket(ticket: string): Promise<string> {
 	const res = await fetch(url);
 	const json = await res.json();
 	
-	// todo: not safe
+	// TODO: not safe
 	return json.response.params.steamid;
 }
 
-export const hash_compare = createMiddleware(async (c, next) => {
-	const game_hash = c.req.header('game-hash')
+export const version_compare = createMiddleware(async (c, next) => {
+	const version = c.req.header('version')
 
-	if (!game_hash) {
-		return c.json({ error: "Invalid game hash" }, 401);
+	if (!version) {
+		return c.json({ error: "Invalid Version" }, 401);
 	}
 
-	console.log(`Comparing server hash ${process.env.GAME_HASH} and ${game_hash}`)
+	console.log(`Comparing server hash ${process.env.VERSION} and ${version}`)
 
-	if (game_hash != process.env.GAME_HASH) {
-		return c.json({ error: "Invalid game hash" }, 401);
+	if (version != process.env.VERSION) {
+		return c.json({ error: "Invalid Version" }, 401);
 	}
 
 	return next();

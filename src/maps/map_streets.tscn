@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bxx4gfqs6dk2l"]
+[gd_scene load_steps=24 format=3 uid="uid://bxx4gfqs6dk2l"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_7mg6k"]
 [ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="2_c6feq"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="5_6beqi"]
 [ext_resource type="PackedScene" uid="uid://s1gi6bk381wf" path="res://src/maps/tiles/planks.tscn" id="5_384no"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="7_l3vx2"]
+[ext_resource type="Resource" uid="uid://dy8rc6oycy3vk" path="res://src/player/weapon/resources/rifle.tres" id="8_6beqi"]
 [ext_resource type="Resource" uid="uid://2uo2ciww547u" path="res://src/player/weapon/resources/smg.tres" id="10_384no"]
 [ext_resource type="PackedScene" uid="uid://t8r6jl03nerq" path="res://src/maps/tiles/vent.tscn" id="11_dmnpj"]
 
@@ -363,6 +364,12 @@ transform = Transform3D(0.189024, 0, 1.24245, 0, 1.3, 0, -0.232959, 0, 1.00813, 
 [node name="Planks6" parent="Map" instance=ExtResource("5_384no")]
 transform = Transform3D(-0.216709, 0, 1.10642, 0, 1.3, 0, -0.207454, 0, -1.15578, 61.6762, 1.55937, -31.4318)
 
+[node name="Planks11" parent="Map" instance=ExtResource("5_384no")]
+transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 8.99282, 1, 0)
+
+[node name="Planks12" parent="Map" instance=ExtResource("5_384no")]
+transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 49.9928, 1, -26.3125)
+
 [node name="Planks7" parent="Map" instance=ExtResource("5_384no")]
 transform = Transform3D(-0.153671, 0, -1.37415, 0, 1.3, 0, 0.257653, 0, -0.81958, 61.6754, 1.55937, -23.5807)
 
@@ -435,6 +442,10 @@ debug_fill = false
 
 [node name="WeaponPickup" parent="." instance=ExtResource("7_l3vx2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 1, 0)
+weapon = ExtResource("8_6beqi")
+
+[node name="WeaponPickup2" parent="." instance=ExtResource("7_l3vx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.0056, 1, -26.3218)
 weapon = ExtResource("10_384no")
 
 [node name="Vent" parent="." instance=ExtResource("11_dmnpj")]

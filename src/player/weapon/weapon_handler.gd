@@ -93,11 +93,11 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("inspect") and current_weapon:
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 
-		if anim.is_playing() and anim.current_animation == current_weapon.attack_anim and current_weapon.is_melee:
+		if anim.is_playing() and anim.current_animation == "shoot" and current_weapon.is_melee:
 			var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
 			hitbox.monitoring = false
 
-		anim.play(current_weapon.inspect_anim)
+		anim.play("inspect")
 
 
 	time_since_last_shot += delta
@@ -136,8 +136,8 @@ func _try_shoot() -> void:
 	time_since_last_shot = 0
 
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
-	if not anim.is_playing() or (anim.is_playing() and anim.current_animation == current_weapon.attack_anim):
-		anim.play(current_weapon.attack_anim)
+	if anim.current_animation == "inspect" or not anim.is_playing():
+		anim.play("shoot")
 
 	var tracer_pos := Vector3.ZERO
 	if not current_weapon.is_melee:

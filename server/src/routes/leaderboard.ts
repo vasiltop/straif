@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { runs } from '../db/schema.ts';
 import { asc, eq, sql, and } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator'
-import { admin_auth, hash_compare, steam_auth } from '../middleware.ts';
+import { admin_auth, version_compare, steam_auth } from '../middleware.ts';
 
 type Variables = {
 	steam_id: string,
@@ -44,7 +44,7 @@ app.get(
 
 app.get(
 	'/version',
-	hash_compare,
+	version_compare,
 );
 
 app.get(

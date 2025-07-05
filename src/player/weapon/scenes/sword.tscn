@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://bq0862rf1x8o6"]
+[gd_scene load_steps=17 format=4 uid="uid://bq0862rf1x8o6"]
 
 [ext_resource type="AudioStream" uid="uid://1b8ialksq1w6" path="res://src/sounds/sword.mp3" id="1_fowdb"]
 [ext_resource type="Texture2D" uid="uid://bs0mgldpd3qqq" path="res://src/player/weapon/models/sword_sword.jpg" id="2_fowdb"]
@@ -56,62 +56,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 0.554785, 2.37841),
 "update": 0,
 "values": [Vector3(-0.872665, 1.03673, 0), Vector3(0.0645772, 0, 0), Vector3(0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_mn5u8"]
-resource_name = "inspect"
-length = 2.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.425003, 0.869278, 1.1, 1.525, 1.93333, 2.06667, 2.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 1.35961, -0.453786), Vector3(0, 1.35961, -0.488692), Vector3(0, 1.35961, -0.453786), Vector3(0, 1.12225, 1.309), Vector3(0, 1.12225, 1.3439), Vector3(0, 1.12225, 1.309), Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.425003, 0.869278, 1.1, 1.53333, 1.93333, 2.06667, 2.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(-0.575, 0, -0.4), Vector3(-0.575, 0, -0.41), Vector3(-0.575, 0, -0.4), Vector3(-0.575, -0.2, -0.4), Vector3(-0.575, -0.2, -0.39), Vector3(-0.575, -0.2, -0.4), Vector3(0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_thuwb"]
-resource_name = "shoot"
-length = 0.15
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0764312, 0.149107),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0.0872665, 0, 0), Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0764312, 0.149107),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.2), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_keirp"]
@@ -189,10 +133,8 @@ tracks/1/keys = {
 _data = {
 &"RESET": SubResource("Animation_sff3o"),
 &"equip": SubResource("Animation_7pjcx"),
-&"inspect": SubResource("Animation_mn5u8"),
-&"inspect_sword": SubResource("Animation_fowdb"),
-&"shoot": SubResource("Animation_thuwb"),
-&"swing": SubResource("Animation_keirp")
+&"inspect": SubResource("Animation_fowdb"),
+&"shoot": SubResource("Animation_keirp")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2qutc"]
