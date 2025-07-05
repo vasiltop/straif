@@ -12,6 +12,7 @@ func _ready() -> void:
 		save()
 	
 	change_display_mode(value("Display", "mode") as int)
+	AudioServer.set_bus_volume_db(0, value("Audio", "master_volume") as float)
 
 func save() -> void:
 	config.save(PATH)

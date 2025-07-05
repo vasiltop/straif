@@ -84,8 +84,10 @@ func _on_sword_hit(body: Node3D) -> void:
 
 func _process(delta: float) -> void:
 	if not player.is_me(): return
+	if not current_weapon: return
 
-	if Input.is_action_just_pressed("attack"):
+	var attack_input := Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
+	if attack_input:
 		_try_shoot()
 	
 	if Input.is_action_just_pressed("inspect") and current_weapon:
@@ -125,8 +127,8 @@ func _sway(delta: float) -> void:
 	mouse_mov = 0
 
 func _try_shoot() -> void:
-	if current_weapon == null: return
-	if not player.map or not player.map.running: return
+	if not player.map: return
+	if not player.map.running and not player.map.completed: return
 
 	if time_since_last_shot < current_weapon.weapon_shot_delay:
 		return
@@ -134,7 +136,8 @@ func _try_shoot() -> void:
 	time_since_last_shot = 0
 
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
-	anim.play(current_weapon.attack_anim)
+	if not anim.is_playing() or (anim.is_playing() and anim.current_animation == current_weapon.attack_anim):
+		anim.play(current_weapon.attack_anim)
 
 	var tracer_pos := Vector3.ZERO
 	if not current_weapon.is_melee:

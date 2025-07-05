@@ -38,6 +38,7 @@ func _process(delta: float) -> void:
 		if body is Player:
 			var p: Player = body
 			if not p.is_me(): continue
+			if not p.map.running: continue
 
 			if Input.is_action_just_pressed("interact") or p.weapon_handler.current_weapon == null:
 				p.weapon_handler.set_weapon(weapon)

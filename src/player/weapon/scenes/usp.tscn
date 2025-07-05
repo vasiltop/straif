@@ -82,7 +82,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.533333, 2.2, 2.96667),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0.05, -0.11), Vector3(0, 0.05, -0.11), Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.11), Vector3(0, 0, -0.11), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_thuwb"]
@@ -198,7 +198,7 @@ shadow_mesh = SubResource("ArrayMesh_5h6iw")
 [node name="Rifle" type="Node3D"]
 
 [node name="RHandTarget" type="Node3D" parent="."]
-transform = Transform3D(-0.689899, 0.0598737, -0.102245, 0.107254, 0.0588623, -0.689226, -0.0503541, -0.694947, -0.067187, 0.0896238, -0.168683, 0.0455361)
+transform = Transform3D(-0.689897, 0.0592892, -0.102601, 0.107572, 0.0591386, -0.689153, -0.0497022, -0.694974, -0.0673963, 0.0890368, -0.154, 0.046)
 
 [node name="LHandTarget" type="Node3D" parent="."]
 transform = Transform3D(0.282523, 0.52333, 0.369197, -0.640062, 0.244834, 0.142752, -0.0224083, -0.3952, 0.577335, -0.017703, -0.317358, -0.0621685)

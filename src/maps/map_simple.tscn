@@ -362,13 +362,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -2)
 [node name="EndZone" parent="." instance=ExtResource("8_jsk7g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -24)
 
-[node name="Collider" parent="EndZone" index="1"]
+[node name="Collider" parent="EndZone" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
 
 [node name="StartZone" parent="." instance=ExtResource("8_jsk7g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 
-[node name="Collider" parent="StartZone" index="1"]
+[node name="Collider" parent="StartZone" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
 
 [node name="Players" type="Node" parent="."]

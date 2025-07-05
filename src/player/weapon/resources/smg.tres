@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3 uid="uid://2uo2ciww547u"]
+
+[ext_resource type="PackedScene" uid="uid://dy0uwjydngini" path="res://src/player/weapon/scenes/smg.tscn" id="1_lrjev"]
+[ext_resource type="Script" uid="uid://bmwqlto471f6e" path="res://src/player/weapon/weapon_data.gd" id="2_78gc6"]
+[ext_resource type="AudioStream" uid="uid://cif5vlbx0eh1r" path="res://src/sounds/pistol.mp3" id="3_wqpf5"]
+
+[resource]
+script = ExtResource("2_78gc6")
+name = "Smg"
+weapon_shot_delay = 0.07
+damage = 34.0
+scene = ExtResource("1_lrjev")
+shoot_sound = ExtResource("3_wqpf5")
+recoil = 0.3
+attack_range = 100.0
+is_melee = false
+attack_anim = "shoot"
+inspect_anim = "inspect"
+automatic = true
+metadata/_custom_type_script = "uid://bmwqlto471f6e"

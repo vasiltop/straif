@@ -10,10 +10,11 @@ class_name WeaponData extends Resource
 @export var is_melee: bool
 @export var attack_anim: String
 @export var inspect_anim: String
+@export var automatic: bool
 
 # include model, sounds, etc...
 
-func _init(name: String = "", weapon_shot_delay: float = 1.0, damage: float = 1.0, scene: PackedScene = null, shoot_sound: Resource = null, recoil: float = 0.0, attack_range := 5.0, is_melee := false, attack_anim := "", inspect_anim := "") -> void:
+func _init(name: String = "", weapon_shot_delay: float = 1.0, damage: float = 1.0, scene: PackedScene = null, shoot_sound: Resource = null, recoil: float = 0.0, attack_range := 5.0, is_melee := false, attack_anim := "", inspect_anim := "", automatic := false) -> void:
 	self.name = name
 	self.weapon_shot_delay = weapon_shot_delay
 	self.damage = damage
@@ -24,3 +25,4 @@ func _init(name: String = "", weapon_shot_delay: float = 1.0, damage: float = 1.
 	self.is_melee = is_melee
 	self.attack_anim = attack_anim
 	self.inspect_anim = inspect_anim
+	self.automatic = false
