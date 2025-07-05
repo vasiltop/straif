@@ -197,10 +197,10 @@ shadow_mesh = SubResource("ArrayMesh_p20rx")
 [node name="Rifle" type="Node3D"]
 
 [node name="RHandTarget" type="Node3D" parent="."]
-transform = Transform3D(-0.689897, 0.0592892, -0.102601, 0.107572, 0.0591386, -0.689153, -0.0497022, -0.694974, -0.0673963, 0.15936, -0.327633, 0.155847)
+transform = Transform3D(-0.689897, 0.0592892, -0.102601, 0.107572, 0.0591386, -0.689153, -0.0497022, -0.694974, -0.0673963, 0.0346388, -0.277214, 0.0974672)
 
 [node name="LHandTarget" type="Node3D" parent="."]
-transform = Transform3D(-0.167751, 0.612823, 0.293784, -0.445417, 0.129406, -0.524269, -0.513287, -0.312576, 0.358933, -0.122, -0.283101, -0.247123)
+transform = Transform3D(0.215437, 0.518332, 0.418234, -0.411944, 0.449106, -0.344393, -0.523344, -0.140134, 0.443253, -0.0273555, -0.317493, -0.281311)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

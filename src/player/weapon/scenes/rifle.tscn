@@ -197,13 +197,13 @@ size = Vector2(0.4, 0.4)
 [node name="Rifle" type="Node3D"]
 
 [node name="RHandTarget" type="Node3D" parent="."]
-transform = Transform3D(-0.616205, -0.111654, -0.312769, 0.310871, 0.0379991, -0.626032, 0.116834, -0.689993, 0.0161351, 0.152553, -0.222294, 1.19869)
+transform = Transform3D(-0.616205, -0.111654, -0.312769, 0.310871, 0.0379991, -0.626032, 0.116834, -0.689993, 0.0161351, 0.10201, -0.285933, 0.621445)
 
 [node name="LHandTarget" type="Node3D" parent="."]
-transform = Transform3D(0.452639, 0.432269, 0.313467, -0.533495, 0.383355, 0.241709, -0.0224083, -0.3952, 0.577335, -0.0893551, -0.114712, -0.347778)
+transform = Transform3D(0.452639, 0.432269, 0.313467, -0.533495, 0.383355, 0.241709, -0.0224083, -0.3952, 0.577335, -0.0893551, -0.178351, -0.29323)
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.7, 0, -1.05697e-07, 0, 0.7, 0, 1.05697e-07, 0, -0.7, 0, 0, 0)
+transform = Transform3D(-0.7, 0, -1.05697e-07, 0, 0.7, 0, 1.05697e-07, 0, -0.7, 0, -0.0636386, 0.0545475)
 layers = 2
 mesh = SubResource("ArrayMesh_goxyr")
 skeleton = NodePath("")
@@ -214,7 +214,7 @@ libraries = {
 }
 
 [node name="MuzzleFlash" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00196323, 0.06666, -1.25902)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00196323, 0.00302143, -1.20447)
 layers = 2
 emitting = false
 lifetime = 0.07

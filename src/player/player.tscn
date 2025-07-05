@@ -108,7 +108,7 @@ sway_backward = Vector3(0, 0, 0.1)
 sway_vertical = Vector3(0, 0.06, 0)
 
 [node name="Arms" type="Node3D" parent="Eye/Camera/WeaponHandler"]
-transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0.202352, -1.0376, 0.182167)
+transform = Transform3D(1, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0.202352, -1.0376, -0.0195923)
 
 [node name="ArmArmature" type="Node3D" parent="Eye/Camera/WeaponHandler/Arms"]
 
@@ -124,7 +124,7 @@ bones/1/name = "upperarm.l"
 bones/1/parent = 0
 bones/1/rest = Transform3D(-0.97596, -0.217931, -7.22445e-07, 0.21793, -0.975964, -2.53002e-08, -6.99564e-07, -1.82135e-07, 1, -0.973169, 0.909753, 8.12593e-08)
 bones/1/enabled = true
-bones/1/position = Vector3(-0.973169, 0.909753, 8.12593e-08)
+bones/1/position = Vector3(-0.85, 0.91, 0)
 bones/1/rotation = Quaternion(-3.57659e-07, -5.21734e-08, 0.993973, 0.109626)
 bones/1/scale = Vector3(0.999996, 1, 1)
 bones/2/name = "lowerarm.l"
@@ -145,7 +145,7 @@ bones/4/name = "upperarm.r"
 bones/4/parent = 0
 bones/4/rest = Transform3D(-0.975963, 0.217931, 7.22444e-07, -0.217931, -0.975964, -2.53006e-08, 6.99564e-07, -1.82135e-07, 1, 0.961706, 0.909753, 8.12593e-08)
 bones/4/enabled = true
-bones/4/position = Vector3(0.961706, 0.909753, 8.12593e-08)
+bones/4/position = Vector3(1.2, 0.91, 0)
 bones/4/rotation = Quaternion(3.57658e-07, -5.21734e-08, 0.993973, -0.109626)
 bones/4/scale = Vector3(0.999998, 1, 1)
 bones/5/name = "lowerarm.r"
@@ -169,11 +169,11 @@ mesh = SubResource("ArrayMesh_eypsm")
 skin = SubResource("Skin_3gm4d")
 
 [node name="RHandIk" type="SkeletonIK3D" parent="Eye/Camera/WeaponHandler/Arms/ArmArmature/Skeleton3D"]
-root_bone = &"middle"
+root_bone = &"upperarm.r"
 tip_bone = &"hand.r"
 
 [node name="LHandIk" type="SkeletonIK3D" parent="Eye/Camera/WeaponHandler/Arms/ArmArmature/Skeleton3D"]
-root_bone = &"middle"
+root_bone = &"upperarm.l"
 tip_bone = &"hand.l"
 
 [node name="AudioPlayer" type="AudioStreamPlayer3D" parent="Eye/Camera/WeaponHandler"]
