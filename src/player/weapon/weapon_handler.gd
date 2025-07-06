@@ -64,12 +64,12 @@ func set_weapon(weapon: WeaponData) -> void:
 		arms.visible = false
 
 func _on_animation_started(anim_name: String) -> void:
-	if anim_name == "swing": 
+	if anim_name == "shoot": 
 		var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
 		hitbox.monitoring = true
 
 func _on_animation_finished(anim_name: String) -> void:
-	if anim_name == "swing": 
+	if anim_name == "shoot": 
 		var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
 		hitbox.monitoring = false
 

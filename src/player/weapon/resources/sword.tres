@@ -7,11 +7,10 @@
 script = ExtResource("2_yx0at")
 name = "Rifle"
 weapon_shot_delay = 0.1
-damage = 50.0
+damage = 100.0
 scene = ExtResource("1_w14qs")
 recoil = 0.3
 attack_range = 3.0
 is_melee = true
-attack_anim = "swing"
-inspect_anim = "inspect_sword"
+automatic = false
 metadata/_custom_type_script = "uid://bmwqlto471f6e"
