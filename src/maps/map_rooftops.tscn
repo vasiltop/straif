@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://0iqul1ywtg5k"]
+[gd_scene load_steps=48 format=3 uid="uid://0iqul1ywtg5k"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_rlx2p"]
 [ext_resource type="PackedScene" uid="uid://cpgalek8pubhp" path="res://src/maps/tiles/building.tscn" id="2_5dabj"]
@@ -145,6 +145,19 @@ points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_3c63a"]
 points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3c63a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o4jvy"]
+render_priority = 0
+shader = ExtResource("6_rvscv")
+shader_parameter/texture_wall = ExtResource("9_iqbt6")
+shader_parameter/texture_roof = ExtResource("7_j4wv0")
+shader_parameter/wall_texture_scale = 0.04
+shader_parameter/roof_texture_scale = 0.225
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_e5mod"]
+points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n0bts"]
 size = Vector3(300, 40, 300)
@@ -652,6 +665,18 @@ transform = Transform3D(-0.374595, 0, 0.739696, 0, 0.042829, 0, -5.50183, 0, -0.
 
 [node name="Planks9" parent="Map" instance=ExtResource("16_3c63a")]
 transform = Transform3D(-0.448043, 0, 0.791245, 0, 0.042829, 0, -5.5943, 0, -0.0633703, 0.401264, 2.15384, -29.6272)
+
+[node name="Building20" type="StaticBody3D" parent="Map"]
+transform = Transform3D(78, 0, 0, 0, 147, 0, 0, 0, 50, -38, -81.1277, -191)
+
+[node name="Mesh" type="MeshInstance3D" parent="Map/Building20"]
+transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463402, -0.00727886, 0.297337)
+mesh = SubResource("BoxMesh_3c63a")
+surface_material_override/0 = SubResource("ShaderMaterial_o4jvy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Building20"]
+transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463402, -0.00727886, 0.297337)
+shape = SubResource("ConvexPolygonShape3D_e5mod")
 
 [node name="Player" parent="." instance=ExtResource("8_y68ki")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.21587, 3)

@@ -208,6 +208,18 @@ surface_material_override/0 = SubResource("ShaderMaterial_3c63a")
 transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463402, -0.00727886, 0.297337)
 shape = SubResource("ConvexPolygonShape3D_qbt4t")
 
+[node name="Building16" type="StaticBody3D" parent="Map"]
+transform = Transform3D(78, 0, 0, 0, 147, 0, 0, 0, 50, -38, -81.1277, -191)
+
+[node name="Mesh" type="MeshInstance3D" parent="Map/Building16"]
+transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463402, -0.00727886, 0.297337)
+mesh = SubResource("BoxMesh_iqbt6")
+surface_material_override/0 = SubResource("ShaderMaterial_3c63a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Building16"]
+transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463402, -0.00727886, 0.297337)
+shape = SubResource("ConvexPolygonShape3D_qbt4t")
+
 [node name="Building9" type="StaticBody3D" parent="Map"]
 transform = Transform3D(78, 0, 0, 0, 147, 0, 0, 0, 50, 61, -57.6077, -103)
 
@@ -590,10 +602,10 @@ transform = Transform3D(1.06066, 0, -1.86676, 0, 1.7, 0, 1.06066, 0, 1.86676, -6
 transform = Transform3D(0.53566, 0, -0.942761, 0, 1.7, 0, 0.53566, 0, 0.942762, -20.9095, -5.85533, 1.454)
 
 [node name="Planks7" parent="Map/vent76" instance=ExtResource("6_tgx0o")]
-transform = Transform3D(-5.05929, 0, 0.286167, 0, 0.042829, 0, -1.58772, 0, -0.911875, -29.7402, -19.6966, -49.283)
+transform = Transform3D(-4.47596, 0, 0.512427, 0, 0.042829, 0, -2.84306, 0, -0.806738, -29.7402, -19.6966, -49.283)
 
 [node name="Planks8" parent="Map/vent76" instance=ExtResource("6_tgx0o")]
-transform = Transform3D(-4.95202, 0, 0.326233, 0, 0.042829, 0, -2.42651, 0, -0.665777, -29.136, -19.6966, -50.2964)
+transform = Transform3D(-4.95202, 0, 0.326233, 0, 0.042829, 0, -2.42651, 0, -0.665777, -28.2026, -19.6966, -49.766)
 
 [node name="Planks9" parent="Map/vent76" instance=ExtResource("6_tgx0o")]
 transform = Transform3D(-5.06882, 0, 0.340742, 0, 0.042829, 0, -2.40913, 0, -0.716923, -29.4524, -19.6966, -49.7692)
@@ -643,7 +655,7 @@ transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="LaunchPad2" parent="Map" instance=ExtResource("16_a3jkl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, -39.3399, -68)
-launch_force = 19.0
+launch_force = 18.0
 
 [node name="Planks10" parent="Map/LaunchPad2" instance=ExtResource("6_tgx0o")]
 transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 0, 0, 0)

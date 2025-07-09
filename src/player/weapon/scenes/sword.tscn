@@ -217,10 +217,10 @@ size = Vector2(0.4, 0.4)
 [node name="Sword" type="Node3D"]
 
 [node name="RHandTarget" type="Node3D" parent="."]
-transform = Transform3D(-0.324917, -0.587885, -0.197029, 0.310871, 0.0379991, -0.626032, 0.536459, -0.378084, 0.243443, -0.0820307, -0.256674, -0.0359859)
+transform = Transform3D(-0.324917, -0.587885, -0.197029, 0.310871, 0.0379991, -0.626032, 0.536459, -0.378084, 0.243443, -0.00788133, -0.256674, -0.0416889)
 
 [node name="LHandTarget" type="Node3D" parent="."]
-transform = Transform3D(0.452639, 0.432269, 0.313467, -0.505173, 0.479792, 0.0678268, -0.172971, -0.27008, 0.622205, -0.42098, -0.515316, 0.0735675)
+transform = Transform3D(0.205517, 0.667092, 0.0524527, -0.0846789, 0.0803572, -0.690198, -0.663772, 0.196294, 0.104291, -0.283229, -0.412647, -0.136069)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -228,7 +228,7 @@ libraries = {
 }
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.296376, 0.189059, 0.355553, 0.213388, -0.300658, 0.337743, 0.341506, 0.351939, 0.0975298, -0.0266931, 0.153716, -0.0588546)
+transform = Transform3D(-0.296376, 0.189059, 0.355553, 0.213388, -0.300658, 0.337743, 0.341506, 0.351939, 0.0975298, 0.133014, 0.153716, -0.1273)
 layers = 2
 mesh = SubResource("ArrayMesh_bqs3v")
 skeleton = NodePath("")
@@ -240,7 +240,7 @@ transform = Transform3D(1, 0, 0, 2.98023e-08, 1, 5.96046e-08, 0, 0, 1, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_keirp")
 
 [node name="MuzzleFlash" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00196323, 0.06666, -1.25902)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16167, 0.06666, -1.32747)
 layers = 2
 emitting = false
 lifetime = 0.07

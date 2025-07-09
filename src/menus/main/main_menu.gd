@@ -47,14 +47,15 @@ func _ready() -> void:
 
 func _instantiate_maps() -> void:
 
-	var tiers := 5
+	var tiers := 3
 	var tier_labels := {}
 	var tier_to_container := {}
+	var labels := ["Easy", "Intermediate", "Hard"]
 
-	for tier in tiers + 1:
+	for tier in tiers:
 		var label := Label.new()
 		map_container.add_child(label)
-		label.text = "Tier %d Maps: " % tier
+		label.text = "%s: " % labels[tier] 
 		tier_labels[tier] = label
 
 		var container := HFlowContainer.new()
