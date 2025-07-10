@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=4 uid="uid://bmo5w6t34g46w"]
+[gd_scene load_steps=44 format=4 uid="uid://bmo5w6t34g46w"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_sd13r"]
 [ext_resource type="Texture2D" uid="uid://kobodi1ald1m" path="res://src/textures/subway_roof.jpeg" id="2_eom2a"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://dpnaakw8qsoh2" path="res://src/textures/wood.jpeg" id="13_an43o"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="17_5kru1"]
 [ext_resource type="Resource" uid="uid://dy8rc6oycy3vk" path="res://src/player/weapon/resources/rifle.tres" id="18_pcvff"]
+[ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="19_xlciw"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iyvra"]
 
@@ -181,6 +182,9 @@ texture_filter = 0
 [sub_resource type="BoxMesh" id="BoxMesh_an43o"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_5kru1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pcvff"]
+size = Vector3(200, 1, 7.03027)
 
 [node name="TestMap" type="Node3D"]
 script = ExtResource("1_sd13r")
@@ -2061,6 +2065,36 @@ shadow_enabled = true
 [node name="WeaponPickup" parent="." instance=ExtResource("17_5kru1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0772, 0.517587, 0.566615)
 weapon = ExtResource("18_pcvff")
+
+[node name="Killzones" type="Node" parent="."]
+
+[node name="Area3D" type="Area3D" parent="Killzones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9)
+collision_mask = 2
+script = ExtResource("19_xlciw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Killzones/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -0.0345154)
+shape = SubResource("BoxShape3D_pcvff")
+
+[node name="Area3D2" type="Area3D" parent="Killzones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 27)
+collision_layer = 3
+collision_mask = 2
+script = ExtResource("19_xlciw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Killzones/Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0.480621)
+shape = SubResource("BoxShape3D_pcvff")
+
+[node name="Area3D3" type="Area3D" parent="Killzones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 46)
+collision_mask = 2
+script = ExtResource("19_xlciw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Killzones/Area3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0.480621)
+shape = SubResource("BoxShape3D_pcvff")
 
 [editable path="Map/screen"]
 [editable path="Map/screen5"]

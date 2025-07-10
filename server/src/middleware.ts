@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm';
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY!;
 
-const BASE_URL = "https://api.steampowered.com"
+const BASE_URL = "https://partner.steam-api.com"
 
 async function get_steam_id_from_ticket(ticket: string): Promise<string> {
 	const params = new URLSearchParams({
@@ -20,7 +20,10 @@ async function get_steam_id_from_ticket(ticket: string): Promise<string> {
 	const res = await fetch(url);
 	const json = await res.json();
 	
-	// TODO: not safe
+	if (!json.response.params) {
+		return ""
+	}
+
 	return json.response.params.steamid;
 }
 
@@ -30,8 +33,6 @@ export const version_compare = createMiddleware(async (c, next) => {
 	if (!version) {
 		return c.json({ error: "Invalid Version" }, 401);
 	}
-
-	console.log(`Comparing server hash ${process.env.VERSION} and ${version}`)
 
 	if (version != process.env.VERSION) {
 		return c.json({ error: "Invalid Version" }, 401);
@@ -47,7 +48,13 @@ export const steam_auth = createMiddleware(async (c, next) => {
 		return c.json({ error: "Invalid authentication ticket" }, 401);
 	}
 
-	c.set('steam_id', await get_steam_id_from_ticket(auth_ticket));
+	const sid = await get_steam_id_from_ticket(auth_ticket);
+
+	if (sid == "") {
+		return c.json({ error: "Invalid Steam Auth Ticket" }, 401);
+	}
+
+	c.set('steam_id', sid);
 
 	return next();
 });
@@ -59,10 +66,13 @@ export const admin_auth = createMiddleware(async (c, next) => {
 		return c.json({ error: "You are not an administrator" }, 401);
 	}
 
-	const steam_id = await get_steam_id_from_ticket(auth_ticket);
+	const sid = await get_steam_id_from_ticket(auth_ticket);
 
-	const res = await db.select().from(admins).where(eq(admins.steam_id, steam_id))
+	if (sid == "") {
+		return c.json({ error: "Invalid Steam Auth Ticket" }, 401);
+	}
 
+	const res = await db.select().from(admins).where(eq(admins.steam_id, sid))
 	if (res.length == 0) {
 		return c.body(null, 401);
 	}

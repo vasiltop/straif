@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://vgkw2amsc3xw"]
+[gd_scene load_steps=16 format=3 uid="uid://dl4vdnxfsqt7k"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_1mxbl"]
 [ext_resource type="PackedScene" uid="uid://by16065lffyyh" path="res://src/maps/tiles/wall.glb" id="2_nxrt8"]
@@ -1065,13 +1065,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -1)
 [node name="EndZone" parent="." instance=ExtResource("8_m14mc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 10)
 
-[node name="Collider" parent="EndZone" index="1"]
+[node name="Collider" parent="EndZone" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
 
 [node name="StartZone" parent="." instance=ExtResource("8_m14mc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
-[node name="Collider" parent="StartZone" index="1"]
+[node name="Collider" parent="StartZone" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
 
 [node name="Players" type="Node" parent="."]
@@ -1079,16 +1079,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.003082
 [node name="TargetSpawns" type="Node" parent="."]
 
 [node name="Spawn" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 2.113, -22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.05016, -22)
 
 [node name="Spawn2" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 2.113, -18)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1.05126, -18)
 
 [node name="Spawn3" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.113, 15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.035828, 15)
 
 [node name="Spawn4" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.113, 15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.0598923, 15)
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.522499, -0.40029, 0.752837, 0, 0, 0)

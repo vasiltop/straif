@@ -12,6 +12,7 @@ size = Vector3(0.246576, 0.448712, 0.103931)
 size = Vector3(0.891541, 1.12294, 0.139648)
 
 [node name="Target" type="Node3D"]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
 script = ExtResource("1_i0tq7")
 
 [node name="Head" type="StaticBody3D" parent="."]
