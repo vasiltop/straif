@@ -48,7 +48,6 @@ func _on_player_disconnected(pid: int) -> void:
 	p.queue_free()
 
 func _on_player_switched_map(pid: int, map: MapData) -> void:
-	print("Player %d switched to map %s" % [pid, map.name])
 	if Lobby.current_map.mid != map.mid: return
 
 	_received_switch.rpc_id(pid)

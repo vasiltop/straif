@@ -32,7 +32,7 @@ func _process(_delta: float) -> void:
 					if replay != "":
 						Lobby.replay_requested.emit(replay)
 					else:
-						print("Invalid replay request")
+						Info.alert("Invalid replay request")
 				)
 
 		

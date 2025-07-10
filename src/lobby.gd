@@ -122,7 +122,6 @@ func _init_enet_callbacks(p: ENetMultiplayerPeer) -> void:
 
 func _on_enet_peer_connected(id: int) -> void:
 	if network_type == NETWORK_TYPE.ENET:
-		print("Enet peer Connected: %s" % id)
 		lobby_members.append(Member.new(id, "Unnamed Player", id))
 	else:
 		update_lobby_members()
@@ -134,7 +133,6 @@ func _on_enet_peer_connected(id: int) -> void:
 
 func _on_enet_peer_disconnected(id: int) -> void:
 	if network_type == NETWORK_TYPE.ENET:
-		print("Enet peer Disconnected: %s" % id)
 		for i in range(len(lobby_members)):
 			var m := lobby_members[i]
 			if m.id == id:
@@ -150,7 +148,6 @@ func _on_steam_lobby_created(result: int, this_lobby_id: int) -> void:
 	if result != 1: return
 
 	Lobby.lobby_id = this_lobby_id
-	print("Created steam lobby: %s" % this_lobby_id)
 	Steam.setLobbyJoinable(this_lobby_id, true)
 	Steam.setLobbyData(this_lobby_id, "name", lobby_name)
 	Steam.allowP2PPacketRelay(true)
