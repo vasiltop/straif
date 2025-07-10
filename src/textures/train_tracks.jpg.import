@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hsb53vogf1c2"
-path.s3tc="res://.godot/imported/black_metal.png-b516ba21ac6878f3ddae71d33e95fb38.s3tc.ctex"
+uid="uid://csdg4kiv7krc2"
+path.s3tc="res://.godot/imported/train_tracks.jpg-12a676ca84c636d07ff4b100091a976e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://src/textures/black_metal.png"
-dest_files=["res://.godot/imported/black_metal.png-b516ba21ac6878f3ddae71d33e95fb38.s3tc.ctex"]
+source_file="res://src/textures/train_tracks.jpg"
+dest_files=["res://.godot/imported/train_tracks.jpg-12a676ca84c636d07ff4b100091a976e.s3tc.ctex"]
 
 [params]
 

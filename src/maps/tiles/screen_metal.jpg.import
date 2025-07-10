@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hsb53vogf1c2"
-path.s3tc="res://.godot/imported/black_metal.png-b516ba21ac6878f3ddae71d33e95fb38.s3tc.ctex"
+uid="uid://bdo6t5hb7voig"
+path.s3tc="res://.godot/imported/screen_metal.jpg-f9b73ddfb0b66ccd6b51358f0988391d.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "07ef4f2e4d62e3b044c33d088a94f171"
+}
 
 [deps]
 
-source_file="res://src/textures/black_metal.png"
-dest_files=["res://.godot/imported/black_metal.png-b516ba21ac6878f3ddae71d33e95fb38.s3tc.ctex"]
+source_file="res://src/maps/tiles/screen_metal.jpg"
+dest_files=["res://.godot/imported/screen_metal.jpg-f9b73ddfb0b66ccd6b51358f0988391d.s3tc.ctex"]
 
 [params]
 
@@ -22,7 +25,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

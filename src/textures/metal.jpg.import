@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hsb53vogf1c2"
-path.s3tc="res://.godot/imported/black_metal.png-b516ba21ac6878f3ddae71d33e95fb38.s3tc.ctex"
+uid="uid://cw5n1o1n3r5wc"
+path.s3tc="res://.godot/imported/metal.jpg-029e22fcc7b83e1dcdcf4c821f5e2feb.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://src/textures/black_metal.png"
-dest_files=["res://.godot/imported/black_metal.png-b516ba21ac6878f3ddae71d33e95fb38.s3tc.ctex"]
+source_file="res://src/textures/metal.jpg"
+dest_files=["res://.godot/imported/metal.jpg-029e22fcc7b83e1dcdcf4c821f5e2feb.s3tc.ctex"]
 
 [params]
 

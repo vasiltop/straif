@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bmo5w6t34g46w"]
+[gd_scene load_steps=42 format=4 uid="uid://bmo5w6t34g46w"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_sd13r"]
 [ext_resource type="Texture2D" uid="uid://kobodi1ald1m" path="res://src/textures/subway_roof.jpeg" id="2_eom2a"]
@@ -6,9 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://6mid0tvio06k" path="res://src/textures/subway_wall_tiles.jpg" id="3_eom2a"]
 [ext_resource type="Texture2D" uid="uid://ckcp8kylsm33" path="res://src/textures/subway_station_warning.jpg" id="3_sd13r"]
 [ext_resource type="Texture2D" uid="uid://drcrovp0dhs5w" path="res://src/textures/gravel.jpg" id="4_08xop"]
+[ext_resource type="PackedScene" uid="uid://bd675lqn5b7ds" path="res://src/maps/tiles/tracks.glb" id="4_an43o"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="4_bndgo"]
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="5_08xop"]
 [ext_resource type="Texture2D" uid="uid://b2h8tuy605w6c" path="res://src/textures/yellow_metal.jpg" id="7_08xop"]
+[ext_resource type="Texture2D" uid="uid://hsb53vogf1c2" path="res://src/textures/black_metal.png" id="8_d3i1q"]
+[ext_resource type="PackedScene" uid="uid://bmslcc5cjv6ou" path="res://src/maps/tiles/screen.glb" id="9_18r26"]
+[ext_resource type="Texture2D" uid="uid://bdo6t5hb7voig" path="res://src/maps/tiles/screen_metal.jpg" id="10_n4ngj"]
+[ext_resource type="Texture2D" uid="uid://deddhskp3g765" path="res://src/maps/tiles/screen_screen.jpg" id="11_hj2nb"]
+[ext_resource type="PackedScene" uid="uid://pq7diq20oqd3" path="res://src/maps/tiles/bench.glb" id="12_6h70b"]
+[ext_resource type="Texture2D" uid="uid://dpnaakw8qsoh2" path="res://src/textures/wood.jpeg" id="13_an43o"]
+[ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="17_5kru1"]
+[ext_resource type="Resource" uid="uid://dy8rc6oycy3vk" path="res://src/player/weapon/resources/rifle.tres" id="18_pcvff"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iyvra"]
 
@@ -23,7 +32,8 @@ sky_cover = SubResource("NoiseTexture2D_iyvra")
 sky_material = SubResource("ProceduralSkyMaterial_eiimb")
 
 [sub_resource type="Environment" id="Environment_eiimb"]
-background_mode = 2
+background_color = Color(1, 1, 1, 1)
+background_energy_multiplier = 0.0
 sky = SubResource("Sky_fkouh")
 tonemap_mode = 2
 fog_sky_affect = 0.385
@@ -80,6 +90,98 @@ uv1_triplanar = true
 uv1_world_triplanar = true
 texture_filter = 0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u8d5k"]
+albedo_texture = ExtResource("8_d3i1q")
+emission = Color(1, 1, 1, 1)
+uv1_scale = Vector3(0.4, 0.4, 0.4)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6h70b"]
+resource_name = "Material"
+cull_mode = 2
+albedo_texture = ExtResource("10_n4ngj")
+roughness = 0.5
+uv1_scale = Vector3(0.3, 0.3, 0.3)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c7qux"]
+resource_name = "Material.001"
+cull_mode = 2
+albedo_texture = ExtResource("11_hj2nb")
+roughness = 0.5
+texture_filter = 2
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_kfkq2"]
+_surfaces = [{
+"aabb": AABB(-0.106111, -1.0008, -1, 0.212223, 4.0008, 2),
+"format": 34896613377,
+"index_count": 348,
+"index_data": PackedByteArray("IgAEACMAIgAFAAQAEAAFACIAJAAEAAUAEAAkAAUAEgAQACIADQAkABAAEgAiACUAJQAiACMAEwASACUAJAAmAAQAJgAjAAQADQAnACQAJwAmACQAAgAnAA0AJgAoACMAJwApACYAKQAoACYAAQApACcAAgABACcAAQADACkAAwAqACkAKQAqACgAAAADAAEAAwAAACoAAAABAAIAKwAoACoAAAArACoAKAAsACMAJQAjACwAKwAtACgAKAAtACwALgAlACwAEwAlAC4ALQAvACwALgAsAC8AEwAuADAAEwAwABcALgAvADEALgAxADAALQAyAC8ALQAzADIALQArADMANAAvADIANAAxAC8ANQA0ADIANQAyADMANgAxADQANAA1ADYACQAzACsAAAAJACsADAA1ADMAMAAxADcANgA3ADEAMAA3ADgAFwAwADgAFwA4ABgAGAA4ABYAOAA3ABoAOAAaABYAGAAWADkAOQAWABoAFQAYADkAOgAaADcAOQAaADoAOgA3ADYAFQA5ADsAOwA5ADoAHQAVADsAPAA6ADYAOwA6ADwAPAA2AD0ANgA1AD0AGQA7ADwAHQA7ABkAGwA8AD0AGQA8ABsAHAA9ADUAGwA9ABwAHAAZABsAHAAdABkAHAA1AAwAHQAcAB4AHAAhAB4AHAAMACEAHQAeACAAIQAgAB4ADAAfACEAIQAfACAAFAAgAB8AFAAdACAADAAUAB8AFAAVAB0AFAARABUAPgAUAAwADAAzAD4APwARABQAPgA/ABQAPwAPABEAPwAOAA8ACQA+ADMAPwALAA4APgALAD8APgAJAAsACwANAA4ACwACAA0ACQAKAAsACwAIAAIACwAKAAgAAgAIAAYAAgAGAAAABwAIAAoACQAHAAoABwAGAAgAAAAHAAkAAAAGAAcA"),
+"lods": [0.000644095, PackedByteArray("AAABAAIAAAADAAEAAQADAAQAAwAAAAQAAgABAAUAAQAEAAUAAgAGAAAAAAAGAAcAAgAIAAYABwAGAAgAAAAHAAkAAAAJAAQABwAIAAoACQAHAAoACwAKAAgACQAKAAsACwAIAAIADAAEAAkACwACAA0AAgAFAA0ACwANAA4ACwAOAA8ADQAFABAACwAPABEAEgAQAAUAEwASAAUACwARABQACQALABQACQAUAAwAFAARABUAEwAFABYAEwAWABcAFwAWABgAFQAYABkAGAAWABkABQAaABYAGQAWABoABQAEABoAGQAaABsABAAcABoAGwAaABwAHAAZABsADAAcAAQAHQAVABkAHAAdABkAFAAVAB0AHQAcAB4ADAAUAB8AFAAdACAAHQAeACAAFAAgAB8AHAAhAB4AHAAMACEAIQAgAB4ADAAfACEAIQAfACAA")],
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 64,
+"vertex_data": PackedByteArray("AABcYNLvAAD//1xg//8AAP//XGDS7wAAAABcYP//AAAAAP////8AAP///////wAAAAAAANLvAAAAAAAAH9wAAP//AADS7wAAAABcYB/cAAD//wAAH9wAAP//XGAf3AAAAABcYN8jAAD//4Fm0u8AAP//gWYf3AAA//+BZv9/AAD//1T50u8AAP//gWbfIwAA//9U+R/cAAD//1T5/38AAP//XGDfIwAA//+BZiwQAAD/////AAAAAP//VPnfIwAA//9U+SwQAAD//1xgAAAAAAAA//8AAAAAAABcYAAAAAAAAFxgLBAAAP//XGAsEAAAAAAAACwQAAD//wAA3yMAAP//AAAsEAAAAAAAAN8jAAD/////0u8AAAAA///S7wAA//9U+f//AAD/////H9wAAAAAVPn//wAA//+BZv//AAAAAFT50u8AAAAAgWb//wAAAACBZtLvAAAAAIFmH9wAAAAA//8f3AAAAABU+R/cAAD//////38AAAAA////fwAA/////98jAAAAAP//3yMAAAAAVPn/fwAAAACBZv9/AAAAAFT53yMAAAAAgWbfIwAAAABU+SwQAAAAAP//LBAAAP////8sEAAA//9U+QAAAAAAAFT5AAAAAP//gWYAAAAAAACBZgAAAAAAAIFmLBAAAAAAXGD/fwAA//9cYP9/AAA=")
+}, {
+"aabb": AABB(0.106111, 0.601195, -0.873653, 1e-05, 2.29464, 1.74731),
+"format": 34896613377,
+"index_count": 24,
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAAAEAAMAAwAEAAUABgAFAAQABgAHAAUABgAIAAcABwAIAAkA"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 10,
+"vertex_data": PackedByteArray("AAD//3LpAAAAAAAA//8AAAAA/////wAAAAAAAHLpAAAAAP///38AAAAAAAD/fwAAAAD//4wWAAAAAAAAjBYAAAAA//8AAAAAAAAAAAAAAAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_an43o"]
+resource_name = "screen_Cube"
+_surfaces = [{
+"aabb": AABB(-0.106111, -1.0008, -1, 0.212223, 4.0008, 2),
+"attribute_data": PackedByteArray("opUEJI2NbxailW8WjY0EJAAAVPkNLlT5/D///+Y3VPnmN4Fm/D///w0uVPnmN1T5/D9cYOY3gWbmN1xg5jdcYPw/XGANLlxg5jcAAA0uAAANLoFmAACBZg0ugWYNLlxg5jcAAA0uAAD4f1xgjY0AAI2NXGD4fwAAZpeYMY2NBCRmlwQkjY2YMRJIXGDrUQAA61FcYBJIAAD8P////D9cYOtRXGASSFxg/D////w/XGDrUQAAEkgAAI2N//8hm6KfIZv//42Nop/4f1xgjY3///h///+NjVxg+H9cYPh///+Njf//jY1cYKKVBCSNjW8WjY0EJKKVbxYhm6ZfjY2mXyGbpl+NjaZf+H9cYI2NAAD4fwAAjY1cYCGbop+NjaKfIZuin42Nop9ml5gxjY0EJI2NmDFmlwQkjY3//yGbop+NjaKfIZv//yGbjZeNjY2XIZu0jY2NtI0hm6ZfjY2mX42NtI0hm7SNjY2NlyGbjZf4f1T5jY1U+fh/gWaNjYFm5jf///w/VPkNLv//AAD//w0u///mN////D9U+fw/gWYAAFxg/D+BZutRVPn4f///61H//xJIVPkSSP///D9U+fw/gWYSSIFm61GBZvh/gWb4f1xg+H9U+etRgWbrUVT561H//xJIVPkSSP///D9U+fw/gWYSSIFmIZuYMY2NmDH4f1T5jY1U+fh/gWaNjYFm"),
+"format": 34896613399,
+"index_count": 348,
+"index_data": PackedByteArray("UgBJAFMAUgBGAEkAVABSAFMAVABTAFUAVgBUAFUAVgBVAFcAVgBXAFgAVgBYAFkAWQBYAFoAWQBaAFsAWwBaAEcAWwBHAEgAXAAzADQAXABdADMAXgBdAFwAXgBfAF0AMgBfAF4AMgA1AF8AAAABAAIAAAADAAEABwAGAGAABwBhAAYABQAHAGAABQBgAGIACABhAAcABAAFAGIABABiAGMABABjAGQABABkAAoACgBkAGUACgBlAAsACwBlAAkACwAJAGYADQALAGYADQBmAGcADgANAGcADgBnAAwAFwANAA4AFwAOABgAFwAYABkAFwAWAA0AaAAWABcAaAAVABYAaAAUABUAaAARABQAEQAIABQAEQATABIAEQASAA8AEQAPAAgADwBpAAgACABpAGEADwAQAGkAagBrAGwAbQBqAGwAbQBsAG4AbwBuACYAbwBtAG4AcABtAG8AcABxAG0AJwBxAHAAJwAiAHEAcgBtAHEAIgByAHEAcgBqAG0AIgAlACMAIgAjACQAIgAkAHIAJABzAHIAagByAHMAJAB0AHMAKABzAHQAagBzAHUAagB1AGsAKAB2AHMAdgB1AHMAdwBrAHUAdgB3AHUAdwB4AGsAeQB4AHcAdwB2AHkAeQB6AHgAewB6AHkAewAqAHoAfAB7AHkAfAB5AH0AeQB2AH0AKwB8AH0AKwB9ACkAKQB9AHYAKQB2ACgAKQAoACwAKQAsAC0AfgBBAH8AfgA+AEEAfgB/AD8AfgA/AEAAGgAbABwAGgAdABsAHgAfACAAHgAhAB8ALgAvADAALgAxAC8AgAA4AIEAgAA3ADgAggCAAIEAggCBAIMANgCCAIMANgCDADkAOgA7ADwAOgA9ADsAQgBDAEQAQgBFAEMASgBLAEwASgBNAEsATgBPAFAATgBRAE8A"),
+"lods": [0.000644095, PackedByteArray("AAABAAIAAAADAAEABAAFAAYABQAHAAYACAAGAAcABAAGAAkABAAJAAoACgAJAAsACwAJAAwADQALAAwADgANAAwADwAGAAgADwAQAAYAEQAPAAgAEQASAA8AEQATABIAEQAIABQAEQAUABUAEQAVABYAEQAWABcAFwAWAA0AFwANAA4AFwAOABgAFwAYABkAGgAbABwAGgAdABsAHgAfACAAHgAhAB8AIgAjACQAIgAlACMAIgAkACYAJwAiACYAKAAmACQAKAApACYAJgApACoAKwAqACkAKQAoACwAKQAsAC0ALgAvADAALgAxAC8AMgAzADQAMgA1ADMANgA3ADgANgA4ADkAOgA7ADwAOgA9ADsAPgA/AEAAPgBBAD8AQgBDAEQAQgBFAEMARgBHAEgARgBJAEcASgBLAEwASgBNAEsATgBPAFAATgBRAE8A")],
+"material": SubResource("StandardMaterial3D_6h70b"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 132,
+"vertex_data": PackedByteArray("AABcYNLvVNX//1xg//9U1f//XGDS71TVAABcYP//VNX//1T5/3//P///VPkf3P///////////////1T50u//////gWbS7////////wAA/z///1T53yP/P///VPksEP8///9cYAAA/z///4FmLBD/P///XGAsEP8///9cYNLv/////1xg////////XGAf3P////8AANLv/////wAAH9z/////gWYf3P////+BZv9//z///4Fm3yP/P///XGDfI/8///8AACwQ/z///wAA3yP/P///XGDS7///AAAAANLv//8AAFxg0u//////AADS7///AAAAAB/cVNX//wAA0u9U1f//AAAf3FTVAAAAANLvVNUAAFxg0u///wAAAAAf3P//AABcYB/c//8AAAAA0u///wAA////////AABcYP////8AAFxg3yP/PwAAXGAsEP8/AAD//wAA/z8AAFxgAAD/PwAAAADfI/8/AAAAACwQ/z8AAFxgH9z/////AAAf3P////9cYB/c//8AAAAAH9z/////XGD/////AAD//////////////////wAAXGD///////9cYAAAAAD/////AAAAAAAA//8AAAAAAABcYAAAAAAAAFxgLBCqKv//XGAAAKoqAABcYAAAqir//1xgLBCqKgAAXGAf3P////9cYN8jAAAAAFxg3yMAAP//XGAf3P////9cYCwQAAAAAAAALBAAAP//AAAsEAAAAABcYCwQAAD/////////vwAA//8AAP8//////wAA/z8AAP//////vwAAAADfI6oq//8AACwQqioAAAAALBCqKv//AADfI6oqAABcYN8j/n///wAA3yP+fwAAAADfI/5///9cYN8j/n//////0u//vwAA///S7/+//////x/c/78AAP//H9z/v///////f/8/AAD///9//z8AAP//3yP/P//////fI/8/AAD//ywQ/z//////LBD/P///VPn/////AABU+f///////4Fm/////wAAgWb//////////9Lv/////1T5//////////8f3P////////9//z//////3yP/P/////8sEP8///9U+QAA/z///4FmAAD/P///XGD/f/8///+BZv////8AAFT5H9z//wAA////f/8/AAD//x/c//8AAFT50u///wAA///S7///AABU+f////8AAIFm/////wAAgWbS7///AACBZh/c//8AAIFm/3//PwAAXGD/f/8/AABU+f9//z8AAIFm3yP/PwAAVPnfI/8/AAD//98j/z8AAFT5LBD/PwAA//8sEP8/AABU+QAA/z8AAIFmAAD/PwAAgWYsEP8/AABcYP9/AAD//1xg/38AAP//VPkAAAAAAABU+QAAAAD//4FmAAAAAAAAgWYAAAAAVFVUVVRVVFVUVVRVVFVUVf9/AAD/v/9//7//f/+//3//v/9//38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/7//f/+//3//v/9//7//f/+//3//v/9//38AAP9/AAD/fwAA/38AAP9/AAD/f/9//3//f/9//3//f/9/VFVUVVRVVFVUVVRVVFVUVf8//3//P/9//z//f/8//3//P/9//z//f/9/////f////3////9/////f////3///////3////9/////f////3//f/9//3//f/9//3//f/9//3////9/////f////3///6oqVNWqKlTVqipU1aoqVNX/f/8//3//P/9//z//f/8//3////9/////f////3///////3////9/////f////3+qKlTVqipU1aoqVNWqKlTV/3////9/////f////3///////3////9/////f////3////9/////f////3////9/////f////3//f/9//3//f/9//3//f/9//7//f/+//3//v/9//38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/7//f/8//3//f////z//f/8//3//P/9//z//f/8//3//P/9//z//f/9/////f////3////9/////f////3////9/////f////3////9/////f////3//P/9//z//f////3////9/////f///")
+}, {
+"aabb": AABB(0.106111, 0.601195, -0.873653, 1e-05, 2.29464, 1.74731),
+"attribute_data": PackedByteArray("g+PE+uTzkwbk88T6g+OTBuuWxPrrlpMGg+PE+oPjkwbk88T65POTBg=="),
+"format": 34896613399,
+"index_count": 24,
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAAAEAAMAAwAEAAUABgAFAAQABgAHAAUABgAIAAcABwAIAAkA"),
+"material": SubResource("StandardMaterial3D_c7qux"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 10,
+"vertex_data": PackedByteArray("AAD//3Lp//8AAAAA/////wAA////////AAAAAHLp//8AAP///3//PwAAAAD/f/8/AAD//4wW/z8AAAAAjBb/PwAA//8AAP8/AAAAAAAA/z//v/9//7//f/+//3//v/9//38AAP9/AAD/fwAA/38AAP9/AAD/fwAA")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_kfkq2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5kru1"]
+albedo_texture = ExtResource("13_an43o")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_an43o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5kru1"]
+
 [node name="TestMap" type="Node3D"]
 script = ExtResource("1_sd13r")
 
@@ -111,7 +213,7 @@ mesh = SubResource("BoxMesh_g72tc")
 surface_material_override/0 = SubResource("StandardMaterial3D_sd13r")
 
 [node name="PlatformRoof" type="StaticBody3D" parent="Map"]
-transform = Transform3D(300, 0, 0, 0, 1, 0, 0, 0, 100, 34, 6, 45)
+transform = Transform3D(300, 0, 0, 0, 1, 0, 0, 0, 100, 34, 5, 45)
 collision_mask = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Map/PlatformRoof"]
@@ -122,6 +224,582 @@ surface_material_override/0 = SubResource("StandardMaterial3D_bndgo")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/PlatformRoof"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("ConvexPolygonShape3D_qgs4e")
+
+[node name="tracks2" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.60814, -2.41533, 8.98627)
+
+[node name="tracks3" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.84699, -2.41533, 8.98627)
+
+[node name="tracks4" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0375, -2.41533, 8.98627)
+
+[node name="tracks5" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2764, -2.41533, 8.98627)
+
+[node name="tracks6" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4271, -2.41533, 8.98627)
+
+[node name="tracks7" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.666, -2.41533, 8.98627)
+
+[node name="tracks8" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.8565, -2.41533, 8.98627)
+
+[node name="tracks9" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.0954, -2.41533, 8.98627)
+
+[node name="tracks10" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.3602, -2.41533, 8.98627)
+
+[node name="tracks11" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.599, -2.41533, 8.98627)
+
+[node name="tracks12" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.7895, -2.41533, 8.98627)
+
+[node name="tracks13" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.0284, -2.41533, 8.98627)
+
+[node name="tracks14" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.1791, -2.41533, 8.98627)
+
+[node name="tracks15" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.418, -2.41533, 8.98627)
+
+[node name="tracks16" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.6085, -2.41533, 8.98627)
+
+[node name="tracks17" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64.8474, -2.41533, 8.98627)
+
+[node name="tracks18" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.3579, -2.41533, 8.98627)
+
+[node name="tracks19" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73.5967, -2.41533, 8.98627)
+
+[node name="tracks20" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.7872, -2.41533, 8.98627)
+
+[node name="tracks21" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.0261, -2.41533, 8.98627)
+
+[node name="tracks22" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.1769, -2.41533, 8.98627)
+
+[node name="tracks23" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90.4157, -2.41533, 8.98627)
+
+[node name="tracks24" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94.6062, -2.41533, 8.98627)
+
+[node name="tracks25" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 98.8451, -2.41533, 8.98627)
+
+[node name="tracks26" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103.11, -2.41533, 8.98627)
+
+[node name="tracks27" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.349, -2.41533, 8.98627)
+
+[node name="tracks28" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 111.539, -2.41533, 8.98627)
+
+[node name="tracks29" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.778, -2.41533, 8.98627)
+
+[node name="tracks30" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 119.929, -2.41533, 8.98627)
+
+[node name="tracks31" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 124.168, -2.41533, 8.98627)
+
+[node name="tracks32" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 128.358, -2.41533, 8.98627)
+
+[node name="tracks33" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 132.597, -2.41533, 8.98627)
+
+[node name="tracks34" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -133.757, -2.41533, 8.98627)
+
+[node name="tracks35" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -129.519, -2.41533, 8.98627)
+
+[node name="tracks36" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -125.328, -2.41533, 8.98627)
+
+[node name="tracks37" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -121.089, -2.41533, 8.98627)
+
+[node name="tracks38" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -116.938, -2.41533, 8.98627)
+
+[node name="tracks39" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -112.7, -2.41533, 8.98627)
+
+[node name="tracks40" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -108.509, -2.41533, 8.98627)
+
+[node name="tracks41" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -104.27, -2.41533, 8.98627)
+
+[node name="tracks42" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100.005, -2.41533, 8.98627)
+
+[node name="tracks43" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.7665, -2.41533, 8.98627)
+
+[node name="tracks44" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.576, -2.41533, 8.98627)
+
+[node name="tracks45" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.3371, -2.41533, 8.98627)
+
+[node name="tracks46" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -83.1864, -2.41533, 8.98627)
+
+[node name="tracks47" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.9475, -2.41533, 8.98627)
+
+[node name="tracks48" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -74.757, -2.41533, 8.98627)
+
+[node name="tracks49" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70.5181, -2.41533, 8.98627)
+
+[node name="tracks50" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.0077, -2.41533, 8.98627)
+
+[node name="tracks51" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.7688, -2.41533, 8.98627)
+
+[node name="tracks52" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.5783, -2.41533, 8.98627)
+
+[node name="tracks53" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.3394, -2.41533, 8.98627)
+
+[node name="tracks54" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.1887, -2.41533, 8.98627)
+
+[node name="tracks55" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.9498, -2.41533, 8.98627)
+
+[node name="tracks56" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.7593, -2.41533, 8.98627)
+
+[node name="tracks57" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.5204, -2.41533, 8.98627)
+
+[node name="tracks58" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.2556, -2.41533, 8.98627)
+
+[node name="tracks59" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.0168, -2.41533, 8.98627)
+
+[node name="tracks60" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.8263, -2.41533, 8.98627)
+
+[node name="tracks61" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5874, -2.41533, 8.98627)
+
+[node name="tracks62" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.4366, -2.41533, 8.98627)
+
+[node name="tracks63" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.1978, -2.41533, 8.98627)
+
+[node name="tracks64" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.00728, -2.41533, 8.98627)
+
+[node name="tracks65" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.76842, -2.41533, 8.98627)
+
+[node name="tracks66" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.60814, -2.41533, 27.48)
+
+[node name="tracks67" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.84699, -2.41533, 27.48)
+
+[node name="tracks68" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0375, -2.41533, 27.48)
+
+[node name="tracks69" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2764, -2.41533, 27.48)
+
+[node name="tracks70" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4271, -2.41533, 27.48)
+
+[node name="tracks71" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.666, -2.41533, 27.48)
+
+[node name="tracks72" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.8565, -2.41533, 27.48)
+
+[node name="tracks73" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.0954, -2.41533, 27.48)
+
+[node name="tracks74" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.3602, -2.41533, 27.48)
+
+[node name="tracks75" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.599, -2.41533, 27.48)
+
+[node name="tracks76" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.7895, -2.41533, 27.48)
+
+[node name="tracks77" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.0284, -2.41533, 27.48)
+
+[node name="tracks78" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.1791, -2.41533, 27.48)
+
+[node name="tracks79" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.418, -2.41533, 27.48)
+
+[node name="tracks80" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.6085, -2.41533, 27.48)
+
+[node name="tracks81" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64.8474, -2.41533, 27.48)
+
+[node name="tracks82" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.3579, -2.41533, 27.48)
+
+[node name="tracks83" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73.5967, -2.41533, 27.48)
+
+[node name="tracks84" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.7872, -2.41533, 27.48)
+
+[node name="tracks85" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.0261, -2.41533, 27.48)
+
+[node name="tracks86" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.1769, -2.41533, 27.48)
+
+[node name="tracks87" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90.4157, -2.41533, 27.48)
+
+[node name="tracks88" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94.6062, -2.41533, 27.48)
+
+[node name="tracks89" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 98.8451, -2.41533, 27.48)
+
+[node name="tracks90" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103.11, -2.41533, 27.48)
+
+[node name="tracks91" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.349, -2.41533, 27.48)
+
+[node name="tracks92" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 111.539, -2.41533, 27.48)
+
+[node name="tracks93" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.778, -2.41533, 27.48)
+
+[node name="tracks94" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 119.929, -2.41533, 27.48)
+
+[node name="tracks95" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 124.168, -2.41533, 27.48)
+
+[node name="tracks96" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 128.358, -2.41533, 27.48)
+
+[node name="tracks97" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 132.597, -2.41533, 27.48)
+
+[node name="tracks98" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -133.757, -2.41533, 27.48)
+
+[node name="tracks99" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -129.519, -2.41533, 27.48)
+
+[node name="tracks100" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -125.328, -2.41533, 27.48)
+
+[node name="tracks101" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -121.089, -2.41533, 27.48)
+
+[node name="tracks102" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -116.938, -2.41533, 27.48)
+
+[node name="tracks103" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -112.7, -2.41533, 27.48)
+
+[node name="tracks104" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -108.509, -2.41533, 27.48)
+
+[node name="tracks105" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -104.27, -2.41533, 27.48)
+
+[node name="tracks106" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100.005, -2.41533, 27.48)
+
+[node name="tracks107" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.7665, -2.41533, 27.48)
+
+[node name="tracks108" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.576, -2.41533, 27.48)
+
+[node name="tracks109" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.3371, -2.41533, 27.48)
+
+[node name="tracks110" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -83.1864, -2.41533, 27.48)
+
+[node name="tracks111" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.9475, -2.41533, 27.48)
+
+[node name="tracks112" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -74.757, -2.41533, 27.48)
+
+[node name="tracks113" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70.5181, -2.41533, 27.48)
+
+[node name="tracks114" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.0077, -2.41533, 27.48)
+
+[node name="tracks115" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.7688, -2.41533, 27.48)
+
+[node name="tracks116" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.5783, -2.41533, 27.48)
+
+[node name="tracks117" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.3394, -2.41533, 27.48)
+
+[node name="tracks118" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.1887, -2.41533, 27.48)
+
+[node name="tracks119" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.9498, -2.41533, 27.48)
+
+[node name="tracks120" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.7593, -2.41533, 27.48)
+
+[node name="tracks121" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.5204, -2.41533, 27.48)
+
+[node name="tracks122" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.2556, -2.41533, 27.48)
+
+[node name="tracks123" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.0168, -2.41533, 27.48)
+
+[node name="tracks124" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.8263, -2.41533, 27.48)
+
+[node name="tracks125" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5874, -2.41533, 27.48)
+
+[node name="tracks126" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.4366, -2.41533, 27.48)
+
+[node name="tracks127" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.1978, -2.41533, 27.48)
+
+[node name="tracks128" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.00728, -2.41533, 27.48)
+
+[node name="tracks129" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.76842, -2.41533, 27.48)
+
+[node name="tracks130" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.60814, -2.41533, 46.0424)
+
+[node name="tracks131" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.84699, -2.41533, 46.0424)
+
+[node name="tracks132" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0375, -2.41533, 46.0424)
+
+[node name="tracks133" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2764, -2.41533, 46.0424)
+
+[node name="tracks134" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4271, -2.41533, 46.0424)
+
+[node name="tracks135" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.666, -2.41533, 46.0424)
+
+[node name="tracks136" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.8565, -2.41533, 46.0424)
+
+[node name="tracks137" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.0954, -2.41533, 46.0424)
+
+[node name="tracks138" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.3602, -2.41533, 46.0424)
+
+[node name="tracks139" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.599, -2.41533, 46.0424)
+
+[node name="tracks140" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.7895, -2.41533, 46.0424)
+
+[node name="tracks141" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.0284, -2.41533, 46.0424)
+
+[node name="tracks142" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.1791, -2.41533, 46.0424)
+
+[node name="tracks143" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.418, -2.41533, 46.0424)
+
+[node name="tracks144" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.6085, -2.41533, 46.0424)
+
+[node name="tracks145" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64.8474, -2.41533, 46.0424)
+
+[node name="tracks146" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.3579, -2.41533, 46.0424)
+
+[node name="tracks147" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73.5967, -2.41533, 46.0424)
+
+[node name="tracks148" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.7872, -2.41533, 46.0424)
+
+[node name="tracks149" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.0261, -2.41533, 46.0424)
+
+[node name="tracks150" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.1769, -2.41533, 46.0424)
+
+[node name="tracks151" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90.4157, -2.41533, 46.0424)
+
+[node name="tracks152" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94.6062, -2.41533, 46.0424)
+
+[node name="tracks153" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 98.8451, -2.41533, 46.0424)
+
+[node name="tracks154" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103.11, -2.41533, 46.0424)
+
+[node name="tracks155" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.349, -2.41533, 46.0424)
+
+[node name="tracks156" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 111.539, -2.41533, 46.0424)
+
+[node name="tracks157" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.778, -2.41533, 46.0424)
+
+[node name="tracks158" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 119.929, -2.41533, 46.0424)
+
+[node name="tracks159" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 124.168, -2.41533, 46.0424)
+
+[node name="tracks160" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 128.358, -2.41533, 46.0424)
+
+[node name="tracks161" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 132.597, -2.41533, 46.0424)
+
+[node name="tracks162" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -133.757, -2.41533, 46.0424)
+
+[node name="tracks163" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -129.519, -2.41533, 46.0424)
+
+[node name="tracks164" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -125.328, -2.41533, 46.0424)
+
+[node name="tracks165" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -121.089, -2.41533, 46.0424)
+
+[node name="tracks166" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -116.938, -2.41533, 46.0424)
+
+[node name="tracks167" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -112.7, -2.41533, 46.0424)
+
+[node name="tracks168" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -108.509, -2.41533, 46.0424)
+
+[node name="tracks169" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -104.27, -2.41533, 46.0424)
+
+[node name="tracks170" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100.005, -2.41533, 46.0424)
+
+[node name="tracks171" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.7665, -2.41533, 46.0424)
+
+[node name="tracks172" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.576, -2.41533, 46.0424)
+
+[node name="tracks173" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.3371, -2.41533, 46.0424)
+
+[node name="tracks174" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -83.1864, -2.41533, 46.0424)
+
+[node name="tracks175" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.9475, -2.41533, 46.0424)
+
+[node name="tracks176" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -74.757, -2.41533, 46.0424)
+
+[node name="tracks177" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70.5181, -2.41533, 46.0424)
+
+[node name="tracks178" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.0077, -2.41533, 46.0424)
+
+[node name="tracks179" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.7688, -2.41533, 46.0424)
+
+[node name="tracks180" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.5783, -2.41533, 46.0424)
+
+[node name="tracks181" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.3394, -2.41533, 46.0424)
+
+[node name="tracks182" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.1887, -2.41533, 46.0424)
+
+[node name="tracks183" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.9498, -2.41533, 46.0424)
+
+[node name="tracks184" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.7593, -2.41533, 46.0424)
+
+[node name="tracks185" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.5204, -2.41533, 46.0424)
+
+[node name="tracks186" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.2556, -2.41533, 46.0424)
+
+[node name="tracks187" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.0168, -2.41533, 46.0424)
+
+[node name="tracks188" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.8263, -2.41533, 46.0424)
+
+[node name="tracks189" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5874, -2.41533, 46.0424)
+
+[node name="tracks190" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.4366, -2.41533, 46.0424)
+
+[node name="tracks191" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.1978, -2.41533, 46.0424)
+
+[node name="tracks192" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.00728, -2.41533, 46.0424)
+
+[node name="tracks193" parent="Map" instance=ExtResource("4_an43o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.76842, -2.41533, 46.0424)
 
 [node name="PlatformRoof2" type="StaticBody3D" parent="Map"]
 transform = Transform3D(200, 0, 0, 0, 1, 0, 0, 0, 100, 0, -4, 45)
@@ -172,6 +850,19 @@ mesh = SubResource("BoxMesh_g72tc")
 surface_material_override/0 = SubResource("StandardMaterial3D_qgs4e")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Wall5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("ConvexPolygonShape3D_bndgo")
+
+[node name="Wall23" type="StaticBody3D" parent="Map"]
+transform = Transform3D(-4.61707e-07, 0, -1, 0, 10, 0, 10.5626, 0, -4.37114e-08, 39, 3.5, 55.1392)
+collision_mask = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Wall23"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_qgs4e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Wall23"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 shape = SubResource("ConvexPolygonShape3D_bndgo")
 
@@ -396,6 +1087,19 @@ surface_material_override/0 = SubResource("StandardMaterial3D_qgs4e")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 shape = SubResource("ConvexPolygonShape3D_bndgo")
 
+[node name="Wall22" type="StaticBody3D" parent="Map"]
+transform = Transform3D(-1.74846e-07, 0, 1, 0, 10, 0, -4, 0, -4.37114e-08, 24.7, 3.5, 51)
+collision_mask = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Wall22"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_qgs4e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Wall22"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("ConvexPolygonShape3D_bndgo")
+
 [node name="Wall7" type="StaticBody3D" parent="Map"]
 transform = Transform3D(-5.24537e-07, 0, 1, 0, 10, 0, -12, 0, -4.37114e-08, -25.3, 3.5, 55)
 collision_mask = 2
@@ -432,13 +1136,453 @@ mesh = SubResource("BoxMesh_g72tc")
 surface_material_override/0 = SubResource("StandardMaterial3D_eom2a")
 
 [node name="YellowBeam" type="StaticBody3D" parent="Map"]
-transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 0, 3.96082, 14.53)
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -21, 3.96082, 14.53)
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam"]
 shape = SubResource("BoxShape3D_dp2nf")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam3" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -11, 3.96082, 14.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam3"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam3"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam5" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -1, 3.96082, 14.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam5"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam5"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam7" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 9, 3.96082, 14.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam7"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam7"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam9" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 19, 3.96082, 14.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam9"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam9"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam21" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -21, 3.96082, 3.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam21"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam21"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam22" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -11, 3.96082, 3.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam22"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam22"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="BlackBeam" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 100, -11, 5.5, 20)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam2" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 100, -21, 5.5, 20)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam2"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam2"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam3" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 100, -1, 5.5, 20)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam3"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam3"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam4" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 100, 9, 5.5, 20)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam4"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam4"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam5" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 100, 19, 5.5, 20)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam5"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam5"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam6" type="StaticBody3D" parent="Map"]
+transform = Transform3D(-4.80825e-08, 0, -100, 0, 1, 0, 1.1, 0, -4.37114e-06, 9, 5.5, 3.5)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam6"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam6"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam7" type="StaticBody3D" parent="Map"]
+transform = Transform3D(-4.80825e-08, 0, -100, 0, 1, 0, 1.1, 0, -4.37114e-06, 9, 5.5, 14.5)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam7"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam7"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam8" type="StaticBody3D" parent="Map"]
+transform = Transform3D(-4.80825e-08, 0, -100, 0, 1, 0, 1.1, 0, -4.37114e-06, 9, 5.5, 21.5)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam8"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam8"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam9" type="StaticBody3D" parent="Map"]
+transform = Transform3D(-4.80825e-08, 0, -100, 0, 1, 0, 1.1, 0, -4.37114e-06, 9, 5.5, 33.5)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam9"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam9"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam10" type="StaticBody3D" parent="Map"]
+transform = Transform3D(-4.80825e-08, 0, -100, 0, 1, 0, 1.1, 0, -4.37114e-06, 9, 5.5, 40.5)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam10"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam10"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="BlackBeam11" type="StaticBody3D" parent="Map"]
+transform = Transform3D(-4.80825e-08, 0, -100, 0, 1, 0, 1.1, 0, -4.37114e-06, -25, 5.5, 51.5)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/BlackBeam11"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/BlackBeam11"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8d5k")
+
+[node name="YellowBeam23" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -1, 3.96082, 3.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam23"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam23"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam24" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 9, 3.96082, 3.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam24"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam24"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam25" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 19, 3.96082, 3.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam25"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam25"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam26" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -21, 3.96082, 51.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam26"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam26"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam27" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -11, 3.96082, 51.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam27"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam27"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam28" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -1, 3.96082, 51.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam28"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam28"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam29" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 9, 3.96082, 51.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam29"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam29"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam30" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 19, 3.96082, 51.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam30"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam30"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam2" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -21, 3.96082, 21.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam2"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam2"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam4" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -11, 3.96082, 21.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam4"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam4"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam6" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -1, 3.96082, 21.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam6"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam6"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam8" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 9, 3.96082, 21.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam8"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam8"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam10" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 19, 3.96082, 21.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam10"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam10"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam11" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -21, 3.96082, 33.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam11"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam11"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam12" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -11, 3.96082, 33.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam12"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam12"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam13" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -1, 3.96082, 33.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam13"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam13"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam14" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 9, 3.96082, 33.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam14"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam14"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam15" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 19, 3.96082, 33.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam15"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam15"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam16" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -21, 3.96082, 40.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam16"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam16"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam17" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -11, 3.96082, 40.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam17"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam17"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam18" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, -1, 3.96082, 40.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam18"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam18"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam19" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 9, 3.96082, 40.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam19"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam19"]
+mesh = SubResource("BoxMesh_g72tc")
+surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
+
+[node name="YellowBeam20" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 1, 19, 3.96082, 40.53)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/YellowBeam20"]
+shape = SubResource("BoxShape3D_dp2nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/YellowBeam20"]
 mesh = SubResource("BoxMesh_g72tc")
 surface_material_override/0 = SubResource("StandardMaterial3D_18r26")
 
@@ -508,19 +1652,380 @@ shape = SubResource("BoxShape3D_dp2nf")
 mesh = SubResource("BoxMesh_g72tc")
 surface_material_override/0 = SubResource("StandardMaterial3D_eom2a")
 
+[node name="screen" parent="Map" instance=ExtResource("9_18r26")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6, 1, 36.6851)
+
+[node name="screen" parent="Map/screen" index="0"]
+mesh = SubResource("ArrayMesh_an43o")
+
+[node name="screen5" parent="Map" instance=ExtResource("9_18r26")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -16.3636, 1, 59.2502)
+
+[node name="screen" parent="Map/screen5" index="0"]
+mesh = SubResource("ArrayMesh_an43o")
+
+[node name="screen2" parent="Map" instance=ExtResource("9_18r26")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -6, 1, 37.1828)
+
+[node name="screen" parent="Map/screen2" index="0"]
+mesh = SubResource("ArrayMesh_an43o")
+
+[node name="screen3" parent="Map" instance=ExtResource("9_18r26")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.97951, 1, 18.5175)
+
+[node name="screen" parent="Map/screen3" index="0"]
+mesh = SubResource("ArrayMesh_an43o")
+
+[node name="screen4" parent="Map" instance=ExtResource("9_18r26")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 3.97951, 1, 19.0153)
+
+[node name="screen" parent="Map/screen4" index="0"]
+mesh = SubResource("ArrayMesh_an43o")
+
+[node name="screen6" parent="Map" instance=ExtResource("9_18r26")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 13.9896, 1, -4.26953)
+
+[node name="screen" parent="Map/screen6" index="0"]
+mesh = SubResource("ArrayMesh_an43o")
+
+[node name="bench" parent="Map" instance=ExtResource("12_6h70b")]
+transform = Transform3D(-3.0598e-08, 0, 0.7, 0, 0.7, 0, -0.7, 0, -3.0598e-08, -5.93163, 1.35141, 18.2008)
+
+[node name="bench" parent="Map/bench" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_5kru1")
+
+[node name="bench6" parent="Map" instance=ExtResource("12_6h70b")]
+transform = Transform3D(-3.0598e-08, 0, -0.7, 0, 0.7, 0, 0.7, 0, -3.0598e-08, 14.0684, 1.35141, 18.2008)
+
+[node name="bench" parent="Map/bench6" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_5kru1")
+
+[node name="bench2" parent="Map" instance=ExtResource("12_6h70b")]
+transform = Transform3D(9.17939e-08, 0, -0.7, 0, 0.7, 0, 0.7, 0, 9.17939e-08, -5.93163, 1.35141, -0.535299)
+
+[node name="bench" parent="Map/bench2" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_5kru1")
+
+[node name="bench3" parent="Map" instance=ExtResource("12_6h70b")]
+transform = Transform3D(9.17939e-08, 0, -0.7, 0, 0.7, 0, 0.7, 0, 9.17939e-08, -15.9316, 1.35141, 37.4647)
+
+[node name="bench" parent="Map/bench3" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_5kru1")
+
+[node name="bench5" parent="Map" instance=ExtResource("12_6h70b")]
+transform = Transform3D(-3.0598e-08, 0, 0.7, 0, 0.7, 0, -0.7, 0, -3.0598e-08, 14.0684, 1.35141, 37.4647)
+
+[node name="bench" parent="Map/bench5" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_5kru1")
+
+[node name="bench4" parent="Map" instance=ExtResource("12_6h70b")]
+transform = Transform3D(-1.5299e-07, 0, 0.7, 0, 0.7, 0, -0.7, 0, -1.5299e-07, 4.06837, 1.35141, 56.4647)
+
+[node name="bench" parent="Map/bench4" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_5kru1")
+
+[node name="Light" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, -5.82159, 5.57088, -0.989178)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light3" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, 4.16998, 5.57088, -0.989178)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light3"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light3"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light3"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light4" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, 14.17, 5.57088, -0.989178)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light4"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light4"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light4"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light2" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, -15.8399, 5.57088, -0.989178)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light2"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light2"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light2"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light5" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, -5.82159, 5.57088, 18.0541)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light5"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light5"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light5"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light6" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, 4.16998, 5.57088, 18.0541)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light6"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light6"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light6"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light7" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, 14.17, 5.57088, 18.0541)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light7"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light7"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light7"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light8" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, -15.8399, 5.57088, 18.0541)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light8"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light8"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light8"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light9" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, -5.82159, 5.57088, 37.0541)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light9"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light9"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light9"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light10" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, 4.16998, 5.57088, 37.0541)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light10"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light10"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light10"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light11" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, 14.17, 5.57088, 37.0541)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light11"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light11"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light11"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light12" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, -15.8399, 5.57088, 37.0541)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light12"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light12"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light12"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light13" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, -5.82159, 5.57088, 56.0001)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light13"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light13"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light13"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light14" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, 4.16998, 5.57088, 56.0001)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light14"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light14"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light14"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light15" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, 14.17, 5.57088, 56.0001)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light15"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light15"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light15"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light17" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, 30.6338, 5.57088, 56.0001)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light17"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light17"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light17"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
+[node name="Light16" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 0.308608, 0, 0, 0, 1, -15.8399, 5.57088, 56.0001)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Light16"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_an43o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Map/Light16"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 5.97
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Map/Light16"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_5kru1")
+
 [node name="Player" parent="." instance=ExtResource("4_bndgo")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.50592, -2)
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -22, 1.50592, -2)
 
 [node name="Targets" type="Node" parent="."]
 
 [node name="EndZone" parent="." instance=ExtResource("5_08xop")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.0885217, 55)
 
 [node name="Collider" parent="EndZone" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
 
 [node name="StartZone" parent="." instance=ExtResource("5_08xop")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.355922, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0.355922, -2)
 
 [node name="Collider" parent="StartZone" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
@@ -529,17 +2034,45 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.003082
 
 [node name="TargetSpawns" type="Node" parent="."]
 
+[node name="Node3D" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.7144, 0.458508, -0.671127)
+
+[node name="Node3D2" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.7144, 0.458508, 18.1976)
+
+[node name="Node3D3" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.880852, 0.458508, 37.4363)
+
+[node name="Node3D5" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.1236, 0.458508, 37.4363)
+
+[node name="Node3D6" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.1022, 0.458508, 56.7128)
+
+[node name="Node3D4" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.8809, 0.458508, 18.1976)
+
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.522499, -0.40029, 0.752837, 0, 0, 0)
 visible = false
 light_energy = 2.0
 shadow_enabled = true
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.98058, 26.0074)
-visible = false
-light_energy = 5.97
-omni_range = 4096.0
+[node name="WeaponPickup" parent="." instance=ExtResource("17_5kru1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0772, 0.517587, 0.566615)
+weapon = ExtResource("18_pcvff")
 
+[editable path="Map/screen"]
+[editable path="Map/screen5"]
+[editable path="Map/screen2"]
+[editable path="Map/screen3"]
+[editable path="Map/screen4"]
+[editable path="Map/screen6"]
+[editable path="Map/bench"]
+[editable path="Map/bench6"]
+[editable path="Map/bench2"]
+[editable path="Map/bench3"]
+[editable path="Map/bench5"]
+[editable path="Map/bench4"]
 [editable path="EndZone"]
 [editable path="StartZone"]

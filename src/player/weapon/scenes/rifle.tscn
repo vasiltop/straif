@@ -205,6 +205,7 @@ transform = Transform3D(0.452639, 0.432269, 0.313467, -0.533495, 0.383355, 0.241
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-0.7, 0, -1.05697e-07, 0, 0.7, 0, 1.05697e-07, 0, -0.7, 0, -0.0636386, 0.0545475)
 layers = 2
+gi_mode = 0
 mesh = SubResource("ArrayMesh_goxyr")
 skeleton = NodePath("")
 
@@ -223,3 +224,11 @@ explosiveness = 1.0
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_thuwb")
 draw_pass_1 = SubResource("QuadMesh_thuwb")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15138, 0)
+layers = 2
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.26744, 0)
+layers = 2

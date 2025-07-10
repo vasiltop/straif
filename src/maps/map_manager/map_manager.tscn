@@ -20,7 +20,7 @@ metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 [sub_resource type="Resource" id="Resource_dmb7u"]
 script = ExtResource("2_u1fwk")
 name = "map_rooftops2"
-tier = 1
+tier = 2
 mid = 2
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
