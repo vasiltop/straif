@@ -21,7 +21,7 @@ func reset_to_defaults() -> void:
 	config.set_value("Controls", "sensitivity", 1.0)
 	config.set_value("Display", "mode", 0)
 	config.set_value("Display", "max_fps", 255)
-	config.set_value("Audio", "master_volume", 0)
+	config.set_value("Audio", "master_volume", -10.0)
 
 func update(section: String, key: String, value: Variant) -> void:
 	config.set_value(section, key, value)
