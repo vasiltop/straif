@@ -15,7 +15,12 @@ Engineconfigurationfile.config_version=5
 config/name="straif"
 run/main_scene="uid://taw7qljauqyg"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/use_filter=false
+boot_splash/image="uid://fgo5uoix53t6"
+config/icon="uid://jxrxw06a0qoq"
+config/windows_native_icon="res://images/icon.ico"
+boot_splash/minimum_display_time=300
 
 [autoload]
 
@@ -34,6 +39,10 @@ gdscript/warnings/unsafe_property_access=2
 gdscript/warnings/unsafe_method_access=2
 gdscript/warnings/unsafe_call_argument=2
 gdscript/warnings/unsafe_void_return=2
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdmaim/plugin.cfg")
 
 [input]
 

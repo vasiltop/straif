@@ -211,13 +211,6 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Content/Header/Center"]
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 80
-text = "STRAIF"
-
 [node name="Right" type="HBoxContainer" parent="MarginContainer/Content/Header"]
 layout_mode = 1
 anchors_preset = 6

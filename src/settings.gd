@@ -18,7 +18,7 @@ func save() -> void:
 	config.save(PATH)
 
 func reset_to_defaults() -> void:
-	config.set_value("Controls", "sensitivity", 1)
+	config.set_value("Controls", "sensitivity", 1.0)
 	config.set_value("Display", "mode", 0)
 	config.set_value("Display", "max_fps", 255)
 	config.set_value("Audio", "master_volume", 0)
