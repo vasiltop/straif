@@ -48,4 +48,3 @@ func http_patch(path: String = "/") -> BetterHTTPRequest:
 
 func http_delete(path: String = "/") -> BetterHTTPRequest:
 	return self.dispatch(HTTPClient.METHOD_DELETE, path)
-

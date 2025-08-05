@@ -21,6 +21,7 @@ class_name MainMenu extends Control
 @onready var version_error: Control = $MarginContainer/VersionError
 
 func _ready() -> void:
+	_instantiate_maps()
 	Steam.avatar_loaded.connect(_on_loaded_avatar)
 	quit_btn.pressed.connect(get_tree().quit)
 	create_lobby_btn.pressed.connect(_on_create_lobby)
@@ -40,13 +41,12 @@ func _ready() -> void:
 	create_lobby_control.visible = true
 
 	_lobby_refresh_timer.start()
-	_instantiate_maps()	
+		
 
 	if Lobby.lobby_id != 0 && Lobby.network_type == Lobby.NETWORK_TYPE.STEAM:
 		Lobby.update_lobby_members()
 
 func _instantiate_maps() -> void:
-
 	var tiers := 3
 	var tier_labels := {}
 	var tier_to_container := {}
@@ -63,19 +63,13 @@ func _instantiate_maps() -> void:
 		tier_to_container[tier] = container
 
 	var mm: Maps = MapManager
-	var runs := await Http.get_my_runs()
 
 	for map in mm.maps:
-		var time: float
-		for run: Dictionary in runs:
-			if run.map_name == map.name:
-				time = run.time_ms / 1000
-				break
+		Lobby.map_name_to_time[map.name] = 0
 
-		Lobby.map_name_to_time[map.name] = time if time != 0 else INF
-
-		var btn := Button.new()
-		btn.text = "%s\nPersonal Best: %s" % [map.name, str(snapped(time, 0.01))]
+		var btn := MapButton.new()
+		btn.map_name = map.name
+		btn.update_label(0.0)
 		btn.custom_minimum_size = Vector2(160, 160)
 
 		(tier_to_container[map.tier] as Control).add_child(btn)
@@ -87,6 +81,15 @@ func _instantiate_maps() -> void:
 				get_tree().change_scene_to_file(path)
 				Lobby.current_map = map
 		)
+	
+	var runs := await Http.get_my_runs()
+	for run: Dictionary in runs:
+		for tier: int in tier_to_container:
+			var container: HFlowContainer = tier_to_container[tier]
+			for map_button: MapButton in container.get_children():
+				if map_button.map_name != run.map_name: continue
+				var time: float = run.time_ms / 1000
+				map_button.update_label(time)
 
 	for tier: int in tier_to_container:
 		var container: Control = tier_to_container[tier]

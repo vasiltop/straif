@@ -101,6 +101,7 @@ func get_replay(map_name: String, steam_id: int) -> String:
 
 func get_my_runs() -> Array:
 	var res := await client.http_get("/leaderboard/" + str(Steam.getSteamID()) + "/runs").send()
+	print(res)
 	if res == null: 
 		_show_connection_error()
 		return []
