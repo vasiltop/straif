@@ -4,6 +4,7 @@ signal invalid_version
 
 const GAME_VERSION := 1
 const FILE_CHUNK_SIZE := 1024
+const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
 var api_url: String
@@ -101,7 +102,6 @@ func get_replay(map_name: String, steam_id: int) -> String:
 
 func get_my_runs() -> Array:
 	var res := await client.http_get("/leaderboard/" + str(Steam.getSteamID()) + "/runs").send()
-	print(res)
 	if res == null: 
 		_show_connection_error()
 		return []

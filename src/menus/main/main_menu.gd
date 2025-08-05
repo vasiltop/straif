@@ -19,6 +19,7 @@ class_name MainMenu extends Control
 @onready var _lobby_refresh_timer := BetterTimer.new(self, 1.0, _on_refresh_lobby_search)
 @onready var save_settings_btn: Button = $MarginContainer/Content/Body/Settings/Save
 @onready var version_error: Control = $MarginContainer/VersionError
+@onready var discord_btn: TextureButton = $MarginContainer/Content/Header/Right/Discord
 
 func _ready() -> void:
 	_instantiate_maps()
@@ -42,9 +43,13 @@ func _ready() -> void:
 
 	_lobby_refresh_timer.start()
 		
-
 	if Lobby.lobby_id != 0 && Lobby.network_type == Lobby.NETWORK_TYPE.STEAM:
 		Lobby.update_lobby_members()
+	
+	discord_btn.pressed.connect(
+		func() -> void:
+			OS.shell_open(Http.DISCORD_URL)
+	)
 
 func _instantiate_maps() -> void:
 	var tiers := 3

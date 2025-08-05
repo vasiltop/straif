@@ -39,5 +39,3 @@ func _on_sens_slider_changed(value: float) -> void:
 	var new_sens: float = snapped(value, 0.01)
 	sens_label.text = str(new_sens)
 	Settings.update("Controls", "sensitivity", new_sens)
-
-	print(new_sens)

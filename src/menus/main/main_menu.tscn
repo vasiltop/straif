@@ -1,8 +1,10 @@
-[gd_scene load_steps=43 format=3 uid="uid://taw7qljauqyg"]
+[gd_scene load_steps=45 format=3 uid="uid://taw7qljauqyg"]
 
 [ext_resource type="Script" uid="uid://c3c48ot8m7wcr" path="res://src/menus/main/main_menu.gd" id="1_cput1"]
 [ext_resource type="PackedScene" uid="uid://bl08qnvut26i8" path="res://src/menus/settings/settings_menu.tscn" id="2_juxiq"]
+[ext_resource type="Texture2D" uid="uid://jbk5guvue7n4" path="res://src/textures/discord-hover.png" id="3_0gscq"]
 [ext_resource type="PackedScene" uid="uid://cpgalek8pubhp" path="res://src/maps/tiles/building.tscn" id="3_im8n7"]
+[ext_resource type="Texture2D" uid="uid://c4crre3khf17f" path="res://src/textures/discord.png" id="3_og6j4"]
 [ext_resource type="PackedScene" uid="uid://t8r6jl03nerq" path="res://src/maps/tiles/vent.tscn" id="4_wwn1r"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="5_0gscq"]
 [ext_resource type="Resource" uid="uid://civ014pfd2p5f" path="res://src/player/weapon/resources/usp.tres" id="6_og6j4"]
@@ -223,6 +225,11 @@ offset_top = -20.0
 offset_bottom = 20.0
 grow_horizontal = 0
 grow_vertical = 2
+
+[node name="Discord" type="TextureButton" parent="MarginContainer/Content/Header/Right"]
+layout_mode = 2
+texture_normal = ExtResource("3_og6j4")
+texture_pressed = ExtResource("3_0gscq")
 
 [node name="Quit" type="Button" parent="MarginContainer/Content/Header/Right"]
 layout_mode = 2
