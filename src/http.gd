@@ -7,18 +7,13 @@ const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
-var api_url: String
+var api_url := "http://localhost:3000" if OS.has_feature("editor") else "http://209.38.2.30:3000"
 var version := "dev" if OS.has_feature("editor") else "0.01"
 
 func _show_connection_error() -> void:
 	Info.alert("Unable to connect to \nthe game server.")
 
 func _ready() -> void:
-	if OS.has_feature("editor"):
-		api_url = "http://localhost:3000"
-	else:
-		api_url = "http://209.38.2.30:3000"
-
 	client = BetterHTTPClient.new(self, BetterHTTPURL.parse(api_url))
 
 	var res := await client.http_get("/leaderboard/version").header("version", version).send()

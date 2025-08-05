@@ -99,9 +99,9 @@ func _process(delta: float) -> void:
 
 		anim.play("inspect")
 
-
 	time_since_last_shot += delta
-	
+
+func _physics_process(delta: float) -> void:
 	_sway(delta)
 
 func _sway(delta: float) -> void:

@@ -89,6 +89,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_244u8")
 
 [node name="Eye" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+top_level = true
 
 [node name="Camera" type="Camera3D" parent="Eye"]
 cull_mask = 1
@@ -98,6 +99,7 @@ script = ExtResource("2_244u8")
 target_position = Vector3(0, 0, -5)
 
 [node name="WeaponHandler" type="Node3D" parent="Eye/Camera"]
+physics_interpolation_mode = 2
 script = ExtResource("2_rxibo")
 sway_left = Vector3(-0.1, 0, 0)
 sway_right = Vector3(0.1, 0, 0)
@@ -195,6 +197,7 @@ size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
 [node name="GunCam" type="Camera3D" parent="Eye/Camera/GunVPContainer/GunVP"]
+physics_interpolation_mode = 2
 top_level = true
 cull_mask = 2
 fov = 90.0
@@ -354,3 +357,6 @@ text = "60 fps"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)
 billboard = 2
 text = "Unnamed Player"
+
+[node name="CameraAnchor" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)

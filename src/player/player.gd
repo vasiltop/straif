@@ -10,6 +10,7 @@ signal jumped
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var run_stats: Panel = $UI/RunStats
+@onready var camera_anchor: Marker3D = $CameraAnchor
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
@@ -69,8 +70,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if not is_me(): return
 
-	gun_camera.global_transform = camera.global_transform
-
 	if Input.is_action_just_pressed("main_menu"):
 		Lobby.switched_map.rpc(-1)
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
@@ -78,6 +77,9 @@ func _process(_delta: float) -> void:
 
 	if Input.is_key_pressed(KEY_ENTER) and run_stats.visible:
 		run_stats.visible = false
+		
+	camera.global_transform = camera_anchor.get_global_transform_interpolated()
+	gun_camera.global_transform = camera.global_transform
 	
 	(get_node("UI/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
 
@@ -161,7 +163,7 @@ func _look(event: InputEventMouseMotion) -> void:
 
 	var sens: float = Settings.value("Controls", "sensitivity") / 1000
 	rotate(Vector3(0, -1, 0), event.relative.x * sens)
-	camera.rotate_x(-event.relative.y * sens)
-	camera.rotation.y = 0
-	camera.rotation.z = 0
-	camera.rotation.x = clamp(camera.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))
+	camera_anchor.rotate_x(-event.relative.y * sens)
+	camera_anchor.rotation.y = 0
+	camera_anchor.rotation.z = 0
+	camera_anchor.rotation.x = clamp(camera_anchor.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))
