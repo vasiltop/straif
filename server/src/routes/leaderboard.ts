@@ -80,7 +80,8 @@ app.get('/:map_name', async (c) => {
 		const runsResult = await db.select({
 			time_ms: runs.time_ms,
 			steam_id: runs.steam_id,
-			username: runs.username
+			username: runs.username,
+			created_at: runs.created_at
 		})
 		.from(runs)
 		.where(eq(runs.map_name, mapName))

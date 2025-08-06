@@ -250,8 +250,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
@@ -275,8 +275,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
@@ -399,7 +399,7 @@ placeholder_text = "Name"
 
 [node name="Refresh" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
 layout_mode = 2
-text = "Refresh"
+text = "Refresh / Search"
 
 [node name="JoinLocal" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
 visible = false
@@ -426,7 +426,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 50
+theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50

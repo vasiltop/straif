@@ -8,7 +8,7 @@ script = ExtResource("2_u1fwk")
 name = "Tutorial"
 tier = 0
 mid = 6
-medal_times = Array[float]([0.0, 0.0, 0.0, 0.0])
+medal_times = Array[float]([6.0, 4.5, 3.0, 2.9])
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [sub_resource type="Resource" id="Resource_j6djh"]
@@ -16,7 +16,7 @@ script = ExtResource("2_u1fwk")
 name = "map_rooftops"
 tier = 0
 mid = 0
-medal_times = Array[float]([0.0, 0.0, 0.0, 0.0])
+medal_times = Array[float]([25.0, 17.0, 15.0, 12.0])
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [sub_resource type="Resource" id="Resource_ttjvt"]
@@ -24,7 +24,7 @@ script = ExtResource("2_u1fwk")
 name = "map_streets"
 tier = 0
 mid = 1
-medal_times = Array[float]([0.0, 0.0, 0.0, 0.0])
+medal_times = Array[float]([25.0, 20.0, 15.0, 13.0])
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [sub_resource type="Resource" id="Resource_dmb7u"]
@@ -32,7 +32,7 @@ script = ExtResource("2_u1fwk")
 name = "map_rooftops2"
 tier = 2
 mid = 2
-medal_times = Array[float]([0.0, 0.0, 0.0, 0.0])
+medal_times = Array[float]([55.0, 40.0, 30.0, 21.0])
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [sub_resource type="Resource" id="Resource_8ktoy"]
@@ -40,7 +40,7 @@ script = ExtResource("2_u1fwk")
 name = "map_subway"
 tier = 1
 mid = 3
-medal_times = Array[float]([0.0, 0.0, 0.0, 0.0])
+medal_times = Array[float]([25.0, 20.0, 16.0, 12.0])
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [sub_resource type="Resource" id="Resource_b6wtd"]
@@ -48,7 +48,7 @@ script = ExtResource("2_u1fwk")
 name = "map_graybox"
 tier = 0
 mid = 4
-medal_times = Array[float]([0.0, 0.0, 0.0, 0.0])
+medal_times = Array[float]([13.0, 11.0, 9.7, 7.0])
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [sub_resource type="Resource" id="Resource_yysmm"]
@@ -56,7 +56,7 @@ script = ExtResource("2_u1fwk")
 name = "map_graybox2"
 tier = 0
 mid = 5
-medal_times = Array[float]([0.0, 0.0, 0.0, 0.0])
+medal_times = Array[float]([20.0, 16.0, 9.7, 13.0])
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [node name="MapManager" type="Node"]
