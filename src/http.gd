@@ -8,7 +8,7 @@ const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
 var api_url := "http://localhost:3000" if OS.has_feature("editor") else "http://209.38.2.30:3000"
-var version := "dev" if OS.has_feature("editor") else "0.01"
+var version := "dev" if OS.has_feature("editor") else "0.02"
 
 func _show_connection_error() -> void:
 	Info.alert("Unable to connect to \nthe game server.")
@@ -61,13 +61,35 @@ func get_runs(map_name: String, page: int) -> Array:
 
 	return json.data as Array
 
+func get_my_run(map_name: String) -> Dictionary:
+	var res := await client.http_get("/leaderboard/" + map_name + "/" + str(Steam.getSteamID())).send()
+	if res == null:
+		_show_connection_error()
+		return {}
+		
+	var json: Dictionary = await res.json()
+	if res.status() != 200:
+		Info.alert(json.error as String)
+		return {}
+		
+	return json.data as Dictionary
+
 func publish_run(recording: PackedByteArray, map_name: String, time_ms: int) -> void:
+	if len(recording) > 356148:
+		# 356148 = 370s
+		Info.alert("Could not submit run, you went past the run size limit.")
+		return
+	
 	var res := await client.http_post("/leaderboard").json({
 			"recording": Marshalls.raw_to_base64(recording),
 			"map_name": map_name,
 			"time_ms": time_ms,
 			"username": Steam.getPersonaName(),
-		}).header("auth-ticket", str(Lobby.auth_ticket_hex)).send()
+		}).header(
+			"auth-ticket", str(Lobby.auth_ticket_hex)
+			).header(
+				"version", version
+				).send()
 
 	if res == null:
 		_show_connection_error()

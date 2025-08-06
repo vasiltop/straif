@@ -33,34 +33,42 @@ func _setup() -> void:
 	var run_position := 1
 	
 	for run: Dictionary in runs:
-		var position_label := Label.new()
-		t_rows.add_child(position_label)
-		position_label.text = str(run_position) + "."
-		position_label.custom_minimum_size.x = 30.0
-		run_position += 1
+		_insert_table_row(run_position, run.username as String, run.time_ms as float, run.created_at as String, run.steam_id as int)
+		
+	var my_run := await Http.get_my_run(Lobby.current_map.name)
+	var pos := my_run.position as int
+	
+	if pos > 10:
+		_insert_table_row(pos, my_run.username as String, my_run.time_ms as float, my_run.created_at as String, my_run.steam_id as int)
 
-		var name_label := ClickableLabel.new()
-		t_rows.add_child(name_label)
-		name_label.text = run.username
-		name_label.size_flags_horizontal = Control.SIZE_EXPAND
-		name_label.mouse_filter = Control.MOUSE_FILTER_PASS
-		
-		if Lobby.admin:
-			name_label.pressed.connect(func() -> void:
-				var replay := await Http.get_replay(Lobby.current_map.name, run.steam_id as int)
-				if replay != "":
-					Lobby.replay_requested.emit(replay)
-				else:
-					Info.alert("Invalid replay request")
-			)
-		
-		var time_label := Label.new()
-		t_rows.add_child(time_label)
-		time_label.text = str(snapped(run.time_ms / 1000, 0.001))
-		time_label.size_flags_horizontal = Control.SIZE_EXPAND
-		
-		var date_label := Label.new()
-		t_rows.add_child(date_label)
-		date_label.text = str(run.created_at).substr(0, len("2024-10-10"))
-		date_label.size_flags_horizontal = Control.SIZE_EXPAND
-		
+func _insert_table_row(run_position: int, player_name: String, time: float, date: String, steam_id: int) -> void:
+	var position_label := Label.new()
+	t_rows.add_child(position_label)
+	position_label.text = str(run_position) + "."
+	position_label.custom_minimum_size.x = 30.0
+	run_position += 1
+
+	var name_label := ClickableLabel.new()
+	t_rows.add_child(name_label)
+	name_label.text = player_name
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND
+	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	
+	if Lobby.admin:
+		name_label.pressed.connect(func() -> void:
+			var replay := await Http.get_replay(Lobby.current_map.name, steam_id)
+			if replay != "":
+				Lobby.replay_requested.emit(replay)
+			else:
+				Info.alert("Invalid replay request")
+		)
+	
+	var time_label := Label.new()
+	t_rows.add_child(time_label)
+	time_label.text = str(snapped(time / 1000, 0.001))
+	time_label.size_flags_horizontal = Control.SIZE_EXPAND
+	
+	var date_label := Label.new()
+	t_rows.add_child(date_label)
+	date_label.text = str(date).substr(0, len("2024-10-10"))
+	date_label.size_flags_horizontal = Control.SIZE_EXPAND

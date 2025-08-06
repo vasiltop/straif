@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import db from '../db/index.ts'
 import { z } from 'zod';
 import { runs } from '../db/schema.ts';
-import { asc, eq, sql, and } from 'drizzle-orm';
+import { asc, eq, sql, and, lt } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator'
 import { admin_auth, version_compare, steam_auth } from '../middleware.ts';
 
@@ -30,10 +30,10 @@ app.get(
 			const run_result = await db.select({
 				recording: runs.recording,
 			}).from(runs).where(
-			and(
-				eq(runs.steam_id, steam_id),
-				eq(runs.map_name, map_name)
-			)
+				and(
+					eq(runs.steam_id, steam_id),
+					eq(runs.map_name, map_name)
+				)
 			);
 			return c.json({ data: run_result[0] });
 		} catch (e) {
@@ -57,11 +57,11 @@ app.get(
 				time_ms: runs.time_ms,
 				map_name: runs.map_name,
 			}).from(runs).where(
-			eq(runs.steam_id, steam_id)
+				eq(runs.steam_id, steam_id)
 			);
 
 			return c.json({ data: player_runs });
-		} catch(e) {
+		} catch (e) {
 			return c.json({ error: "Internal server error" }, 500);
 		}
 	}
@@ -83,11 +83,11 @@ app.get('/:map_name', async (c) => {
 			username: runs.username,
 			created_at: runs.created_at
 		})
-		.from(runs)
-		.where(eq(runs.map_name, mapName))
-		.orderBy(asc(runs.time_ms))
-		.limit(10)
-		.offset(page * 10)
+			.from(runs)
+			.where(eq(runs.map_name, mapName))
+			.orderBy(asc(runs.time_ms))
+			.limit(10)
+			.offset(page * 10)
 
 		return c.json({ data: runsResult });
 	} catch (e) {
@@ -95,38 +95,84 @@ app.get('/:map_name', async (c) => {
 	}
 });
 
-app.post('/', 
-				 zValidator(
-					 'json',
-					 RunInput,
-				 ),
-				 steam_auth,
-				 async (c) => {
-					 const body = c.req.valid('json');
+app.get('/:map_name/:steam_id', async (c) => {
+	const mapName = c.req.param('map_name');
+	const steamId = c.req.param('steam_id');
 
-					 try {
-						 await db.insert(runs).values({
-							 steam_id: c.get('steam_id'),
-							 map_name: body.map_name,
-							 recording: body.recording,
-							 time_ms: body.time_ms,
-							 username: body.username,
-						 }).onConflictDoUpdate({
-							 target: [runs.steam_id, runs.map_name],
-							 set: {
-								 time_ms: body.time_ms,
-								 recording: body.recording,
-								 username: body.username,
-								 created_at: new Date(),
-							 },
-							 setWhere: sql`${runs.time_ms} > ${body.time_ms}`
-						 });
+	try {
+		const runResult = await db.select({
+			time_ms: runs.time_ms,
+			steam_id: runs.steam_id,
+			username: runs.username,
+			created_at: runs.created_at
+		})
+			.from(runs)
+			.where(and(eq(runs.map_name, mapName), eq(runs.steam_id, steamId)));
 
-						 return c.json({ success: true });
-					 } catch (e) {
-						 return c.json({ error: "Internal server error" }, 500);
-					 }
-				 }
-				);
+		if (runResult.length === 0) {
+			return c.json({ error: "Could not find a run with the provided information." });
+		}
 
-				export default app;
+		const userTime = runResult[0].time_ms;
+
+		const betterRuns = await db.select({
+			count: sql<number>`count(*)`
+		})
+			.from(runs)
+			.where(and(eq(runs.map_name, mapName), lt(runs.time_ms, userTime)));
+
+		const position = parseInt(betterRuns[0].count) + 1;
+
+		return c.json({
+			data: {
+				...runResult[0],
+				position,
+			}
+		})
+
+	} catch (e) {
+		return c.json({ error: "Internal server error " }, 500);
+	}
+});
+
+app.post('/',
+	zValidator(
+		'json',
+		RunInput,
+	),
+	steam_auth,
+	version_compare,
+	async (c) => {
+		const body = c.req.valid('json');
+	
+		if (body.recording.length >= 474854) {
+			// 474864 = 370s
+			return c.json({ error: "Run was too long." }, 400);
+		}
+
+		try {
+			await db.insert(runs).values({
+				steam_id: c.get('steam_id'),
+				map_name: body.map_name,
+				recording: body.recording,
+				time_ms: body.time_ms,
+				username: body.username,
+			}).onConflictDoUpdate({
+				target: [runs.steam_id, runs.map_name],
+				set: {
+					time_ms: body.time_ms,
+					recording: body.recording,
+					username: body.username,
+					created_at: new Date(),
+				},
+				setWhere: sql`${runs.time_ms} > ${body.time_ms}`
+			});
+
+			return c.json({ success: true });
+		} catch (e) {
+			return c.json({ error: "Internal server error" }, 500);
+		}
+	}
+);
+
+export default app;
