@@ -87,6 +87,13 @@ func _instantiate_maps() -> void:
 				var time: float = run.time_ms / 1000
 				Lobby.map_name_to_time[run.map_name] = time
 				map_button.set_personal_best(time)
+				map_button.initialized_personal_best = true
+				
+	for tier: int in tier_to_container:
+		var container: HFlowContainer = tier_to_container[tier]
+		for map_button: MapButton in container.get_children():
+			if not map_button.initialized_personal_best:
+				map_button.set_personal_best(-INF)
 
 	for tier: int in tier_to_container:
 		var container: Control = tier_to_container[tier]

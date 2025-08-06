@@ -7,65 +7,68 @@
 [ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="4_jcj4f"]
 
 [sub_resource type="Theme" id="Theme_n8kih"]
-default_font_size = 40
+default_font_size = 15
 
 [node name="MapButton" type="Panel"]
+custom_minimum_size = Vector2(300, 200)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = SubResource("Theme_n8kih")
 script = ExtResource("1_ubswg")
 
-[node name="V" type="VBoxContainer" parent="."]
+[node name="C" type="CenterContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -241.0
-offset_top = -155.0
-offset_right = 241.0
-offset_bottom = 155.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MapName" type="Label" parent="V"]
+[node name="V" type="VBoxContainer" parent="C"]
+layout_mode = 2
+
+[node name="MapName" type="Label" parent="C/V"]
 layout_mode = 2
 text = "Map Name"
 horizontal_alignment = 1
 
-[node name="Timer" type="Label" parent="V"]
+[node name="Timer" type="Label" parent="C/V"]
 layout_mode = 2
 text = "Personal Best: Loading...."
 horizontal_alignment = 1
 
-[node name="Medals" type="GridContainer" parent="V"]
-custom_minimum_size = Vector2(0, 125)
+[node name="Medals" type="GridContainer" parent="C/V"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 columns = 4
 
-[node name="Bronze" type="TextureRect" parent="V/Medals"]
+[node name="Bronze" type="TextureRect" parent="C/V/Medals"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("1_v5ql1")
 
-[node name="Silver" type="TextureRect" parent="V/Medals"]
+[node name="Silver" type="TextureRect" parent="C/V/Medals"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("2_jcj4f")
 
-[node name="Gold" type="TextureRect" parent="V/Medals"]
+[node name="Gold" type="TextureRect" parent="C/V/Medals"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("3_ubswg")
 
-[node name="Author" type="TextureRect" parent="V/Medals"]
+[node name="Author" type="TextureRect" parent="C/V/Medals"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("4_jcj4f")
 
-[node name="Play" type="Button" parent="V"]
+[node name="Play" type="Button" parent="C/V"]
 layout_mode = 2
 text = "Play"
