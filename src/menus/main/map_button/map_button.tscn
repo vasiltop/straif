@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=3 uid="uid://c0qa4nk774v55"]
+
+[ext_resource type="Script" uid="uid://bsb0urrean8eg" path="res://src/menus/main/map_button/map_button.gd" id="1_ubswg"]
+[ext_resource type="Texture2D" uid="uid://ddwv6d1j2fuuq" path="res://src/textures/bronze_medal.png" id="1_v5ql1"]
+[ext_resource type="Texture2D" uid="uid://bbyo6tb1eqrns" path="res://src/textures/silver_medal.png" id="2_jcj4f"]
+[ext_resource type="Texture2D" uid="uid://bo4kloegfbey2" path="res://src/textures/gold_medal.png" id="3_ubswg"]
+[ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="4_jcj4f"]
+
+[sub_resource type="Theme" id="Theme_n8kih"]
+default_font_size = 40
+
+[node name="MapButton" type="Panel"]
+theme = SubResource("Theme_n8kih")
+script = ExtResource("1_ubswg")
+
+[node name="V" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -241.0
+offset_top = -155.0
+offset_right = 241.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MapName" type="Label" parent="V"]
+layout_mode = 2
+text = "Map Name"
+horizontal_alignment = 1
+
+[node name="Timer" type="Label" parent="V"]
+layout_mode = 2
+text = "Personal Best: Loading...."
+horizontal_alignment = 1
+
+[node name="Medals" type="GridContainer" parent="V"]
+custom_minimum_size = Vector2(0, 125)
+layout_mode = 2
+columns = 4
+
+[node name="Bronze" type="TextureRect" parent="V/Medals"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("1_v5ql1")
+
+[node name="Silver" type="TextureRect" parent="V/Medals"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_jcj4f")
+
+[node name="Gold" type="TextureRect" parent="V/Medals"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("3_ubswg")
+
+[node name="Author" type="TextureRect" parent="V/Medals"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("4_jcj4f")
+
+[node name="Play" type="Button" parent="V"]
+layout_mode = 2
+text = "Play"

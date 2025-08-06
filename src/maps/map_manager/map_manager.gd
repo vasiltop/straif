@@ -8,3 +8,10 @@ func get_map_with_id(mid: int) -> MapData:
 			return map
 
 	return null
+
+func get_map_with_name(mname: String) -> MapData:
+	for map in maps:
+		if map.name == mname:
+			return map
+			
+	return null

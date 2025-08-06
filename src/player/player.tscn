@@ -207,7 +207,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 shape = SubResource("CapsuleShape3D_5f2sf")
 
 [node name="UI" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="Crosshair" type="Control" parent="UI"]
 layout_mode = 3
@@ -235,7 +234,6 @@ offset_right = 8.0
 offset_bottom = 2.0
 
 [node name="Leaderboard" type="Panel" parent="UI"]
-visible = false
 z_index = 5
 custom_minimum_size = Vector2(600, 400)
 anchors_preset = 8

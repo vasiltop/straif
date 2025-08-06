@@ -21,6 +21,8 @@ class_name MainMenu extends Control
 @onready var version_error: Control = $MarginContainer/VersionError
 @onready var discord_btn: TextureButton = $MarginContainer/Content/Header/Right/Discord
 
+const MapButtonScene = preload("res://src/menus/main/map_button/map_button.tscn")
+
 func _ready() -> void:
 	_instantiate_maps()
 	Steam.avatar_loaded.connect(_on_loaded_avatar)
@@ -70,23 +72,12 @@ func _instantiate_maps() -> void:
 	var mm: Maps = MapManager
 
 	for map in mm.maps:
-		Lobby.map_name_to_time[map.name] = 0
+		Lobby.map_name_to_time[map.name] = INF
 
-		var btn := MapButton.new()
+		var btn: MapButton = MapButtonScene.instantiate()
 		btn.map_name = map.name
-		btn.update_label(0.0)
-		btn.custom_minimum_size = Vector2(160, 160)
-
 		(tier_to_container[map.tier] as Control).add_child(btn)
 
-		btn.pressed.connect(
-			func() -> void:
-				var base_path := "res://src/maps/"
-				var path := base_path + map.name.to_lower().replace(" ", "_") + ".tscn"
-				get_tree().change_scene_to_file(path)
-				Lobby.current_map = map
-		)
-	
 	var runs := await Http.get_my_runs()
 	for run: Dictionary in runs:
 		for tier: int in tier_to_container:
@@ -94,7 +85,8 @@ func _instantiate_maps() -> void:
 			for map_button: MapButton in container.get_children():
 				if map_button.map_name != run.map_name: continue
 				var time: float = run.time_ms / 1000
-				map_button.update_label(time)
+				Lobby.map_name_to_time[run.map_name] = time
+				map_button.set_personal_best(time)
 
 	for tier: int in tier_to_container:
 		var container: Control = tier_to_container[tier]

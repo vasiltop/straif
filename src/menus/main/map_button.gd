@@ -1,4 +1,4 @@
-class_name MapButton extends Button
+class_name MapButtonOld extends Button
 
 var map_name: String
 
