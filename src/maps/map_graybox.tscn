@@ -1000,6 +1000,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 4, -20)
 [node name="floor74" parent="Map" instance=ExtResource("3_r6hkm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 4, -22)
 
+[node name="Zone" parent="Map" instance=ExtResource("9_2637t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
+weapon = ExtResource("10_17q7x")
+
 [node name="floor66" parent="Map" instance=ExtResource("3_r6hkm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1, -18)
 
@@ -1094,10 +1098,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.0598923, 15)
 transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.522499, -0.40029, 0.752837, 0, 0, 0)
 light_energy = 2.0
 shadow_enabled = true
-
-[node name="Zone" parent="." instance=ExtResource("9_2637t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
-weapon = ExtResource("10_17q7x")
 
 [editable path="EndZone"]
 [editable path="StartZone"]

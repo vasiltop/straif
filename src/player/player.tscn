@@ -576,38 +576,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="RunStats" type="Panel" parent="UI"]
-visible = false
-custom_minimum_size = Vector2(400, 200)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -100.0
-offset_right = 200.0
-offset_bottom = 100.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="UI/RunStats"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -11.5
-offset_right = 50.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Run completed in 10.000s, new PB!
-Press Enter to close."
-horizontal_alignment = 1
-
 [node name="GameState" type="VBoxContainer" parent="UI"]
 anchors_preset = 7
 anchor_left = 0.5

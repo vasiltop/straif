@@ -82,6 +82,14 @@ environment = SubResource("Environment_eiimb")
 
 [node name="Map" type="Node3D" parent="."]
 
+[node name="WeaponPickup" parent="Map" instance=ExtResource("7_l3vx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 1, 0)
+weapon = ExtResource("8_6beqi")
+
+[node name="WeaponPickup2" parent="Map" instance=ExtResource("7_l3vx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.0056, 1, -26.3218)
+weapon = ExtResource("10_384no")
+
 [node name="Ground" type="StaticBody3D" parent="Map"]
 transform = Transform3D(200, 0, 0, 0, 1, 0, 0, 0, 200, 0, 0.5, 0)
 
@@ -439,14 +447,6 @@ script = ExtResource("5_6beqi")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="KillZones/Killzone"]
 shape = SubResource("BoxShape3D_n0bts")
 debug_fill = false
-
-[node name="WeaponPickup" parent="." instance=ExtResource("7_l3vx2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 1, 0)
-weapon = ExtResource("8_6beqi")
-
-[node name="WeaponPickup2" parent="." instance=ExtResource("7_l3vx2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.0056, 1, -26.3218)
-weapon = ExtResource("10_384no")
 
 [node name="Vent" parent="." instance=ExtResource("11_dmnpj")]
 transform = Transform3D(3.92996, 0, 0, 0, 1.7851, 0, 0, 0, 1, 49.9759, 9.90616, -29)

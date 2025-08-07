@@ -742,6 +742,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.7665, -2.41533, 46.0424)
 [node name="tracks172" parent="Map" instance=ExtResource("4_an43o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.576, -2.41533, 46.0424)
 
+[node name="WeaponPickup" parent="Map" instance=ExtResource("17_5kru1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0772, 0.517587, 0.566616)
+weapon = ExtResource("18_pcvff")
+
 [node name="tracks173" parent="Map" instance=ExtResource("4_an43o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.3371, -2.41533, 46.0424)
 
@@ -2061,10 +2065,6 @@ transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.
 visible = false
 light_energy = 2.0
 shadow_enabled = true
-
-[node name="WeaponPickup" parent="." instance=ExtResource("17_5kru1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0772, 0.517587, 0.566615)
-weapon = ExtResource("18_pcvff")
 
 [node name="Killzones" type="Node" parent="."]
 

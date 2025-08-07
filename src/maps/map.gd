@@ -154,7 +154,6 @@ func restart() -> void:
 	
 	player.velocity = Vector3.ZERO
 	player.weapon_handler.set_weapon(null)
-	player.run_stats.visible = false
 
 	can_win = false
 

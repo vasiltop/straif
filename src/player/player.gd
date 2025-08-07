@@ -9,7 +9,6 @@ signal jumped
 @onready var ui: CanvasLayer = $UI
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
-@onready var run_stats: Panel = $UI/RunStats
 @onready var camera_anchor: Marker3D = $CameraAnchor
 @onready var leaderboard: Leaderboard = $UI/Leaderboard
 
@@ -34,9 +33,9 @@ func set_name_label(value: String) -> void:
 
 func show_end_run_stats(time: float) -> void:
 	var is_pb: bool = Lobby.map_name_to_time[Lobby.current_map.name] > time
-	var run_stats_label: Label = run_stats.get_node("Label")
-	run_stats_label.text = "Run completed in %ss%s \nPress Enter to close." % [str(snapped(time, 0.01)), ", new PB!" if is_pb else ""]
-	run_stats.visible = true
+	var text := "Run completed in %ss%s" % [str(snapped(time, 0.01)), ", new PB!\nPress TAB to view your ranking." if is_pb else ""]
+	
+	Info.alert(text)
 
 	if is_pb:
 		Lobby.map_name_to_time[Lobby.current_map.name] = time
@@ -75,9 +74,6 @@ func _process(_delta: float) -> void:
 		Lobby.switched_map.rpc(-1)
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-
-	if Input.is_key_pressed(KEY_ENTER) and run_stats.visible:
-		run_stats.visible = false
 	
 	(get_node("UI/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
 
