@@ -153,18 +153,11 @@ func _try_shoot() -> void:
 	if current_weapon.is_melee: 
 		return
 
-	# only for guns
-
-	var collider := raycast.get_collider()
-	
-	# temp recoil
-	player.camera.shake(0.1, 0.005)
-	player.camera.rotate_x(deg_to_rad(current_weapon.recoil))
-	player.camera.rotation.x = clamp(player.camera.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))
-
 	var rad := deg_to_rad(current_weapon.recoil / 2)
-	player.camera.rotate_y(randf_range(-rad, rad))
-
+	player.camera._mouse_input.y += deg_to_rad(current_weapon.recoil)
+	player.camera._mouse_input.x = randf_range(-rad, rad)
+	
+	var collider := raycast.get_collider()
 	if not collider: return
 
 	var hit_pos := raycast.get_collision_point()

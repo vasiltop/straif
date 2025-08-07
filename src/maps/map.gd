@@ -148,8 +148,10 @@ func spawn_target(pos: Vector3) -> void:
 
 func restart() -> void:
 	player.global_position = start_pos
-	player.global_rotation = start_rotation
-	player.camera.global_rotation = start_rotation
+	
+	player.camera._input_rotation.y = -start_rotation.y
+	player.camera._input_rotation.x = 0
+	
 	player.velocity = Vector3.ZERO
 	player.weapon_handler.set_weapon(null)
 	player.run_stats.visible = false

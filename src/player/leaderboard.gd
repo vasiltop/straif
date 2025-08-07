@@ -34,6 +34,7 @@ func _setup() -> void:
 	
 	for run: Dictionary in runs:
 		_insert_table_row(run_position, run.username as String, run.time_ms as float, run.created_at as String, run.steam_id as int)
+		run_position += 1
 		
 	var my_run := await Http.get_my_run(Lobby.current_map.name)
 	var pos := my_run.position as int

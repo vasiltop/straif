@@ -77,9 +77,6 @@ func _process(_delta: float) -> void:
 
 	if Input.is_key_pressed(KEY_ENTER) and run_stats.visible:
 		run_stats.visible = false
-		
-	camera.global_transform = camera_anchor.get_global_transform_interpolated()
-	gun_camera.global_transform = camera.global_transform
 	
 	(get_node("UI/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
 
@@ -151,19 +148,3 @@ func _check_for_jump(vel_vertical: float) -> float:
 		return JUMP_FORCE
 
 	return vel_vertical
-
-func _input(event: InputEvent) -> void:
-	if not is_me(): return
-
-	if event is InputEventMouseMotion:
-		_look(event as InputEventMouseMotion)
-	
-func _look(event: InputEventMouseMotion) -> void:
-	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED: return
-
-	var sens: float = Settings.value("Controls", "sensitivity") / 1000
-	rotate(Vector3(0, -1, 0), event.relative.x * sens)
-	camera_anchor.rotate_x(-event.relative.y * sens)
-	camera_anchor.rotation.y = 0
-	camera_anchor.rotation.z = 0
-	camera_anchor.rotation.x = clamp(camera_anchor.global_rotation.x, deg_to_rad(-90), deg_to_rad(90))

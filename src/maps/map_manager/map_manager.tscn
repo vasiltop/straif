@@ -56,7 +56,7 @@ script = ExtResource("2_u1fwk")
 name = "map_graybox2"
 tier = 0
 mid = 5
-medal_times = Array[float]([20.0, 16.0, 9.7, 13.0])
+medal_times = Array[float]([20.0, 16.0, 14.5, 13.0])
 metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [node name="MapManager" type="Node"]
