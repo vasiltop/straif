@@ -11,6 +11,7 @@ signal jumped
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var run_stats: Panel = $UI/RunStats
 @onready var camera_anchor: Marker3D = $CameraAnchor
+@onready var leaderboard: Leaderboard = $UI/Leaderboard
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
