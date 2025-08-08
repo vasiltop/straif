@@ -1,7 +1,7 @@
 <script setup>
 	import { onMounted, ref } from 'vue';
 
-	const BASE_URL = "http://localhost:3000";
+	const BASE_URL = "http://209.38.2.30:3000";
 	const PAGE_SIZE = 10;
 	const runs = ref([]);
 	const total_count = ref(0);
@@ -13,6 +13,7 @@
 		let json = await res.json();
 		runs.value = json.data;
 		total_count.value = Math.ceil(json.count / PAGE_SIZE);
+		modify_page(0);
 	}
 
 	function modify_page(amount) {
