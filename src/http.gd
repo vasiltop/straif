@@ -2,13 +2,12 @@ extends Node
 
 signal invalid_version
 
-const GAME_VERSION := 1
 const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
 var api_url := "http://localhost:3000" if OS.has_feature("editor") else "http://209.38.2.30:3000"
-var version := "dev" if OS.has_feature("editor") else "0.02"
+var version := "dev" if OS.has_feature("editor") else "0.03"
 
 func _show_connection_error() -> void:
 	Info.alert("Unable to connect to \nthe game server.")

@@ -81,7 +81,7 @@ app.get('/:map_name', async (c) => {
 			time_ms: runs.time_ms,
 			steam_id: runs.steam_id,
 			username: runs.username,
-			created_at: runs.created_at
+			created_at: runs.created_at,
 		})
 			.from(runs)
 			.where(eq(runs.map_name, mapName))
@@ -89,8 +89,17 @@ app.get('/:map_name', async (c) => {
 			.limit(10)
 			.offset(page * 10)
 
-		return c.json({ data: runsResult });
+		const countResult = await db.select({
+			count: sql`COUNT(*)`,
+		}).from(runs).where(eq(runs.map_name, mapName));
+
+		return c.json(
+			{ 
+				data: runsResult,
+					count: parseInt(countResult[0].count),
+			});
 	} catch (e) {
+		console.log(e);
 		return c.json({ error: "Internal server error" }, 500);
 	}
 });

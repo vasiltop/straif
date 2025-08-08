@@ -39,6 +39,7 @@ func _ready() -> void:
 func reset() -> void:
 	weapon_scene.visible = true
 	active = true
+	is_touching_player = false
 
 func _process(delta: float) -> void:
 	if not active: return
