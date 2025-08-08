@@ -1,7 +1,7 @@
 <script setup>
 	import { onMounted, ref } from 'vue';
 
-	const BASE_URL = "http://209.38.2.30:3000";
+	const BASE_URL = "https://straif.vasiltopalovic.dev";
 	const PAGE_SIZE = 10;
 	const runs = ref([]);
 	const total_count = ref(0);
