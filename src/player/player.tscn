@@ -586,6 +586,23 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
+[node name="H" type="HBoxContainer" parent="UI/Leaderboard/M/V"]
+layout_mode = 2
+
+[node name="<" type="Button" parent="UI/Leaderboard/M/V/H"]
+layout_mode = 2
+focus_mode = 0
+text = "<"
+
+[node name="Page" type="Label" parent="UI/Leaderboard/M/V/H"]
+layout_mode = 2
+text = "Page 0 of 0"
+
+[node name=">" type="Button" parent="UI/Leaderboard/M/V/H"]
+layout_mode = 2
+focus_mode = 0
+text = ">"
+
 [node name="TopLeft" type="Panel" parent="UI"]
 custom_minimum_size = Vector2(120, 30)
 anchors_preset = 3

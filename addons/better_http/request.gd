@@ -52,14 +52,11 @@ func send_with_http(http: HTTPClient) -> BetterHTTPResponse:
 	return await self._internal_send_with_http_no_connect(http)
 
 func _internal_send_with_http_no_connect(http: HTTPClient) -> BetterHTTPResponse:
-	var err = http.request_raw(self._method, self._url.path, self._headers, self._body)
-	#assert(err == OK)
+	var err = http.request_raw(self._method, self._url.stringify_path(), self._headers, self._body)
 
 	while http.get_status() == HTTPClient.STATUS_REQUESTING:
 		http.poll()
 		await self._scene.process_frame
-
-	#assert(http.get_status() == HTTPClient.STATUS_BODY or http.get_status() == HTTPClient.STATUS_CONNECTED)
 
 	if !http.has_response():
 		return null

@@ -47,18 +47,19 @@ func _gen_hash(path: String) -> String:
 	var res := ctx.finish()
 	return res.hex_encode()
 
-func get_runs(map_name: String, page: int) -> Array:
-	var res := await client.http_get("/leaderboard/" + map_name + "?page=" + str(page)).send()
+func get_runs(map_name: String, page: int) -> Dictionary:
+	var res := await client.http_get("/leaderboard/" + map_name + "?page=" + str(page - 1)).send()
+
 	if res == null: 
 		_show_connection_error()
-		return []
+		return {}
 	
 	var json: Dictionary = await res.json()
 	if res.status() != 200:
 		Info.alert(json.error as String)
-		return []
+		return {}
 
-	return json.data as Array
+	return json as Dictionary
 
 func get_my_run(map_name: String) -> Dictionary:
 	var res := await client.http_get("/leaderboard/" + map_name + "/" + str(Steam.getSteamID())).send()

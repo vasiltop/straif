@@ -100,7 +100,7 @@ func join(path: String) -> BetterHTTPURL:
 
 func join_mut(path: String) -> BetterHTTPURL:
 	var other = BetterHTTPURL.parse_path(path)
-
+	
 	# merge path
 	match [self.path.ends_with("/"), other.path.begins_with("/")]:
 		[true, true]:
@@ -119,8 +119,12 @@ func join_mut(path: String) -> BetterHTTPURL:
 	# overwrite hash if given
 	if not other.hash.is_empty():
 		self.hash = other.hash
-
+	
 	return self
+
+func stringify_path() -> String:
+	var url := self.path + "?" + self.query
+	return url
 
 func stringify() -> String:
 	var url: String = "http" + ("s" if self.use_ssl else "") + "://" + self.http_host() + self.path
@@ -144,4 +148,3 @@ func http_host() -> String:
 # returns true if the old and new URLs represent different addresses
 func addr_eq(other: BetterHTTPURL) -> bool:
 	return self.host == other.host and self.port == other.port and self.use_ssl == other.use_ssl
-

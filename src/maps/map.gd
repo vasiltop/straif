@@ -10,9 +10,12 @@ signal target_killed
 @onready var start_rotation: Vector3 = player.global_rotation
 @onready var player_container: Node = $Players
 @onready var target_spawns_container: Node = $TargetSpawns
+@onready var sound_player := AudioStreamPlayer.new()
 
 const PlayerScene := preload("res://src/player/player.tscn")
 const TargetScene := preload("res://src/target/target.tscn")
+const StartRunSound = preload("res://src/sounds/run.wav")
+const WinRunSound = preload("res://src/sounds/win.wav")
 
 var timer: float = 0.0
 var completed: bool = false
@@ -23,6 +26,7 @@ var can_win: bool = false
 func _ready() -> void:
 	restart()
 	add_child(recorder)
+	add_child(sound_player)
 	start_zone.body_exited.connect(_on_start_zone_exited)
 	end_zone.body_entered.connect(func(_body: Node3D) -> void: can_win = true)
 	player.jumped.connect(_on_player_jump)
@@ -110,6 +114,8 @@ func _on_player_jump() -> void:
 func _on_start_zone_exited(body: Node3D) -> void:
 	if body is Player and not completed:
 		running = true
+		sound_player.stream = StartRunSound
+		sound_player.play()
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("restart"):
@@ -137,6 +143,8 @@ func _is_player_in_zone(zone: Area3D) -> bool:
 func _win() -> void:
 	completed = true
 	running = false
+	sound_player.stream = WinRunSound
+	sound_player.play()
 
 	var bytes := recorder.to_bytes()
 	Http.publish_run(bytes, Lobby.current_map.name, int(timer * 1000))

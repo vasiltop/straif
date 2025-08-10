@@ -86,7 +86,6 @@ func _instantiate_maps() -> void:
 			for map_button: MapButton in container.get_children():
 				if map_button.map_name != run.map_name: continue
 				var time: float = run.time_ms / 1000
-				print(run)
 				Lobby.map_name_to_time[run.map_name] = time
 				map_button.set_personal_best(time, int(run.position as float), int(run.total as float))
 				map_button.initialized_personal_best = true

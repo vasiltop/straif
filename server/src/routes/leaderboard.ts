@@ -85,7 +85,11 @@ app.get(
 
 app.get('/:map_name', async (c) => {
 	const mapName = c.req.param('map_name');
-	const page = parseInt(c.req.query('page')!);
+	console.log(mapName);
+	console.log(c.req.query('page'));
+	console.log(c.req.url);
+	const page = parseInt(c.req.query('page'));
+	console.log(page);
 
 	try {
 		const runsResult = await db.select({
