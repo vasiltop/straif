@@ -60,7 +60,18 @@ app.get(
 				eq(runs.steam_id, steam_id)
 			);
 
-			return c.json({ data: player_runs });
+			const full_run_info = await Promise.all(player_runs.map(async run => ({
+				...run,
+				position: await get_player_position(run.time_ms, run.map_name),
+				total: await get_run_count(run.map_name)
+			})));
+
+			console.log(full_run_info);
+
+			return c.json({ 
+				data: full_run_info,
+			});
+
 		} catch (e) {
 			return c.json({ error: "Internal server error" }, 500);
 		}
@@ -89,24 +100,26 @@ app.get('/:map_name', async (c) => {
 			.limit(10)
 			.offset(page * 10)
 
-		const countResult = await db.select({
-			count: sql`COUNT(*)`,
-		}).from(runs).where(eq(runs.map_name, mapName));
-
-		return c.json(
-			{ 
+			return c.json({ 
 				data: runsResult,
-					count: parseInt(countResult[0].count),
+				count: await get_run_count(mapName),
 			});
 	} catch (e) {
-		console.log(e);
 		return c.json({ error: "Internal server error" }, 500);
 	}
 });
 
+async function get_run_count(map_name: string): Promise<number> {
+	const [countResult] = await db.select({
+			count: sql`COUNT(*)`,
+		}).from(runs).where(eq(runs.map_name, map_name));
+	
+	return parseInt(countResult.count as string);
+}
+
 app.get('/:map_name/:steam_id', async (c) => {
-	const mapName = c.req.param('map_name');
-	const steamId = c.req.param('steam_id');
+	const map_name = c.req.param('map_name');
+	const steam_id = c.req.param('steam_id');
 
 	try {
 		const runResult = await db.select({
@@ -116,26 +129,18 @@ app.get('/:map_name/:steam_id', async (c) => {
 			created_at: runs.created_at
 		})
 			.from(runs)
-			.where(and(eq(runs.map_name, mapName), eq(runs.steam_id, steamId)));
+			.where(and(eq(runs.map_name, map_name), eq(runs.steam_id, steam_id)));
 
 		if (runResult.length === 0) {
 			return c.json({ error: "Could not find a run with the provided information." });
 		}
 
-		const userTime = runResult[0].time_ms;
-
-		const betterRuns = await db.select({
-			count: sql<number>`count(*)`
-		})
-			.from(runs)
-			.where(and(eq(runs.map_name, mapName), lt(runs.time_ms, userTime)));
-
-		const position = parseInt(betterRuns[0].count) + 1;
+		const time = runResult[0].time_ms;
 
 		return c.json({
 			data: {
 				...runResult[0],
-				position,
+				position: await get_player_position(time, map_name),
 			}
 		})
 
@@ -143,6 +148,11 @@ app.get('/:map_name/:steam_id', async (c) => {
 		return c.json({ error: "Internal server error " }, 500);
 	}
 });
+
+async function get_player_position(time: number, map: string): Promise<number> {
+	const [better_runs] = await db.select({ count: sql`count(*)`}).from(runs).where(and(eq(runs.map_name, map), lt(runs.time_ms, time)));
+	return parseInt(better_runs.count as string) + 1;
+}
 
 app.post('/',
 	zValidator(

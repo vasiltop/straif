@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bbyo6tb1eqrns" path="res://src/textures/silver_medal.png" id="6_x42xx"]
 [ext_resource type="Texture2D" uid="uid://bo4kloegfbey2" path="res://src/textures/gold_medal.png" id="7_l271a"]
 [ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="8_8ydov"]
+[ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="9_8ydov"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_244u8"]
 size = Vector3(0.5, 0.5, 0.5)
@@ -77,8 +78,6 @@ height = 2.1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_244u8"]
 bg_color = Color(0.0923971, 0.0923971, 0.0923971, 0.898039)
-
-[sub_resource type="Theme" id="Theme_5f2sf"]
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -276,28 +275,34 @@ text = "Current Map: Unknown"
 
 [node name="MedalInfo" type="GridContainer" parent="UI/Leaderboard/M/V"]
 layout_mode = 2
-columns = 4
+columns = 5
 
 [node name="Bronze" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 125)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("5_5f2sf")
 
 [node name="Silver" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 125)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("6_x42xx")
 
 [node name="Gold" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 125)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("7_l271a")
 
+[node name="Plat" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 125)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("9_8ydov")
+
 [node name="Author" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 125)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("8_8ydov")
@@ -313,6 +318,11 @@ text = "0.0s"
 horizontal_alignment = 1
 
 [node name="GoldTime" type="Label" parent="UI/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="PlatTime" type="Label" parent="UI/Leaderboard/M/V/MedalInfo"]
 layout_mode = 2
 text = "0.0s"
 horizontal_alignment = 1
@@ -576,33 +586,62 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="GameState" type="VBoxContainer" parent="UI"]
-anchors_preset = 7
-anchor_left = 0.5
+[node name="TopLeft" type="Panel" parent="UI"]
+custom_minimum_size = Vector2(120, 30)
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -34.5
-offset_top = -50.0
-offset_right = 34.5
-grow_horizontal = 2
+offset_left = -120.0
+offset_top = -30.0
+grow_horizontal = 0
 grow_vertical = 0
-theme = SubResource("Theme_5f2sf")
+theme_override_styles/panel = SubResource("StyleBoxFlat_244u8")
 
-[node name="EnemiesLeft" type="Label" parent="UI/GameState"]
-layout_mode = 2
-text = "0/0"
-horizontal_alignment = 1
-
-[node name="Timer" type="Label" parent="UI/GameState"]
-layout_mode = 2
-text = "0.00"
-horizontal_alignment = 1
-
-[node name="Fps" type="Label" parent="UI"]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="Fps" type="Label" parent="UI/TopLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "60 fps"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomLeft" type="Panel" parent="UI"]
+custom_minimum_size = Vector2(120, 80)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_244u8")
+
+[node name="V" type="VBoxContainer" parent="UI/BottomLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EnemiesLeft" type="Label" parent="UI/BottomLeft/V"]
+layout_mode = 2
+text = "Targets: 0/0"
+horizontal_alignment = 1
+
+[node name="Timer" type="Label" parent="UI/BottomLeft/V"]
+layout_mode = 2
+text = "Time: 0.00"
+horizontal_alignment = 1
+
+[node name="Speed" type="Label" parent="UI/BottomLeft/V"]
+layout_mode = 2
+text = "59.98 u/s"
+horizontal_alignment = 1
 
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)

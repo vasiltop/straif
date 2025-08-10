@@ -2,10 +2,14 @@ class_name Leaderboard extends Panel
 
 @onready var t_rows: GridContainer = $M/V/TRows
 @onready var map_name_label: Label = $M/V/MapName
-@onready var bronze_time_label: Label = $M/V/MedalInfo/BronzeTime
-@onready var silver_time_label: Label = $M/V/MedalInfo/SilverTime
-@onready var gold_time_label: Label = $M/V/MedalInfo/GoldTime
-@onready var author_time_label: Label = $M/V/MedalInfo/AuthorTime
+
+@onready var medal_time_labels: Array[Label] = [
+	$M/V/MedalInfo/BronzeTime,
+	$M/V/MedalInfo/SilverTime,
+	$M/V/MedalInfo/GoldTime,
+	$M/V/MedalInfo/PlatTime,
+	$M/V/MedalInfo/AuthorTime
+]
 
 func _ready() -> void:
 	visible = false
@@ -21,10 +25,9 @@ func _process(_delta: float) -> void:
 
 func _setup() -> void:
 	map_name_label.text = "Map: " + Lobby.current_map.name
-	bronze_time_label.text = str(Lobby.current_map.medal_times[0]) + "s"
-	silver_time_label.text = str(Lobby.current_map.medal_times[1]) + "s"
-	gold_time_label.text = str(Lobby.current_map.medal_times[2]) + "s"
-	author_time_label.text = str(Lobby.current_map.medal_times[3]) + "s"
+	
+	for i in range(len(medal_time_labels)):
+		medal_time_labels[i].text = str(Lobby.current_map.medal_times[i]) + "s"
 	
 	for child in t_rows.get_children():
 		child.queue_free()

@@ -243,7 +243,7 @@ current_tab = 0
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Content/Body/Play"]
+[node name="M" type="MarginContainer" parent="MarginContainer/Content/Body/Play"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -255,10 +255,21 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Content/Body/Play/MarginContainer"]
+[node name="V" type="VBoxContainer" parent="MarginContainer/Content/Body/Play/M"]
 layout_mode = 2
 
-[node name="Maps" type="VBoxContainer" parent="MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer"]
+[node name="H" type="HBoxContainer" parent="MarginContainer/Content/Body/Play/M/V"]
+layout_mode = 2
+
+[node name="MedalsEarned" type="Label" parent="MarginContainer/Content/Body/Play/M/V/H"]
+layout_mode = 2
+text = "Medals Earned: 0 / 0"
+
+[node name="S" type="ScrollContainer" parent="MarginContainer/Content/Body/Play/M/V"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Maps" type="VBoxContainer" parent="MarginContainer/Content/Body/Play/M/V/S"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

@@ -70,6 +70,7 @@ func spawn_player(pid: int) -> void:
 func _physics_process(_delta: float) -> void:
 	if running:
 		recorder.add_frame(player.global_position, player.global_rotation.y)
+		player.set_timer(timer)
 	
 @rpc("any_peer", "call_remote", "unreliable")
 func moved(pos: Vector3, y_rot: float) -> void:
@@ -119,7 +120,7 @@ func _process(delta: float) -> void:
 	
 	if running:
 		timer += delta
-		player.set_timer(timer)
+	
 
 func _is_player_in_zone(zone: Area3D) -> bool:
 	var bodies := zone.get_overlapping_bodies()

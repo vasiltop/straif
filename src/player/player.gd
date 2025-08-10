@@ -5,12 +5,14 @@ signal jumped
 @onready var camera: PlayerCamera = $Eye/Camera
 @onready var gun_camera: Camera3D = $Eye/Camera/GunVPContainer/GunVP/GunCam
 @onready var gun_vp: SubViewport = $Eye/Camera/GunVPContainer/GunVP
-@onready var timer_label: Label = $UI/GameState/Timer
+@onready var timer_label: Label = $UI/BottomLeft/V/Timer
+@onready var target_label: Label = $UI/BottomLeft/V/EnemiesLeft
 @onready var ui: CanvasLayer = $UI
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var camera_anchor: Marker3D = $CameraAnchor
 @onready var leaderboard: Leaderboard = $UI/Leaderboard
+@onready var speed_label: Label = $UI/BottomLeft/V/Speed
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
@@ -75,7 +77,7 @@ func _process(_delta: float) -> void:
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
-	(get_node("UI/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
+	(get_node("UI/TopLeft/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
 
 func _physics_process(delta: float) -> void:
 	if not is_me(): return
@@ -85,14 +87,16 @@ func _physics_process(delta: float) -> void:
 		map.moved.rpc_id(member.pid, global_position, global_rotation.y)
 	
 	_movement_process(delta)
+	
+	var current_vel := velocity
+	current_vel.y = 0
+	speed_label.text = "%.2fu/s" % current_vel.length()
 
 func set_timer(value: float) -> void:
-	timer_label.text = str(snapped(value, 0.001)) #+ " s"
-
-@onready var target_label: Label = $UI/GameState/EnemiesLeft
+	timer_label.text = "Time: %.3fs" % value
 
 func set_target_status(left: int, total: int) -> void:
-	target_label.text = "%d/%d" % [left, total]
+	target_label.text = "Targets: %d/%d" % [left, total]
 
 func _movement_process(delta: float) -> void:
 	var wish_dir := Input.get_vector("left", "right", "up", "down")

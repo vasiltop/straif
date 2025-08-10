@@ -13,13 +13,14 @@ class_name MainMenu extends Control
 @onready var lobby_list_container: HFlowContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/ScrollContainer/Container
 @onready var leave_lobby_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Title/Button
 @onready var my_lobby_members_container: VBoxContainer = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/MyLobby/Players
-@onready var map_container: VBoxContainer = $MarginContainer/Content/Body/Play/MarginContainer/ScrollContainer/Maps
+@onready var map_container: VBoxContainer = $MarginContainer/Content/Body/Play/M/V/S/Maps
 @onready var host_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form/HostLocal
 @onready var join_local_btn: Button = $MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title/JoinLocal
 @onready var _lobby_refresh_timer := BetterTimer.new(self, 1.0, _on_refresh_lobby_search)
 @onready var save_settings_btn: Button = $MarginContainer/Content/Body/Settings/Save
 @onready var version_error: Control = $MarginContainer/VersionError
 @onready var discord_btn: TextureButton = $MarginContainer/Content/Header/Right/Discord
+@onready var medals_earned_label: Label = $MarginContainer/Content/Body/Play/M/V/H/MedalsEarned
 
 const MapButtonScene = preload("res://src/menus/main/map_button/map_button.tscn")
 
@@ -85,16 +86,24 @@ func _instantiate_maps() -> void:
 			for map_button: MapButton in container.get_children():
 				if map_button.map_name != run.map_name: continue
 				var time: float = run.time_ms / 1000
+				print(run)
 				Lobby.map_name_to_time[run.map_name] = time
-				map_button.set_personal_best(time)
+				map_button.set_personal_best(time, int(run.position as float), int(run.total as float))
 				map_button.initialized_personal_best = true
-				
+	
+	var total_medals := 0
+	var earned_medals := 0
+	
 	for tier: int in tier_to_container:
 		var container: HFlowContainer = tier_to_container[tier]
 		for map_button: MapButton in container.get_children():
 			if not map_button.initialized_personal_best:
-				map_button.set_personal_best(-INF)
-
+				map_button.set_personal_best(-INF, 0, 0)
+			total_medals += 5
+			earned_medals += map_button.earned_medals
+	
+	medals_earned_label.text = "Medals Earned: %d / %d, %d%% completion." % [earned_medals, total_medals, int(float(earned_medals) / float(total_medals) * 100)]
+	
 	for tier: int in tier_to_container:
 		var container: Control = tier_to_container[tier]
 		var label: Label = tier_labels[tier]
