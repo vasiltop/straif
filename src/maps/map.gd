@@ -112,10 +112,10 @@ func _on_player_jump() -> void:
 	if not completed: running = true
 
 func _on_start_zone_exited(body: Node3D) -> void:
-	if body is Player and not completed:
-		running = true
+	if body is Player and not completed and not running:
 		sound_player.stream = StartRunSound
 		sound_player.play()
+		running = true
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("restart"):

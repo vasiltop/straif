@@ -123,7 +123,11 @@ func join_mut(path: String) -> BetterHTTPURL:
 	return self
 
 func stringify_path() -> String:
-	var url := self.path + "?" + self.query
+	var url := self.path
+	
+	if query != "":
+		url += "?" + self.query
+		
 	return url
 
 func stringify() -> String:

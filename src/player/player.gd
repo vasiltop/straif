@@ -57,6 +57,7 @@ func setup(map: Map) -> void:
 
 	(get_node("HeadMesh") as Node3D).visible = false
 	(get_node("BodyMesh") as Node3D).visible = false
+	name_label.visible = false
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size

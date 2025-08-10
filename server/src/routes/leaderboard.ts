@@ -66,8 +66,6 @@ app.get(
 				total: await get_run_count(run.map_name)
 			})));
 
-			console.log(full_run_info);
-
 			return c.json({ 
 				data: full_run_info,
 			});
@@ -85,11 +83,12 @@ app.get(
 
 app.get('/:map_name', async (c) => {
 	const mapName = c.req.param('map_name');
-	console.log(mapName);
-	console.log(c.req.query('page'));
-	console.log(c.req.url);
-	const page = parseInt(c.req.query('page'));
-	console.log(page);
+
+	const page_string = c.req.query('page');
+	let page = 0;
+
+	if (page_string)
+		page = parseInt(page_string);
 
 	try {
 		const runsResult = await db.select({

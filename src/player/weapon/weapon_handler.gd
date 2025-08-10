@@ -86,7 +86,7 @@ func _process(delta: float) -> void:
 	if not player.is_me(): return
 	if not current_weapon: return
 
-	var attack_input := Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
+	var attack_input := Input.is_action_just_pressed("ui_attack") if not current_weapon.automatic else Input.is_action_pressed("ui_attack")
 	if attack_input:
 		_try_shoot()
 	

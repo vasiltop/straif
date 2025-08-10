@@ -50,20 +50,10 @@ layout_mode = 2
 max_value = 10.0
 step = 0.01
 
-[node name="Label2" type="Label" parent="Controls/Margin/V/Sensitivity"]
+[node name="Keybinds" type="GridContainer" parent="Controls/Margin/V"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.646029, 0.646029, 0.646029, 1)
-
-[node name="Keybinds" type="Label" parent="Controls/Margin/V"]
-layout_mode = 2
-text = "Movement - WASD
-Jump - Space
-Restart Level - R
-Interact - F
-Inspect Weapon - E
-
-Changing keybinds is WIP
-"
+theme_override_constants/h_separation = 10
+columns = 8
 
 [node name="Display" type="ScrollContainer" parent="."]
 visible = false

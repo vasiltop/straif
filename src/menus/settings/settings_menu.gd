@@ -5,6 +5,7 @@ class_name SettingsMenu extends TabContainer
 @onready var window_mode_input: OptionButton = $Display/Margin/V/WindowMode/Input
 @onready var max_fps_input: SpinBox = $Display/Margin/V/MaxFps/Input
 @onready var volume_slider: Slider = $Audio/Margin/V/Volume/Input
+@onready var keybinds: GridContainer = $Controls/Margin/V/Keybinds
 
 func _ready() -> void:
 	_set_init_values()
@@ -13,6 +14,14 @@ func _ready() -> void:
 	volume_slider.value_changed.connect(_on_volume_slider_changed)
 	window_mode_input.item_selected.connect(_on_window_mode_changed)
 	max_fps_input.value_changed.connect(_on_max_fps_changed)
+	
+	for action in Settings.get_custom_actions():
+		var label := Label.new()
+		label.text = action
+		var inst := InputButton.new(self, action)
+		
+		keybinds.add_child(label)
+		keybinds.add_child(inst)
 
 func _set_init_values() -> void:
 	var sens: float = Settings.value("Controls", "sensitivity")

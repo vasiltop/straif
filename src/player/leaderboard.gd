@@ -15,7 +15,7 @@ class_name Leaderboard extends Panel
 ]
 
 const PAGE_SIZE := 10
-const MAX_NAME_LENGTH := 18
+const MAX_NAME_LENGTH := 15
 
 var current_page := 1
 var total_pages := 1
