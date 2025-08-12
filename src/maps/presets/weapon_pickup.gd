@@ -27,13 +27,17 @@ func _ready() -> void:
 	body_entered.connect(
 		func(body: Node3D) -> void:
 			if body is Player:
-				is_touching_player = true
+				var p := body as Player
+				if p.is_me():
+					is_touching_player = true
 	)
 	
 	body_exited.connect(
 		func(body: Node3D) -> void:
 			if body is Player:
-				is_touching_player = false
+				var p := body as Player
+				if p.is_me():
+					is_touching_player = false
 	)
 
 func reset() -> void:
@@ -47,7 +51,6 @@ func _process(delta: float) -> void:
 	weapon_scene.rotate_y(deg_to_rad(45 * delta))
 	weapon_scene.global_position.y = weapon_spawn.global_position.y + sin(float(Time.get_ticks_msec()) / 1000) / 7
 	
-	if not player: return
 	if player.map.running and is_touching_player and (player.weapon_handler.current_weapon == null or Input.is_action_just_pressed("interact")):
 		player.weapon_handler.set_weapon(weapon)
 		weapon_scene.visible = false

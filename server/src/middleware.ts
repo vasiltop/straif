@@ -62,6 +62,7 @@ export const steam_auth = createMiddleware(async (c, next) => {
 export const admin_auth = createMiddleware(async (c, next) => {
 	const auth_ticket = c.req.header('auth-ticket');
 
+	console.log(auth_ticket);
 	if (!auth_ticket) {
 		return c.json({ error: "You are not an administrator" }, 401);
 	}

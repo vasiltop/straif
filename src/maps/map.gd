@@ -24,6 +24,8 @@ var recorder := Recorder.new()
 var can_win: bool = false
 
 func _ready() -> void:
+	
+	player.setup(self)
 	restart()
 	add_child(recorder)
 	add_child(sound_player)
@@ -36,7 +38,7 @@ func _ready() -> void:
 	Lobby.switched_map.rpc(Lobby.current_map.mid)
 	Lobby.replay_requested.connect(_on_replay_requested)
 	target_killed.connect(_on_target_killed)
-	player.setup(self)
+	
 	_on_target_killed()
 	recorder.player_cam = player.camera
 
@@ -96,7 +98,7 @@ func find_player(pid: int) -> Player:
 	return null
 
 func get_players() -> Array[Player]:
-	var ret: Array[Player]
+	var ret: Array[Player]	
 	ret.assign(player_container.get_children())
 	return ret
 
@@ -109,13 +111,18 @@ func player_exists(pid: int) -> bool:
 	return find_player(pid) != null
 
 func _on_player_jump() -> void:
-	if not completed: running = true
-
-func _on_start_zone_exited(body: Node3D) -> void:
-	if body is Player and not completed and not running:
+	if not completed and not running:
 		sound_player.stream = StartRunSound
 		sound_player.play()
 		running = true
+
+func _on_start_zone_exited(body: Node3D) -> void:
+	if body is Player and not completed and not running:
+		var p := body as Player
+		if p.is_me():
+			sound_player.stream = StartRunSound
+			sound_player.play()
+			running = true
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("restart"):
@@ -126,7 +133,6 @@ func _process(delta: float) -> void:
 	
 	if running:
 		timer += delta
-	
 
 func _is_player_in_zone(zone: Area3D) -> bool:
 	var bodies := zone.get_overlapping_bodies()

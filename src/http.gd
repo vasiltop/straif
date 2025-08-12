@@ -14,7 +14,7 @@ func _show_connection_error() -> void:
 
 func _ready() -> void:
 	client = BetterHTTPClient.new(self, BetterHTTPURL.parse(api_url))
-
+	
 	var res := await client.http_get("/leaderboard/version").header("version", version).send()
 	if res == null: 
 		_show_connection_error()
@@ -71,7 +71,7 @@ func get_my_run(map_name: String) -> Dictionary:
 	if res.status() != 200:
 		Info.alert(json.error as String)
 		return {}
-		
+
 	return json.data as Dictionary
 
 func publish_run(recording: PackedByteArray, map_name: String, time_ms: int) -> void:
@@ -99,7 +99,7 @@ func check_admin() -> bool:
 	if res == null: 
 		_show_connection_error()
 		return false
-	
+
 	if res.status() == 200:
 		return true
 	

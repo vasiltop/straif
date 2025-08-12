@@ -23,20 +23,21 @@ func _ready() -> void:
 	else:
 		reset_to_defaults()
 		save()
+	
+	change_display_mode(value("Display", "mode") as int)
+	Engine.max_fps = value("Display", "max_fps")
+	AudioServer.set_bus_volume_db(0, value("Audio", "master_volume") as float)
+	update_input_map()
 
 func load_settings() -> void:
 	config.load(PATH)
 	
 	var version: Variant = value("Game", "version")
+	
 	if version == null or version != SETTINGS_VERSION:
 		reset_to_defaults()
 		save()
 		return
-		
-	change_display_mode(value("Display", "mode") as int)
-	Engine.max_fps = value("Display", "max_fps")
-	AudioServer.set_bus_volume_db(0, value("Audio", "master_volume") as float)
-	update_input_map()
 
 func get_custom_actions() -> Array[String]:
 	var all_actions := InputMap.get_actions()

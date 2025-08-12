@@ -87,8 +87,10 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND
 	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	
+	print(Lobby.admin)
 	if Lobby.admin:
 		name_label.pressed.connect(func() -> void:
+			print("pressed")
 			var replay := await Http.get_replay(Lobby.current_map.name, steam_id)
 			if replay != "":
 				Lobby.replay_requested.emit(replay)
