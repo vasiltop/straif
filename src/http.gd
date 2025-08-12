@@ -6,7 +6,7 @@ const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
-var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straif.pumped.software"
+var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straifapi.pumped.software/"
 var version := "dev" if OS.has_feature("editor") else "0.03"
 
 func _show_connection_error() -> void:

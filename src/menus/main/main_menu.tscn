@@ -467,7 +467,7 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VersionError/CenterContainer"]
 layout_mode = 2
-text = "ERROR: Incorrect Game Version, please download the latest version."
+text = "ERROR: The game is currently down for maintenance, please try again shortly."
 
 [node name="Background" type="Node3D" parent="."]
 
