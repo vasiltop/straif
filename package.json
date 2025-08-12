@@ -1,8 +1,0 @@
-{
-	"devDependencies": {
-		"@volar/language-server": "^2.4.22",
-		"@vue/language-service": "^3.0.5",
-		"@vue/runtime-core": "^3.5.18",
-		"vue": "^3.5.18"
-	}
-}

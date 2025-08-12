@@ -1,11 +1,5 @@
 import { uuid, pgTable, primaryKey, varchar, text, timestamp, pgEnum, integer, customType, bigint } from "drizzle-orm/pg-core";
 
-const bytea = customType<{ data: Buffer; notNull: false; default: false }>({
-  dataType() {
-    return "bytea";
-  },
-});
-
 export const runs = pgTable("runs", {
 	time_ms: integer("time_ms").notNull(),
 	recording: text().notNull(),

@@ -6,7 +6,7 @@ const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
-var api_url := "http://localhost:3000" if OS.has_feature("editor") else "http://209.38.2.30:3000"
+var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straif.pumped.software"
 var version := "dev" if OS.has_feature("editor") else "0.03"
 
 func _show_connection_error() -> void:
@@ -15,37 +15,14 @@ func _show_connection_error() -> void:
 func _ready() -> void:
 	client = BetterHTTPClient.new(self, BetterHTTPURL.parse(api_url))
 	
-	var res := await client.http_get("/leaderboard/version").header("version", version).send()
+	var res := await client.http_get("/version").header("version", version).send()
 	if res == null: 
 		_show_connection_error()
 		return
-	
+		
 	if res.status() != 200:
 		invalid_version.emit()
 		return
-	
-func _generate_game_hash() -> void:
-	var path := OS.get_executable_path()
-	var pck := path.get_basename() + ".pck"
-
-	if not OS.has_feature("editor"):
-		version = _gen_hash(pck)
-
-func _gen_hash(path: String) -> String:
-	if not FileAccess.file_exists(path):
-		Info.alert("Could not located .pck file")
-		return ""
-	
-	var ctx := HashingContext.new()
-	ctx.start(HashingContext.HASH_SHA256)
-	var file := FileAccess.open(path, FileAccess.READ)
-
-	while file.get_position() < file.get_length():
-		var remaining := file.get_length() - file.get_position()
-		ctx.update(file.get_buffer(min(remaining, FILE_CHUNK_SIZE) as int))
-	
-	var res := ctx.finish()
-	return res.hex_encode()
 
 func get_runs(map_name: String, page: int) -> Dictionary:
 	var res := await client.http_get("/leaderboard/" + map_name + "?page=" + str(page - 1)).send()
@@ -69,7 +46,6 @@ func get_my_run(map_name: String) -> Dictionary:
 		
 	var json: Dictionary = await res.json()
 	if res.status() != 200:
-		Info.alert(json.error as String)
 		return {}
 
 	return json.data as Dictionary
@@ -95,7 +71,7 @@ func publish_run(recording: PackedByteArray, map_name: String, time_ms: int) -> 
 		_show_connection_error()
 
 func check_admin() -> bool:
-	var res := await client.http_get("/leaderboard/admin").header("auth-ticket", str(Lobby.auth_ticket_hex)).send()
+	var res := await client.http_get("/admin").header("auth-ticket", str(Lobby.auth_ticket_hex)).send()
 	if res == null: 
 		_show_connection_error()
 		return false

@@ -47,7 +47,7 @@ func _load_runs() -> void:
 		child.queue_free()
 		
 	var run_result := await Http.get_runs(Lobby.current_map.name, current_page)
-	total_pages = ceil(run_result.count / PAGE_SIZE)
+	total_pages = max(1, ceil(run_result.count as float / PAGE_SIZE))
 	page_label.text = "Page %d of %d" % [current_page, total_pages]
 	
 	var runs: Array = run_result.data
@@ -69,10 +69,11 @@ func _setup() -> void:
 	_load_runs()
 		
 	var my_run := await Http.get_my_run(Lobby.current_map.name)
-	var pos := my_run.position as int
 	
-	if pos > 10:
-		_insert_table_row(pos, my_run.username as String, my_run.time_ms as float, my_run.created_at as String, my_run.steam_id as int)
+	if my_run != {}:
+		var pos := my_run.position as int
+		if pos > 10:
+			_insert_table_row(pos, my_run.username as String, my_run.time_ms as float, my_run.created_at as String, my_run.steam_id as int)
 
 func _insert_table_row(run_position: int, player_name: String, time: float, date: String, steam_id: int) -> void:
 	var position_label := Label.new()
@@ -86,11 +87,9 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	name_label.text = player_name
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND
 	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	
-	print(Lobby.admin)
+
 	if Lobby.admin:
 		name_label.pressed.connect(func() -> void:
-			print("pressed")
 			var replay := await Http.get_replay(Lobby.current_map.name, steam_id)
 			if replay != "":
 				Lobby.replay_requested.emit(replay)

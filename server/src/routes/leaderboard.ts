@@ -1,10 +1,12 @@
 import { Hono } from 'hono'
 import db from '../db/index.ts'
-import { z } from 'zod';
 import { runs } from '../db/schema.ts';
 import { asc, eq, sql, and, lt } from 'drizzle-orm';
-import { zValidator } from '@hono/zod-validator'
 import { admin_auth, version_compare, steam_auth } from '../middleware.ts';
+
+import { z } from 'zod';
+import { describeRoute } from 'hono-openapi';
+import { resolver, validator as zValidator } from 'hono-openapi/zod';
 
 type Variables = {
 	steam_id: string,
@@ -43,12 +45,26 @@ app.get(
 );
 
 app.get(
-	'/version',
-	version_compare,
-);
-
-app.get(
 	'/:steam_id/runs',
+	describeRoute({
+		description: 'Get all runs for a player with their leaderboard position and total runs per map.',
+		tags: ["leaderboard"],
+		responses: {
+			200: {
+				description: 'Succesful',
+				content: {
+					'application/json': {
+						schema: resolver(z.array(z.object({
+							position: z.number(),
+							total: z.number(),
+							time_ms: z.number(),
+							map_name: z.string(),
+						}))),
+					}
+				}
+			}
+		}
+	}),
 	async (c) => {
 		const steam_id = c.req.param('steam_id');
 
@@ -66,7 +82,7 @@ app.get(
 				total: await get_run_count(run.map_name)
 			})));
 
-			return c.json({ 
+			return c.json({
 				data: full_run_info,
 			});
 
@@ -74,87 +90,159 @@ app.get(
 			return c.json({ error: "Internal server error" }, 500);
 		}
 	}
-)
+);
 
 app.get(
-	'/admin',
-	admin_auth,
-)
+	'/:map_name',
+	describeRoute({
+		description: "A paginated retrieval of a map's runs.",
+		tags: ["leaderboard"],
+		parameters: [
+			{
+				name: 'page',
+				in: 'query',
+				required: true,
+				schema: resolver(z.number()),
+			}
+		],
+		responses: {
+			200: {
+				description: 'Successful',
+				content: {
+					'application/json': {
+						schema: resolver(
+							z.object({
+								data: z.array(
+									z.object({
+										position: z.number(),
+										total: z.number(),
+										time_ms: z.number(),
+										map_name: z.string(),
+									})
+								),
+								count: z.number(),
+							})
+						)
+					},
+				},
+			},
+		}
+	}),
+	async (c) => {
+		const map_name = c.req.param('map_name');
+		const page_string = c.req.query('page');
 
-app.get('/:map_name', async (c) => {
-	const mapName = c.req.param('map_name');
+		let page = 0;
 
-	const page_string = c.req.query('page');
-	let page = 0;
+		if (page_string)
+			page = parseInt(page_string);
 
-	if (page_string)
-		page = parseInt(page_string);
+		try {
+			const runs_result = await db.select({
+				time_ms: runs.time_ms,
+				steam_id: runs.steam_id,
+				username: runs.username,
+				created_at: runs.created_at,
+			})
+				.from(runs)
+				.where(eq(runs.map_name, map_name))
+				.orderBy(asc(runs.time_ms))
+				.limit(10)
+				.offset(page * 10)
 
-	try {
-		const runsResult = await db.select({
-			time_ms: runs.time_ms,
-			steam_id: runs.steam_id,
-			username: runs.username,
-			created_at: runs.created_at,
-		})
-			.from(runs)
-			.where(eq(runs.map_name, mapName))
-			.orderBy(asc(runs.time_ms))
-			.limit(10)
-			.offset(page * 10)
-
-			return c.json({ 
-				data: runsResult,
-				count: await get_run_count(mapName),
+			return c.json({
+				data: runs_result,
+				count: await get_run_count(map_name),
 			});
-	} catch (e) {
-		return c.json({ error: "Internal server error" }, 500);
-	}
-});
+		} catch (e) {
+			return c.json({ error: "Internal server error" }, 500);
+		}
+	});
 
 async function get_run_count(map_name: string): Promise<number> {
-	const [countResult] = await db.select({
-			count: sql`COUNT(*)`,
-		}).from(runs).where(eq(runs.map_name, map_name));
-	
-	return parseInt(countResult.count as string);
+	const [count_result] = await db.select({
+		count: sql`COUNT(*)`.mapWith(Number),
+	}).from(runs).where(eq(runs.map_name, map_name));
+
+	return count_result.count;
 }
 
-app.get('/:map_name/:steam_id', async (c) => {
-	const map_name = c.req.param('map_name');
-	const steam_id = c.req.param('steam_id');
-
-	try {
-		const runResult = await db.select({
-			time_ms: runs.time_ms,
-			steam_id: runs.steam_id,
-			username: runs.username,
-			created_at: runs.created_at
-		})
-			.from(runs)
-			.where(and(eq(runs.map_name, map_name), eq(runs.steam_id, steam_id)));
-
-		if (runResult.length === 0) {
-			return c.json({ error: "Could not find a run with the provided information." });
-		}
-
-		const time = runResult[0].time_ms;
-
-		return c.json({
-			data: {
-				...runResult[0],
-				position: await get_player_position(time, map_name),
+app.get(
+	'/:map_name/:steam_id',
+	describeRoute({
+		description: "Get a players time on a specific map.",
+		tags: ["leaderboard"],
+		responses: {
+			200: {
+				description: 'Succesful',
+				content: {
+					"Application/json": {
+						schema: resolver(z.object({
+							time_ms: z.number(),
+							steam_id: z.string(),
+							username: z.string(),
+							created_at: z.string(),
+							position: z.number(),
+						}))
+					}
+				}
+			},
+			400: {
+				description: 'Run does not exist',
+				content: {
+					"Application/json": {
+						schema: resolver(z.object({
+							error: z.string(),
+						}))
+					}
+				}
 			}
-		})
+		}
+	}),
+	async (c) => {
+		const map_name = c.req.param('map_name');
+		const steam_id = c.req.param('steam_id');
 
-	} catch (e) {
-		return c.json({ error: "Internal server error " }, 500);
-	}
-});
+		try {
+			const run_result = await db.select({
+				time_ms: runs.time_ms,
+				steam_id: runs.steam_id,
+				username: runs.username,
+				created_at: runs.created_at
+			})
+				.from(runs)
+				.where(and(eq(runs.map_name, map_name), eq(runs.steam_id, steam_id)));
+
+			if (!run_result.length) {
+				return c.json({ error: "Could not find a run with the provided information." }, 400);
+			}
+
+			const time = run_result[0].time_ms;
+
+			return c.json({
+				data: {
+					...run_result[0],
+					position: await get_player_position(time, map_name),
+				}
+			})
+
+		} catch (e) {
+			return c.json({ error: "Internal server error " }, 500);
+		}
+	});
 
 async function get_player_position(time: number, map: string): Promise<number> {
-	const [better_runs] = await db.select({ count: sql`count(*)`}).from(runs).where(and(eq(runs.map_name, map), lt(runs.time_ms, time)));
-	return parseInt(better_runs.count as string) + 1;
+	const [better_runs] =
+		await db.select({ count: sql`COUNT(*)`.mapWith(Number) })
+			.from(runs)
+			.where(
+				and(
+					eq(runs.map_name, map),
+					lt(runs.time_ms, time)
+				)
+			);
+
+	return better_runs.count + 1;
 }
 
 app.post('/',
@@ -162,11 +250,14 @@ app.post('/',
 		'json',
 		RunInput,
 	),
+	describeRoute({
+		hide: true,
+	}),
 	steam_auth,
 	version_compare,
 	async (c) => {
 		const body = c.req.valid('json');
-	
+
 		if (body.recording.length >= 474854) {
 			// 474864 = 370s
 			return c.json({ error: "Run was too long." }, 400);

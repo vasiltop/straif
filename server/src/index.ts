@@ -1,21 +1,64 @@
 import { serve } from '@hono/node-server'
 import { cors } from 'hono/cors';
-import { Hono } from 'hono'
+import { admin_auth, version_compare } from './middleware.ts';
+import { Hono } from 'hono';
+import { swaggerUI } from '@hono/swagger-ui';
+import { openAPISpecs } from 'hono-openapi';
 import leaderboard from './routes/leaderboard.ts'
 
 const app = new Hono()
 
 app.use('*', cors({
 	origin: '*',
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization'],
+	allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+	allowHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.route('/leaderboard', leaderboard);
 
+const open_api_doc = {
+	documentation: {
+		info: {
+			title: 'Straif API',
+			version: '0.0.3',
+		},
+		servers: [
+			{
+				url: "https://straif.pumped.software",
+			}
+		]
+	}
+};
+
+app.get(
+	'/openapi',
+	openAPISpecs(app, open_api_doc),
+);
+
+app.get(
+	'/docs',
+	swaggerUI({ url: '/openapi' })
+);
+
+app.get(
+	'/version',
+	version_compare,
+	async (c) => {
+		return c.text("Correct version");
+	}
+);
+
+app.get(
+	'/admin',
+	admin_auth,
+	async (c) => { 
+		return c.text("Admin");
+	}
+);
+
 serve({
-  fetch: app.fetch,
-  port: 3000
+	fetch: app.fetch,
+	port: 3000
 }, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
-})
+	console.log(`Server is running on http://localhost:${info.port}`)
+});
