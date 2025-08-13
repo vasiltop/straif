@@ -28,10 +28,16 @@ func _toggled(toggled_on: bool) -> void:
 	editing = toggled_on
 
 func _input(event: InputEvent) -> void:
-	if editing and event is InputEventKey:
+	if not editing or not event.is_pressed(): return
+
+	if event is InputEventKey:
 		var iek: InputEventKey = event
-		if iek.is_pressed():
-			Settings.change_keybind(action_name, iek.keycode)
-			button_pressed = false
-			editing = false
-			text = Settings.get_keybind_string(action_name)
+		Settings.change_action_to_event(action_name, iek)
+		
+	elif event is InputEventMouseButton:
+		var iem: InputEventMouseButton = event
+		Settings.change_action_to_event(action_name, iem)
+		
+	text = Settings.get_keybind_string(action_name)
+	button_pressed = false
+	editing = false

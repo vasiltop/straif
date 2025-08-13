@@ -4,18 +4,27 @@ const PATH := "user://settings.cfg"
 const SETTINGS_VERSION := 1
 
 var config := ConfigFile.new()
-var default_keybinds: Dictionary[String, int] = {
-	"left" = KEY_A,
-	"right" = KEY_D,
-	"up" = KEY_W,
-	"down" = KEY_S,
-	"jump" = KEY_SPACE,
-	"main_menu" = KEY_ESCAPE,
-	"restart" = KEY_R,
-	"inspect" = KEY_E,
-	"interact" = KEY_F,
-	"leaderboard"  = KEY_TAB,
+var default_keybinds: Dictionary[String, Keybind] = {
+	"left" = Keybind.new(KEY_A),
+	"right" = Keybind.new(KEY_D),
+	"up" = Keybind.new(KEY_W),
+	"down" = Keybind.new(KEY_S),
+	"jump" = Keybind.new(KEY_SPACE),
+	"main_menu" = Keybind.new(KEY_ESCAPE),
+	"restart" = Keybind.new(KEY_R),
+	"inspect" = Keybind.new(KEY_E),
+	"interact" = Keybind.new(KEY_F),
+	"leaderboard"  = Keybind.new(KEY_TAB),
+	"attack" = Keybind.new(MOUSE_BUTTON_LEFT, true)
 }
+
+class Keybind:
+	var is_mouse: bool
+	var code: int
+	
+	func _init(code: int, is_mouse := false) -> void:
+		self.is_mouse = is_mouse
+		self.code = code
 
 func _ready() -> void:
 	if FileAccess.file_exists(PATH):
@@ -65,20 +74,65 @@ func reset_to_defaults() -> void:
 	config.set_value("Game", "version", SETTINGS_VERSION)
 	
 	for action in get_custom_actions():
-		config.set_value("Controls", action, default_keybinds[action])
+		config.set_value("Controls", action, serialize_keybind(default_keybinds[action]))
+
+func serialize_keybind(keybind: Keybind) -> String:
+	var res := ""
+	
+	if keybind.is_mouse:
+		res += "mouse_"
+	
+	res += str(keybind.code)
+	
+	return res
+
+func deserialize_keybind(string: String) -> Keybind:
+	var is_mouse := string.begins_with("mouse_")
+	
+	if is_mouse:
+		string = string.substr(len("mouse_"))
+	
+	var code := int(string)
+	
+	return Keybind.new(code, is_mouse)
+
+func event_to_keybind(event: InputEvent) -> Keybind:
+	var keybind := Keybind.new(0)
+	
+	if event is InputEventKey:
+		var iek: InputEventKey = event
+		keybind.code = iek.keycode
 		
-func change_keybind(action_name: String, new_key: Key) -> void:
+	elif event is InputEventMouseButton:
+		var iem: InputEventMouseButton = event
+		keybind.is_mouse = true
+		keybind.code = iem.button_index
+		
+	return keybind
+
+func change_action_to_keybind(action_name: String, keybind: Keybind) -> void:
+	var ev: InputEvent
+	
+	if keybind.is_mouse:
+		var mouse_event := InputEventMouseButton.new()
+		mouse_event.button_index = keybind.code
+		ev = mouse_event
+	else:
+		var key_event := InputEventKey.new()
+		key_event.keycode = keybind.code
+		ev = key_event
+
+	change_action_to_event(action_name, ev)
+
+func change_action_to_event(action_name: String, event: InputEvent) -> void:
 	InputMap.action_erase_events(action_name)
-	
-	var new_event := InputEventKey.new()
-	new_event.keycode = new_key
-	InputMap.action_add_event(action_name, new_event)
-	config.set_value("Controls", action_name, new_key)
-	
+	InputMap.action_add_event(action_name, event)
+	config.set_value("Controls", action_name, serialize_keybind(event_to_keybind(event)))
+
 func update_input_map() -> void:
 	for action in get_custom_actions():
-		var value: int = value("Controls", action)
-		change_keybind(action, value)
+		var value: String = value("Controls", action)
+		change_action_to_keybind(action, deserialize_keybind(value))
 
 func update(section: String, key: String, value: Variant) -> void:
 	config.set_value(section, key, value)

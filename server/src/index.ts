@@ -24,7 +24,7 @@ const open_api_doc = {
 		},
 		servers: [
 			{
-				url: "https://straif.pumped.software",
+				url: "https://straifapi.pumped.software",
 			}
 		]
 	}
