@@ -1,7 +1,7 @@
 extends Node
 
 const PATH := "user://settings.cfg"
-const SETTINGS_VERSION := 1
+const SETTINGS_VERSION := 2
 
 var config := ConfigFile.new()
 var default_keybinds: Dictionary[String, Keybind] = {
