@@ -88,7 +88,7 @@ func _process(delta: float) -> void:
 	if attack_input:
 		_try_shoot()
 	
-	if Input.is_action_just_pressed("inspect") and current_weapon:
+	if current_weapon and Input.is_action_just_pressed("inspect"):
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 
 		if anim.is_playing() and anim.current_animation == "shoot" and current_weapon.is_melee:
@@ -96,7 +96,18 @@ func _process(delta: float) -> void:
 			hitbox.monitoring = false
 
 		anim.play("inspect")
-
+	
+	if current_weapon and Input.is_action_just_pressed("scope") and current_weapon.is_sniper:
+		player.sniper_overlay.visible = not player.sniper_overlay.visible
+		visible = not visible
+		const FOV_DIFF := 65
+		
+		match player.sniper_overlay.visible:
+			true:
+				player.camera.fov -= FOV_DIFF
+			false:
+				player.camera.fov += FOV_DIFF
+	
 	time_since_last_shot += delta
 
 func _physics_process(delta: float) -> void:

@@ -1,7 +1,7 @@
 extends Node
 
 const PATH := "user://settings.cfg"
-const SETTINGS_VERSION := 3
+const SETTINGS_VERSION := 4
 
 var config := ConfigFile.new()
 var default_keybinds: Dictionary[String, Keybind] = {
@@ -16,7 +16,8 @@ var default_keybinds: Dictionary[String, Keybind] = {
 	"inspect" = Keybind.new(KEY_E),
 	"interact" = Keybind.new(KEY_F),
 	"leaderboard"  = Keybind.new(KEY_TAB),
-	"attack" = Keybind.new(MOUSE_BUTTON_LEFT, true)
+	"attack" = Keybind.new(MOUSE_BUTTON_LEFT, true),
+	"scope" = Keybind.new(MOUSE_BUTTON_RIGHT, true)
 }
 
 class Keybind:

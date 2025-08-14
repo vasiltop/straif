@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://j1px6ey07p2f"]
+[gd_scene load_steps=20 format=4 uid="uid://j1px6ey07p2f"]
 
 [ext_resource type="Script" uid="uid://ds6cq7tyxjvrc" path="res://src/player/player.gd" id="1_4anbu"]
 [ext_resource type="Script" uid="uid://bocfext65sbpj" path="res://src/player/camera.gd" id="2_244u8"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bo4kloegfbey2" path="res://src/textures/gold_medal.png" id="7_l271a"]
 [ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="8_8ydov"]
 [ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="9_8ydov"]
+[ext_resource type="Texture2D" uid="uid://cncfrlllaohv5" path="res://src/textures/sniper_overlay.png" id="11_ylhto"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_244u8"]
 size = Vector3(0.5, 0.5, 0.5)
@@ -240,6 +241,7 @@ offset_right = 8.0
 offset_bottom = 2.0
 
 [node name="Leaderboard" type="Panel" parent="UI"]
+visible = false
 z_index = 5
 custom_minimum_size = Vector2(600, 500)
 anchors_preset = 8
@@ -659,6 +661,15 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "59.98 u/s"
 horizontal_alignment = 1
+
+[node name="SniperOverlay" type="TextureRect" parent="UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_ylhto")
 
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)

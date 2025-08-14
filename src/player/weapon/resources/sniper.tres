@@ -15,4 +15,5 @@ recoil = 10.0
 attack_range = 200.0
 is_melee = false
 automatic = false
+is_sniper = true
 metadata/_custom_type_script = "uid://bmwqlto471f6e"

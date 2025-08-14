@@ -13,6 +13,7 @@ signal jumped
 @onready var camera_anchor: Marker3D = $CameraAnchor
 @onready var leaderboard: Leaderboard = $UI/Leaderboard
 @onready var speed_label: Label = $UI/BottomLeft/V/Speed
+@onready var sniper_overlay: TextureRect = $UI/SniperOverlay
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
@@ -143,7 +144,7 @@ func _update_velocity_ground(vel_planar: Vector2, wish_dir: Vector2, delta: floa
 	return vel_planar + wish_dir * add_speed
 
 func _check_for_jump(vel_vertical: float) -> float:
-	var jump_input := Input.is_action_pressed("jump")
+	var jump_input := Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")
 
 	if jump_input and grounded():
 		jumped.emit()
