@@ -40,6 +40,7 @@ func set_weapon(weapon: WeaponData) -> void:
 		weapon_scene.queue_free()
 
 	if current_weapon != null:
+		time_since_last_shot = current_weapon.weapon_shot_delay
 		weapon_scene = weapon.scene.instantiate()
 		gun_container.add_child(weapon_scene)
 
@@ -78,9 +79,6 @@ func _on_sword_hit(body: Node3D) -> void:
 		var body_part: BodyPart = body
 		body_part.apply_damage(hit_sound, current_weapon.damage)
 		player.camera.shake(0.1, 0.03)
-	#else:
-		#var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
-		#anim.stop()
 
 func _process(delta: float) -> void:
 	if not player.is_me(): return

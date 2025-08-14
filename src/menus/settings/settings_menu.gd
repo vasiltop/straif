@@ -5,7 +5,7 @@ class_name SettingsMenu extends TabContainer
 @onready var window_mode_input: OptionButton = $Display/Margin/V/WindowMode/Input
 @onready var max_fps_input: SpinBox = $Display/Margin/V/MaxFps/Input
 @onready var volume_slider: Slider = $Audio/Margin/V/Volume/Input
-@onready var keybinds: GridContainer = $Controls/Margin/V/Keybinds
+@onready var keybinds: HFlowContainer = $Controls/Margin/V/Keybinds
 
 func _ready() -> void:
 	_set_init_values()

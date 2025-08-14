@@ -1,16 +1,17 @@
-[gd_scene load_steps=17 format=3 uid="uid://cxsm27jxccaul"]
+[gd_scene load_steps=18 format=3 uid="uid://cxsm27jxccaul"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_4x8du"]
 [ext_resource type="PackedScene" uid="uid://d0rpe3n6n6hgj" path="res://src/maps/tiles/structure.glb" id="2_0cwmr"]
 [ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="4_77xce"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="4_nlsro"]
+[ext_resource type="Resource" uid="uid://d2lvcltorc4hw" path="res://src/player/weapon/resources/shotgun.tres" id="4_vakwt"]
 [ext_resource type="Material" uid="uid://dxgfaq8mgbtph" path="res://src/maps/presets/test.tres" id="4_ydj32"]
 [ext_resource type="PackedScene" uid="uid://ejiq20awxkya" path="res://src/maps/presets/ladder.tscn" id="5_77xce"]
+[ext_resource type="Resource" uid="uid://duuij5rrj83i4" path="res://src/player/weapon/resources/sniper.tres" id="5_jlfa7"]
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="5_ydj32"]
 [ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/AllSkyFree_Sky_EpicGloriousPink_Equirect.png" id="6_1r0mp"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="8_mn4bu"]
 [ext_resource type="PackedScene" uid="uid://s1gi6bk381wf" path="res://src/maps/tiles/planks.tscn" id="8_vakwt"]
-[ext_resource type="Resource" uid="uid://civ014pfd2p5f" path="res://src/player/weapon/resources/usp.tres" id="9_vakwt"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nlsro"]
 
@@ -77,7 +78,11 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 1
 
 [node name="WeaponPickup" parent="Map" instance=ExtResource("8_mn4bu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.98436, 0, -10.4107)
-weapon = ExtResource("9_vakwt")
+weapon = ExtResource("4_vakwt")
+
+[node name="WeaponPickup2" parent="Map" instance=ExtResource("8_mn4bu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.9844, 3.33711, -22.4619)
+weapon = ExtResource("5_jlfa7")
 
 [node name="structure" parent="Map" instance=ExtResource("2_0cwmr")]
 

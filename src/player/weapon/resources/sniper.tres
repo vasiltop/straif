@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3 uid="uid://duuij5rrj83i4"]
+
+[ext_resource type="PackedScene" uid="uid://bn1pwh16fbenv" path="res://src/player/weapon/scenes/sniper.tscn" id="1_hahe0"]
+[ext_resource type="Script" uid="uid://bmwqlto471f6e" path="res://src/player/weapon/weapon_data.gd" id="2_3dwhc"]
+[ext_resource type="AudioStream" uid="uid://dwb3wuv337en" path="res://src/sounds/sniper_shoot.wav" id="3_hahe0"]
+
+[resource]
+script = ExtResource("2_3dwhc")
+name = "Sniper"
+weapon_shot_delay = 1.6
+damage = 100.0
+scene = ExtResource("1_hahe0")
+shoot_sound = ExtResource("3_hahe0")
+recoil = 10.0
+attack_range = 200.0
+is_melee = false
+automatic = false
+metadata/_custom_type_script = "uid://bmwqlto471f6e"

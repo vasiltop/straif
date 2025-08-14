@@ -195,7 +195,7 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_5h6iw")
 
-[node name="Rifle" type="Node3D"]
+[node name="Usp" type="Node3D"]
 
 [node name="RHandTarget" type="Node3D" parent="."]
 transform = Transform3D(-0.672912, -0.152437, -0.118119, 0.107573, 0.0591386, -0.689153, 0.160054, -0.680637, -0.0334243, 0.0866921, -0.189083, 0.111895)
