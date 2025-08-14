@@ -32,13 +32,15 @@ func _process(delta: float) -> void:
 	
 	player.camera_anchor.transform.basis = Basis.from_euler(Vector3(_input_rotation.x, 0.0, 0.0))
 	player.global_transform.basis = Basis.from_euler(Vector3(0.0, _input_rotation.y, 0.0))
+	
 	_mouse_input = Vector2.ZERO
 
 func _input(event: InputEvent) -> void:
 	if not player.is_me(): return
 	if player.leaderboard.visible: return
 	
-	var sens: float = Settings.value("Controls", "sensitivity") / 1000
+	var sens: float = Settings.value("Controls", "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity")
+	sens = sens / 1000
 	
 	if event is InputEventMouseMotion:
 		var ev := event as InputEventMouseMotion

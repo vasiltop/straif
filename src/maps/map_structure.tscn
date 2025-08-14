@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cxsm27jxccaul"]
+[gd_scene load_steps=20 format=3 uid="uid://cxsm27jxccaul"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_4x8du"]
 [ext_resource type="PackedScene" uid="uid://d0rpe3n6n6hgj" path="res://src/maps/tiles/structure.glb" id="2_0cwmr"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/AllSkyFree_Sky_EpicGloriousPink_Equirect.png" id="6_1r0mp"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="8_mn4bu"]
 [ext_resource type="PackedScene" uid="uid://s1gi6bk381wf" path="res://src/maps/tiles/planks.tscn" id="8_vakwt"]
+[ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="13_c1icp"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nlsro"]
 
@@ -43,6 +44,9 @@ volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
 volumetric_fog_anisotropy = 0.0
 volumetric_fog_length = 80.09
 volumetric_fog_detail_spread = 6.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ttw3k"]
+size = Vector3(300, 40, 300)
 
 [node name="TestMap" type="Node3D"]
 script = ExtResource("1_4x8du")
@@ -129,10 +133,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 1.31134, -31)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 3.33609, -31)
 
 [node name="Target4" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.9416, 4.01039, -36.0495)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.9416, 3.82637, -36.0495)
 
 [node name="Target5" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.1636, 4.9632, -51.7864)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.1636, 4.79329, -51.7864)
 
 [node name="Target6" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.7772, 4.69544, -50.6595)
@@ -147,6 +151,17 @@ shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ydj32")
+
+[node name="KillZones" type="Node" parent="."]
+
+[node name="Killzone" type="Area3D" parent="KillZones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -47.3996, 0)
+collision_mask = 2
+script = ExtResource("13_c1icp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KillZones/Killzone"]
+shape = SubResource("BoxShape3D_ttw3k")
+debug_fill = false
 
 [editable path="Map/structure"]
 [editable path="EndZone"]

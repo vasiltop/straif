@@ -10,8 +10,8 @@ class_name WeaponData extends Resource
 @export var is_melee: bool
 @export var automatic: bool
 @export var is_sniper: bool
-
-# include model, sounds, etc...
+@export var spread: float
+@export var bullet_count: float
 
 func _init(
 		name: String = "", 
@@ -23,7 +23,9 @@ func _init(
 		attack_range := 5.0, 
 		is_melee := false, 
 		automatic := false,
-		is_sniper := false
+		is_sniper := false,
+		spread := 0.0,
+		bullet_count := 1
 	) -> void:
 	self.name = name
 	self.weapon_shot_delay = weapon_shot_delay
@@ -35,3 +37,5 @@ func _init(
 	self.is_melee = is_melee
 	self.automatic = automatic
 	self.is_sniper = is_sniper
+	self.spread = spread
+	self.bullet_count = bullet_count

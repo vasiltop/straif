@@ -8,11 +8,14 @@
 script = ExtResource("2_a7c6y")
 name = "Shotgun"
 weapon_shot_delay = 0.9
-damage = 100.0
+damage = 30.0
 scene = ExtResource("1_qd3ya")
 shoot_sound = ExtResource("3_qd3ya")
-recoil = 3.0
+recoil = 1.0
 attack_range = 100.0
 is_melee = false
 automatic = false
+is_sniper = false
+spread = 5.0
+bullet_count = 8.0
 metadata/_custom_type_script = "uid://bmwqlto471f6e"

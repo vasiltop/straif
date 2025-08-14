@@ -102,9 +102,6 @@ top_level = true
 cull_mask = 1
 script = ExtResource("2_244u8")
 
-[node name="RayCast" type="RayCast3D" parent="Eye/Camera"]
-target_position = Vector3(0, 0, -5)
-
 [node name="WeaponHandler" type="Node3D" parent="Eye/Camera"]
 physics_interpolation_mode = 2
 script = ExtResource("2_rxibo")

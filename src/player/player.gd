@@ -14,6 +14,7 @@ signal jumped
 @onready var leaderboard: Leaderboard = $UI/Leaderboard
 @onready var speed_label: Label = $UI/BottomLeft/V/Speed
 @onready var sniper_overlay: TextureRect = $UI/SniperOverlay
+@onready var raycast: RayCast3D = $Eye/Camera/RayCast
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5

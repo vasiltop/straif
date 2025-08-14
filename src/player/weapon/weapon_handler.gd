@@ -2,7 +2,6 @@ class_name WeaponHandler extends Node3D
 
 @onready var player: Player = $"../../.."
 @onready var weapon_scene: Node3D = null
-@onready var raycast: RayCast3D = $"../RayCast"
 @onready var r_hand_ik: SkeletonIK3D = $Arms/ArmArmature/Skeleton3D/RHandIk
 @onready var l_hand_ik: SkeletonIK3D = $Arms/ArmArmature/Skeleton3D/LHandIk
 @onready var start_pos := position
@@ -53,8 +52,6 @@ func set_weapon(weapon: WeaponData) -> void:
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 		anim.play("equip")
 
-		raycast.target_position.z = -current_weapon.attack_range
-
 		if current_weapon.is_melee:
 			var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
 			hitbox.monitoring = false
@@ -85,8 +82,10 @@ func _process(delta: float) -> void:
 	if not current_weapon: return
 
 	var attack_input := Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
-	if attack_input:
-		_try_shoot()
+	if attack_input and time_since_last_shot > current_weapon.weapon_shot_delay:
+		for i in range(current_weapon.bullet_count):
+			_try_shoot()
+		time_since_last_shot = 0
 	
 	if current_weapon and Input.is_action_just_pressed("inspect"):
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
@@ -98,17 +97,24 @@ func _process(delta: float) -> void:
 		anim.play("inspect")
 	
 	if current_weapon and Input.is_action_just_pressed("scope") and current_weapon.is_sniper:
-		player.sniper_overlay.visible = not player.sniper_overlay.visible
-		visible = not visible
-		const FOV_DIFF := 65
-		
-		match player.sniper_overlay.visible:
-			true:
-				player.camera.fov -= FOV_DIFF
-			false:
-				player.camera.fov += FOV_DIFF
+		toggle_sniper_scope()
 	
 	time_since_last_shot += delta
+
+func toggle_sniper_scope() -> void:
+	player.sniper_overlay.visible = not player.sniper_overlay.visible
+	visible = not visible
+	const FOV_DIFF := 45
+	
+	match player.sniper_overlay.visible:
+		true:
+			player.camera.fov -= FOV_DIFF
+		false:
+			player.camera.fov += FOV_DIFF
+	
+	# TODO: Add ADS sound.
+	#audio_player.stream = ADS_SOUND
+	#audio_player.play()
 
 func _physics_process(delta: float) -> void:
 	_sway(delta)
@@ -139,11 +145,6 @@ func _try_shoot() -> void:
 	if not player.map: return
 	if not player.map.running and not player.map.completed: return
 
-	if time_since_last_shot < current_weapon.weapon_shot_delay:
-		return
-	
-	time_since_last_shot = 0
-
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 	if anim.current_animation == "inspect" or not anim.is_playing():
 		anim.play("shoot")
@@ -158,7 +159,6 @@ func _try_shoot() -> void:
 		audio_player.stream = current_weapon.shoot_sound
 		audio_player.play()
 
-	
 	if current_weapon.is_melee: 
 		return
 
@@ -166,29 +166,54 @@ func _try_shoot() -> void:
 	player.camera._mouse_input.y += deg_to_rad(current_weapon.recoil)
 	player.camera._mouse_input.x = randf_range(-rad, rad)
 	
-	var collider := raycast.get_collider()
-	if not collider: return
+	var spread := current_weapon.spread if not player.sniper_overlay.visible else 0.0
+	if current_weapon.is_sniper and player.sniper_overlay.visible:
+		toggle_sniper_scope()
+	
+	var origin := player.camera.global_transform.origin
+	var direction := -player.camera.global_transform.basis.z.normalized()
+	var distance := current_weapon.attack_range
 
-	var hit_pos := raycast.get_collision_point()
+	if spread != 0.0:
+		var rand_radians := func() -> float: return deg_to_rad(randf_range(-spread, spread)) 
+		var rand_rot_x: float = rand_radians.call()
+		var rand_rot_y: float = rand_radians.call()
+		var rand_rot_z: float = rand_radians.call()
+		
+		var spread_basis := Basis()
+		spread_basis = spread_basis.rotated(Vector3.RIGHT, rand_rot_x)
+		spread_basis = spread_basis.rotated(Vector3.UP, rand_rot_y)
+		spread_basis = spread_basis.rotated(Vector3.BACK, rand_rot_z)
 
+		direction = (spread_basis * direction).normalized()
+
+	var space_state := get_world_3d().direct_space_state
+	var query := PhysicsRayQueryParameters3D.create(origin, origin + direction*distance)
+	var result := space_state.intersect_ray(query)
+	var hit_pos := origin + direction * distance
+	
+	if result != {}:
+		hit_pos = result.position
+		var collider: Object = result.collider
+
+		var inst: Decal = BulletHoleScene.instantiate()
+		player.map.add_child(inst)
+		inst.global_position = hit_pos
+
+		# no clue what this does lol took it from reddit
+		var normal: Vector3 = result.normal
+		if normal != Vector3.UP:
+			inst.look_at(hit_pos + normal, Vector3.UP)
+			inst.transform = inst.transform.rotated_local(Vector3.RIGHT, PI/2.0)
+
+		inst.rotate(normal, randf_range(0, 2*PI))
+
+		if collider is BodyPart:
+			var body_part: BodyPart = collider
+			body_part.apply_damage(hit_sound, current_weapon.damage)
+	
 	if not current_weapon.is_melee:
-		BulletTracer.spawn(self, tracer_pos, hit_pos)
-
-	var inst: Decal = BulletHoleScene.instantiate()
-	player.map.add_child(inst)
-	inst.global_position = hit_pos
-
-	# no clue what this does lol took it from reddit
-	var normal :=  raycast.get_collision_normal()
-	if normal != Vector3.UP:
-		inst.look_at(hit_pos + normal, Vector3.UP)
-		inst.transform = inst.transform.rotated_local(Vector3.RIGHT, PI/2.0)
-
-	inst.rotate(normal, randf_range(0, 2*PI))
-
-	if collider is BodyPart:
-		var body_part: BodyPart = collider
-		body_part.apply_damage(hit_sound, current_weapon.damage)
+			BulletTracer.spawn(self, tracer_pos, hit_pos)
 
 func _input(event: InputEvent) -> void:
 	if not player.is_me(): return

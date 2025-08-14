@@ -137,6 +137,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(-0.35, 0, -0.2), Vector3(-0.35, 0, -0.21), Vector3(-0.35, 0, -0.2), Vector3(-0.375, -0.2, -0.2), Vector3(-0.375, -0.2, -0.19), Vector3(-0.375, -0.2, -0.2), Vector3(0, 0, 0)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("RHandTarget:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.13263, -0.125545, 0.316962)]
+}
 
 [sub_resource type="Animation" id="Animation_thuwb"]
 resource_name = "shoot"

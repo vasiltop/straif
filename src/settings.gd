@@ -1,7 +1,7 @@
 extends Node
 
 const PATH := "user://settings.cfg"
-const SETTINGS_VERSION := 4
+const SETTINGS_VERSION := 5
 
 var config := ConfigFile.new()
 var default_keybinds: Dictionary[String, Keybind] = {
@@ -70,6 +70,7 @@ func save() -> void:
 
 func reset_to_defaults() -> void:
 	config.set_value("Controls", "sensitivity", 1.0)
+	config.set_value("Controls", "ads_sensitivity", 1.0)
 	config.set_value("Display", "mode", 0)
 	config.set_value("Display", "max_fps", 1000)
 	config.set_value("Audio", "master_volume", -10.0)
