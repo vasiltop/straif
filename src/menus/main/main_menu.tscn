@@ -378,13 +378,11 @@ layout_mode = 2
 text = "Create"
 
 [node name="OR" type="Label" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
-visible = false
 layout_mode = 2
 text = "OR"
 horizontal_alignment = 1
 
 [node name="HostLocal" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
-visible = false
 layout_mode = 2
 text = "Host Local"
 
@@ -411,7 +409,6 @@ layout_mode = 2
 text = "Refresh / Search"
 
 [node name="JoinLocal" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
-visible = false
 layout_mode = 2
 text = "Join Local"
 

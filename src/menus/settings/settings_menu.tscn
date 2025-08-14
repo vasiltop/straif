@@ -40,14 +40,14 @@ layout_mode = 2
 text = "Sensitivity"
 
 [node name="SensLabel" type="Label" parent="Controls/Margin/V/Sensitivity"]
-custom_minimum_size = Vector2(35, 0)
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "0.0"
 
 [node name="SliderInput" type="HSlider" parent="Controls/Margin/V/Sensitivity"]
 custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
-max_value = 10.0
+max_value = 5.0
 step = 0.01
 
 [node name="Keybinds" type="GridContainer" parent="Controls/Margin/V"]

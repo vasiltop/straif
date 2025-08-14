@@ -67,14 +67,12 @@ export const admin_auth = createMiddleware(async (c, next) => {
 	}
 
 	const sid = await get_steam_id_from_ticket(auth_ticket);
-	console.log(sid);
 
 	if (sid == "") {
 		return c.json({ error: "Invalid Steam Auth Ticket" }, 401);
 	}
 
 	const res = await db.select().from(admins).where(eq(admins.steam_id, sid))
-	console.log(res);
 
 	if (res.length == 0) {
 		return c.json({ error: "This user is not an admin."}, 401);

@@ -1,6 +1,26 @@
 class_name Maps extends Node
 
-@export var maps: Array[MapData]
+var maps: Array[MapData]
+
+const MAPS_FILE_PATH := "res://maps.json"
+
+func _ready() -> void:
+	var file := FileAccess.open(MAPS_FILE_PATH, FileAccess.READ)
+	var json: Dictionary = JSON.parse_string(file.get_as_text())
+	var map_list: Array = json.maps
+	
+	for i in range(len(map_list)):
+		var map: Dictionary = map_list[i]
+		var map_name: String = map.name
+		var map_tier: int = map.tier
+		var map_times: Array = map.times
+		
+		var map_times_float: Array[float]
+		for time: float in map_times:
+			map_times_float.append(time)
+		
+		var map_data := MapData.new(map_name, map_tier, i, map_times_float)
+		maps.append(map_data)
 
 func get_map_with_id(mid: int) -> MapData:
 	for map in maps:

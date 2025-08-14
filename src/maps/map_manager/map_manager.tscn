@@ -1,64 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://cfyv2hjl6xu7"]
+[gd_scene load_steps=2 format=3 uid="uid://cfyv2hjl6xu7"]
 
 [ext_resource type="Script" uid="uid://d2pj3u758e007" path="res://src/maps/map_manager/map_manager.gd" id="1_onrs4"]
-[ext_resource type="Script" uid="uid://dfh54fgplrf7y" path="res://src/maps/map_data.gd" id="2_u1fwk"]
-
-[sub_resource type="Resource" id="Resource_hsl6q"]
-script = ExtResource("2_u1fwk")
-name = "Tutorial"
-tier = 0
-mid = 6
-medal_times = Array[float]([6.0, 4.5, 3.8, 3.2, 2.9])
-metadata/_custom_type_script = "uid://dfh54fgplrf7y"
-
-[sub_resource type="Resource" id="Resource_j6djh"]
-script = ExtResource("2_u1fwk")
-name = "map_rooftops"
-tier = 0
-mid = 0
-medal_times = Array[float]([25.0, 17.0, 15.0, 13.8, 12.0])
-metadata/_custom_type_script = "uid://dfh54fgplrf7y"
-
-[sub_resource type="Resource" id="Resource_ttjvt"]
-script = ExtResource("2_u1fwk")
-name = "map_streets"
-tier = 0
-mid = 1
-medal_times = Array[float]([25.0, 20.0, 15.0, 14.0, 13.0])
-metadata/_custom_type_script = "uid://dfh54fgplrf7y"
-
-[sub_resource type="Resource" id="Resource_dmb7u"]
-script = ExtResource("2_u1fwk")
-name = "map_rooftops2"
-tier = 2
-mid = 2
-medal_times = Array[float]([55.0, 40.0, 30.0, 25.0, 21.0])
-metadata/_custom_type_script = "uid://dfh54fgplrf7y"
-
-[sub_resource type="Resource" id="Resource_8ktoy"]
-script = ExtResource("2_u1fwk")
-name = "map_subway"
-tier = 1
-mid = 3
-medal_times = Array[float]([25.0, 20.0, 16.0, 14.0, 12.0])
-metadata/_custom_type_script = "uid://dfh54fgplrf7y"
-
-[sub_resource type="Resource" id="Resource_b6wtd"]
-script = ExtResource("2_u1fwk")
-name = "map_graybox"
-tier = 0
-mid = 4
-medal_times = Array[float]([13.0, 11.0, 9.7, 8.8, 7.0])
-metadata/_custom_type_script = "uid://dfh54fgplrf7y"
-
-[sub_resource type="Resource" id="Resource_yysmm"]
-script = ExtResource("2_u1fwk")
-name = "map_graybox2"
-tier = 0
-mid = 5
-medal_times = Array[float]([20.0, 16.0, 14.5, 13.2, 12.0])
-metadata/_custom_type_script = "uid://dfh54fgplrf7y"
 
 [node name="MapManager" type="Node"]
 script = ExtResource("1_onrs4")
-maps = Array[ExtResource("2_u1fwk")]([SubResource("Resource_hsl6q"), SubResource("Resource_j6djh"), SubResource("Resource_ttjvt"), SubResource("Resource_dmb7u"), SubResource("Resource_8ktoy"), SubResource("Resource_b6wtd"), SubResource("Resource_yysmm")])

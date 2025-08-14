@@ -25,19 +25,19 @@
 seamless = true
 noise = SubResource("FastNoiseLite_iyvra")
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eiimb"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qbt4t"]
 sky_horizon_color = Color(0.731576, 0.780598, 0.846291, 1)
 sky_cover = SubResource("NoiseTexture2D_3c63a")
 ground_bottom_color = Color(0.616254, 0.805669, 0.920459, 1)
 ground_horizon_color = Color(0.733333, 0.780392, 0.847059, 1)
 ground_energy_multiplier = 1.72
 
-[sub_resource type="Sky" id="Sky_qbt4t"]
-sky_material = SubResource("ProceduralSkyMaterial_eiimb")
+[sub_resource type="Sky" id="Sky_o4jvy"]
+sky_material = SubResource("ProceduralSkyMaterial_qbt4t")
 
 [sub_resource type="Environment" id="Environment_eiimb"]
 background_mode = 2
-sky = SubResource("Sky_qbt4t")
+sky = SubResource("Sky_o4jvy")
 tonemap_mode = 2
 fog_enabled = true
 fog_light_color = Color(0.163713, 0.181478, 0.209408, 1)

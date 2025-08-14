@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://dxgfaq8mgbtph"]
+
+[ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="1_rmi3i"]
+[ext_resource type="Texture2D" uid="uid://oxnan0s1yrac" path="res://src/textures/greybox_texture/greybox_light_solid.png" id="2_rmi3i"]
+[ext_resource type="Texture2D" uid="uid://b7epxhcpo64yo" path="res://src/textures/greybox_texture/greybox_light_grid.png" id="3_rmi3i"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_rmi3i")
+shader_parameter/texture_wall = ExtResource("3_rmi3i")
+shader_parameter/texture_roof = ExtResource("2_rmi3i")
+shader_parameter/wall_texture_scale = 0.34
+shader_parameter/roof_texture_scale = 0.45
