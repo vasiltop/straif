@@ -1,7 +1,7 @@
 extends Node
 
 const PATH := "user://settings.cfg"
-const SETTINGS_VERSION := 5
+const SETTINGS_VERSION := 7
 
 var config := ConfigFile.new()
 var default_keybinds: Dictionary[String, Keybind] = {
@@ -36,9 +36,15 @@ func _ready() -> void:
 		save()
 	
 	change_display_mode(value("Display", "mode") as int)
+	change_res(value("Display", "resolution") as String)
 	Engine.max_fps = value("Display", "max_fps")
 	AudioServer.set_bus_volume_db(0, value("Audio", "master_volume") as float)
+	DisplayServer.window_set_vsync_mode(get_vsync_enum(value("Display", "vsync") as bool))
+	
 	update_input_map()
+
+func get_vsync_enum(value: bool) -> DisplayServer.VSyncMode:
+	return DisplayServer.VSYNC_DISABLED if not value else DisplayServer.VSYNC_ENABLED
 
 func load_settings() -> void:
 	config.load(PATH)
@@ -68,11 +74,20 @@ func get_keybind_string(action_name: String) -> String:
 func save() -> void:
 	config.save(PATH)
 
+func change_res(value: String) -> void:
+	var arr := value.split("x")
+	var width := int(arr[0])
+	var height := int(arr[1])
+	get_tree().root.content_scale_size = Vector2i(width, height)
+	DisplayServer.window_set_size(Vector2i(width, height))
+
 func reset_to_defaults() -> void:
 	config.set_value("Controls", "sensitivity", 1.0)
 	config.set_value("Controls", "ads_sensitivity", 1.0)
 	config.set_value("Display", "mode", 0)
+	config.set_value("Display", "resolution", "1920x1080")
 	config.set_value("Display", "max_fps", 1000)
+	config.set_value("Display", "vsync", false)
 	config.set_value("Audio", "master_volume", -10.0)
 	config.set_value("Game", "version", SETTINGS_VERSION)
 	
@@ -151,3 +166,5 @@ func change_display_mode(index: int) -> void:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 		2:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			
+	change_res(value("Display", "resolution") as String)

@@ -42,6 +42,8 @@ gdscript/warnings/unsafe_void_return=2
 
 [display]
 
+window/stretch/mode="viewport"
+window/stretch/aspect="ignore"
 window/vsync/vsync_mode=0
 
 [editor_plugins]

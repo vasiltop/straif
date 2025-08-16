@@ -8,8 +8,8 @@ class_name SettingsMenu extends TabContainer
 @onready var keybinds: HFlowContainer = $Controls/Margin/V/Keybinds
 @onready var ads_sens_label: Label = $Controls/Margin/V/AdsSensitivity/SensLabel
 @onready var ads_sens_slider: HSlider = $Controls/Margin/V/AdsSensitivity/SliderInput
-
-
+@onready var vsync_input: CheckBox = $Display/Margin/V/Vsync/Input
+@onready var resolution_input: OptionButton = $Display/Margin/V/Resolution/Input
 
 func _ready() -> void:
 	_set_init_values()
@@ -18,7 +18,9 @@ func _ready() -> void:
 	ads_sens_slider.value_changed.connect(_on_ads_sens_slider_changed)
 	volume_slider.value_changed.connect(_on_volume_slider_changed)
 	window_mode_input.item_selected.connect(_on_window_mode_changed)
+	resolution_input.item_selected.connect(_on_resolution_changed)
 	max_fps_input.value_changed.connect(_on_max_fps_changed)
+	vsync_input.toggled.connect(_on_vsync_changed)
 	
 	for action in Settings.get_custom_actions():
 		var label := Label.new()
@@ -27,6 +29,10 @@ func _ready() -> void:
 		
 		keybinds.add_child(label)
 		keybinds.add_child(inst)
+
+func _on_vsync_changed(toggled_on: bool) -> void:
+	DisplayServer.window_set_vsync_mode(Settings.get_vsync_enum(toggled_on))
+	Settings.update("Display", "vsync", toggled_on)
 
 func _set_init_values() -> void:
 	var sens: float = Settings.value("Controls", "sensitivity")
@@ -40,6 +46,14 @@ func _set_init_values() -> void:
 	window_mode_input.selected = Settings.value("Display", "mode")
 	max_fps_input.value = Settings.value("Display", "max_fps")
 	volume_slider.value = Settings.value("Audio", "master_volume")
+	vsync_input.button_pressed = Settings.value("Display", "vsync")
+	
+	var res: String = Settings.value("Display", "resolution")
+	for i in resolution_input.item_count:
+		var value := resolution_input.get_item_text(i)
+		if value == res:
+			resolution_input.select(i)
+			break
 
 func _on_volume_slider_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(0, value)
@@ -52,6 +66,11 @@ func _on_max_fps_changed(value: float) -> void:
 func _on_window_mode_changed(index: int) -> void:
 	Settings.change_display_mode(index)
 	Settings.update("Display", "mode", index)
+	
+func _on_resolution_changed(index: int) -> void:
+	var value := resolution_input.get_item_text(index)
+	Settings.change_res(value)
+	Settings.update("Display", "resolution", value)
 
 func _on_sens_slider_changed(value: float) -> void:
 	var new_sens: float = snapped(value, 0.01)
