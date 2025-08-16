@@ -162,6 +162,9 @@ func spawn_target(pos: Vector3) -> void:
 	inst.global_position = pos
 
 func restart() -> void:
+	if player.sniper_overlay.visible:
+		player.weapon_handler.toggle_sniper_scope()
+
 	player.global_position = start_pos
 	
 	player.camera._input_rotation.y = -start_rotation.y
