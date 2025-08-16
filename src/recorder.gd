@@ -1,17 +1,28 @@
 class_name Recorder extends Node 
 
 const EYE_HEIGHT := 0.85
+const GhostScene = preload("res://src/maps/ghost.tscn")
 
 var player_cam: Camera3D
 var frames: Array[FrameInfo]
 var currently_playing: Array[FrameInfo]
 var current_frame: int
 var paused := true
-var camera := Camera3D.new()
 
+var camera := Camera3D.new()
+var ghost: Node3D
+var target: Node3D = null
+
+func _init(player_cam: Camera3D) -> void:
+	self.player_cam = player_cam
 
 func _ready() -> void:
+	var inst := GhostScene.instantiate()
+	ghost = inst
+	ghost.visible = false
+	
 	add_child(camera)
+	add_child(inst)
 
 func add_frame(position: Vector3, rot_y: float) -> void:
 	frames.append(FrameInfo.new(position, rot_y))
@@ -19,11 +30,19 @@ func add_frame(position: Vector3, rot_y: float) -> void:
 func clear() -> void:
 	frames.clear()
 
-func play_frames(frames: Array[FrameInfo]) -> void:
+func play_frames(frames: Array[FrameInfo], is_ghost: bool) -> void:
 	currently_playing = frames
 	current_frame = 0
-
-	camera.make_current()
+	
+	if is_ghost:
+		target = ghost
+		ghost.visible = true
+	else:
+		target = camera
+	
+	if not is_ghost:
+		camera.make_current()
+		
 	paused = false
 
 func _physics_process(_delta: float) -> void:
@@ -32,15 +51,20 @@ func _physics_process(_delta: float) -> void:
 	var frame := currently_playing[current_frame]
 	if not frame: return
 	
-	camera.global_position = frame.position
-	camera.global_position.y += EYE_HEIGHT
-	camera.global_rotation.y = frame.rot_y
+	target.global_position = frame.position
+	target.global_rotation.y = frame.rot_y
+	
+	if target is Camera3D:
+		target.global_position.y += EYE_HEIGHT
 
 	current_frame += 1
 
 	if current_frame >= len(currently_playing):
 		paused = true
 		camera.current = false
+		
+		#if ghost is not Camera3D:
+			#ghost.visible = false
 
 func to_bytes() -> PackedByteArray:
 	var buffer := StreamPeerBuffer.new()
@@ -71,9 +95,9 @@ func frames_from_bytes(data: PackedByteArray) -> Array[FrameInfo]:
 	
 	return frames
 
-func play_bytes(data: PackedByteArray) -> void:
+func play_bytes(data: PackedByteArray, is_ghost := false) -> void:
 	var frames := frames_from_bytes(data)
-	play_frames(frames)
+	play_frames(frames, is_ghost)
 
 class FrameInfo:
 	var position: Vector3

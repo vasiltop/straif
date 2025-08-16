@@ -5,6 +5,8 @@ class_name Leaderboard extends Panel
 @onready var dec_page_btn: Button = $"M/V/H/<"
 @onready var inc_page_btn: Button = $"M/V/H/>"
 @onready var page_label: Label = $M/V/H/Page
+@onready var middle: HBoxContainer = $".."
+@onready var player: Player = $"../../.."
 
 @onready var medal_time_labels: Array[Label] = [
 	$M/V/MedalInfo/BronzeTime,
@@ -31,15 +33,15 @@ func modify_page(value: int) -> void:
 func _ready() -> void:
 	dec_page_btn.pressed.connect(func() -> void: modify_page(-1))
 	inc_page_btn.pressed.connect(func() -> void: modify_page(1))
-	visible = false
+	middle.visible = false
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard"):
-		visible = true
+		middle.visible = true
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		_setup()
 	elif Input.is_action_just_released("leaderboard"):
-		visible = false
+		middle.visible = false
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _load_runs() -> void:
@@ -106,3 +108,30 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	t_rows.add_child(date_label)
 	date_label.text = str(date).substr(0, len("2024-10-10"))
 	date_label.size_flags_horizontal = Control.SIZE_EXPAND
+	
+	var setup_race_btn_text := func() -> String:
+		return "Race %s" % player_name if not player.map.currently_racing_steam_id == steam_id else "Stop Racing"
+		
+	var race_btn := Button.new()
+	t_rows.add_child(race_btn)
+	race_btn.text = setup_race_btn_text.call()
+	race_btn.focus_mode = Control.FOCUS_NONE
+	race_btn.size_flags_horizontal = Control.SIZE_EXPAND
+	
+	race_btn.pressed.connect(
+		func() -> void:
+			if not player.map.currently_racing_steam_id == steam_id:
+				var replay := await Http.get_replay(Lobby.current_map.name, steam_id)
+				player.map.race_recording_bytes = Marshalls.base64_to_raw(replay)
+				player.map.currently_racing_steam_id = steam_id
+				var ghost_name_label: Label3D = player.map.recorder.ghost.get_node("Name")
+				ghost_name_label.text = "%s's Ghost" % player_name
+			else:
+				player.map.race_recording_bytes.clear()
+				player.map.currently_racing_steam_id = 0
+				
+				if player.map.recorder.ghost:
+					player.map.recorder.ghost.visible = false
+				
+			race_btn.text = setup_race_btn_text.call()
+	)

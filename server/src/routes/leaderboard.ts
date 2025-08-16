@@ -23,7 +23,7 @@ const RunInput = z.object({
 
 app.get(
 	'/:map_name/:steam_id/recording',
-	admin_auth,
+	//admin_auth,
 	async (c) => {
 		const map_name = c.req.param('map_name');
 		const steam_id = c.req.param('steam_id');

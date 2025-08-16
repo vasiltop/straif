@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if not player.is_me(): return
-	if player.leaderboard.visible: return
+	if player.leaderboard.middle.visible: return
 	
 	var sens: float = Settings.value("Controls", "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity")
 	sens = sens / 1000

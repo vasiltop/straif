@@ -11,6 +11,7 @@ signal target_killed
 @onready var player_container: Node = $Players
 @onready var target_spawns_container: Node = $TargetSpawns
 @onready var sound_player := AudioStreamPlayer.new()
+@onready var recorder := Recorder.new(player.camera)
 
 const PlayerScene := preload("res://src/player/player.tscn")
 const TargetScene := preload("res://src/target/target.tscn")
@@ -20,15 +21,16 @@ const WinRunSound = preload("res://src/sounds/win.wav")
 var timer: float = 0.0
 var completed: bool = false
 var running: bool = false
-var recorder := Recorder.new()
 var can_win: bool = false
+var currently_racing_steam_id: int
+var race_recording_bytes: PackedByteArray
 
 func _ready() -> void:
-	
 	player.setup(self)
 	restart()
 	add_child(recorder)
 	add_child(sound_player)
+
 	start_zone.body_exited.connect(_on_start_zone_exited)
 	end_zone.body_entered.connect(func(_body: Node3D) -> void: can_win = true)
 	player.jumped.connect(_on_player_jump)
@@ -39,8 +41,7 @@ func _ready() -> void:
 	Lobby.replay_requested.connect(_on_replay_requested)
 	target_killed.connect(_on_target_killed)
 	
-	_on_target_killed()
-	recorder.player_cam = player.camera
+	_on_target_killed() 
 
 func _on_target_killed() -> void:
 	player.set_target_status(target_container.get_child_count(), target_spawns_container.get_child_count())
@@ -110,19 +111,23 @@ func get_target_spawns() -> Array[Node3D]:
 func player_exists(pid: int) -> bool:
 	return find_player(pid) != null
 
+func _start_run() -> void:
+	if currently_racing_steam_id != 0:
+		recorder.play_bytes(race_recording_bytes, true)
+	
+	sound_player.stream = StartRunSound
+	sound_player.play()
+	running = true
+
 func _on_player_jump() -> void:
 	if not completed and not running:
-		sound_player.stream = StartRunSound
-		sound_player.play()
-		running = true
+		_start_run()
 
 func _on_start_zone_exited(body: Node3D) -> void:
 	if body is Player and not completed and not running:
 		var p := body as Player
 		if p.is_me():
-			sound_player.stream = StartRunSound
-			sound_player.play()
-			running = true
+			_start_run()
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("restart"):
@@ -170,6 +175,9 @@ func restart() -> void:
 	player.camera._input_rotation.y = -start_rotation.y
 	player.camera._input_rotation.x = 0
 	
+	if recorder.ghost:
+		recorder.ghost.visible = false
+		
 	player.velocity = Vector3.ZERO
 	player.weapon_handler.set_weapon(null)
 

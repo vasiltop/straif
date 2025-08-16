@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=4 uid="uid://j1px6ey07p2f"]
+[gd_scene load_steps=21 format=4 uid="uid://j1px6ey07p2f"]
 
 [ext_resource type="Script" uid="uid://ds6cq7tyxjvrc" path="res://src/player/player.gd" id="1_4anbu"]
 [ext_resource type="Script" uid="uid://bocfext65sbpj" path="res://src/player/camera.gd" id="2_244u8"]
 [ext_resource type="Script" uid="uid://dys3s0o8myw2e" path="res://src/player/weapon/weapon_handler.gd" id="2_rxibo"]
 [ext_resource type="Texture2D" uid="uid://droeve8x6utep" path="res://src/player/arms_cowboy.jpg" id="4_244u8"]
 [ext_resource type="Texture2D" uid="uid://ddwv6d1j2fuuq" path="res://src/textures/bronze_medal.png" id="5_5f2sf"]
+[ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="5_cwolq"]
 [ext_resource type="Script" uid="uid://benori4j4wu38" path="res://src/player/leaderboard.gd" id="5_l271a"]
 [ext_resource type="Texture2D" uid="uid://bbyo6tb1eqrns" path="res://src/textures/silver_medal.png" id="6_x42xx"]
 [ext_resource type="Texture2D" uid="uid://bo4kloegfbey2" path="res://src/textures/gold_medal.png" id="7_l271a"]
@@ -77,8 +78,8 @@ bind/6/pose = Transform3D(-0.985888, 0.167415, 3.79832e-07, -0.167416, -0.985887
 radius = 0.25
 height = 2.1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_244u8"]
-bg_color = Color(0.0923971, 0.0923971, 0.0923971, 0.898039)
+[sub_resource type="Theme" id="Theme_ylhto"]
+default_font_size = 13
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -237,371 +238,6 @@ offset_top = -2.0
 offset_right = 8.0
 offset_bottom = 2.0
 
-[node name="Leaderboard" type="Panel" parent="UI"]
-visible = false
-z_index = 5
-custom_minimum_size = Vector2(600, 500)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 350.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_244u8")
-script = ExtResource("5_l271a")
-
-[node name="M" type="MarginContainer" parent="UI/Leaderboard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
-
-[node name="V" type="VBoxContainer" parent="UI/Leaderboard/M"]
-layout_mode = 2
-
-[node name="MapName" type="Label" parent="UI/Leaderboard/M/V"]
-layout_mode = 2
-text = "Current Map: Unknown"
-
-[node name="MedalInfo" type="GridContainer" parent="UI/Leaderboard/M/V"]
-layout_mode = 2
-columns = 5
-
-[node name="Bronze" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 125)
-layout_mode = 2
-size_flags_horizontal = 3
-texture = ExtResource("5_5f2sf")
-
-[node name="Silver" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 125)
-layout_mode = 2
-size_flags_horizontal = 3
-texture = ExtResource("6_x42xx")
-
-[node name="Gold" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 125)
-layout_mode = 2
-size_flags_horizontal = 3
-texture = ExtResource("7_l271a")
-
-[node name="Plat" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 125)
-layout_mode = 2
-size_flags_horizontal = 3
-texture = ExtResource("9_8ydov")
-
-[node name="Author" type="TextureRect" parent="UI/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 125)
-layout_mode = 2
-size_flags_horizontal = 3
-texture = ExtResource("8_8ydov")
-
-[node name="BronzeTime" type="Label" parent="UI/Leaderboard/M/V/MedalInfo"]
-layout_mode = 2
-text = "0.0s"
-horizontal_alignment = 1
-
-[node name="SilverTime" type="Label" parent="UI/Leaderboard/M/V/MedalInfo"]
-layout_mode = 2
-text = "0.0s"
-horizontal_alignment = 1
-
-[node name="GoldTime" type="Label" parent="UI/Leaderboard/M/V/MedalInfo"]
-layout_mode = 2
-text = "0.0s"
-horizontal_alignment = 1
-
-[node name="PlatTime" type="Label" parent="UI/Leaderboard/M/V/MedalInfo"]
-layout_mode = 2
-text = "0.0s"
-horizontal_alignment = 1
-
-[node name="AuthorTime" type="Label" parent="UI/Leaderboard/M/V/MedalInfo"]
-layout_mode = 2
-text = "0.0s"
-horizontal_alignment = 1
-
-[node name="LeaderboardTitle" type="Label" parent="UI/Leaderboard/M/V"]
-layout_mode = 2
-text = "Leaderboard"
-
-[node name="TH" type="GridContainer" parent="UI/Leaderboard/M/V"]
-layout_mode = 2
-theme_override_constants/h_separation = 30
-columns = 4
-
-[node name="Pos" type="Label" parent="UI/Leaderboard/M/V/TH"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "Pos"
-
-[node name="Name" type="Label" parent="UI/Leaderboard/M/V/TH"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Player Name"
-
-[node name="Time" type="Label" parent="UI/Leaderboard/M/V/TH"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Time (s)"
-
-[node name="DateSubmitted" type="Label" parent="UI/Leaderboard/M/V/TH"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Date Submitted"
-
-[node name="TRows" type="GridContainer" parent="UI/Leaderboard/M/V"]
-layout_mode = 2
-theme_override_constants/h_separation = 30
-columns = 4
-
-[node name="Pos" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "1."
-
-[node name="Name" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos2" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "2."
-
-[node name="Name2" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time2" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted2" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos3" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "3."
-
-[node name="Name3" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time3" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted3" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos4" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "4."
-
-[node name="Name4" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time4" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted4" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos5" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "5."
-
-[node name="Name5" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time5" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted5" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos6" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "6."
-
-[node name="Name6" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time6" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted6" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos7" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "7."
-
-[node name="Name7" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time7" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted7" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos8" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "8."
-
-[node name="Name8" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time8" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted8" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos9" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "9."
-
-[node name="Name9" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time9" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted9" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos10" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "10."
-
-[node name="Name10" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "munost"
-
-[node name="Time10" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321"
-
-[node name="DateSubmitted10" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="Pos11" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "532."
-
-[node name="Name11" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "YOU"
-
-[node name="Time11" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0.98321312321"
-
-[node name="DateSubmitted11" type="Label" parent="UI/Leaderboard/M/V/TRows"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2025-08-06"
-
-[node name="H" type="HBoxContainer" parent="UI/Leaderboard/M/V"]
-layout_mode = 2
-
-[node name="<" type="Button" parent="UI/Leaderboard/M/V/H"]
-layout_mode = 2
-focus_mode = 0
-text = "<"
-
-[node name="Page" type="Label" parent="UI/Leaderboard/M/V/H"]
-layout_mode = 2
-text = "Page 0 of 0"
-
-[node name=">" type="Button" parent="UI/Leaderboard/M/V/H"]
-layout_mode = 2
-focus_mode = 0
-text = ">"
-
 [node name="TopLeft" type="Panel" parent="UI"]
 custom_minimum_size = Vector2(120, 30)
 anchors_preset = 3
@@ -613,7 +249,7 @@ offset_left = -120.0
 offset_top = -30.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_244u8")
+theme_override_styles/panel = ExtResource("5_cwolq")
 
 [node name="Fps" type="Label" parent="UI/TopLeft"]
 layout_mode = 1
@@ -634,7 +270,7 @@ anchor_bottom = 1.0
 offset_top = -40.0
 offset_right = 40.0
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_244u8")
+theme_override_styles/panel = ExtResource("5_cwolq")
 
 [node name="V" type="VBoxContainer" parent="UI/BottomLeft"]
 layout_mode = 1
@@ -667,6 +303,458 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("11_ylhto")
+
+[node name="Middle" type="HBoxContainer" parent="UI"]
+custom_minimum_size = Vector2(600, 500)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -250.0
+offset_right = 350.0
+offset_bottom = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ylhto")
+
+[node name="Leaderboard" type="Panel" parent="UI/Middle"]
+z_index = 5
+custom_minimum_size = Vector2(700, 500)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("5_cwolq")
+script = ExtResource("5_l271a")
+
+[node name="M" type="MarginContainer" parent="UI/Middle/Leaderboard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+
+[node name="V" type="VBoxContainer" parent="UI/Middle/Leaderboard/M"]
+layout_mode = 2
+
+[node name="MapName" type="Label" parent="UI/Middle/Leaderboard/M/V"]
+layout_mode = 2
+text = "Current Map: Unknown"
+
+[node name="MedalInfo" type="GridContainer" parent="UI/Middle/Leaderboard/M/V"]
+layout_mode = 2
+columns = 5
+
+[node name="Bronze" type="TextureRect" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 125)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_5f2sf")
+
+[node name="Silver" type="TextureRect" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 125)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("6_x42xx")
+
+[node name="Gold" type="TextureRect" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 125)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("7_l271a")
+
+[node name="Plat" type="TextureRect" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 125)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("9_8ydov")
+
+[node name="Author" type="TextureRect" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 125)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("8_8ydov")
+
+[node name="BronzeTime" type="Label" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="SilverTime" type="Label" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="GoldTime" type="Label" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="PlatTime" type="Label" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="AuthorTime" type="Label" parent="UI/Middle/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="LeaderboardTitle" type="Label" parent="UI/Middle/Leaderboard/M/V"]
+layout_mode = 2
+text = "Leaderboard"
+
+[node name="TH" type="GridContainer" parent="UI/Middle/Leaderboard/M/V"]
+layout_mode = 2
+theme_override_constants/h_separation = 30
+columns = 5
+
+[node name="Pos" type="Label" parent="UI/Middle/Leaderboard/M/V/TH"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "Pos"
+
+[node name="Name" type="Label" parent="UI/Middle/Leaderboard/M/V/TH"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player Name"
+
+[node name="Time" type="Label" parent="UI/Middle/Leaderboard/M/V/TH"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Time (s)"
+
+[node name="DateSubmitted" type="Label" parent="UI/Middle/Leaderboard/M/V/TH"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Date Submitted"
+
+[node name="RaceGhost" type="Label" parent="UI/Middle/Leaderboard/M/V/TH"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Race Ghost"
+
+[node name="TRows" type="GridContainer" parent="UI/Middle/Leaderboard/M/V"]
+layout_mode = 2
+theme_override_constants/h_separation = 30
+columns = 5
+
+[node name="Pos" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "1."
+
+[node name="Name" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted12" type="Button" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Race"
+
+[node name="Pos2" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "2."
+
+[node name="Name2" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time2" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted2" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted13" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="Pos3" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "3."
+
+[node name="Name3" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time3" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted3" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted14" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="Pos4" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "4."
+
+[node name="Name4" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time4" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted4" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted15" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="Pos5" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "5."
+
+[node name="Name5" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time5" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted5" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted16" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="Pos6" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "6."
+
+[node name="Name6" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time6" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted6" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted17" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="Pos7" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "7."
+
+[node name="Name7" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time7" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted7" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted18" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="Pos8" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "8."
+
+[node name="Name8" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time8" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted8" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted19" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="Pos9" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "9."
+
+[node name="Name9" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time9" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted9" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted20" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="Pos10" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "10."
+
+[node name="Name10" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "munost"
+
+[node name="Time10" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321"
+
+[node name="DateSubmitted10" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted21" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="Pos11" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "532."
+
+[node name="Name11" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "YOU"
+
+[node name="Time11" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0.98321312321"
+
+[node name="DateSubmitted11" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="DateSubmitted22" type="Label" parent="UI/Middle/Leaderboard/M/V/TRows"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2025-08-06"
+
+[node name="H" type="HBoxContainer" parent="UI/Middle/Leaderboard/M/V"]
+layout_mode = 2
+
+[node name="<" type="Button" parent="UI/Middle/Leaderboard/M/V/H"]
+layout_mode = 2
+focus_mode = 0
+text = "<"
+
+[node name="Page" type="Label" parent="UI/Middle/Leaderboard/M/V/H"]
+layout_mode = 2
+text = "Page 0 of 0"
+
+[node name=">" type="Button" parent="UI/Middle/Leaderboard/M/V/H"]
+layout_mode = 2
+focus_mode = 0
+text = ">"
+
+[node name="Panel" type="Panel" parent="UI/Middle"]
+visible = false
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("5_cwolq")
+
+[node name="M" type="MarginContainer" parent="UI/Middle/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+
+[node name="V" type="VBoxContainer" parent="UI/Middle/Panel/M"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UI/Middle/Panel/M/V"]
+layout_mode = 2
+text = "Lobby"
 
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)

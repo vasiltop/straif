@@ -1,22 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://hgewijj1xepk"]
+[gd_scene load_steps=4 format=3 uid="uid://hgewijj1xepk"]
 
 [ext_resource type="Script" uid="uid://i1b5ixl4e2l" path="res://src/player/weapon/bullet_tracer.gd" id="1_b5mmi"]
-
-[sub_resource type="Gradient" id="Gradient_b5mmi"]
-colors = PackedColorArray(1, 1, 1, 1, 0.866647, 0.759085, 0.129857, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_pl4ph"]
-gradient = SubResource("Gradient_b5mmi")
-fill_from = Vector2(1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b5mmi"]
-cull_mode = 2
-albedo_texture = SubResource("GradientTexture2D_pl4ph")
-emission_enabled = true
-emission_texture = SubResource("GradientTexture2D_pl4ph")
+[ext_resource type="Material" uid="uid://cilm2oc02xr8e" path="res://src/player/weapon/bullet_tracer.tres" id="2_pl4ph"]
 
 [sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_hio5j"]
-material = SubResource("StandardMaterial3D_b5mmi")
+material = ExtResource("2_pl4ph")
 size = 0.013
 sections = 2
 section_length = 0.5
