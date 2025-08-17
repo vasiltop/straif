@@ -54,8 +54,8 @@ material_override = ExtResource("1_ok2f4")
 script = ExtResource("2_ok2f4")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D"]
-size = Vector3(1.5, 2.5, 1.5)
+size = Vector3(2, 3, 2)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
 operation = 2
-size = Vector3(1.49, 2.5, 1.49)
+size = Vector3(1.99, 3, 1.99)
