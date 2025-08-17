@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=4 uid="uid://j1px6ey07p2f"]
+[gd_scene load_steps=24 format=4 uid="uid://j1px6ey07p2f"]
 
 [ext_resource type="Script" uid="uid://ds6cq7tyxjvrc" path="res://src/player/player.gd" id="1_4anbu"]
 [ext_resource type="Script" uid="uid://bocfext65sbpj" path="res://src/player/camera.gd" id="2_244u8"]
 [ext_resource type="Script" uid="uid://dys3s0o8myw2e" path="res://src/player/weapon/weapon_handler.gd" id="2_rxibo"]
 [ext_resource type="Texture2D" uid="uid://droeve8x6utep" path="res://src/player/arms_cowboy.jpg" id="4_244u8"]
+[ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="5_2smqc"]
 [ext_resource type="Texture2D" uid="uid://ddwv6d1j2fuuq" path="res://src/textures/bronze_medal.png" id="5_5f2sf"]
 [ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="5_cwolq"]
 [ext_resource type="Script" uid="uid://benori4j4wu38" path="res://src/player/leaderboard.gd" id="5_l271a"]
@@ -12,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="8_8ydov"]
 [ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="9_8ydov"]
 [ext_resource type="Texture2D" uid="uid://cncfrlllaohv5" path="res://src/textures/sniper_overlay.png" id="11_ylhto"]
+[ext_resource type="FontFile" uid="uid://reim7hyo6sqy" path="res://src/fonts/OpenSans-Regular.ttf" id="14_rl62b"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_244u8"]
 size = Vector3(0.5, 0.5, 0.5)
@@ -79,7 +81,10 @@ radius = 0.25
 height = 2.1
 
 [sub_resource type="Theme" id="Theme_ylhto"]
-default_font_size = 13
+default_font_size = 15
+
+[sub_resource type="Theme" id="Theme_wlj80"]
+default_font = ExtResource("14_rl62b")
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -213,15 +218,24 @@ shape = SubResource("CapsuleShape3D_5f2sf")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Middle" type="Control" parent="UI"]
+[node name="UiContainer" type="Control" parent="UI"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("5_2smqc")
 
-[node name="Speed" type="Label" parent="UI/Middle"]
+[node name="Middle" type="Control" parent="UI/UiContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Speed" type="Label" parent="UI/UiContainer/Middle"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -239,7 +253,7 @@ text = "59.98 u/s"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Crosshair" type="Control" parent="UI/Middle"]
+[node name="Crosshair" type="Control" parent="UI/UiContainer/Middle"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -250,22 +264,23 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 
-[node name="ColorRect" type="ColorRect" parent="UI/Middle/Crosshair"]
+[node name="ColorRect" type="ColorRect" parent="UI/UiContainer/Middle/Crosshair"]
 layout_mode = 0
 offset_left = -2.0
 offset_top = -8.0
 offset_right = 2.0
 offset_bottom = 8.0
 
-[node name="ColorRect2" type="ColorRect" parent="UI/Middle/Crosshair"]
+[node name="ColorRect2" type="ColorRect" parent="UI/UiContainer/Middle/Crosshair"]
 layout_mode = 0
 offset_left = -8.0
 offset_top = -2.0
 offset_right = 8.0
 offset_bottom = 2.0
 
-[node name="TopLeft" type="Panel" parent="UI"]
+[node name="TopLeft" type="Panel" parent="UI/UiContainer"]
 custom_minimum_size = Vector2(120, 30)
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -277,19 +292,21 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = ExtResource("5_cwolq")
 
-[node name="Fps" type="Label" parent="UI/TopLeft"]
+[node name="Fps" type="Label" parent="UI/UiContainer/TopLeft"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_font_sizes/font_size = 17
 text = "60 fps"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BottomLeft" type="Panel" parent="UI"]
+[node name="BottomLeft" type="Panel" parent="UI/UiContainer"]
 custom_minimum_size = Vector2(120, 80)
+layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -298,7 +315,7 @@ offset_right = 120.0
 grow_vertical = 0
 theme_override_styles/panel = ExtResource("5_cwolq")
 
-[node name="V" type="VBoxContainer" parent="UI/BottomLeft"]
+[node name="V" type="VBoxContainer" parent="UI/UiContainer/BottomLeft"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -306,54 +323,62 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="EnemiesLeft" type="Label" parent="UI/BottomLeft/V"]
+[node name="EnemiesLeft" type="Label" parent="UI/UiContainer/BottomLeft/V"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 17
 text = "Targets: 0/0"
 horizontal_alignment = 1
 
-[node name="Timer" type="Label" parent="UI/BottomLeft/V"]
+[node name="Timer" type="Label" parent="UI/UiContainer/BottomLeft/V"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 17
 text = "Time: 0.00"
 horizontal_alignment = 1
 
-[node name="Speed" type="Label" parent="UI/BottomLeft/V"]
+[node name="Speed" type="Label" parent="UI/UiContainer/BottomLeft/V"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 17
 text = "59.98 u/s"
 horizontal_alignment = 1
 
-[node name="SniperOverlay" type="TextureRect" parent="UI"]
+[node name="SniperOverlay" type="TextureRect" parent="UI/UiContainer"]
 visible = false
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -384.0
+offset_top = -216.0
+offset_right = 1496.0
+offset_bottom = 824.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("11_ylhto")
 
-[node name="GameInfo" type="HBoxContainer" parent="UI"]
-visible = false
+[node name="GameInfo" type="HBoxContainer" parent="UI/UiContainer"]
 custom_minimum_size = Vector2(600, 500)
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -350.0
-offset_top = -250.0
-offset_right = 350.0
-offset_bottom = 350.0
+offset_left = -450.0
+offset_top = -325.0
+offset_right = 450.0
+offset_bottom = 325.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_ylhto")
 
-[node name="Leaderboard" type="Panel" parent="UI/GameInfo"]
+[node name="Leaderboard" type="Panel" parent="UI/UiContainer/GameInfo"]
 z_index = 5
-custom_minimum_size = Vector2(900, 600)
+custom_minimum_size = Vector2(900, 500)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("5_cwolq")
 script = ExtResource("5_l271a")
 
-[node name="M" type="MarginContainer" parent="UI/GameInfo/Leaderboard"]
+[node name="M" type="MarginContainer" parent="UI/UiContainer/GameInfo/Leaderboard"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -362,472 +387,475 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
 
-[node name="V" type="VBoxContainer" parent="UI/GameInfo/Leaderboard/M"]
+[node name="V" type="VBoxContainer" parent="UI/UiContainer/GameInfo/Leaderboard/M"]
 layout_mode = 2
 
-[node name="MapName" type="Label" parent="UI/GameInfo/Leaderboard/M/V"]
+[node name="MapName" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V"]
 layout_mode = 2
 text = "Current Map: Unknown"
 
-[node name="MedalInfo" type="GridContainer" parent="UI/GameInfo/Leaderboard/M/V"]
+[node name="MedalInfo" type="GridContainer" parent="UI/UiContainer/GameInfo/Leaderboard/M/V"]
 layout_mode = 2
 columns = 5
 
-[node name="Bronze" type="TextureRect" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 150)
+[node name="Bronze" type="TextureRect" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("5_5f2sf")
 
-[node name="Silver" type="TextureRect" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 150)
+[node name="Silver" type="TextureRect" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("6_x42xx")
 
-[node name="Gold" type="TextureRect" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 150)
+[node name="Gold" type="TextureRect" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("7_l271a")
 
-[node name="Plat" type="TextureRect" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 150)
+[node name="Plat" type="TextureRect" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("9_8ydov")
 
-[node name="Author" type="TextureRect" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
-custom_minimum_size = Vector2(0, 150)
+[node name="Author" type="TextureRect" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("8_8ydov")
 
-[node name="BronzeTime" type="Label" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="BronzeTime" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
 layout_mode = 2
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="SilverTime" type="Label" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="SilverTime" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
 layout_mode = 2
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="GoldTime" type="Label" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="GoldTime" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
 layout_mode = 2
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="PlatTime" type="Label" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="PlatTime" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
 layout_mode = 2
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="AuthorTime" type="Label" parent="UI/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="AuthorTime" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
 layout_mode = 2
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="LeaderboardTitle" type="Label" parent="UI/GameInfo/Leaderboard/M/V"]
+[node name="LeaderboardTitle" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V"]
 layout_mode = 2
 text = "Leaderboard"
 
-[node name="TH" type="GridContainer" parent="UI/GameInfo/Leaderboard/M/V"]
+[node name="TH" type="GridContainer" parent="UI/UiContainer/GameInfo/Leaderboard/M/V"]
 layout_mode = 2
 theme_override_constants/h_separation = 30
 columns = 6
 
-[node name="Pos" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TH"]
+[node name="Pos" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TH"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "Pos"
 
-[node name="Name" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TH"]
+[node name="Name" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TH"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Player Name"
 
-[node name="Time" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TH"]
+[node name="Time" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TH"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Time (s)"
 
-[node name="DateSubmitted" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TH"]
+[node name="DateSubmitted" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TH"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Date Submitted"
 
-[node name="RaceGhost" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TH"]
+[node name="RaceGhost" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TH"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Race Ghost"
 
-[node name="RaceGhost2" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TH"]
+[node name="RaceGhost2" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TH"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "View Replay
-(Movement Only)"
+text = "View Replay"
 
-[node name="TRows" type="GridContainer" parent="UI/GameInfo/Leaderboard/M/V"]
+[node name="TRows" type="GridContainer" parent="UI/UiContainer/GameInfo/Leaderboard/M/V"]
 layout_mode = 2
+theme = SubResource("Theme_wlj80")
 theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 4
 columns = 6
 
-[node name="Pos" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "1."
 
-[node name="Name" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted12" type="Button" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted34" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Race"
+text = "2025-08-06"
 
-[node name="DateSubmitted23" type="Button" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted35" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Race"
+text = "2025-08-06"
 
-[node name="Pos2" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos2" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "2."
 
-[node name="Name2" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name2" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time2" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time2" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted2" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted2" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted13" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted13" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted24" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted24" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="Pos3" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos3" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "3."
 
-[node name="Name3" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name3" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time3" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time3" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted3" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted3" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted14" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted14" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted25" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted25" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="Pos4" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos4" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "4."
 
-[node name="Name4" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name4" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time4" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time4" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted4" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted4" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted15" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted15" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted26" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted26" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="Pos5" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos5" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "5."
 
-[node name="Name5" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name5" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time5" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time5" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted5" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted5" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted16" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted16" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted27" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted27" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="Pos6" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos6" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "6."
 
-[node name="Name6" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name6" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time6" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time6" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted6" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted6" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted17" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted17" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted28" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted28" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="Pos7" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos7" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "7."
 
-[node name="Name7" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name7" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time7" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time7" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted7" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted7" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted18" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted18" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted33" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted33" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="Pos8" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos8" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "8."
 
-[node name="Name8" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name8" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time8" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time8" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted8" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted8" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted19" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted19" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted29" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted29" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="Pos9" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos9" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "9."
 
-[node name="Name9" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name9" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time9" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time9" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted9" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted9" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted20" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted20" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted30" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted30" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="Pos10" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos10" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "10."
 
-[node name="Name10" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name10" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "munost"
 
-[node name="Time10" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time10" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321"
 
-[node name="DateSubmitted10" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted10" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted21" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted21" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted31" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted31" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="Pos11" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Pos11" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "532."
 
-[node name="Name11" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Name11" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "YOU"
 
-[node name="Time11" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="Time11" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0.98321312321"
 
-[node name="DateSubmitted11" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted11" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted22" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted22" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="DateSubmitted32" type="Label" parent="UI/GameInfo/Leaderboard/M/V/TRows"]
+[node name="DateSubmitted32" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/TRows"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2025-08-06"
 
-[node name="H" type="HBoxContainer" parent="UI/GameInfo/Leaderboard/M/V"]
+[node name="H" type="HBoxContainer" parent="UI/UiContainer/GameInfo/Leaderboard/M/V"]
 layout_mode = 2
 
-[node name="<" type="Button" parent="UI/GameInfo/Leaderboard/M/V/H"]
+[node name="<" type="Button" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/H"]
 layout_mode = 2
 focus_mode = 0
 text = "<"
 
-[node name="Page" type="Label" parent="UI/GameInfo/Leaderboard/M/V/H"]
+[node name="Page" type="Label" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/H"]
 layout_mode = 2
 text = "Page 0 of 0"
 
-[node name=">" type="Button" parent="UI/GameInfo/Leaderboard/M/V/H"]
+[node name=">" type="Button" parent="UI/UiContainer/GameInfo/Leaderboard/M/V/H"]
 layout_mode = 2
 focus_mode = 0
 text = ">"
 
-[node name="Panel" type="Panel" parent="UI/GameInfo"]
+[node name="Panel" type="Panel" parent="UI/UiContainer/GameInfo"]
 visible = false
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("5_cwolq")
 
-[node name="M" type="MarginContainer" parent="UI/GameInfo/Panel"]
+[node name="M" type="MarginContainer" parent="UI/UiContainer/GameInfo/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -837,10 +865,10 @@ grow_vertical = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 
-[node name="V" type="VBoxContainer" parent="UI/GameInfo/Panel/M"]
+[node name="V" type="VBoxContainer" parent="UI/UiContainer/GameInfo/Panel/M"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="UI/GameInfo/Panel/M/V"]
+[node name="Title" type="Label" parent="UI/UiContainer/GameInfo/Panel/M/V"]
 layout_mode = 2
 text = "Lobby"
 

@@ -7,8 +7,7 @@ var player_cam: Camera3D
 var frames: Array[FrameInfo]
 var currently_playing: Array[FrameInfo]
 var current_frame: int
-var paused := true
-
+var paused: bool
 var camera := Camera3D.new()
 var ghost: Node3D
 var target: Node3D = null
@@ -30,6 +29,12 @@ func add_frame(position: Vector3, rot_y: float) -> void:
 func clear() -> void:
 	frames.clear()
 
+func pause_playback() -> void:
+	paused = true
+	
+func resume_playback() -> void:
+	paused = false
+
 func play_frames(frames: Array[FrameInfo], is_ghost: bool) -> void:
 	currently_playing = frames
 	current_frame = 0
@@ -42,10 +47,13 @@ func play_frames(frames: Array[FrameInfo], is_ghost: bool) -> void:
 	
 	if not is_ghost:
 		camera.make_current()
-		
-	paused = false
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+func is_playing() -> bool:
+	return current_frame < len(currently_playing)
 
 func _physics_process(_delta: float) -> void:
+	if not is_playing(): return
 	if paused: return
 	
 	var frame := currently_playing[current_frame]
@@ -58,13 +66,6 @@ func _physics_process(_delta: float) -> void:
 		target.global_position.y += EYE_HEIGHT
 
 	current_frame += 1
-
-	if current_frame >= len(currently_playing):
-		paused = true
-		camera.current = false
-		
-		#if ghost is not Camera3D:
-			#ghost.visible = false
 
 func to_bytes() -> PackedByteArray:
 	var buffer := StreamPeerBuffer.new()

@@ -37,7 +37,7 @@ func _ready() -> void:
 		child.texture = EMPTY_MEDAL
 
 func set_personal_best(time: float, position: int, total: int) -> void:
-	timer_label.text = "Not Completed"
+	timer_label.text = "Not Completed...\n"
 	
 	if time == -INF: return
 	

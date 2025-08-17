@@ -12,11 +12,13 @@ signal target_killed
 @onready var target_spawns_container: Node = $TargetSpawns
 @onready var sound_player := AudioStreamPlayer.new()
 @onready var recorder := Recorder.new(player.camera)
+@onready var map_ui: MapUi = MapUiScene.instantiate()
 
 const PlayerScene := preload("res://src/player/player.tscn")
 const TargetScene := preload("res://src/target/target.tscn")
 const StartRunSound = preload("res://src/sounds/run.wav")
 const WinRunSound = preload("res://src/sounds/win.wav")
+const MapUiScene = preload("res://src/maps/map_ui.tscn")
 
 var timer: float = 0.0
 var completed: bool = false
@@ -30,7 +32,9 @@ func _ready() -> void:
 	restart()
 	add_child(recorder)
 	add_child(sound_player)
-
+	add_child(map_ui)
+	map_ui.return_control_to_player.connect(_on_return_control_to_player)
+	map_ui.visible = false
 	start_zone.body_exited.connect(_on_start_zone_exited)
 	end_zone.body_entered.connect(func(_body: Node3D) -> void: can_win = true)
 	player.jumped.connect(_on_player_jump)
@@ -40,14 +44,36 @@ func _ready() -> void:
 	Lobby.switched_map.rpc(Lobby.current_map.mid)
 	Lobby.replay_requested.connect(_on_replay_requested)
 	target_killed.connect(_on_target_killed)
+	_on_target_killed()
 	
-	_on_target_killed() 
+	map_ui.slider.value_changed.connect(_on_replay_slider_changed)
+	map_ui.slider.drag_started.connect(recorder.pause_playback)
+	map_ui.slider.drag_ended.connect(func(changed: bool) -> void: recorder.resume_playback())
+	
+func _on_replay_slider_changed(value: float) -> void:
+	recorder.current_frame = value
+
+func is_watching_replay() -> bool:
+	return map_ui.visible
+
+func _on_return_control_to_player() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	map_ui.visible = false
+	player.camera.make_current()
+	player.camera.visible = true
+	player.ui.visible = true
+	restart()
 
 func _on_target_killed() -> void:
 	player.set_target_status(target_container.get_child_count(), target_spawns_container.get_child_count())
 
 func _on_replay_requested(data: String) -> void:
+	restart()
+	map_ui.visible = true
+	player.camera.visible = false
+	player.ui.visible = false
 	recorder.play_bytes(Marshalls.base64_to_raw(data))
+	map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
 
 func _on_player_disconnected(pid: int) -> void:
 	var p := find_player(pid)
@@ -78,6 +104,9 @@ func _physics_process(_delta: float) -> void:
 	if running:
 		recorder.add_frame(player.global_position, player.global_rotation.y)
 		player.set_timer(timer)
+		
+	if recorder.is_playing():
+		map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
 	
 @rpc("any_peer", "call_remote", "unreliable")
 func moved(pos: Vector3, y_rot: float) -> void:

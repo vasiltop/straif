@@ -5,16 +5,16 @@ signal jumped
 @onready var camera: PlayerCamera = $Eye/Camera
 @onready var gun_camera: Camera3D = $Eye/Camera/GunVPContainer/GunVP/GunCam
 @onready var gun_vp: SubViewport = $Eye/Camera/GunVPContainer/GunVP
-@onready var timer_label: Label = $UI/BottomLeft/V/Timer
-@onready var target_label: Label = $UI/BottomLeft/V/EnemiesLeft
+@onready var timer_label: Label = $UI/UiContainer/BottomLeft/V/Timer
+@onready var target_label: Label = $UI/UiContainer/BottomLeft/V/EnemiesLeft
 @onready var ui: CanvasLayer = $UI
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var camera_anchor: Marker3D = $CameraAnchor
-@onready var leaderboard: Leaderboard = $UI/GameInfo/Leaderboard
-@onready var speed_label: Label = $UI/BottomLeft/V/Speed
-@onready var alt_speed_label: Label = $UI/Middle/Speed
-@onready var sniper_overlay: TextureRect = $UI/SniperOverlay
+@onready var leaderboard: Leaderboard = $UI/UiContainer/GameInfo/Leaderboard
+@onready var speed_label: Label = $UI/UiContainer/BottomLeft/V/Speed
+@onready var alt_speed_label: Label = $UI/UiContainer/Middle/Speed
+@onready var sniper_overlay: TextureRect = $UI/UiContainer/SniperOverlay
 @onready var raycast: RayCast3D = $Eye/Camera/RayCast
 
 const RunSound := preload("res://src/sounds/run.mp3")
@@ -81,7 +81,7 @@ func _process(_delta: float) -> void:
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
-	(get_node("UI/TopLeft/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
+	(get_node("UI/UiContainer/TopLeft/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
 
 func _physics_process(delta: float) -> void:
 	if not is_me(): return
@@ -105,6 +105,8 @@ func set_target_status(left: int, total: int) -> void:
 	target_label.text = "Targets: %d/%d" % [left, total]
 
 func _movement_process(delta: float) -> void:
+	if map.is_watching_replay(): return
+	
 	var wish_dir := Input.get_vector("left", "right", "up", "down")
 	wish_dir = wish_dir.rotated(-rotation.y)
 

@@ -53,7 +53,7 @@ func _set_init_values() -> void:
 	volume_slider.value = Settings.value("Audio", "master_volume")
 	vsync_input.button_pressed = Settings.value("Display", "vsync")
 	speed_label_input.button_pressed = Settings.value("Display", "speed")
-	
+
 	var res: String = Settings.value("Display", "resolution")
 	for i in resolution_input.item_count:
 		var value := resolution_input.get_item_text(i)
@@ -72,7 +72,7 @@ func _on_max_fps_changed(value: float) -> void:
 func _on_window_mode_changed(index: int) -> void:
 	Settings.change_display_mode(index)
 	Settings.update("Display", "mode", index)
-	
+
 func _on_resolution_changed(index: int) -> void:
 	var value := resolution_input.get_item_text(index)
 	Settings.change_res(value)

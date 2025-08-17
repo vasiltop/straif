@@ -1,6 +1,7 @@
 [gd_scene load_steps=43 format=3 uid="uid://taw7qljauqyg"]
 
 [ext_resource type="Script" uid="uid://c3c48ot8m7wcr" path="res://src/menus/main/main_menu.gd" id="1_cput1"]
+[ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="1_wwn1r"]
 [ext_resource type="PackedScene" uid="uid://bl08qnvut26i8" path="res://src/menus/settings/settings_menu.tscn" id="2_juxiq"]
 [ext_resource type="Texture2D" uid="uid://jbk5guvue7n4" path="res://src/textures/discord-hover.png" id="3_0gscq"]
 [ext_resource type="PackedScene" uid="uid://cpgalek8pubhp" path="res://src/maps/tiles/building.tscn" id="3_im8n7"]
@@ -16,9 +17,6 @@
 [ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="14_ynrsg"]
 [ext_resource type="PackedScene" uid="uid://dafd7bewek8ax" path="res://src/maps/tiles/vent_1.tscn" id="15_7pey8"]
 [ext_resource type="PackedScene" uid="uid://b01o82sp4jlmx" path="res://src/maps/tiles/vent_2.tscn" id="16_i5dmx"]
-
-[sub_resource type="Theme" id="Theme_juxiq"]
-default_font_size = 20
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
 size = Vector2(64, 64)
@@ -153,7 +151,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_juxiq")
+theme = ExtResource("1_wwn1r")
 script = ExtResource("1_cput1")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -258,10 +256,22 @@ layout_mode = 2
 
 [node name="H" type="HBoxContainer" parent="MarginContainer/Content/Body/Play/M/V"]
 layout_mode = 2
+theme_override_constants/separation = 50
 
 [node name="MedalsEarned" type="Label" parent="MarginContainer/Content/Body/Play/M/V/H"]
 layout_mode = 2
 text = "Medals Earned: 0 / 0"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Content/Body/Play/M/V"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Play/M/V/HBoxContainer"]
+layout_mode = 2
+text = "Mode: Target"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/Content/Body/Play/M/V/HBoxContainer"]
+layout_mode = 2
 
 [node name="S" type="ScrollContainer" parent="MarginContainer/Content/Body/Play/M/V"]
 layout_mode = 2
@@ -378,11 +388,13 @@ layout_mode = 2
 text = "Create"
 
 [node name="OR" type="Label" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
+visible = false
 layout_mode = 2
 text = "OR"
 horizontal_alignment = 1
 
 [node name="HostLocal" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/CreateLobby/Form"]
+visible = false
 layout_mode = 2
 text = "Host Local"
 
@@ -409,6 +421,7 @@ layout_mode = 2
 text = "Refresh / Search"
 
 [node name="JoinLocal" type="Button" parent="MarginContainer/Content/Body/Lobby/MarginContainer/LobbySplit/Lobbies/Title"]
+visible = false
 layout_mode = 2
 text = "Join Local"
 
@@ -433,7 +446,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 50
+theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
@@ -443,10 +456,13 @@ layout_mode = 2
 [node name="Save" type="Button" parent="MarginContainer/Content/Body/Settings"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
-offset_bottom = 31.0
+anchor_bottom = 1.0
+offset_top = -36.0
 grow_horizontal = 2
+grow_vertical = 0
 theme_override_font_sizes/font_size = 20
 text = "Save Settings"
 

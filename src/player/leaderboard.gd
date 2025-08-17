@@ -8,7 +8,7 @@ signal ghost_enabled(steam_id: int)
 @onready var inc_page_btn: Button = $"M/V/H/>"
 @onready var page_label: Label = $M/V/H/Page
 @onready var middle: HBoxContainer = $".."
-@onready var player: Player = $"../../.."
+@onready var player: Player = $"../../../.."
 
 @onready var medal_time_labels: Array[Label] = [
 	$M/V/MedalInfo/BronzeTime,
@@ -44,7 +44,9 @@ func _process(_delta: float) -> void:
 		_setup()
 	elif Input.is_action_just_released("leaderboard"):
 		middle.visible = false
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
+		if not player.map.is_watching_replay():
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _load_runs() -> void:
 	for child in t_rows.get_children():
@@ -70,7 +72,7 @@ func _setup() -> void:
 	for i in range(len(medal_time_labels)):
 		medal_time_labels[i].text = str(Lobby.current_map.medal_times[i]) + "s"
 	
-	_load_runs()
+	await _load_runs()
 		
 	var my_run := await Http.get_my_run(Lobby.current_map.name)
 	
@@ -104,13 +106,16 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	
 	var setup_race_btn_text := func() -> String:
 		return "Race %s" % player_name if not player.map.currently_racing_steam_id == steam_id else "Stop Racing"
-		
+	
+	const BUTTON_FONT_SIZES := 10
 	var race_btn := Button.new()
 	t_rows.add_child(race_btn)
 	race_btn.text = setup_race_btn_text.call()
 	race_btn.focus_mode = Control.FOCUS_NONE
 	race_btn.size_flags_horizontal = Control.SIZE_EXPAND
 	race_btn.set_meta("player_name", player_name)
+	race_btn.custom_minimum_size.y = 1.0
+	race_btn.add_theme_font_size_override("font_size", BUTTON_FONT_SIZES)
 	
 	race_btn.pressed.connect(
 		func() -> void:
@@ -138,6 +143,7 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	)
 	
 	var replay_btn := Button.new()
+	
 	t_rows.add_child(replay_btn)
 	replay_btn.text = "View Replay"
 	replay_btn.size_flags_horizontal = Control.SIZE_EXPAND
@@ -149,3 +155,5 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 		else:
 			Info.alert("Invalid replay request")
 	)
+	replay_btn.custom_minimum_size.y = 1.0
+	replay_btn.add_theme_font_size_override("font_size", BUTTON_FONT_SIZES)

@@ -80,6 +80,7 @@ func _on_sword_hit(body: Node3D) -> void:
 func _process(delta: float) -> void:
 	if not player.is_me(): return
 	if not current_weapon: return
+	if player.map.is_watching_replay(): return
 
 	var attack_input := Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
 	if attack_input and time_since_last_shot > current_weapon.weapon_shot_delay:

@@ -13,6 +13,7 @@ func shake(duration: float, magnitude: float) -> void:
 
 func _process(delta: float) -> void:
 	if not player.is_me(): return
+	if player.map.is_watching_replay(): return
 	
 	if _remaining > 0:
 		_remaining -= delta

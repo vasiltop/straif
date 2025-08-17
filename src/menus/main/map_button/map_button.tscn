@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0qa4nk774v55"]
+[gd_scene load_steps=7 format=3 uid="uid://c0qa4nk774v55"]
 
 [ext_resource type="Script" uid="uid://bsb0urrean8eg" path="res://src/menus/main/map_button/map_button.gd" id="1_ubswg"]
 [ext_resource type="Texture2D" uid="uid://ddwv6d1j2fuuq" path="res://src/textures/bronze_medal.png" id="1_v5ql1"]
@@ -7,9 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="4_jcj4f"]
 [ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="5_03hqm"]
 
-[sub_resource type="Theme" id="Theme_n8kih"]
-default_font_size = 15
-
 [node name="MapButton" type="Panel"]
 custom_minimum_size = Vector2(350, 200)
 anchors_preset = 15
@@ -17,7 +14,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_n8kih")
 script = ExtResource("1_ubswg")
 
 [node name="C" type="CenterContainer" parent="."]
@@ -33,17 +29,19 @@ layout_mode = 2
 
 [node name="MapName" type="Label" parent="C/V"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "Map Name"
-horizontal_alignment = 1
 
 [node name="Timer" type="Label" parent="C/V"]
 layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 16
 text = "Personal Best: Loading....
 Position: 0 / 0"
-horizontal_alignment = 1
 
 [node name="Medals" type="GridContainer" parent="C/V"]
 layout_mode = 2
+size_flags_vertical = 3
 columns = 5
 
 [node name="Bronze" type="TextureRect" parent="C/V/Medals"]
@@ -78,4 +76,6 @@ texture = ExtResource("4_jcj4f")
 
 [node name="Play" type="Button" parent="C/V"]
 layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 15
 text = "Play"
