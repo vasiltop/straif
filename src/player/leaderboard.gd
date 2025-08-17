@@ -1,5 +1,7 @@
 class_name Leaderboard extends Panel
 
+signal ghost_enabled(steam_id: int)
+
 @onready var t_rows: GridContainer = $M/V/TRows
 @onready var map_name_label: Label = $M/V/MapName
 @onready var dec_page_btn: Button = $"M/V/H/<"
@@ -117,6 +119,7 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	race_btn.text = setup_race_btn_text.call()
 	race_btn.focus_mode = Control.FOCUS_NONE
 	race_btn.size_flags_horizontal = Control.SIZE_EXPAND
+	race_btn.set_meta("player_name", player_name)
 	
 	race_btn.pressed.connect(
 		func() -> void:
@@ -126,12 +129,19 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 				player.map.currently_racing_steam_id = steam_id
 				var ghost_name_label: Label3D = player.map.recorder.ghost.get_node("Name")
 				ghost_name_label.text = "%s's Ghost" % player_name
+				
+				for child in t_rows.get_children():
+					if child is Button:
+						var b: Button = child
+						var this_player_name: String = b.get_meta("player_name")
+						b.text = "Race %s" % this_player_name
+						
 			else:
 				player.map.race_recording_bytes.clear()
 				player.map.currently_racing_steam_id = 0
 				
 				if player.map.recorder.ghost:
 					player.map.recorder.ghost.visible = false
-				
+					
 			race_btn.text = setup_race_btn_text.call()
 	)

@@ -1,4 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://c70q15bb5j4yo"]
+[gd_scene load_steps=9 format=3 uid="uid://c70q15bb5j4yo"]
+
+[ext_resource type="Material" uid="uid://br8632i3hp7a8" path="res://src/maps/presets/zone.tres" id="1_ok2f4"]
+[ext_resource type="Script" uid="uid://di8h64j8pmsi7" path="res://src/maps/presets/zone_outline.gd" id="2_ok2f4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sconu"]
 size = Vector3(1.5, 2.5, 1.5)
@@ -44,3 +47,15 @@ amount = 35
 lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_8u567")
 draw_pass_1 = SubResource("QuadMesh_8u567")
+
+[node name="CSGBox3D" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00177002, 1.39509, 0.00146484)
+material_override = ExtResource("1_ok2f4")
+script = ExtResource("2_ok2f4")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D"]
+size = Vector3(1.5, 2.5, 1.5)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
+operation = 2
+size = Vector3(1.49, 2.5, 1.49)

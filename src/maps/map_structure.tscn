@@ -31,6 +31,7 @@ sky_material = SubResource("PanoramaSkyMaterial_77xce")
 
 [sub_resource type="Environment" id="Environment_ydj32"]
 background_mode = 2
+background_energy_multiplier = 0.4
 sky = SubResource("Sky_nlsro")
 tonemap_mode = 2
 fog_enabled = true
