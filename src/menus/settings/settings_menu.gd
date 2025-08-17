@@ -10,6 +10,7 @@ class_name SettingsMenu extends TabContainer
 @onready var ads_sens_slider: HSlider = $Controls/Margin/V/AdsSensitivity/SliderInput
 @onready var vsync_input: CheckBox = $Display/Margin/V/Vsync/Input
 @onready var resolution_input: OptionButton = $Display/Margin/V/Resolution/Input
+@onready var speed_label_input: CheckBox = $Display/Margin/V/SpeedLabel/Input
 
 func _ready() -> void:
 	_set_init_values()
@@ -21,6 +22,7 @@ func _ready() -> void:
 	resolution_input.item_selected.connect(_on_resolution_changed)
 	max_fps_input.value_changed.connect(_on_max_fps_changed)
 	vsync_input.toggled.connect(_on_vsync_changed)
+	speed_label_input.toggled.connect(_on_speed_label_input_changed)
 	
 	for action in Settings.get_custom_actions():
 		var label := Label.new()
@@ -33,6 +35,9 @@ func _ready() -> void:
 func _on_vsync_changed(toggled_on: bool) -> void:
 	DisplayServer.window_set_vsync_mode(Settings.get_vsync_enum(toggled_on))
 	Settings.update("Display", "vsync", toggled_on)
+	
+func _on_speed_label_input_changed(toggled_on: bool) -> void:
+	Settings.update("Display", "speed", toggled_on)
 
 func _set_init_values() -> void:
 	var sens: float = Settings.value("Controls", "sensitivity")
@@ -47,6 +52,7 @@ func _set_init_values() -> void:
 	max_fps_input.value = Settings.value("Display", "max_fps")
 	volume_slider.value = Settings.value("Audio", "master_volume")
 	vsync_input.button_pressed = Settings.value("Display", "vsync")
+	speed_label_input.button_pressed = Settings.value("Display", "speed")
 	
 	var res: String = Settings.value("Display", "resolution")
 	for i in resolution_input.item_count:

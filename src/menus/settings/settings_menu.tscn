@@ -8,10 +8,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 1
 script = ExtResource("1_orxww")
 
 [node name="Controls" type="ScrollContainer" parent="."]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -75,7 +76,6 @@ layout_mode = 2
 theme_override_constants/h_separation = 10
 
 [node name="Display" type="ScrollContainer" parent="."]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -175,6 +175,18 @@ layout_mode = 2
 text = "Vsync"
 
 [node name="Input" type="CheckBox" parent="Display/Margin/V/Vsync"]
+layout_mode = 2
+
+[node name="SpeedLabel" type="HBoxContainer" parent="Display/Margin/V"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Display/Margin/V/SpeedLabel"]
+layout_mode = 2
+text = "Show speed under crosshair"
+
+[node name="Input" type="CheckBox" parent="Display/Margin/V/SpeedLabel"]
 layout_mode = 2
 
 [node name="Audio" type="ScrollContainer" parent="."]

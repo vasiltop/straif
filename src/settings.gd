@@ -1,7 +1,7 @@
 extends Node
 
 const PATH := "user://settings.cfg"
-const SETTINGS_VERSION := 7
+const SETTINGS_VERSION := 8
 
 var config := ConfigFile.new()
 var default_keybinds: Dictionary[String, Keybind] = {
@@ -88,6 +88,7 @@ func reset_to_defaults() -> void:
 	config.set_value("Display", "resolution", "1920x1080")
 	config.set_value("Display", "max_fps", 1000)
 	config.set_value("Display", "vsync", false)
+	config.set_value("Display", "speed", false)
 	config.set_value("Audio", "master_volume", -10.0)
 	config.set_value("Game", "version", SETTINGS_VERSION)
 	

@@ -11,8 +11,9 @@ signal jumped
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var camera_anchor: Marker3D = $CameraAnchor
-@onready var leaderboard: Leaderboard = $UI/Middle/Leaderboard
+@onready var leaderboard: Leaderboard = $UI/GameInfo/Leaderboard
 @onready var speed_label: Label = $UI/BottomLeft/V/Speed
+@onready var alt_speed_label: Label = $UI/Middle/Speed
 @onready var sniper_overlay: TextureRect = $UI/SniperOverlay
 @onready var raycast: RayCast3D = $Eye/Camera/RayCast
 
@@ -94,6 +95,8 @@ func _physics_process(delta: float) -> void:
 	var current_vel := velocity
 	current_vel.y = 0
 	speed_label.text = "%.2fu/s" % current_vel.length()
+	alt_speed_label.text = speed_label.text
+	alt_speed_label.visible = Settings.value("Display", "speed")
 
 func set_timer(value: float) -> void:
 	timer_label.text = "Time: %.3fs" % value

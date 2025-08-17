@@ -86,20 +86,11 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	position_label.custom_minimum_size.x = 30.0
 	run_position += 1
 
-	var name_label := ClickableLabel.new()
+	var name_label := Label.new()
 	t_rows.add_child(name_label)
 	name_label.text = player_name
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND
 	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
-
-	if Lobby.admin:
-		name_label.pressed.connect(func() -> void:
-			var replay := await Http.get_replay(Lobby.current_map.name, steam_id)
-			if replay != "":
-				Lobby.replay_requested.emit(replay)
-			else:
-				Info.alert("Invalid replay request")
-		)
 	
 	var time_label := Label.new()
 	t_rows.add_child(time_label)
@@ -131,9 +122,9 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 				ghost_name_label.text = "%s's Ghost" % player_name
 				
 				for child in t_rows.get_children():
-					if child is Button:
+					if child.has_meta("player_name"):
 						var b: Button = child
-						var this_player_name: String = b.get_meta("player_name")
+						var this_player_name: String = child.get_meta("player_name")
 						b.text = "Race %s" % this_player_name
 						
 			else:
@@ -144,4 +135,17 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 					player.map.recorder.ghost.visible = false
 					
 			race_btn.text = setup_race_btn_text.call()
+	)
+	
+	var replay_btn := Button.new()
+	t_rows.add_child(replay_btn)
+	replay_btn.text = "View Replay"
+	replay_btn.size_flags_horizontal = Control.SIZE_EXPAND
+	replay_btn.focus_mode = Control.FOCUS_NONE
+	replay_btn.pressed.connect(func() -> void:
+		var replay := await Http.get_replay(Lobby.current_map.name, steam_id)
+		if replay != "":
+			Lobby.replay_requested.emit(replay)
+		else:
+			Info.alert("Invalid replay request")
 	)
