@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import db from "../db/index.ts";
 import { runs } from "../db/schema.ts";
 import { asc, eq, sql, and, lt } from "drizzle-orm";
-import { admin_auth, version_compare, steam_auth } from "../middleware.ts";
+import { version_compare, steam_auth } from "../middleware.ts";
 import {
 	Client,
 	GatewayIntentBits,
@@ -333,14 +333,19 @@ app.post(
 				time_ms: runs.time_ms,
 			})
 			.from(runs)
-			.where(and(eq(runs.map_name, body.map_name), eq(runs.steam_id, "2")))
+			.where(
+				and(
+					eq(runs.map_name, body.map_name),
+					eq(runs.steam_id, c.get("steam_id")),
+				),
+			)
 			.limit(1);
 
 		try {
 			await db
 				.insert(runs)
 				.values({
-					steam_id: "2",
+					steam_id: c.get("steam_id"),
 					map_name: body.map_name,
 					recording: body.recording,
 					time_ms: body.time_ms,

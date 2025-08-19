@@ -30,7 +30,6 @@ async function get_steam_id_from_ticket(ticket: string): Promise<string> {
 }
 
 export const version_compare = createMiddleware(async (c, next) => {
-	return next();
 	const version = c.req.header("version");
 
 	if (!version) {
@@ -45,7 +44,6 @@ export const version_compare = createMiddleware(async (c, next) => {
 });
 
 export const steam_auth = createMiddleware(async (c, next) => {
-	return next();
 	const auth_ticket = c.req.header("auth-ticket");
 
 	if (!auth_ticket) {
