@@ -15,11 +15,14 @@ func _ready() -> void:
 		var map_tier: int = map.tier
 		var map_times: Array = map.times
 		
+		const IMAGES_LOCATION := "res://images/screenshots/"
+		var image: Texture2D = load(IMAGES_LOCATION + map_name + ".png")
+		
 		var map_times_float: Array[float]
 		for time: float in map_times:
 			map_times_float.append(time)
 		
-		var map_data := MapData.new(map_name, map_tier, i, map_times_float)
+		var map_data := MapData.new(map_name, map_tier, i, map_times_float, image)
 		maps.append(map_data)
 
 func get_map_with_id(mid: int) -> MapData:

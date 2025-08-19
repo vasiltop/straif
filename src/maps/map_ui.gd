@@ -12,6 +12,6 @@ func _ready() -> void:
 	)
 
 func set_frame(frame: int, total: int) -> void:
-	label.text = "Frame: %d / %d" % [frame, total]
+	label.text = "Tick: %d / %d" % [frame, total]
 	slider.value = frame
 	slider.max_value = total

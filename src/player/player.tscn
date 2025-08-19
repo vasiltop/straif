@@ -110,6 +110,7 @@ script = ExtResource("2_244u8")
 
 [node name="WeaponHandler" type="Node3D" parent="Eye/Camera"]
 physics_interpolation_mode = 2
+visible = false
 script = ExtResource("2_rxibo")
 sway_left = Vector3(-0.1, 0, 0)
 sway_right = Vector3(0.1, 0, 0)
@@ -347,10 +348,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -384.0
-offset_top = -216.0
-offset_right = 1496.0
-offset_bottom = 824.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("11_ylhto")
@@ -371,7 +368,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_ylhto")
 
-[node name="Leaderboard" type="Panel" parent="UI/UiContainer/GameInfo"]
+[node name="Leaderboard" type="PanelContainer" parent="UI/UiContainer/GameInfo"]
 z_index = 5
 custom_minimum_size = Vector2(900, 500)
 layout_mode = 2
@@ -379,12 +376,7 @@ theme_override_styles/panel = ExtResource("5_cwolq")
 script = ExtResource("5_l271a")
 
 [node name="M" type="MarginContainer" parent="UI/UiContainer/GameInfo/Leaderboard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
@@ -849,13 +841,13 @@ layout_mode = 2
 focus_mode = 0
 text = ">"
 
-[node name="Panel" type="Panel" parent="UI/UiContainer/GameInfo"]
+[node name="Lobby" type="Panel" parent="UI/UiContainer/GameInfo"]
 visible = false
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("5_cwolq")
 
-[node name="M" type="MarginContainer" parent="UI/UiContainer/GameInfo/Panel"]
+[node name="M" type="MarginContainer" parent="UI/UiContainer/GameInfo/Lobby"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -865,12 +857,34 @@ grow_vertical = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 
-[node name="V" type="VBoxContainer" parent="UI/UiContainer/GameInfo/Panel/M"]
+[node name="V" type="VBoxContainer" parent="UI/UiContainer/GameInfo/Lobby/M"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="UI/UiContainer/GameInfo/Panel/M/V"]
+[node name="Title" type="Label" parent="UI/UiContainer/GameInfo/Lobby/M/V"]
 layout_mode = 2
 text = "Lobby"
+
+[node name="Admin" type="PanelContainer" parent="UI/UiContainer/GameInfo"]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("5_cwolq")
+
+[node name="M" type="MarginContainer" parent="UI/UiContainer/GameInfo/Admin"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="V" type="VBoxContainer" parent="UI/UiContainer/GameInfo/Admin/M"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UI/UiContainer/GameInfo/Admin/M/V"]
+layout_mode = 2
+text = "Admin - Click any player's name to view details."
+
+[node name="V" type="VBoxContainer" parent="UI/UiContainer/GameInfo/Admin/M/V"]
+layout_mode = 2
 
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)

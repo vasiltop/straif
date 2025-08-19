@@ -113,9 +113,7 @@ func toggle_sniper_scope() -> void:
 		false:
 			player.camera.fov += FOV_DIFF
 	
-	# TODO: Add ADS sound.
-	#audio_player.stream = ADS_SOUND
-	#audio_player.play()
+	player.alt_speed_label.visible = visible
 
 func _physics_process(delta: float) -> void:
 	_sway(delta)

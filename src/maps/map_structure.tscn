@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://ejiq20awxkya" path="res://src/maps/presets/ladder.tscn" id="5_77xce"]
 [ext_resource type="Resource" uid="uid://duuij5rrj83i4" path="res://src/player/weapon/resources/sniper.tres" id="5_jlfa7"]
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="5_ydj32"]
-[ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/AllSkyFree_Sky_EpicGloriousPink_Equirect.png" id="6_1r0mp"]
+[ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/skyboxes/pink.png" id="6_1r0mp"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="8_mn4bu"]
 [ext_resource type="PackedScene" uid="uid://s1gi6bk381wf" path="res://src/maps/tiles/planks.tscn" id="8_vakwt"]
 [ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="13_c1icp"]
@@ -26,13 +26,13 @@ texture_filter = 0
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_77xce"]
 panorama = ExtResource("6_1r0mp")
 
-[sub_resource type="Sky" id="Sky_nlsro"]
+[sub_resource type="Sky" id="Sky_c1icp"]
 sky_material = SubResource("PanoramaSkyMaterial_77xce")
 
 [sub_resource type="Environment" id="Environment_ydj32"]
 background_mode = 2
-background_energy_multiplier = 0.6
-sky = SubResource("Sky_nlsro")
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_c1icp")
 tonemap_mode = 2
 fog_enabled = true
 fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)

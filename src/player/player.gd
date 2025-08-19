@@ -72,6 +72,7 @@ func _ready() -> void:
 	ui.visible = false
 	weapon_handler.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	alt_speed_label.visible = Settings.value("Display", "speed")
 
 func _process(_delta: float) -> void:
 	if not is_me(): return
@@ -96,7 +97,6 @@ func _physics_process(delta: float) -> void:
 	current_vel.y = 0
 	speed_label.text = "%.2fu/s" % current_vel.length()
 	alt_speed_label.text = speed_label.text
-	alt_speed_label.visible = Settings.value("Display", "speed")
 
 func set_timer(value: float) -> void:
 	timer_label.text = "Time: %.3fs" % value

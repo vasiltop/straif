@@ -1,9 +1,9 @@
 class_name MapButton extends Panel
 
-@onready var map_name_label: Label = $C/V/MapName
-@onready var timer_label: Label = $C/V/Timer
-@onready var play_btn: Button = $C/V/Play
-@onready var medals: GridContainer = $C/V/Medals
+@onready var map_name_label: Label = $M/C/P/M/V/MapName
+@onready var timer_label: Label = $M/C/P/M/V/Timer
+@onready var medals: GridContainer = $M/C/V/Medals
+@onready var play_btn: Button = $M/C/V/Play
 
 const EMPTY_MEDAL = preload("res://src/textures/empty_medal.png")
 const BRONZE_MEDAL = preload("res://src/textures/bronze_medal.png")
@@ -35,13 +35,17 @@ func _ready() -> void:
 	
 	for child: TextureRect in medals.get_children():
 		child.texture = EMPTY_MEDAL
+		
+	var sb := StyleBoxTexture.new()
+	sb.texture = map.image
+	add_theme_stylebox_override("panel", sb)
 
 func set_personal_best(time: float, position: int, total: int) -> void:
-	timer_label.text = "Not Completed...\n"
+	timer_label.text = "Not Completed..."
 	
 	if time == -INF: return
 	
-	timer_label.text = "Personal Best: %.3f\nPosition: %d / %d" % [time, position, total]
+	timer_label.text = "Personal Best: %.3fs\nPosition: %d / %d" % [time, position, total]
 	
 	for i in range(MEDAL_COUNT):
 		var medal: TextureRect = medals.get_child(i)

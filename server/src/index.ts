@@ -5,6 +5,10 @@ import { Hono } from 'hono';
 import { swaggerUI } from '@hono/swagger-ui';
 import { openAPISpecs } from 'hono-openapi';
 import leaderboard from './routes/leaderboard.ts'
+import {
+	Client,
+	GatewayIntentBits,
+} from "discord.js";
 
 const app = new Hono()
 
@@ -61,4 +65,16 @@ serve({
 	port: 3000
 }, (info) => {
 	console.log(`Server is running on http://localhost:${info.port}`)
+});
+
+export const discord_client = new Client({
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+});
+
+discord_client.login(process.env.DISCORD_TOKEN);
+
+export const DISCORD_CHANNEL_ID = process.env.CHANNEL_ID!;
+
+discord_client.on("ready", () => {
+	console.log(`Logged in as ${discord_client.user?.tag}`);
 });

@@ -1,4 +1,4 @@
-class_name Leaderboard extends Panel
+class_name Leaderboard extends PanelContainer
 
 signal ghost_enabled(steam_id: int)
 
@@ -9,6 +9,8 @@ signal ghost_enabled(steam_id: int)
 @onready var page_label: Label = $M/V/H/Page
 @onready var middle: HBoxContainer = $".."
 @onready var player: Player = $"../../../.."
+@onready var admin_panel: PanelContainer = $"../Admin"
+@onready var admin_actions_container: VBoxContainer = $"../Admin/M/V/V"
 
 @onready var medal_time_labels: Array[Label] = [
 	$M/V/MedalInfo/BronzeTime,
@@ -40,10 +42,15 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard"):
 		middle.visible = true
+		
+		if Lobby.admin:
+			admin_panel.visible = true
+			
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		_setup()
 	elif Input.is_action_just_released("leaderboard"):
 		middle.visible = false
+		admin_panel.visible = false
 		
 		if not player.map.is_watching_replay():
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -62,24 +69,30 @@ func _load_runs() -> void:
 		var shortened_name := run.username as String
 		if len(shortened_name) >= MAX_NAME_LENGTH:
 			shortened_name = shortened_name.substr(0, MAX_NAME_LENGTH) + "..."
-			
+
 		_insert_table_row(run_position, shortened_name, run.time_ms as float, run.created_at as String, run.steam_id as int)
 		run_position += 1
 
 func _setup() -> void:
 	map_name_label.text = "Map: " + Lobby.current_map.name
-	
+
 	for i in range(len(medal_time_labels)):
 		medal_time_labels[i].text = str(Lobby.current_map.medal_times[i]) + "s"
 	
 	await _load_runs()
-		
+
 	var my_run := await Http.get_my_run(Lobby.current_map.name)
-	
+
 	if my_run != {}:
 		var pos := my_run.position as int
 		if pos > 10:
 			_insert_table_row(pos, my_run.username as String, my_run.time_ms as float, my_run.created_at as String, my_run.steam_id as int)
+
+	if Lobby.admin:
+		for child in admin_actions_container.get_children():
+			child.queue_free()
+			
+		initialize_admin_actions()
 
 func _insert_table_row(run_position: int, player_name: String, time: float, date: String, steam_id: int) -> void:
 	var position_label := Label.new()
@@ -88,7 +101,7 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	position_label.custom_minimum_size.x = 30.0
 	run_position += 1
 
-	var name_label := Label.new()
+	var name_label := ClickableLabel.new()
 	t_rows.add_child(name_label)
 	name_label.text = player_name
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND
@@ -157,3 +170,54 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	)
 	replay_btn.custom_minimum_size.y = 1.0
 	replay_btn.add_theme_font_size_override("font_size", BUTTON_FONT_SIZES)
+	
+	name_label.pressed.connect(
+		func() -> void:
+			if not Lobby.admin: return
+			add_admin_actions_for_player(player_name, steam_id)
+	)
+
+func initialize_admin_actions() -> void:
+	var enable_maintenance_mode_btn := Button.new()
+	admin_actions_container.add_child(enable_maintenance_mode_btn)
+	enable_maintenance_mode_btn.text = "Enable Game Maintenance"
+	enable_maintenance_mode_btn.focus_mode = Control.FOCUS_NONE
+	
+	var stop_maintenance_mode_btn := Button.new()
+	admin_actions_container.add_child(stop_maintenance_mode_btn)
+	stop_maintenance_mode_btn.text = "Stop Game Maintenance"
+	stop_maintenance_mode_btn.focus_mode = Control.FOCUS_NONE
+	
+func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
+	for child in admin_actions_container.get_children():
+		child.queue_free()
+	
+	initialize_admin_actions()
+	
+	var name_label := Label.new()
+	admin_actions_container.add_child(name_label)
+	name_label.text = "Actions for player: %s" % player_name
+	
+	var delete_btn := Button.new()
+	admin_actions_container.add_child(delete_btn)
+	delete_btn.text = "Delete Run"
+	delete_btn.focus_mode = Control.FOCUS_NONE
+	
+	delete_btn.pressed.connect(
+		func() -> void:
+			var confirm_btn := Button.new()
+			delete_btn.add_sibling(confirm_btn)
+			confirm_btn.text = "Are you sure?"
+			confirm_btn.focus_mode = Control.FOCUS_NONE
+			confirm_btn.pressed.connect(confirm_btn.queue_free)
+	)
+	
+	var admin_btn := Button.new()
+	admin_actions_container.add_child(admin_btn)
+	admin_btn.text = "Give Admin"
+	admin_btn.focus_mode = Control.FOCUS_NONE
+	
+	var revoke_admin_btn := Button.new()
+	admin_actions_container.add_child(revoke_admin_btn)
+	revoke_admin_btn.text = "Revoke Admin"
+	revoke_admin_btn.focus_mode = Control.FOCUS_NONE

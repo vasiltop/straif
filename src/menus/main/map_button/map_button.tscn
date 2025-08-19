@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="5_03hqm"]
 
 [node name="MapButton" type="Panel"]
-custom_minimum_size = Vector2(350, 200)
+custom_minimum_size = Vector2(600, 350)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,66 +16,94 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ubswg")
 
-[node name="C" type="CenterContainer" parent="."]
+[node name="M" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
-[node name="V" type="VBoxContainer" parent="C"]
+[node name="C" type="Control" parent="M"]
 layout_mode = 2
 
-[node name="MapName" type="Label" parent="C/V"]
+[node name="P" type="PanelContainer" parent="M/C"]
+layout_mode = 1
+offset_right = 193.0
+offset_bottom = 81.0
+size_flags_horizontal = 0
+
+[node name="M" type="MarginContainer" parent="M/C/P"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="V" type="VBoxContainer" parent="M/C/P/M"]
+layout_mode = 2
+
+[node name="MapName" type="Label" parent="M/C/P/M/V"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Map Name"
 
-[node name="Timer" type="Label" parent="C/V"]
+[node name="Timer" type="Label" parent="M/C/P/M/V"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 16
 text = "Personal Best: Loading....
 Position: 0 / 0"
 
-[node name="Medals" type="GridContainer" parent="C/V"]
+[node name="V" type="VBoxContainer" parent="M/C"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Medals" type="GridContainer" parent="M/C/V"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_horizontal = 0
 columns = 5
 
-[node name="Bronze" type="TextureRect" parent="C/V/Medals"]
+[node name="Bronze" type="TextureRect" parent="M/C/V/Medals"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("1_v5ql1")
 
-[node name="Silver" type="TextureRect" parent="C/V/Medals"]
+[node name="Silver" type="TextureRect" parent="M/C/V/Medals"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("2_jcj4f")
 
-[node name="Gold" type="TextureRect" parent="C/V/Medals"]
+[node name="Gold" type="TextureRect" parent="M/C/V/Medals"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("3_ubswg")
 
-[node name="Plat" type="TextureRect" parent="C/V/Medals"]
+[node name="Plat" type="TextureRect" parent="M/C/V/Medals"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("5_03hqm")
 
-[node name="Author" type="TextureRect" parent="C/V/Medals"]
+[node name="Author" type="TextureRect" parent="M/C/V/Medals"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("4_jcj4f")
 
-[node name="Play" type="Button" parent="C/V"]
+[node name="Play" type="Button" parent="M/C/V"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 25
 text = "Play"

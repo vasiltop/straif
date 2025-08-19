@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3 uid="uid://clmmcf5lrbppq"]
+
+[ext_resource type="PackedScene" uid="uid://bkyw5w8h2wisy" path="res://src/player/weapon/scenes/ak47.tscn" id="1_8ghjt"]
+[ext_resource type="Script" uid="uid://bmwqlto471f6e" path="res://src/player/weapon/weapon_data.gd" id="2_2qmkp"]
+[ext_resource type="AudioStream" uid="uid://cv5ra6lu2ddy7" path="res://src/sounds/ak47.wav" id="3_8ghjt"]
+
+[resource]
+script = ExtResource("2_2qmkp")
+name = "Ak47"
+weapon_shot_delay = 0.1
+damage = 34.0
+scene = ExtResource("1_8ghjt")
+shoot_sound = ExtResource("3_8ghjt")
+recoil = 0.6
+attack_range = 100.0
+is_melee = false
+automatic = true
+is_sniper = false
+spread = 0.0
+bullet_count = 1.0
+metadata/_custom_type_script = "uid://bmwqlto471f6e"

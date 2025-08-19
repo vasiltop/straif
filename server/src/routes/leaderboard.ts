@@ -3,35 +3,17 @@ import db from "../db/index.ts";
 import { runs } from "../db/schema.ts";
 import { asc, eq, sql, and, lt } from "drizzle-orm";
 import { version_compare, steam_auth } from "../middleware.ts";
-import {
-	Client,
-	GatewayIntentBits,
-	TextChannel,
-	ChannelType,
-} from "discord.js";
-
 import { z } from "zod";
 import { describeRoute } from "hono-openapi";
 import { resolver, validator as zValidator } from "hono-openapi/zod";
-import { get } from "node:https";
+import { discord_client, DISCORD_CHANNEL_ID } from "../index.ts";
+import { ChannelType } from "discord.js";
 
 type Variables = {
 	steam_id: string;
 };
 
 const app = new Hono<{ Variables: Variables }>();
-
-const discordClient = new Client({
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
-});
-
-discordClient.login(process.env.DISCORD_TOKEN);
-
-const CHANNEL_ID = process.env.CHANNEL_ID;
-
-discordClient.on("ready", () => {
-	console.log(`Logged in as ${discordClient.user?.tag}`);
-});
 
 const RunInput = z.object({
 	recording: z.string(),
@@ -42,7 +24,6 @@ const RunInput = z.object({
 
 app.get(
 	"/:map_name/:steam_id/recording",
-	//admin_auth,
 	async (c) => {
 		const map_name = c.req.param("map_name");
 		const steam_id = c.req.param("steam_id");
@@ -283,7 +264,7 @@ async function send_discord_update(
 	position: number,
 ) {
 	try {
-		const channel = await discordClient.channels.fetch(CHANNEL_ID!);
+		const channel = await discord_client.channels.fetch(DISCORD_CHANNEL_ID);
 		if (!channel || !channel.isTextBased()) {
 			throw new Error("Channel not configured");
 		}
@@ -328,7 +309,7 @@ app.post(
 			return c.json({ error: "Run was too long." }, 400);
 		}
 
-		const pb = await db
+		const pb_result = await db
 			.select({
 				time_ms: runs.time_ms,
 			})
@@ -340,6 +321,8 @@ app.post(
 				),
 			)
 			.limit(1);
+
+		const pb = pb_result[0] ? pb_result[0].time_ms : Infinity;
 
 		try {
 			await db
@@ -363,19 +346,14 @@ app.post(
 				});
 
 			const position = await get_player_position(body.time_ms, body.map_name);
-			console.log(position);
 
-			if (
-				position <= 5 &&
-				((pb[0] && body.time_ms < pb[0].time_ms) || !pb[0])
-			) {
+			if (position <= 5 && (body.time_ms < pb)) {
 				send_discord_update(
 					body.time_ms,
 					body.username,
 					body.map_name,
 					position,
 				);
-				console.log("new record");
 			}
 
 			return c.json({ success: true });

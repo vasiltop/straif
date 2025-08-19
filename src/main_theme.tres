@@ -24,4 +24,5 @@ Button/constants/h_separation = 4
 Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
 Panel/styles/panel = ExtResource("2_wl8xb")
+PanelContainer/styles/panel = ExtResource("2_wl8xb")
 TabContainer/styles/panel = ExtResource("2_wl8xb")

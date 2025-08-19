@@ -1,0 +1,104 @@
+[gd_scene load_steps=15 format=3 uid="uid://d01kjuj2o1eyp"]
+
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_rij1j"]
+[ext_resource type="PackedScene" uid="uid://kodv0tyhehov" path="res://src/maps/tiles/flow.glb" id="2_lwbqu"]
+[ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="3_avumo"]
+[ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="4_avumo"]
+[ext_resource type="Texture2D" uid="uid://dn1f2m1ldk0py" path="res://src/textures/greybox_texture/greybox_grey_solid.png" id="4_b2emv"]
+[ext_resource type="Texture2D" uid="uid://oxnan0s1yrac" path="res://src/textures/greybox_texture/greybox_light_solid.png" id="5_avumo"]
+[ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="5_b2emv"]
+[ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="6_b2emv"]
+[ext_resource type="Resource" uid="uid://clmmcf5lrbppq" path="res://src/player/weapon/resources/ak47.tres" id="7_jug4b"]
+[ext_resource type="Texture2D" uid="uid://60ov88fgcpj7" path="res://src/textures/skyboxes/cold.png" id="8_j17js"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j17js"]
+render_priority = 0
+shader = ExtResource("3_avumo")
+shader_parameter/texture_wall = ExtResource("5_avumo")
+shader_parameter/texture_roof = ExtResource("4_b2emv")
+shader_parameter/wall_texture_scale = 0.385
+shader_parameter/roof_texture_scale = 0.45
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_i4ksc"]
+panorama = ExtResource("8_j17js")
+
+[sub_resource type="Sky" id="Sky_avumo"]
+sky_material = SubResource("PanoramaSkyMaterial_i4ksc")
+
+[sub_resource type="Environment" id="Environment_b2emv"]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_avumo")
+tonemap_mode = 2
+fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
+fog_light_energy = 1.34
+fog_sky_affect = 0.0
+fog_height = -22.35
+fog_height_density = 0.292
+volumetric_fog_density = 0.0813
+volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
+volumetric_fog_anisotropy = 0.0
+volumetric_fog_length = 80.09
+volumetric_fog_detail_spread = 6.0
+
+[node name="TestMap" type="Node3D"]
+script = ExtResource("1_rij1j")
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="flow" parent="Map" instance=ExtResource("2_lwbqu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="flow" parent="Map/flow" index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_j17js")
+
+[node name="WeaponPickup" parent="Map" instance=ExtResource("6_b2emv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.5717)
+weapon = ExtResource("7_jug4b")
+
+[node name="Player" parent="." instance=ExtResource("4_avumo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -2)
+
+[node name="Targets" type="Node" parent="."]
+
+[node name="EndZone" parent="." instance=ExtResource("5_b2emv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.268, 8.08817, 10.693)
+
+[node name="Collider" parent="EndZone" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
+
+[node name="StartZone" parent="." instance=ExtResource("5_b2emv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="Collider" parent="StartZone" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
+
+[node name="Players" type="Node" parent="."]
+
+[node name="TargetSpawns" type="Node" parent="."]
+
+[node name="Node3D" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.0449, 0, -12.9822)
+
+[node name="Node3D2" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.0449, 0, -29.8918)
+
+[node name="Node3D3" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.7047, 0, -29.8918)
+
+[node name="Node3D4" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.30031, 0, -27.0388)
+
+[node name="Node3D5" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.97039, 8.02539, 11.9612)
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.85264, -0.374585, 0.364268, 0, 0.697165, 0.716911, -0.522499, -0.611267, 0.594432, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_b2emv")
+
+[editable path="Map/flow"]
+[editable path="EndZone"]
+[editable path="StartZone"]
