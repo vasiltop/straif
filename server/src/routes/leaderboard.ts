@@ -365,7 +365,10 @@ app.post(
 			const position = await get_player_position(body.time_ms, body.map_name);
 			console.log(position);
 
-			if (position <= 5 && pb[0].time_ms && body.time_ms < pb[0].time_ms) {
+			if (
+				position <= 5 &&
+				((pb[0] && body.time_ms < pb[0].time_ms) || !pb[0])
+			) {
 				send_discord_update(
 					body.time_ms,
 					body.username,
