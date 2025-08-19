@@ -5,12 +5,13 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-		"populate": "node scripts/populate.js"
+    "populate": "node scripts/populate.js"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.4",
     "@hono/swagger-ui": "^0.5.2",
     "@hono/zod-validator": "^0.7.2",
+    "discord.js": "^14.21.0",
     "dotenv": "^16.6.0",
     "drizzle-orm": "^0.44.2",
     "hono": "^4.8.3",
