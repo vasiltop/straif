@@ -40,7 +40,7 @@ func _input(event: InputEvent) -> void:
 	if not player.is_me(): return
 	if player.leaderboard.middle.visible: return
 	
-	var sens: float = Settings.value("Controls", "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity")
+	var sens: float = Global.settings_manager.value("Controls", "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity")
 	sens = sens / 1000
 	
 	if event is InputEventMouseMotion:

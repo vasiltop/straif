@@ -1,28 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://bl135tiyyob7c"]
+[gd_scene load_steps=4 format=3 uid="uid://bl135tiyyob7c"]
 
 [ext_resource type="Script" uid="uid://xcnyv7n0iyty" path="res://src/info/info_ui.gd" id="1_nty2f"]
+[ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="1_o25e0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nty2f"]
 bg_color = Color(0, 0, 0, 0.74902)
 
-[node name="InfoUi" type="Panel"]
+[node name="InfoUi" type="PanelContainer"]
 z_index = 100
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 67.0
+offset_bottom = 23.0
+theme = ExtResource("1_o25e0")
 theme_override_styles/panel = SubResource("StyleBoxFlat_nty2f")
 script = ExtResource("1_nty2f")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="CenterContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/CenterContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "Message"

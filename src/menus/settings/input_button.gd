@@ -10,7 +10,7 @@ func _init(menu: SettingsMenu, action_name: String) -> void:
 
 func _ready() -> void:
 	toggle_mode = true
-	text = Settings.get_keybind_string(action_name)
+	text = Global.settings_manager.get_keybind_string(action_name)
 	focus_mode = Control.FOCUS_NONE
 
 func _toggled(toggled_on: bool) -> void:
@@ -23,7 +23,7 @@ func _toggled(toggled_on: bool) -> void:
 				c.button_pressed = false
 				c.editing = false
 	else:
-		text = Settings.get_keybind_string(action_name)
+		text = Global.settings_manager.get_keybind_string(action_name)
 	
 	editing = toggled_on
 
@@ -32,12 +32,12 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventKey:
 		var iek: InputEventKey = event
-		Settings.change_action_to_event(action_name, iek)
+		Global.settings_manager.change_action_to_event(action_name, iek)
 		
 	elif event is InputEventMouseButton:
 		var iem: InputEventMouseButton = event
-		Settings.change_action_to_event(action_name, iem)
+		Global.settings_manager.change_action_to_event(action_name, iem)
 		
-	text = Settings.get_keybind_string(action_name)
+	text = Global.settings_manager.get_keybind_string(action_name)
 	button_pressed = false
 	editing = false

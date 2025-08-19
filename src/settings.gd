@@ -1,8 +1,9 @@
-extends Node
+class_name Settings
 
 const PATH := "user://settings.cfg"
 const SETTINGS_VERSION := 8
 
+var node: Node
 var config := ConfigFile.new()
 var default_keybinds: Dictionary[String, Keybind] = {
 	"left" = Keybind.new(KEY_A),
@@ -28,7 +29,8 @@ class Keybind:
 		self.is_mouse = is_mouse
 		self.code = code
 
-func _ready() -> void:
+func _init() -> void:
+	self.node = Global
 	if FileAccess.file_exists(PATH):
 		load_settings()
 	else:
@@ -78,7 +80,7 @@ func change_res(value: String) -> void:
 	var arr := value.split("x")
 	var width := int(arr[0])
 	var height := int(arr[1])
-	get_tree().root.content_scale_size = Vector2i(width, height)
+	self.node.get_tree().root.content_scale_size = Vector2i(width, height)
 	DisplayServer.window_set_size(Vector2i(width, height))
 
 func reset_to_defaults() -> void:

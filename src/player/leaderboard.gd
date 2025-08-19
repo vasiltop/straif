@@ -43,9 +43,9 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard"):
 		middle.visible = true
 		
-		if Lobby.admin:
+		if Global.game_manager.admin and Input.is_action_pressed("ui_admin"):
 			admin_panel.visible = true
-			
+
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		_setup()
 	elif Input.is_action_just_released("leaderboard"):
@@ -59,36 +59,37 @@ func _load_runs() -> void:
 	for child in t_rows.get_children():
 		child.queue_free()
 		
-	var run_result := await Http.get_runs(Lobby.current_map.name, current_page)
-	total_pages = max(1, ceil(run_result.count as float / PAGE_SIZE))
+	var response := await Global.server_bridge.get_runs(Global.game_manager.current_map.name, current_page)
+	total_pages = max(1, ceil(response.total / PAGE_SIZE))
 	page_label.text = "Page %d of %d" % [current_page, total_pages]
 	
-	var runs: Array = run_result.data
+	var runs := response.runs
 	var run_position := (current_page - 1) * PAGE_SIZE + 1
-	for run: Dictionary in runs:
+	
+	for run in runs:
 		var shortened_name := run.username as String
 		if len(shortened_name) >= MAX_NAME_LENGTH:
 			shortened_name = shortened_name.substr(0, MAX_NAME_LENGTH) + "..."
 
-		_insert_table_row(run_position, shortened_name, run.time_ms as float, run.created_at as String, run.steam_id as int)
+		_insert_table_row(run_position, shortened_name, run.time_ms, run.created_at, int(run.steam_id))
 		run_position += 1
 
 func _setup() -> void:
-	map_name_label.text = "Map: " + Lobby.current_map.name
+	map_name_label.text = "Map: " + Global.game_manager.current_map.name
 
 	for i in range(len(medal_time_labels)):
-		medal_time_labels[i].text = str(Lobby.current_map.medal_times[i]) + "s"
+		medal_time_labels[i].text = str(Global.game_manager.current_map.medal_times[i]) + "s"
 	
 	await _load_runs()
 
-	var my_run := await Http.get_my_run(Lobby.current_map.name)
-
-	if my_run != {}:
-		var pos := my_run.position as int
+	var run := await Global.server_bridge.get_my_run_by_map(Global.game_manager.current_map.name)
+	
+	if run != null:
+		var pos := run.position
 		if pos > 10:
-			_insert_table_row(pos, my_run.username as String, my_run.time_ms as float, my_run.created_at as String, my_run.steam_id as int)
+			_insert_table_row(pos, run.username, run.time_ms, run.created_at, int(run.steam_id))
 
-	if Lobby.admin:
+	if Global.game_manager.admin:
 		for child in admin_actions_container.get_children():
 			child.queue_free()
 			
@@ -133,9 +134,11 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	race_btn.pressed.connect(
 		func() -> void:
 			if not player.map.currently_racing_steam_id == steam_id:
-				var replay := await Http.get_replay(Lobby.current_map.name, steam_id)
+				var replay := await Global.server_bridge.get_replay(Global.game_manager.current_map.name, steam_id)
+				
 				player.map.race_recording_bytes = Marshalls.base64_to_raw(replay)
 				player.map.currently_racing_steam_id = steam_id
+				
 				var ghost_name_label: Label3D = player.map.recorder.ghost.get_node("Name")
 				ghost_name_label.text = "%s's Ghost" % player_name
 				
@@ -162,9 +165,9 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	replay_btn.size_flags_horizontal = Control.SIZE_EXPAND
 	replay_btn.focus_mode = Control.FOCUS_NONE
 	replay_btn.pressed.connect(func() -> void:
-		var replay := await Http.get_replay(Lobby.current_map.name, steam_id)
+		var replay := await Global.server_bridge.get_replay(Global.game_manager.current_map.name, steam_id)
 		if replay != "":
-			Lobby.replay_requested.emit(replay)
+			Global.game_manager.replay_requested.emit(replay)
 		else:
 			Info.alert("Invalid replay request")
 	)
@@ -173,7 +176,7 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	
 	name_label.pressed.connect(
 		func() -> void:
-			if not Lobby.admin: return
+			if not Global.game_manager.admin: return
 			add_admin_actions_for_player(player_name, steam_id)
 	)
 

@@ -209,7 +209,7 @@ libraries = {
 }
 
 [node name="MuzzleFlash" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 3.31784e-09, 0, -4.07454e-10, 1, 0, 0, 0, 1, 0.150574, -0.091295, -1.61352)
+transform = Transform3D(1, 3.31784e-09, 0, -4.07454e-10, 1, 0, 0, 0, 1, 0.150574, -0.091295, -1.25065)
 layers = 2
 emitting = false
 lifetime = 0.02

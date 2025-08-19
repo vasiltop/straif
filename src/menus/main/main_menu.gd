@@ -31,12 +31,12 @@ func _ready() -> void:
 	create_lobby_btn.pressed.connect(_on_create_lobby)
 	refresh_lobby_search_btn.pressed.connect(_on_refresh_lobby_search)
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
-	Lobby.my_lobby_changed.connect(_on_my_lobby_changed)
-	leave_lobby_btn.pressed.connect(Lobby.leave)
-	host_local_btn.pressed.connect(Lobby.create_enet_lobby)
-	join_local_btn.pressed.connect(Lobby.join_enet_lobby)
-	save_settings_btn.pressed.connect(Settings.save)
-	Http.invalid_version.connect(func() -> void: version_error.visible = true)
+	Global.game_manager.my_lobby_changed.connect(_on_my_lobby_changed)
+	leave_lobby_btn.pressed.connect(Global.game_manager.leave)
+	host_local_btn.pressed.connect(Global.game_manager.create_enet_lobby)
+	join_local_btn.pressed.connect(Global.game_manager.join_enet_lobby)
+	save_settings_btn.pressed.connect(Global.settings_manager.save)
+	Global.server_bridge.invalid_version.connect(func() -> void: version_error.visible = true)
 
 	Steam.getPlayerAvatar()
 	username_label.text = Steam.getPersonaName()
@@ -46,12 +46,12 @@ func _ready() -> void:
 
 	_lobby_refresh_timer.start()
 		
-	if Lobby.lobby_id != 0 && Lobby.network_type == Lobby.NETWORK_TYPE.STEAM:
-		Lobby.update_lobby_members()
+	if Global.game_manager.lobby_id != 0 && Global.game_manager.network_type == Global.game_manager.NETWORK_TYPE.STEAM:
+		Global.game_manager.update_lobby_members()
 	
 	discord_btn.pressed.connect(
 		func() -> void:
-			OS.shell_open(Http.DISCORD_URL)
+			OS.shell_open(Global.server_bridge.DISCORD_URL)
 	)
 
 func _instantiate_maps() -> void:
@@ -70,24 +70,24 @@ func _instantiate_maps() -> void:
 		map_container.add_child(container)
 		tier_to_container[tier] = container
 
-	var mm: Maps = MapManager
-
-	for map in mm.maps:
-		Lobby.map_name_to_time[map.name] = INF
+	for map in Global.map_manager.maps:
+		Global.game_manager.map_name_to_time[map.name] = INF
 
 		var btn: MapButton = MapButtonScene.instantiate()
 		btn.map_name = map.name
 		(tier_to_container[map.tier] as Control).add_child(btn)
 
-	var runs := await Http.get_my_runs()
-	for run: Dictionary in runs:
+	var response := await Global.server_bridge.get_my_runs()
+	for run in response.runs:
 		for tier: int in tier_to_container:
 			var container: HFlowContainer = tier_to_container[tier]
 			for map_button: MapButton in container.get_children():
 				if map_button.map_name != run.map_name: continue
-				var time: float = run.time_ms / 1000
-				Lobby.map_name_to_time[run.map_name] = time
-				map_button.set_personal_best(time, int(run.position as float), int(run.total as float))
+				var time := float(run.time_ms) / 1000
+				
+				Global.game_manager.map_name_to_time[run.map_name] = time
+
+				map_button.set_personal_best(time, run.position, run.total)
 				map_button.initialized_personal_best = true
 	
 	var total_medals := 0
@@ -113,18 +113,18 @@ func _instantiate_maps() -> void:
 
 func _on_my_lobby_changed() -> void:
 	_on_refresh_lobby_search()
-	my_lobby_control.visible = Lobby.lobby_id != 0
-	create_lobby_control.visible = Lobby.lobby_id == 0
+	my_lobby_control.visible = Global.game_manager.lobby_id != 0
+	create_lobby_control.visible = Global.game_manager.lobby_id == 0
 
 	for child in my_lobby_members_container.get_children():
 		child.queue_free()
 
-	for member in Lobby.lobby_members:
+	for member in Global.game_manager.lobby_members:
 		var name_label := Label.new()
 		var map_status := "Main Menu"
 
 		if member.current_map_id != -1:
-			map_status = MapManager.get_map_with_id(member.current_map_id).name
+			map_status = Global.map_manager.get_map_with_id(member.current_map_id).name
 
 		name_label.text = member.name + " - In " + map_status
 		my_lobby_members_container.add_child(name_label)
@@ -145,8 +145,8 @@ func _on_lobby_match_list(lobbies: Array) -> void:
 		lobby_list_container.add_child(btn)
 		btn.pressed.connect(
 			func() -> void:
-				if lobby_id != Lobby.lobby_id:
-					Lobby.join_steam_lobby(lobby_id)
+				if lobby_id != Global.game_manager.lobby_id:
+					Global.game_manager.join_steam_lobby(lobby_id)
 		)
 
 func _on_refresh_lobby_search() -> void:
@@ -162,7 +162,7 @@ func _on_loaded_avatar(_user_id: int, avatar_size: int, avatar_buffer: PackedByt
 	avatar.set_texture(ImageTexture.create_from_image(image))
 
 func _on_create_lobby() -> void:
-	if Lobby.lobby_id != 0: return
+	if Global.game_manager.lobby_id != 0: return
 
 	var selected_lobby_type := lobby_type_input.get_selected_id()
 	var lobby_type: SteamMultiplayerPeer.LobbyType
@@ -173,5 +173,5 @@ func _on_create_lobby() -> void:
 		3: lobby_type = SteamMultiplayerPeer.LobbyType.LOBBY_TYPE_INVISIBLE
 
 	var max_members := int(max_members_input.get_line_edit().text)
-	Lobby.create_steam_lobby(lobby_type, max_members)
-	Lobby.set_lobby_name(lobby_name_input.text)
+	Global.game_manager.create_steam_lobby(lobby_type, max_members)
+	Global.game_manager.set_lobby_name(lobby_name_input.text)

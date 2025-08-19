@@ -33,7 +33,7 @@ func json() -> Variant:
 	var json = JSON.new()
 
 	var err = json.parse(text)
-	assert(err == OK)
+	#assert(err == OK)
 
 	return json.data
 

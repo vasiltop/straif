@@ -21,6 +21,5 @@ func alert(message: String) -> void:
 	var inst: InfoUi = Scene.instantiate()
 	add_child(inst)
 	inst.set_message(message)
-	inst.set_size(Vector2(300, 150))
 
 	current_inst = inst

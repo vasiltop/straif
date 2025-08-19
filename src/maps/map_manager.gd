@@ -1,10 +1,9 @@
-class_name Maps extends Node
-
-var maps: Array[MapData]
+class_name MapManager
 
 const MAPS_FILE_PATH := "res://maps.json"
+var maps: Array[MapData]
 
-func _ready() -> void:
+func load_maps() -> Array[MapData]:
 	var file := FileAccess.open(MAPS_FILE_PATH, FileAccess.READ)
 	var json: Dictionary = JSON.parse_string(file.get_as_text())
 	var map_list: Array = json.maps
@@ -24,6 +23,8 @@ func _ready() -> void:
 		
 		var map_data := MapData.new(map_name, map_tier, i, map_times_float, image)
 		maps.append(map_data)
+		
+	return maps
 
 func get_map_with_id(mid: int) -> MapData:
 	for map in maps:

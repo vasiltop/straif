@@ -865,6 +865,7 @@ layout_mode = 2
 text = "Lobby"
 
 [node name="Admin" type="PanelContainer" parent="UI/UiContainer/GameInfo"]
+visible = false
 custom_minimum_size = Vector2(400, 100)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("5_cwolq")

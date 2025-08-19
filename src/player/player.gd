@@ -37,13 +37,13 @@ func set_name_label(value: String) -> void:
 	name_label.text = value
 
 func show_end_run_stats(time: float) -> void:
-	var is_pb: bool = Lobby.map_name_to_time[Lobby.current_map.name] > time
+	var is_pb: bool = Global.game_manager.map_name_to_time[Global.game_manager.current_map.name] > time
 	var text := "Run completed in %ss%s" % [str(snapped(time, 0.01)), ", new PB!\nPress TAB to view your ranking." if is_pb else ""]
 	
 	Info.alert(text)
 
 	if is_pb:
-		Lobby.map_name_to_time[Lobby.current_map.name] = time
+		Global.game_manager.map_name_to_time[Global.game_manager.current_map.name] = time
 
 func setup(map: Map) -> void:
 	camera.make_current()
@@ -72,13 +72,13 @@ func _ready() -> void:
 	ui.visible = false
 	weapon_handler.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	alt_speed_label.visible = Settings.value("Display", "speed")
+	alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
 
 func _process(_delta: float) -> void:
 	if not is_me(): return
 
 	if Input.is_action_just_pressed("main_menu"):
-		Lobby.switched_map.rpc(-1)
+		Global.game_manager.switched_map.rpc(-1)
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	

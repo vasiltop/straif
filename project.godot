@@ -13,7 +13,7 @@ Engineconfigurationfile.config_version=5
 [application]
 
 config/name="straif"
-run/main_scene="uid://taw7qljauqyg"
+run/main_scene="uid://dmliiccspv85j"
 config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/use_filter=false
@@ -25,11 +25,7 @@ boot_splash/minimum_display_time=300
 [autoload]
 
 Info="*res://src/info.gd"
-Main="*res://src/main.gd"
-Http="*res://src/http.gd"
-Lobby="*res://src/lobby.gd"
-MapManager="*res://src/maps/map_manager/map_manager.tscn"
-Settings="*res://src/settings.gd"
+Global="*res://src/global.gd"
 
 [debug]
 
@@ -39,6 +35,7 @@ gdscript/warnings/unsafe_property_access=2
 gdscript/warnings/unsafe_method_access=2
 gdscript/warnings/unsafe_call_argument=2
 gdscript/warnings/unsafe_void_return=2
+gdscript/warnings/inference_on_variant=0
 
 [display]
 
@@ -107,6 +104,11 @@ climb={
 scope={
 "deadzone": 0.2,
 "events": []
+}
+ui_admin={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194326,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
 }
 
 [physics]

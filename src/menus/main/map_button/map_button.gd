@@ -22,7 +22,7 @@ var index_to_medal: Array[Texture] = [BRONZE_MEDAL, SILVER_MEDAL, GOLD_MEDAL, PL
 var earned_medals := 0
 
 func _ready() -> void:
-	map = MapManager.get_map_with_name(map_name)
+	map = Global.map_manager.get_map_with_name(map_name)
 	map_name_label.text = map_name
 
 	play_btn.pressed.connect(
@@ -30,7 +30,7 @@ func _ready() -> void:
 			var base_path := "res://src/maps/"
 			var path := base_path + map.name.to_lower().replace(" ", "_") + ".tscn"
 			get_tree().change_scene_to_file(path)
-			Lobby.current_map = map
+			Global.game_manager.current_map = map
 	)
 	
 	for child: TextureRect in medals.get_children():

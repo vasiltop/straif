@@ -38,11 +38,11 @@ func _ready() -> void:
 	start_zone.body_exited.connect(_on_start_zone_exited)
 	end_zone.body_entered.connect(func(_body: Node3D) -> void: can_win = true)
 	player.jumped.connect(_on_player_jump)
-	Lobby.player_switched_map.connect(_on_player_switched_map)
-	Lobby.player_diconnected.connect(_on_player_disconnected)
-	Lobby.player_left_map.connect(_on_player_disconnected)
-	Lobby.switched_map.rpc(Lobby.current_map.mid)
-	Lobby.replay_requested.connect(_on_replay_requested)
+	Global.game_manager.player_switched_map.connect(_on_player_switched_map)
+	Global.game_manager.player_diconnected.connect(_on_player_disconnected)
+	Global.game_manager.player_left_map.connect(_on_player_disconnected)
+	Global.game_manager.switched_map.rpc(Global.game_manager.current_map.mid)
+	Global.game_manager.replay_requested.connect(_on_replay_requested)
 	target_killed.connect(_on_target_killed)
 	_on_target_killed()
 	
@@ -81,7 +81,7 @@ func _on_player_disconnected(pid: int) -> void:
 	p.queue_free()
 
 func _on_player_switched_map(pid: int, map: MapData) -> void:
-	if Lobby.current_map.mid != map.mid: return
+	if Global.game_manager.current_map.mid != map.mid: return
 
 	_received_switch.rpc_id(pid)
 	if not player_exists(pid):
@@ -98,7 +98,7 @@ func spawn_player(pid: int) -> void:
 	inst.name = str(pid)
 	inst.pid = pid
 	inst.global_position = start_pos
-	inst.set_name_label(Lobby.get_player_name(pid))
+	inst.set_name_label(Global.game_manager.get_player_name(pid))
 
 func _physics_process(_delta: float) -> void:
 	if running:
@@ -187,7 +187,7 @@ func _win() -> void:
 	sound_player.play()
 
 	var bytes := recorder.to_bytes()
-	Http.publish_run(bytes, Lobby.current_map.name, int(timer * 1000))
+	Global.server_bridge.publish_run(bytes, Global.game_manager.current_map.name, int(timer * 1000))
 	player.show_end_run_stats(timer)
 
 func spawn_target(pos: Vector3) -> void:
