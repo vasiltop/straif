@@ -280,6 +280,7 @@ async function send_discord_update(
 	newTime: number,
 	player: string,
 	mapName: string,
+	position: number,
 ) {
 	try {
 		const channel = await discordClient.channels.fetch(CHANNEL_ID!);
@@ -288,7 +289,22 @@ async function send_discord_update(
 		}
 		if (channel.type === ChannelType.GuildText) {
 			await channel.send(
-				`Player ${player} has beaten the record on ${mapName} with a time of ${(newTime / 1000).toFixed(3)} seconds`,
+				`Player ${player} has achieved ${(() => {
+					switch (position) {
+						case 1:
+							return "first";
+						case 2:
+							return "second";
+						case 3:
+							return "third";
+						case 4:
+							return "fourth";
+						case 5:
+							return "fifth";
+						default:
+							return `${position}th`;
+					}
+				})()} place on ${mapName} with a time of ${(newTime / 1000).toFixed(3)} seconds!`,
 			);
 		}
 	} catch (e) {
@@ -312,11 +328,19 @@ app.post(
 			return c.json({ error: "Run was too long." }, 400);
 		}
 
+		const pb = await db
+			.select({
+				time_ms: runs.time_ms,
+			})
+			.from(runs)
+			.where(and(eq(runs.map_name, body.map_name), eq(runs.steam_id, "2")))
+			.limit(1);
+
 		try {
 			await db
 				.insert(runs)
 				.values({
-					steam_id: "1",
+					steam_id: "2",
 					map_name: body.map_name,
 					recording: body.recording,
 					time_ms: body.time_ms,
@@ -334,9 +358,15 @@ app.post(
 				});
 
 			const position = await get_player_position(body.time_ms, body.map_name);
+			console.log(position);
 
-			if (position === 1) {
-				send_discord_update(body.time_ms, body.username, body.map_name);
+			if (position <= 5 && pb[0].time_ms && body.time_ms < pb[0].time_ms) {
+				send_discord_update(
+					body.time_ms,
+					body.username,
+					body.map_name,
+					position,
+				);
 				console.log("new record");
 			}
 
