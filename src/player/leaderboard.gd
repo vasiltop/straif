@@ -20,7 +20,7 @@ signal ghost_enabled(steam_id: int)
 	$M/V/MedalInfo/AuthorTime
 ]
 
-const PAGE_SIZE := 10
+const PAGE_SIZE := 10.0
 const MAX_NAME_LENGTH := 15
 
 var current_page := 1

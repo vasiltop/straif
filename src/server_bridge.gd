@@ -229,8 +229,9 @@ class RunsRequestResponse:
 func get_my_runs() -> RunsRequestResponse:
 	var url := "/leaderboard/players/%d/runs" % [Steam.getSteamID()]
 	var response := await client.http_get(url).send()
-	var data: Array = await data_or_print_error(response)
-	
+	var data := await data_or_print_error(response)
+	if data == null: return null
+
 	var runs: Array[RunsRequestResponse.Run]
 	for run: Dictionary in data:
 		runs.append(RunsRequestResponse.Run.new(run.time_ms as int, run.map_name as String, run.created_at as String, run.position as int, run.total as int))

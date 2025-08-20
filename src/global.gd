@@ -8,6 +8,7 @@ var settings_manager: Settings
 var game_manager: GameManager
 
 func _ready() -> void:
+	DisplayServer.window_set_title("Straif")
 	add_child(game_manager)
 	var init_res := Steam.steamInitEx(APP_ID, true)
 
