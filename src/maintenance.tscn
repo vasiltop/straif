@@ -1,4 +1,44 @@
-[gd_scene format=3 uid="uid://dg0sb2ihpsb5m"]
+[gd_scene load_steps=13 format=3 uid="uid://dg0sb2ihpsb5m"]
+
+[ext_resource type="Script" uid="uid://dlpcs641pa7hr" path="res://src/maintenance.gd" id="1_rcaxt"]
+[ext_resource type="PackedScene" uid="uid://ejiq20awxkya" path="res://src/maps/presets/ladder.tscn" id="2_gc2s1"]
+[ext_resource type="PackedScene" uid="uid://d0rpe3n6n6hgj" path="res://src/maps/tiles/structure.glb" id="6_d6ev0"]
+[ext_resource type="Material" uid="uid://dxgfaq8mgbtph" path="res://src/maps/presets/test.tres" id="7_hd26s"]
+[ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="8_o47d8"]
+[ext_resource type="PackedScene" uid="uid://s1gi6bk381wf" path="res://src/maps/tiles/planks.tscn" id="9_ug54a"]
+[ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/skyboxes/pink.png" id="10_40b5m"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_15xur"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u0633"]
+albedo_texture = ExtResource("8_o47d8")
+uv1_scale = Vector3(0.3, 0.3, 0.3)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_r4cqr"]
+panorama = ExtResource("10_40b5m")
+
+[sub_resource type="Sky" id="Sky_rfspr"]
+sky_material = SubResource("PanoramaSkyMaterial_r4cqr")
+
+[sub_resource type="Environment" id="Environment_atrtg"]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_rfspr")
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
+fog_light_energy = 1.34
+fog_sky_affect = 0.0
+fog_height = -22.35
+fog_height_density = 0.292
+volumetric_fog_density = 0.0813
+volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
+volumetric_fog_anisotropy = 0.0
+volumetric_fog_length = 80.09
+volumetric_fog_detail_spread = 6.0
 
 [node name="Maintenance" type="Control"]
 layout_mode = 3
@@ -7,6 +47,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_rcaxt")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -23,5 +64,56 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "The game is currently down for maintenance, or you
 have launched an incorrect version of the game. Please check
-for any updates."
+for any updates or wait here until the maintenance is complete."
 horizontal_alignment = 1
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Ladder" parent="Map" instance=ExtResource("2_gc2s1")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 3.8397, -34.441)
+
+[node name="Ladder2" parent="Map" instance=ExtResource("2_gc2s1")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 4.8397, -34.441)
+
+[node name="Ladder3" parent="Map" instance=ExtResource("2_gc2s1")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 5.8397, -34.441)
+
+[node name="Ladder4" parent="Map" instance=ExtResource("2_gc2s1")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 6.8397, -34.441)
+
+[node name="Ladder5" parent="Map" instance=ExtResource("2_gc2s1")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 7.8397, -34.441)
+
+[node name="Ladder6" parent="Map" instance=ExtResource("2_gc2s1")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 8.8397, -34.441)
+
+[node name="Ladder7" parent="Map" instance=ExtResource("2_gc2s1")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 9.8397, -34.441)
+
+[node name="Ladder8" parent="Map" instance=ExtResource("2_gc2s1")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 10.8397, -34.441)
+
+[node name="Ladder9" parent="Map" instance=ExtResource("2_gc2s1")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 11.8397, -34.441)
+
+[node name="structure" parent="Map" instance=ExtResource("6_d6ev0")]
+
+[node name="structure" parent="Map/structure" index="0"]
+surface_material_override/0 = ExtResource("7_hd26s")
+
+[node name="FogFloor" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -16, -48.1244, -61)
+visible = false
+mesh = SubResource("PlaneMesh_15xur")
+surface_material_override/0 = SubResource("StandardMaterial3D_u0633")
+
+[node name="Planks10" parent="Map" instance=ExtResource("9_ug54a")]
+transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 8.01783, 12.3409, -30.5391)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Map"]
+environment = SubResource("Environment_atrtg")
+
+[node name="Camera2D" type="Camera3D" parent="Map"]
+transform = Transform3D(0.907982, 0, 0.419008, 0, 1, 0, -0.419008, 0, 0.907982, -3.36399, 1.91718, -8.38237)
+
+[editable path="Map/structure"]

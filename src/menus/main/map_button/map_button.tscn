@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="5_03hqm"]
 
 [node name="MapButton" type="Panel"]
-custom_minimum_size = Vector2(600, 350)
+custom_minimum_size = Vector2(500, 300)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -49,13 +49,13 @@ layout_mode = 2
 
 [node name="MapName" type="Label" parent="M/C/P/M/V"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 25
 text = "Map Name"
 
 [node name="Timer" type="Label" parent="M/C/P/M/V"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "Personal Best: Loading....
 Position: 0 / 0"
 

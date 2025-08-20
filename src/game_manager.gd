@@ -15,6 +15,7 @@ var current_map: MapData
 var auth_ticket: Dictionary 
 var auth_ticket_hex: String
 var admin: bool
+var maintenance: bool
 var map_name_to_time: Dictionary = {}
 var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
 

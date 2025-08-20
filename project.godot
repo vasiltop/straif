@@ -47,10 +47,6 @@ window/vsync/vsync_mode=0
 
 enabled=PackedStringArray("res://addons/gdmaim/plugin.cfg")
 
-[gui]
-
-theme/default_font_antialiasing=0
-
 [input]
 
 left={

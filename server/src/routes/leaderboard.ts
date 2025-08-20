@@ -2,8 +2,7 @@ import { Hono } from 'hono';
 import db from '../db/index';
 import { runs } from '../db/schema';
 import { asc, eq, sql, and, lt } from 'drizzle-orm';
-import { PgColumn } from 'drizzle-orm/pg-core';
-import { version_compare, steam_auth } from '../middleware';
+import { version_compare, steam_auth, admin_auth } from '../middleware';
 import { z } from 'zod';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator as zValidator } from 'hono-openapi/zod';
@@ -111,7 +110,6 @@ app.get(
     const steam_id = c.req.param('steam_id');
 
     try {
-      console.log(steam_id);
       const player_runs = await db
         .select({
           time_ms: runs.time_ms,
@@ -131,10 +129,8 @@ app.get(
       );
 
       const data: z.infer<typeof PlayerRunsResponse> = { data: full_run_info };
-      console.log(data);
       return c.json(data);
     } catch (e) {
-      console.log(e);
       return c.json({ error: 'Internal server error' }, 500);
     }
   }
@@ -269,7 +265,6 @@ app.get(
       };
 
       const data: z.infer<typeof PlayerMapResponse> = { data: result };
-      console.log(data);
       return c.json(data);
     } catch (e) {
       return c.json({ error: 'Internal server error ' }, 500);
@@ -312,6 +307,30 @@ async function send_discord_update(
     return;
   }
 }
+
+app.delete(
+  '/maps/:map_name/runs/:steam_id',
+  hide_route(),
+  admin_auth,
+  async (c) => {
+    const map_name = c.req.param('map_name');
+    const steam_id = c.req.param('steam_id');
+    console.log(map_name, steam_id);
+
+    try {
+      await db
+        .delete(runs)
+        .where(and(eq(runs.map_name, map_name), eq(runs.steam_id, steam_id)));
+
+      return c.json({
+        data: 'Run was succesfully deleted.',
+      });
+    } catch (e) {
+      console.log(e);
+      return c.json({ error: 'Internal server error ' }, 500);
+    }
+  }
+);
 
 app.post(
   '/runs',

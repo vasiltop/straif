@@ -47,7 +47,7 @@ func reset() -> void:
 
 func _process(delta: float) -> void:
 	if not active: return
-
+	
 	weapon_scene.rotate_y(deg_to_rad(45 * delta))
 	weapon_scene.global_position.y = weapon_spawn.global_position.y + sin(float(Time.get_ticks_msec()) / 1000) / 7
 	

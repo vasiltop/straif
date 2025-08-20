@@ -181,15 +181,17 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	)
 
 func initialize_admin_actions() -> void:
-	var enable_maintenance_mode_btn := Button.new()
-	admin_actions_container.add_child(enable_maintenance_mode_btn)
-	enable_maintenance_mode_btn.text = "Enable Game Maintenance"
-	enable_maintenance_mode_btn.focus_mode = Control.FOCUS_NONE
+	var maintenance := Global.game_manager.maintenance
+	var toggle_maintenance_btn := Button.new()
+	admin_actions_container.add_child(toggle_maintenance_btn)
+	toggle_maintenance_btn.text = "Enable Game Maintenace" if not maintenance else "Disable Game Maintenance"
+	toggle_maintenance_btn.focus_mode = Control.FOCUS_NONE
 	
-	var stop_maintenance_mode_btn := Button.new()
-	admin_actions_container.add_child(stop_maintenance_mode_btn)
-	stop_maintenance_mode_btn.text = "Stop Game Maintenance"
-	stop_maintenance_mode_btn.focus_mode = Control.FOCUS_NONE
+	toggle_maintenance_btn.pressed.connect(
+		func() -> void:
+			Info.alert("Toggled maintenance, please wait a few seconds to confirm.")
+			Global.server_bridge.set_maintenance(not maintenance)
+	)
 	
 func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
 	for child in admin_actions_container.get_children():
@@ -208,19 +210,28 @@ func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
 	
 	delete_btn.pressed.connect(
 		func() -> void:
+			for child in admin_actions_container.get_children():
+				if child.has_meta("delete_btn"): return
+				
 			var confirm_btn := Button.new()
 			delete_btn.add_sibling(confirm_btn)
+			confirm_btn.set_meta("delete_btn", true)
 			confirm_btn.text = "Are you sure?"
 			confirm_btn.focus_mode = Control.FOCUS_NONE
-			confirm_btn.pressed.connect(confirm_btn.queue_free)
+			confirm_btn.pressed.connect(
+				func() -> void:
+					await Global.server_bridge.delete_run(Global.game_manager.current_map.name, steam_id)
+					confirm_btn.queue_free()
+					)
 	)
 	
-	var admin_btn := Button.new()
-	admin_actions_container.add_child(admin_btn)
-	admin_btn.text = "Give Admin"
-	admin_btn.focus_mode = Control.FOCUS_NONE
+	var is_admin := await Global.server_bridge.is_admin(steam_id)
+	var toggle_admin_btn := Button.new()
+	admin_actions_container.add_child(toggle_admin_btn)
+	toggle_admin_btn.text = "Give admin" if not is_admin else "Revoke admin"
+	toggle_admin_btn.focus_mode = Control.FOCUS_NONE
 	
-	var revoke_admin_btn := Button.new()
-	admin_actions_container.add_child(revoke_admin_btn)
-	revoke_admin_btn.text = "Revoke Admin"
-	revoke_admin_btn.focus_mode = Control.FOCUS_NONE
+	toggle_admin_btn.pressed.connect(
+		func() -> void:
+			Global.server_bridge.set_admin(steam_id, not is_admin)
+	)

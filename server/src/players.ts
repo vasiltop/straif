@@ -3,7 +3,6 @@ import db from './db/index';
 import { eq } from 'drizzle-orm';
 
 export async function is_admin(steam_id: string): Promise<boolean> {
-  console.log(steam_id);
   const res = await db
     .select()
     .from(admins)
