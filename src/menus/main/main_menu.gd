@@ -21,6 +21,7 @@ class_name MainMenu extends Control
 @onready var version_error: Control = $MarginContainer/VersionError
 @onready var discord_btn: TextureButton = $MarginContainer/Content/Header/Right/Discord
 @onready var medals_earned_label: Label = $MarginContainer/Content/Body/Play/M/V/H/MedalsEarned
+@onready var mode_switcher: TabContainer = $MarginContainer/Content/Body/Play/M/V/ModeSwitcher
 
 const MapButtonScene = preload("res://src/menus/main/map_button/map_button.tscn")
 
@@ -37,7 +38,7 @@ func _ready() -> void:
 	join_local_btn.pressed.connect(Global.game_manager.join_enet_lobby)
 	save_settings_btn.pressed.connect(Global.settings_manager.save)
 	Global.server_bridge.invalid_version.connect(func() -> void: version_error.visible = true)
-
+	
 	Steam.getPlayerAvatar()
 	username_label.text = Steam.getPersonaName()
 
@@ -55,61 +56,25 @@ func _ready() -> void:
 	)
 
 func _instantiate_maps() -> void:
-	var tiers := 3
-	var tier_labels := {}
-	var tier_to_container := {}
-	var labels := ["Easy", "Intermediate", "Hard"]
-
-	for tier in tiers:
-		var label := Label.new()
-		map_container.add_child(label)
-		label.text = "%s: " % labels[tier] 
-		tier_labels[tier] = label
-
-		var container := HFlowContainer.new()
-		map_container.add_child(container)
-		tier_to_container[tier] = container
-
+	var mode_to_container: Dictionary[String, ModeContainer]
+	
+	for child: ModeContainer in mode_switcher.get_children():
+		mode_to_container[child.mode] = child
+	
 	for map in Global.map_manager.maps:
-		Global.game_manager.map_name_to_time[map.name] = INF
+		for mode: String in map.modes:
+			var container := mode_to_container[mode]
+			container.add_map(map)
 
-		var btn: MapButton = MapButtonScene.instantiate()
-		btn.map_name = map.name
-		(tier_to_container[map.tier] as Control).add_child(btn)
-
-	var response := await Global.server_bridge.get_my_runs()
-	for run in response.runs:
-		for tier: int in tier_to_container:
-			var container: HFlowContainer = tier_to_container[tier]
-			for map_button: MapButton in container.get_children():
-				if map_button.map_name != run.map_name: continue
-				var time := float(run.time_ms) / 1000
-				
-				Global.game_manager.map_name_to_time[run.map_name] = time
-
-				map_button.set_personal_best(time, run.position, run.total)
-				map_button.initialized_personal_best = true
-	
-	var total_medals := 0
-	var earned_medals := 0
-	
-	for tier: int in tier_to_container:
-		var container: HFlowContainer = tier_to_container[tier]
-		for map_button: MapButton in container.get_children():
-			if not map_button.initialized_personal_best:
-				map_button.set_personal_best(-INF, 0, 0)
-			total_medals += 5
-			earned_medals += map_button.earned_medals
-	
-	medals_earned_label.text = "Medals Earned: %d / %d, %d%% completion." % [earned_medals, total_medals, int(float(earned_medals) / float(total_medals) * 100)]
-	
-	for tier: int in tier_to_container:
-		var container: Control = tier_to_container[tier]
-		var label: Label = tier_labels[tier]
-
-		if container.get_child_count() == 0:
-			label.queue_free()
-			container.queue_free()
+	for mode in mode_to_container:
+		var response := await Global.server_bridge.get_my_runs(mode)
+		if response == null:
+			return
+			
+		for run in response.runs:
+			var btn := mode_to_container[mode].get_map(run.map_name)
+			if btn == null: continue
+			btn.set_personal_best(snapped(float(run.time_ms) / 1000, 0.01) as float, run.position, run.total)
 
 func _on_my_lobby_changed() -> void:
 	_on_refresh_lobby_search()

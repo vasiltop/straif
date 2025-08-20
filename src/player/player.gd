@@ -36,15 +36,6 @@ func is_me() -> bool:
 func set_name_label(value: String) -> void:
 	name_label.text = value
 
-func show_end_run_stats(time: float) -> void:
-	var is_pb: bool = Global.game_manager.map_name_to_time[Global.game_manager.current_map.name] > time
-	var text := "Run completed in %ss%s" % [str(snapped(time, 0.01)), ", new PB!\nPress TAB to view your ranking." if is_pb else ""]
-	
-	Info.alert(text)
-
-	if is_pb:
-		Global.game_manager.map_name_to_time[Global.game_manager.current_map.name] = time
-
 func setup(map: Map) -> void:
 	camera.make_current()
 	gun_camera.make_current()

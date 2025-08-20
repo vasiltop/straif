@@ -53,7 +53,10 @@ func _process(delta: float) -> void:
 	
 	if player.map.running and is_touching_player and (player.weapon_handler.current_weapon == null or Input.is_action_just_pressed("interact")):
 		player.weapon_handler.set_weapon(weapon)
-		weapon_scene.visible = false
-		active = false
 		audio_player.stream = EquipSound
 		audio_player.play()
+		deactivate()
+
+func deactivate() -> void:
+	weapon_scene.visible = false
+	active = false

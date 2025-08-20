@@ -6,9 +6,12 @@ const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
-var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straifapi.pumped.software/"
+var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straifapi.pumped.software"
 var version := "dev" if OS.has_feature("editor") else "0.1.5"
 var heartbeat_timer: BetterTimer
+
+func get_leaderboard_base(mode: String) -> String:
+	return "/leaderboard/mode/" + mode
 
 func _init() -> void:
 	client = BetterHTTPClient.new(Global, BetterHTTPURL.parse(api_url))
@@ -92,8 +95,8 @@ class MapRunsResponse:
 		self.runs = runs
 		self.total = total
 
-func get_runs(map_name: String, page: int) -> MapRunsResponse:
-	var url := "/leaderboard/maps/%s/runs?page=%d" % [map_name, page - 1]
+func get_runs(mode: String, map_name: String, page: int) -> MapRunsResponse:
+	var url := get_leaderboard_base(mode) + "/maps/%s/runs?page=%d" % [map_name, page - 1]
 	var response := await client.http_get(url).send()
 	var data: Dictionary = await data_or_print_error(response)
 	
@@ -119,31 +122,32 @@ class PositionalRunResponse:
 		time_ms: int,
 		username: String,
 		created_at: String,
-		steam_id: String
+		steam_id: String,
+		position: int
 		) -> void:
 		self.time_ms = time_ms
 		self.created_at = created_at
 		self.steam_id = steam_id
 		self.username = username
+		self.position = position
 		
-func get_my_run_by_map(map_name: String) -> PositionalRunResponse:
-	var url := "/leaderboard/maps/%s/runs/%d" % [map_name, Steam.getSteamID()]
+func get_my_run_by_map(mode: String, map_name: String) -> PositionalRunResponse:
+	var url := get_leaderboard_base(mode) + "/maps/%s/runs/%d" % [map_name, Steam.getSteamID()]
 	var response := await client.http_get(url).send()
 	var data := await data_or_print_error(response, true)
 
 	if data == null: return null
 	
-	return PositionalRunResponse.new(data.time_ms as int, data.username as String, data.created_at as String, data.steam_id as String)
+	return PositionalRunResponse.new(data.time_ms as int, data.username as String, data.created_at as String, data.steam_id as String, data.position as int)
 
-func publish_run(recording: PackedByteArray, map_name: String, time_ms: int) -> void:
+func publish_run(mode: String, recording: PackedByteArray, map_name: String, time_ms: int) -> void:
 	if len(recording) > 356148:
 		# 356148 = 370s
 		Info.alert("Could not submit run, you went past the run size limit.")
 		return
 	
-	var response := await client.http_post("/leaderboard/runs").json({
+	var response := await client.http_post(get_leaderboard_base(mode) + "/maps/%s/runs" % map_name).json({
 			"recording": Marshalls.raw_to_base64(recording),
-			"map_name": map_name,
 			"time_ms": time_ms,
 			"username": Steam.getPersonaName(),
 		}).header(
@@ -152,7 +156,10 @@ func publish_run(recording: PackedByteArray, map_name: String, time_ms: int) -> 
 				"version", version
 				).send()
 
-	await data_or_print_error(response)
+	var data := await data_or_print_error(response)
+	
+	if data != null:
+		Info.alert(data as String)
 
 func is_admin(steam_id: int) -> bool:
 	var url := "/admin/player/%d" % steam_id 
@@ -183,16 +190,16 @@ func set_admin(steam_id: int, new_value: bool) -> void:
 	if data != null:
 		Info.alert(data as String)
 
-func delete_run(map_name: String, steam_id: int) -> void:
-	var url := "/leaderboard/maps/%s/runs/%d" % [map_name, steam_id]
+func delete_run(mode: String, map_name: String, steam_id: int) -> void:
+	var url := get_leaderboard_base(mode) + "/maps/%s/runs/%d" % [map_name, steam_id]
 	var response := await client.http_delete(url).header("auth-ticket", Global.game_manager.auth_ticket_hex).send()
 	var data := await data_or_print_error(response)
 	
 	if data != null:
 		Info.alert(data as String)
 
-func get_replay(map_name: String, steam_id: int) -> String:
-	var url := "/leaderboard/maps/%s/recording/%d" % [map_name, steam_id]
+func get_replay(mode: String, map_name: String, steam_id: int) -> String:
+	var url := get_leaderboard_base(mode) + "/maps/%s/players/%d/recording" % [map_name, steam_id]
 	var response := await client.http_get(url).header("auth-ticket", Global.game_manager.auth_ticket_hex).send()
 	var data := await data_or_print_error(response)
 	
@@ -226,8 +233,8 @@ class RunsRequestResponse:
 	func _init(runs: Array[Run]) -> void:
 		self.runs = runs
 
-func get_my_runs() -> RunsRequestResponse:
-	var url := "/leaderboard/players/%d/runs" % [Steam.getSteamID()]
+func get_my_runs(mode: String) -> RunsRequestResponse:
+	var url := get_leaderboard_base(mode) + "/players/%d/runs" % [Steam.getSteamID()]
 	var response := await client.http_get(url).send()
 	var data := await data_or_print_error(response)
 	if data == null: return null

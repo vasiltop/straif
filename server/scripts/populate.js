@@ -11,7 +11,7 @@ const maps = [
   'map_rooftops2',
 ];
 
-const RUNS_PER_MAP = 7;
+const RUNS_PER_MAP = 55;
 
 function gen_string(length) {
   const characters =

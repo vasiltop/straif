@@ -20,6 +20,7 @@ var initialized_personal_best: bool
 var map: MapData
 var index_to_medal: Array[Texture] = [BRONZE_MEDAL, SILVER_MEDAL, GOLD_MEDAL, PLAT_MEDAL, AUTHOR_MEDAL]
 var earned_medals := 0
+var mode: String
 
 func _ready() -> void:
 	map = Global.map_manager.get_map_with_name(map_name)
@@ -31,6 +32,7 @@ func _ready() -> void:
 			var path := base_path + map.name.to_lower().replace(" ", "_") + ".tscn"
 			get_tree().change_scene_to_file(path)
 			Global.game_manager.current_map = map
+			Global.game_manager.current_mode = mode
 	)
 	
 	for child: TextureRect in medals.get_children():
@@ -47,8 +49,9 @@ func set_personal_best(time: float, position: int, total: int) -> void:
 	
 	timer_label.text = "Personal Best: %.3fs\nPosition: %d / %d" % [time, position, total]
 	
+	var medal_times: Array = Global.map_manager.get_map_with_name(map_name).medals[mode]
 	for i in range(MEDAL_COUNT):
 		var medal: TextureRect = medals.get_child(i)
-		if time <= map.medal_times[i]:
+		if time <= medal_times[i]:
 			earned_medals += 1
 			medal.texture = index_to_medal[i]

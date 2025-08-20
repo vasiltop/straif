@@ -1,4 +1,4 @@
-class_name GlobalManager extends Node
+extends Node
 
 const APP_ID := 3850480
 

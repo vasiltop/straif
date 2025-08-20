@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import db from '../db/index';
-import { runs } from '../db/schema';
+import { runs, run_mode } from '../db/schema';
 import { asc, eq, sql, and, lt } from 'drizzle-orm';
 import { version_compare, steam_auth, admin_auth } from '../middleware';
 import { z } from 'zod';
@@ -11,13 +11,14 @@ import { ChannelType } from 'discord.js';
 import { type Variables } from '../index';
 import { hide_route } from './common';
 
+type RunMode = (typeof run_mode.enumValues)[number];
+
 const app = new Hono<{ Variables: Variables }>();
 
 const RunInput = z.object({
   recording: z.string(),
-  map_name: z.string(),
   time_ms: z.number(),
-  username: z.string(),
+  username: z.string(), // TODO: Remove username and send username in a different request instead to update it globally.
 });
 
 function describe_leaderboard_route<T extends z.ZodTypeAny>(
@@ -56,14 +57,22 @@ const RecordingResponse = z.object({
   data: z.string(),
 });
 
+function coerce_to_run_mode(unfiltered_name: string): RunMode {
+  const valid_modes = run_mode.enumValues;
+  return valid_modes.includes(unfiltered_name as RunMode)
+    ? (unfiltered_name as RunMode)
+    : 'target';
+}
+
 app.get(
-  '/maps/:map_name/recording/:steam_id',
+  '/mode/:mode_name/maps/:map_name/players/:steam_id/recording',
   describe_leaderboard_route(
     'Fetches the recording data associated with a specific run by a player on a map. Useful for replay or analysis purposes.',
     RecordingResponse
   ),
   async (c) => {
     const map_name = c.req.param('map_name');
+    const run_mode = coerce_to_run_mode(c.req.param('mode_name'));
     const steam_id = c.req.param('steam_id');
 
     try {
@@ -72,7 +81,13 @@ app.get(
           recording: runs.recording,
         })
         .from(runs)
-        .where(and(eq(runs.steam_id, steam_id), eq(runs.map_name, map_name)));
+        .where(
+          and(
+            eq(runs.steam_id, steam_id),
+            eq(runs.map_name, map_name),
+            eq(runs.mode, run_mode)
+          )
+        );
 
       if (!run_result.length) {
         return c.json({ error: 'Could not find recording.' }, 400);
@@ -83,6 +98,7 @@ app.get(
       };
       return c.json(data);
     } catch (e) {
+      console.log(e);
       return c.json({ error: 'Internal server error' }, 500);
     }
   }
@@ -101,13 +117,14 @@ const PlayerRunsResponse = z.object({
 });
 
 app.get(
-  '/players/:steam_id/runs',
+  '/mode/:mode_name/players/:steam_id/runs',
   describe_leaderboard_route(
     'Fetches all runs for the specified player by their Steam ID. Returns details like time, map name, and when the run was recorded, along with the player’s position and total number of runs on each map.',
     PlayerRunsResponse
   ),
   async (c) => {
     const steam_id = c.req.param('steam_id');
+    const run_mode = coerce_to_run_mode(c.req.param('mode_name'));
 
     try {
       const player_runs = await db
@@ -117,20 +134,25 @@ app.get(
           created_at: runs.created_at,
         })
         .from(runs)
-        .where(eq(runs.steam_id, steam_id));
+        .where(and(eq(runs.steam_id, steam_id), eq(runs.mode, run_mode)));
 
       const full_run_info = await Promise.all(
         player_runs.map(async (run) => ({
           ...run,
           created_at: format_date(run.created_at),
-          position: await get_player_position(run.time_ms, run.map_name),
-          total: await get_run_count(run.map_name),
+          position: await get_player_position(
+            run_mode,
+            run.time_ms,
+            run.map_name
+          ),
+          total: await get_run_count(run_mode, run.map_name),
         }))
       );
 
       const data: z.infer<typeof PlayerRunsResponse> = { data: full_run_info };
       return c.json(data);
     } catch (e) {
+      console.log(e);
       return c.json({ error: 'Internal server error' }, 500);
     }
   }
@@ -155,7 +177,7 @@ function format_date(date: Date) {
 }
 
 app.get(
-  '/maps/:map_name/runs',
+  '/mode/:mode_name/maps/:map_name/runs',
   describe_leaderboard_route(
     'Retrieves a paginated leaderboard of runs for the specified map. Returns run details sorted by time in ascending order. Accepts a page query parameter to navigate through leaderboard pages.',
     MapRunsResponse
@@ -163,6 +185,7 @@ app.get(
   async (c) => {
     const map_name = c.req.param('map_name');
     const page_string = c.req.query('page');
+    const run_mode = coerce_to_run_mode(c.req.param('mode_name'));
 
     let page = 0;
     if (page_string) page = parseInt(page_string);
@@ -176,7 +199,7 @@ app.get(
           created_at: runs.created_at,
         })
         .from(runs)
-        .where(eq(runs.map_name, map_name))
+        .where(and(eq(runs.map_name, map_name), eq(runs.mode, run_mode)))
         .orderBy(asc(runs.time_ms))
         .limit(10)
         .offset(page * 10);
@@ -189,32 +212,43 @@ app.get(
       const data: z.infer<typeof MapRunsResponse> = {
         data: {
           runs: formatted_result,
-          total: await get_run_count(map_name),
+          total: await get_run_count(run_mode, map_name),
         },
       };
       return c.json(data);
     } catch (e) {
+      console.log(e);
       return c.json({ error: 'Internal server error' }, 500);
     }
   }
 );
 
-async function get_run_count(map_name: string) {
+async function get_run_count(mode: RunMode, map_name: string) {
   return (
     await db
       .select({ count: sql`COUNT(*)`.mapWith(Number) })
       .from(runs)
-      .where(eq(runs.map_name, map_name))
+      .where(and(eq(runs.map_name, map_name), eq(runs.mode, mode)))
   )[0].count;
 }
 
-async function get_player_position(time_ms: number, map_name: string) {
+async function get_player_position(
+  mode: RunMode,
+  time_ms: number,
+  map_name: string
+) {
   return (
     (
       await db
         .select({ count: sql`COUNT(*)`.mapWith(Number) })
         .from(runs)
-        .where(and(eq(runs.map_name, map_name), lt(runs.time_ms, time_ms)))
+        .where(
+          and(
+            eq(runs.map_name, map_name),
+            lt(runs.time_ms, time_ms),
+            eq(runs.mode, mode)
+          )
+        )
     )[0].count + 1
   );
 }
@@ -230,7 +264,7 @@ const PlayerMapResponse = z.object({
 });
 
 app.get(
-  '/maps/:map_name/runs/:steam_id',
+  '/mode/:mode_name/maps/:map_name/runs/:steam_id',
   describe_leaderboard_route(
     "Gets detailed information about a specific player's run on a given map, including the run time, username, and their leaderboard position.",
     PlayerMapResponse
@@ -238,6 +272,7 @@ app.get(
   async (c) => {
     const map_name = c.req.param('map_name');
     const steam_id = c.req.param('steam_id');
+    const run_mode = coerce_to_run_mode(c.req.param('mode_name'));
 
     try {
       const run_result = await db
@@ -248,7 +283,13 @@ app.get(
           created_at: runs.created_at,
         })
         .from(runs)
-        .where(and(eq(runs.map_name, map_name), eq(runs.steam_id, steam_id)));
+        .where(
+          and(
+            eq(runs.map_name, map_name),
+            eq(runs.steam_id, steam_id),
+            eq(runs.mode, run_mode)
+          )
+        );
 
       if (!run_result.length) {
         return c.json(
@@ -261,12 +302,13 @@ app.get(
       const result = {
         ...run_result[0],
         created_at: format_date(run_result[0].created_at),
-        position: await get_player_position(time, map_name),
+        position: await get_player_position(run_mode, time, map_name),
       };
 
       const data: z.infer<typeof PlayerMapResponse> = { data: result };
       return c.json(data);
     } catch (e) {
+      console.log(e);
       return c.json({ error: 'Internal server error ' }, 500);
     }
   }
@@ -304,23 +346,29 @@ async function send_discord_update(
       );
     }
   } catch (e) {
-    return;
+    console.log(e);
   }
 }
 
 app.delete(
-  '/maps/:map_name/runs/:steam_id',
+  '/mode/:mode_name/maps/:map_name/runs/:steam_id',
   hide_route(),
   admin_auth,
   async (c) => {
     const map_name = c.req.param('map_name');
     const steam_id = c.req.param('steam_id');
-    console.log(map_name, steam_id);
+    const run_mode = coerce_to_run_mode(c.req.param('mode_name'));
 
     try {
       await db
         .delete(runs)
-        .where(and(eq(runs.map_name, map_name), eq(runs.steam_id, steam_id)));
+        .where(
+          and(
+            eq(runs.map_name, map_name),
+            eq(runs.steam_id, steam_id),
+            eq(runs.mode, run_mode)
+          )
+        );
 
       return c.json({
         data: 'Run was succesfully deleted.',
@@ -333,17 +381,23 @@ app.delete(
 );
 
 app.post(
-  '/runs',
+  '/mode/:mode_name/maps/:map_name/runs',
   zValidator('json', RunInput),
   hide_route(),
   steam_auth,
   version_compare,
   async (c) => {
     const body = c.req.valid('json');
+    const run_mode = coerce_to_run_mode(c.req.param('mode_name'));
+    const map_name = c.req.param('map_name');
+    const steam_id = c.get('steam_id');
 
     if (body.recording.length >= 474854) {
       // 474864 = 370s
-      return c.json({ error: 'Run was too long.' }, 400);
+      return c.json(
+        { error: 'Run was rejected due to excessive length.' },
+        400
+      );
     }
 
     const pb_result = await db
@@ -353,8 +407,9 @@ app.post(
       .from(runs)
       .where(
         and(
-          eq(runs.map_name, body.map_name),
-          eq(runs.steam_id, c.get('steam_id'))
+          eq(runs.map_name, map_name),
+          eq(runs.steam_id, steam_id),
+          eq(runs.mode, run_mode)
         )
       )
       .limit(1);
@@ -365,14 +420,15 @@ app.post(
       await db
         .insert(runs)
         .values({
-          steam_id: c.get('steam_id'),
-          map_name: body.map_name,
+          steam_id,
+          map_name,
           recording: body.recording,
           time_ms: body.time_ms,
           username: body.username,
+          mode: run_mode,
         })
         .onConflictDoUpdate({
-          target: [runs.steam_id, runs.map_name],
+          target: [runs.steam_id, runs.map_name, runs.mode],
           set: {
             time_ms: body.time_ms,
             recording: body.recording,
@@ -382,19 +438,22 @@ app.post(
           setWhere: sql`${runs.time_ms} > ${body.time_ms}`,
         });
 
-      const position = await get_player_position(body.time_ms, body.map_name);
+      const position = await get_player_position(
+        run_mode,
+        body.time_ms,
+        map_name
+      );
+      const is_pb = body.time_ms < pb;
+      const discord_message_threshold = 5;
 
-      if (position <= 5 && body.time_ms < pb) {
-        send_discord_update(
-          body.time_ms,
-          body.username,
-          body.map_name,
-          position
-        );
+      if (position <= discord_message_threshold && is_pb) {
+        send_discord_update(body.time_ms, body.username, map_name, position);
       }
 
-      return c.json({ data: 'success' });
+      const msg = `Run completed in ${body.time_ms / 1000}. ${is_pb ? 'New PB! Open the leaderboard to view your ranking.' : ''}`;
+      return c.json({ data: msg });
     } catch (e) {
+      console.log(e);
       return c.json({ error: 'Internal server error' }, 500);
     }
   }

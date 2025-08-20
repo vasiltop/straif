@@ -12,12 +12,13 @@ var lobby_id: int
 var lobby_members: Array[Member]
 var lobby_name: String
 var current_map: MapData
+var current_mode: String
 var auth_ticket: Dictionary 
 var auth_ticket_hex: String
 var admin: bool
 var maintenance: bool
-var map_name_to_time: Dictionary = {}
 var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
+var is_target_mode := true
 
 @rpc("any_peer", "call_remote", "reliable")
 func switched_map(mid: int) -> void:

@@ -59,7 +59,7 @@ func _load_runs() -> void:
 	for child in t_rows.get_children():
 		child.queue_free()
 		
-	var response := await Global.server_bridge.get_runs(Global.game_manager.current_map.name, current_page)
+	var response := await Global.server_bridge.get_runs(Global.game_manager.current_mode, Global.game_manager.current_map.name, current_page)
 	total_pages = max(1, ceil(response.total / PAGE_SIZE))
 	page_label.text = "Page %d of %d" % [current_page, total_pages]
 	
@@ -73,17 +73,18 @@ func _load_runs() -> void:
 
 		_insert_table_row(run_position, shortened_name, run.time_ms, run.created_at, int(run.steam_id))
 		run_position += 1
-
+	
 func _setup() -> void:
 	map_name_label.text = "Map: " + Global.game_manager.current_map.name
 
+	var medal_times: Array = Global.game_manager.current_map.medals[Global.game_manager.current_mode]
 	for i in range(len(medal_time_labels)):
-		medal_time_labels[i].text = str(Global.game_manager.current_map.medal_times[i]) + "s"
-	
+		medal_time_labels[i].text = str(medal_times[i]) + "s"
+
 	await _load_runs()
 
-	var run := await Global.server_bridge.get_my_run_by_map(Global.game_manager.current_map.name)
-	
+	var run := await Global.server_bridge.get_my_run_by_map(Global.game_manager.current_mode, Global.game_manager.current_map.name)
+
 	if run != null:
 		var pos := run.position
 		if pos > 10:
@@ -92,7 +93,7 @@ func _setup() -> void:
 	if Global.game_manager.admin:
 		for child in admin_actions_container.get_children():
 			child.queue_free()
-			
+
 		initialize_admin_actions()
 
 func _insert_table_row(run_position: int, player_name: String, time: float, date: String, steam_id: int) -> void:
@@ -134,7 +135,7 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	race_btn.pressed.connect(
 		func() -> void:
 			if not player.map.currently_racing_steam_id == steam_id:
-				var replay := await Global.server_bridge.get_replay(Global.game_manager.current_map.name, steam_id)
+				var replay := await Global.server_bridge.get_replay(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
 				
 				player.map.race_recording_bytes = Marshalls.base64_to_raw(replay)
 				player.map.currently_racing_steam_id = steam_id
@@ -165,7 +166,7 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	replay_btn.size_flags_horizontal = Control.SIZE_EXPAND
 	replay_btn.focus_mode = Control.FOCUS_NONE
 	replay_btn.pressed.connect(func() -> void:
-		var replay := await Global.server_bridge.get_replay(Global.game_manager.current_map.name, steam_id)
+		var replay := await Global.server_bridge.get_replay(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
 		if replay != "":
 			Global.game_manager.replay_requested.emit(replay)
 		else:
@@ -220,7 +221,7 @@ func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
 			confirm_btn.focus_mode = Control.FOCUS_NONE
 			confirm_btn.pressed.connect(
 				func() -> void:
-					await Global.server_bridge.delete_run(Global.game_manager.current_map.name, steam_id)
+					await Global.server_bridge.delete_run(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
 					confirm_btn.queue_free()
 					)
 	)

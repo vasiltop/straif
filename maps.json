@@ -3,100 +3,172 @@
 		{
 			"name": "Tutorial",
 			"tier": 0.0,
-			"times": [
+			"modes": ["target", "bhop"],
+			"medals_target": [
 				6.0,
 				4.5,
 				3.8,
 				3.2,
 				2.9
+			],
+			"medals_bhop": [
+				5.0,
+				4.0,
+				3.5,
+				3.0,
+				2.6,
 			]
 		},
 		{
 			"name": "map_rooftops",
 			"tier": 0.0,
-			"times": [
+			"modes": ["target", "bhop"],
+			"medals_target": [
 				25.0,
 				17.0,
 				15.0,
 				13.8,
 				12.0
+			],
+			"medals_bhop": [
+				20.0,
+				16.0,
+				13.0,
+				11.5,
+				10.0,
 			]
 		},
 		{
 			"name": "map_streets",
 			"tier": 0.0,
-			"times": [
+			"modes": ["target", "bhop"],
+			"medals_target": [
 				25.0,
 				20.0,
 				15.0,
 				14.0,
 				13.0
-			]
-		},
-		{
-			"name": "map_rooftops2",
-			"tier": 2.0,
-			"times": [
-				55.0,
-				40.0,
-				30.0,
-				25.0,
-				21.0
-			]
-		},
-		{
-			"name": "map_subway",
-			"tier": 1.0,
-			"times": [
-				25.0,
-				20.0,
-				16.0,
-				14.0,
-				12.0
-			]
-		},
-		{
-			"name": "map_graybox",
-			"tier": 0.0,
-			"times": [
-				13.0,
-				11.0,
-				9.7,
-				8.8,
-				7.0
-			]
-		},
-		{
-			"name": "map_graybox2",
-			"tier": 0.0,
-			"times": [
-				20.0,
-				16.0,
-				14.5,
-				13.2,
-				12.0
-			]
-		},
-		{
-			"name": "map_structure",
-			"tier": 1.0,
-			"times": [
-				22.5,
-				20.5,
-				18.5,
-				16.5,
-				13.0
+			],
+			"medals_bhop": [
+				18.0,
+				15.0,
+				12.0,
+				10.5,
+				9.0,
 			]
 		},
 		{
 			"name": "map_flow",
 			"tier": 0.0,
-			"times": [
+			"modes": ["target", "bhop"],
+			"medals_target": [
 				23.0,
 				17.0,
 				14.5,
 				12.0,
 				10.4
+			],
+			"medals_bhop": [
+				20.0,
+				16.0,
+				12.5,
+				11.0,
+				10.2
+			]
+		},
+		{
+			"name": "map_structure",
+			"tier": 1.0,
+			"modes": ["target", "bhop"],
+			"medals_target": [
+				22.5,
+				20.5,
+				18.5,
+				16.5,
+				13.0
+			],
+			"medals_bhop": [
+				22.0,
+				18.0,
+				15.0,
+				13.5,
+				12.6
+			]
+		},
+		{
+			"name": "map_graybox",
+			"tier": 0.0,
+			"modes": ["target", "bhop"],
+			"medals_target": [
+				13.0,
+				11.0,
+				9.7,
+				8.8,
+				7.0
+			],
+			"medals_bhop": [
+				13.0,
+				10.0,
+				8.0,
+				7.2,
+				6.4
+			]
+		},
+		{
+			"name": "map_graybox2",
+			"tier": 0.0,
+			"modes": ["target", "bhop"],
+			"medals_target": [
+				20.0,
+				16.0,
+				14.5,
+				13.2,
+				12.0
+			],
+			"medals_bhop": [
+				18.0,
+				14.0,
+				10.0,
+				8.0,
+				7.3,
+			]
+		},
+		{
+			"name": "map_subway",
+			"tier": 1.0,
+			"modes": ["target", "bhop"],
+			"medals_target": [
+				25.0,
+				20.0,
+				16.0,
+				14.0,
+				12.0
+			],
+			"medals_bhop": [
+				19.0,
+				14.0,
+				11.0,
+				9.0,
+				8.0
+			]
+		},
+		{
+			"name": "map_rooftops2",
+			"tier": 2.0,
+			"modes": ["target", "bhop"],
+			"medals_target": [
+				55.0,
+				40.0,
+				30.0,
+				25.0,
+				21.0
+			],
+			"medals_bhop": [
+				35.0,
+				28.0,
+				23.0,
+				20.0,
+				17.0
 			]
 		}
 	]

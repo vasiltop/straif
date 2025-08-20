@@ -12,16 +12,18 @@ func load_maps() -> Array[MapData]:
 		var map: Dictionary = map_list[i]
 		var map_name: String = map.name
 		var map_tier: int = map.tier
-		var map_times: Array = map.times
 		
 		const IMAGES_LOCATION := "res://images/screenshots/"
 		var image: Texture2D = load(IMAGES_LOCATION + map_name + ".png")
 		
-		var map_times_float: Array[float]
-		for time: float in map_times:
-			map_times_float.append(time)
+		var modes: Array = map.modes
+		var mode_times := {}
 		
-		var map_data := MapData.new(map_name, map_tier, i, map_times_float, image)
+		for mode: String in modes:
+			var mode_medal_times: Array = map["medals_" + mode]
+			mode_times[mode] = mode_medal_times
+
+		var map_data := MapData.new(map_name, map_tier, i, modes, mode_times, image)
 		maps.append(map_data)
 		
 	return maps

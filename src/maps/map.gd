@@ -102,7 +102,8 @@ func spawn_player(pid: int) -> void:
 
 func _physics_process(_delta: float) -> void:
 	if running:
-		recorder.add_frame(player.global_position, player.global_rotation.y)
+		var frame := Recorder.FrameInfoV2.new(player.global_position, player.global_rotation.y, player.camera.global_rotation.x)
+		recorder.add_frame(frame)
 		player.set_timer(timer)
 		
 	if recorder.is_playing():
@@ -187,8 +188,7 @@ func _win() -> void:
 	sound_player.play()
 
 	var bytes := recorder.to_bytes()
-	Global.server_bridge.publish_run(bytes, Global.game_manager.current_map.name, int(timer * 1000))
-	player.show_end_run_stats(timer)
+	Global.server_bridge.publish_run(Global.game_manager.current_mode, bytes, Global.game_manager.current_map.name, int(timer * 1000))
 
 func spawn_target(pos: Vector3) -> void:
 	var inst: Target = TargetScene.instantiate()
@@ -211,19 +211,25 @@ func restart() -> void:
 	player.weapon_handler.set_weapon(null)
 
 	can_win = false
-
+	
+	var mode := Global.game_manager.current_mode
+	
 	for node in get_tree().get_nodes_in_group("decal"):
 		node.queue_free()
 
 	for node in get_tree().get_nodes_in_group("weapon_pickup"):
 		var wp: WeaponPickup = node
-		wp.reset()
+		if mode == "target":
+			wp.reset()
+		else:
+			wp.deactivate()
 
 	for node in target_container.get_children():
 		node.queue_free()
-
-	for spawn in get_target_spawns():
-		spawn_target(spawn.global_position)
+	
+	if mode == "target":
+		for spawn in get_target_spawns():
+			spawn_target(spawn.global_position)
 	
 	_on_target_killed()
 
