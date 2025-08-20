@@ -318,7 +318,8 @@ async function send_discord_update(
   newTime: number,
   player: string,
   mapName: string,
-  position: number
+  position: number,
+  mode: RunMode
 ) {
   try {
     const channel = await discord_client.channels.fetch(DISCORD_CHANNEL_ID);
@@ -326,23 +327,25 @@ async function send_discord_update(
       throw new Error('Channel not configured');
     }
     if (channel.type === ChannelType.GuildText) {
+      const mode_string =
+        mode === 'target' ? 'Target Practice' : 'Movement Only';
       await channel.send(
         `Player ${player} has achieved ${(() => {
           switch (position) {
             case 1:
-              return 'first';
+              return 'a **WORLD RECORD**';
             case 2:
-              return 'second';
+              return 'second place';
             case 3:
-              return 'third';
+              return 'third place';
             case 4:
-              return 'fourth';
+              return 'fourth place';
             case 5:
-              return 'fifth';
+              return 'fifth place';
             default:
               return `${position}th`;
           }
-        })()} place on ${mapName} with a time of ${(newTime / 1000).toFixed(3)} seconds!`
+        })()} on ${mapName} in the ${mode_string} mode with a time of ${(newTime / 1000).toFixed(3)} seconds!`
       );
     }
   } catch (e) {
@@ -447,7 +450,13 @@ app.post(
       const discord_message_threshold = 5;
 
       if (position <= discord_message_threshold && is_pb) {
-        send_discord_update(body.time_ms, body.username, map_name, position);
+        send_discord_update(
+          body.time_ms,
+          body.username,
+          map_name,
+          position,
+          run_mode
+        );
       }
 
       const msg = `Run completed in ${body.time_ms / 1000}. ${is_pb ? 'New PB! Open the leaderboard to view your ranking.' : ''}`;
