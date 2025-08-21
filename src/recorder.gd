@@ -37,6 +37,22 @@ func pause_playback() -> void:
 func resume_playback() -> void:
 	paused = false
 
+func set_frame(value: int) -> void:
+	if value >= currently_playing.size() or value < 0: return
+	
+	current_frame = value
+	
+	var frame: Variant = currently_playing[current_frame]
+	if not frame: return
+	target.global_position = frame.position
+	target.global_rotation.y = frame.rot_y
+	
+	if target is Camera3D:
+		target.global_position.y += EYE_HEIGHT
+		
+		if currently_playing_version == -1:
+			target.global_rotation.x = frame.rot_x
+
 func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 	currently_playing = frames
 	current_frame = 0
@@ -59,17 +75,7 @@ func _physics_process(_delta: float) -> void:
 	if not is_playing(): return
 	if paused: return
 	
-	var frame: Variant = currently_playing[current_frame]
-	if not frame: return
-	
-	target.global_position = frame.position
-	target.global_rotation.y = frame.rot_y
-	
-	if target is Camera3D:
-		target.global_position.y += EYE_HEIGHT
-		
-		if currently_playing_version == -1:
-			target.global_rotation.x = frame.rot_x
+	set_frame(current_frame)
 
 	current_frame += 1
 

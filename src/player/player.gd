@@ -16,6 +16,7 @@ signal jumped
 @onready var alt_speed_label: Label = $UI/UiContainer/Middle/Speed
 @onready var sniper_overlay: TextureRect = $UI/UiContainer/SniperOverlay
 @onready var raycast: RayCast3D = $Eye/Camera/RayCast
+@onready var pre_strafe_speed: Label = $UI/UiContainer/Middle/PreStrafeSpeed
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5

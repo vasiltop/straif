@@ -5,6 +5,7 @@ signal return_control_to_player
 @onready var label: Label = $V/Label
 @onready var slider: HSlider = $V/Slider
 @onready var done: Button = $V/Done
+@onready var v: VBoxContainer = $V
 
 func _ready() -> void:
 	done.pressed.connect(func() -> void:
@@ -15,3 +16,7 @@ func set_frame(frame: int, total: int) -> void:
 	label.text = "Tick: %d / %d" % [frame, total]
 	slider.value = frame
 	slider.max_value = total
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("ui_admin"):
+		v.visible = not v.visible

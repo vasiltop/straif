@@ -68,7 +68,7 @@ func _ready() -> void:
 	)
 	
 func _on_replay_slider_changed(value: float) -> void:
-	recorder.current_frame = value
+	recorder.set_frame(value)
 
 func is_watching_replay() -> bool:
 	return map_ui.visible
@@ -166,6 +166,8 @@ func _start_run() -> void:
 	sound_player.play()
 	running = true
 	end_zone.monitoring = true
+	player.pre_strafe_speed.text = player.speed_label.text
+	player.pre_strafe_speed.visible = true
 
 func _on_player_jump() -> void:
 	if not completed and not running:
@@ -209,7 +211,7 @@ func restart() -> void:
 	player_in_end_zone = false
 	player.camera._input_rotation.y = -start_rotation.y
 	player.camera._input_rotation.x = 0
-	
+	player.pre_strafe_speed.visible = false
 	if recorder.ghost:
 		recorder.ghost.visible = false
 		
