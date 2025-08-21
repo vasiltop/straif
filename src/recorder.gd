@@ -93,6 +93,10 @@ func _physics_process(_delta: float) -> void:
 
 	current_frame += 1
 
+func to_hex() -> String:
+	var bytes := to_bytes()
+	return Marshalls.raw_to_base64(bytes)
+
 func to_bytes() -> PackedByteArray:
 	var buffer := StreamPeerBuffer.new()
 	buffer.put_32(HEADER)

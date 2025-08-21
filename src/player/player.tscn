@@ -531,6 +531,11 @@ layout_mode = 2
 focus_mode = 0
 text = ">"
 
+[node name="ReplayLastRun" type="Button" parent="UI/UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+focus_mode = 0
+text = "Replay Last Run"
+
 [node name="Lobby" type="Panel" parent="UI/UiContainer/GameInfo"]
 visible = false
 custom_minimum_size = Vector2(200, 100)

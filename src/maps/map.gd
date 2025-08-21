@@ -162,6 +162,7 @@ func _start_run() -> void:
 	if currently_racing_steam_id != 0:
 		recorder.play_bytes(race_recording_bytes, true)
 	
+	recorder.clear()
 	sound_player.stream = StartRunSound
 	sound_player.play()
 	running = true
@@ -241,7 +242,6 @@ func restart() -> void:
 	
 	_on_target_killed()
 
-	recorder.clear()
 	completed = false
 	running = false
 	timer = 0.0

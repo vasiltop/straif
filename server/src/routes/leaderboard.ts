@@ -330,22 +330,7 @@ async function send_discord_update(
       const mode_string =
         mode === 'target' ? 'Target Practice' : 'Movement Only';
       await channel.send(
-        `Player ${player} has achieved ${(() => {
-          switch (position) {
-            case 1:
-              return 'a **WORLD RECORD**';
-            case 2:
-              return 'second place';
-            case 3:
-              return 'third place';
-            case 4:
-              return 'fourth place';
-            case 5:
-              return 'fifth place';
-            default:
-              return `${position}th`;
-          }
-        })()} on ${mapName} in the ${mode_string} mode with a time of ${(newTime / 1000).toFixed(3)} seconds!`
+        `Player ${player} has achieved a **WORLD RECORD** on ${mapName} in the ${mode_string} mode with a time of ${(newTime / 1000).toFixed(3)} seconds!`
       );
     }
   } catch (e) {

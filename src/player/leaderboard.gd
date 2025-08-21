@@ -11,6 +11,7 @@ signal ghost_enabled(steam_id: int)
 @onready var player: Player = $"../../../.."
 @onready var admin_panel: PanelContainer = $"../Admin"
 @onready var admin_actions_container: VBoxContainer = $"../Admin/M/V/V"
+@onready var replay_last_run: Button = $M/V/ReplayLastRun
 
 @onready var medal_time_labels: Array[Label] = [
 	$M/V/MedalInfo/BronzeTime,
@@ -39,6 +40,15 @@ func _ready() -> void:
 	inc_page_btn.pressed.connect(func() -> void: modify_page(1))
 	middle.visible = false
 	_setup()
+	
+	replay_last_run.pressed.connect(
+		func() -> void:
+			if player.map.recorder.frames.size() <= 0:
+				Info.alert("Cannot play empty recording.")
+				return
+			var replay := player.map.recorder.to_hex()
+			Global.game_manager.replay_requested.emit(replay)
+	)
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard"):
