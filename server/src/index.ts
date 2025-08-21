@@ -37,7 +37,7 @@ app.get('/docs', swaggerUI({ url: '/openapi' }));
 serve(
   {
     fetch: app.fetch,
-    port: 3000,
+    port: parseInt(process.env.PORT!),
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
