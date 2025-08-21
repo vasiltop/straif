@@ -27,9 +27,16 @@ layout_mode = 2
 text = "Frame: 0 / 999"
 horizontal_alignment = 1
 
-[node name="ToggleLabel" type="Label" parent="V"]
+[node name="Speed" type="Label" parent="V"]
 layout_mode = 2
-text = "Press CTRL to toggle UI."
+text = "Speed: 0 u/s"
+horizontal_alignment = 1
+
+[node name="Info" type="Label" parent="V"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Press Ctrl to toggle UI
+Press Restart to restart"
 horizontal_alignment = 1
 
 [node name="Slider" type="HSlider" parent="V"]

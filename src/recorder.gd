@@ -13,6 +13,7 @@ var paused: bool
 var camera := Camera3D.new()
 var ghost: Node3D
 var target: Node3D = null
+var speed: float
 
 func _init(player_cam: Camera3D) -> void:
 	self.player_cam = player_cam
@@ -52,6 +53,19 @@ func set_frame(value: int) -> void:
 		
 		if currently_playing_version == -1:
 			target.global_rotation.x = frame.rot_x
+			
+	if value > 0:
+		var prev_frame: Variant = currently_playing[current_frame - 1]
+		var prev_position: Vector3 = prev_frame.position
+		var current_position: Vector3 = frame.position
+		
+		prev_position.y = 0
+		current_position.y = 0
+		
+		var diff := current_position - prev_position
+		var dt := 1.0 / 60.0
+		
+		speed = diff.length() / dt
 
 func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 	currently_playing = frames
