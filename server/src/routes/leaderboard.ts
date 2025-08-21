@@ -447,7 +447,7 @@ app.post(
         map_name
       );
       const is_pb = body.time_ms < pb;
-      const discord_message_threshold = 5;
+      const discord_message_threshold = 1; // We only care about world record.
 
       if (position <= discord_message_threshold && is_pb) {
         send_discord_update(

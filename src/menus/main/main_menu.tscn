@@ -275,26 +275,6 @@ mode = "bhop"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 1
 
-[node name="H" type="HBoxContainer" parent="MarginContainer/Content/Body/Play/M/V"]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 50
-
-[node name="MedalsEarned" type="Label" parent="MarginContainer/Content/Body/Play/M/V/H"]
-layout_mode = 2
-text = "Medals Earned: 0 / 0"
-
-[node name="S" type="ScrollContainer" parent="MarginContainer/Content/Body/Play/M/V"]
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Maps" type="VBoxContainer" parent="MarginContainer/Content/Body/Play/M/V/S"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
 [node name="Lobby" type="Control" parent="MarginContainer/Content/Body"]
 visible = false
 layout_mode = 2

@@ -38,6 +38,7 @@ func _ready() -> void:
 	dec_page_btn.pressed.connect(func() -> void: modify_page(-1))
 	inc_page_btn.pressed.connect(func() -> void: modify_page(1))
 	middle.visible = false
+	_setup()
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard"):
@@ -56,16 +57,18 @@ func _process(_delta: float) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _load_runs() -> void:
-	for child in t_rows.get_children():
-		child.queue_free()
-		
 	var response := await Global.server_bridge.get_runs(Global.game_manager.current_mode, Global.game_manager.current_map.name, current_page)
+	var my_run := await Global.server_bridge.get_my_run_by_map(Global.game_manager.current_mode, Global.game_manager.current_map.name)
+	
 	total_pages = max(1, ceil(response.total / PAGE_SIZE))
 	page_label.text = "Page %d of %d" % [current_page, total_pages]
 	
 	var runs := response.runs
 	var run_position := (current_page - 1) * PAGE_SIZE + 1
 	
+	for child in t_rows.get_children():
+		child.queue_free()
+		
 	for run in runs:
 		var shortened_name := run.username as String
 		if len(shortened_name) >= MAX_NAME_LENGTH:
@@ -73,6 +76,11 @@ func _load_runs() -> void:
 
 		_insert_table_row(run_position, shortened_name, run.time_ms, run.created_at, int(run.steam_id))
 		run_position += 1
+
+	if my_run != null:
+		var pos := my_run.position
+		if pos > 10:
+			_insert_table_row(pos, my_run.username, my_run.time_ms, my_run.created_at, int(my_run.steam_id))
 	
 func _setup() -> void:
 	map_name_label.text = "Map: " + Global.game_manager.current_map.name
@@ -82,13 +90,6 @@ func _setup() -> void:
 		medal_time_labels[i].text = str(medal_times[i]) + "s"
 
 	await _load_runs()
-
-	var run := await Global.server_bridge.get_my_run_by_map(Global.game_manager.current_mode, Global.game_manager.current_map.name)
-
-	if run != null:
-		var pos := run.position
-		if pos > 10:
-			_insert_table_row(pos, run.username, run.time_ms, run.created_at, int(run.steam_id))
 
 	if Global.game_manager.admin:
 		for child in admin_actions_container.get_children():

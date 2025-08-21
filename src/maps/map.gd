@@ -26,6 +26,7 @@ var running: bool = false
 var can_win: bool = false
 var currently_racing_steam_id: int
 var race_recording_bytes: PackedByteArray
+var player_in_end_zone: bool
 
 func _ready() -> void:
 	player.setup(self)
@@ -49,6 +50,22 @@ func _ready() -> void:
 	map_ui.slider.value_changed.connect(_on_replay_slider_changed)
 	map_ui.slider.drag_started.connect(recorder.pause_playback)
 	map_ui.slider.drag_ended.connect(func(changed: bool) -> void: recorder.resume_playback())
+	
+	end_zone.body_entered.connect(
+		func(body: Node3D) -> void:
+			if body is Player:
+				var p := body as Player
+				if p.is_me():
+					player_in_end_zone = true
+	)
+	
+	end_zone.body_exited.connect(
+		func(body: Node3D) -> void:
+			if body is Player:
+				var p := body as Player
+				if p.is_me():
+					player_in_end_zone = false
+	)
 	
 func _on_replay_slider_changed(value: float) -> void:
 	recorder.current_frame = value
@@ -148,6 +165,7 @@ func _start_run() -> void:
 	sound_player.stream = StartRunSound
 	sound_player.play()
 	running = true
+	end_zone.monitoring = true
 
 func _on_player_jump() -> void:
 	if not completed and not running:
@@ -160,26 +178,14 @@ func _on_start_zone_exited(body: Node3D) -> void:
 			_start_run()
 
 func _process(delta: float) -> void:
+	if not completed and player_in_end_zone and target_container.get_child_count() == 0:
+		await _win()
+
 	if Input.is_action_just_pressed("restart"):
 		restart()
 
-	if not completed and _is_player_in_zone(end_zone) and target_container.get_child_count() == 0 and can_win:
-		_win()
-	
 	if running:
 		timer += delta
-
-func _is_player_in_zone(zone: Area3D) -> bool:
-	var bodies := zone.get_overlapping_bodies()
-
-	for body in bodies:
-		if body is Player:
-			var p: Player = body
-			if not p.is_me(): continue
-
-			return true
-
-	return false
 
 func _win() -> void:
 	completed = true
@@ -188,7 +194,7 @@ func _win() -> void:
 	sound_player.play()
 
 	var bytes := recorder.to_bytes()
-	Global.server_bridge.publish_run(Global.game_manager.current_mode, bytes, Global.game_manager.current_map.name, int(timer * 1000))
+	await Global.server_bridge.publish_run(Global.game_manager.current_mode, bytes, Global.game_manager.current_map.name, int(timer * 1000))
 
 func spawn_target(pos: Vector3) -> void:
 	var inst: Target = TargetScene.instantiate()
@@ -200,7 +206,7 @@ func restart() -> void:
 		player.weapon_handler.toggle_sniper_scope()
 
 	player.global_position = start_pos
-	
+	player_in_end_zone = false
 	player.camera._input_rotation.y = -start_rotation.y
 	player.camera._input_rotation.x = 0
 	
@@ -238,3 +244,5 @@ func restart() -> void:
 	running = false
 	timer = 0.0
 	player.set_timer(timer)
+	end_zone.monitoring = false
+	

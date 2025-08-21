@@ -60,6 +60,8 @@ func _instantiate_maps() -> void:
 	
 	for child: ModeContainer in mode_switcher.get_children():
 		mode_to_container[child.mode] = child
+		
+	mode_to_container[Global.game_manager.current_mode].visible = true
 	
 	for map in Global.map_manager.maps:
 		for mode: String in map.modes:

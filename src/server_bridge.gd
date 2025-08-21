@@ -7,7 +7,10 @@ const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
 var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straifapi.pumped.software"
-var version := "dev" if OS.has_feature("editor") else "0.1.5"
+#var api_url := "https://straifapi.pumped.software"
+#var api_url := "http://209.38.2.30:3000"
+#var version := "0.1.7"
+var version := "dev" if OS.has_feature("editor") else "0.1.7"
 var heartbeat_timer: BetterTimer
 
 func get_leaderboard_base(mode: String) -> String:
@@ -35,6 +38,9 @@ func _on_heartbeat_timer() -> void:
 
 	Global.game_manager.admin = data.admin as bool
 	Global.game_manager.maintenance = data.maintenance as bool
+	
+	if not Global.game_manager.maintenance:
+		Global.game_manager.maintenance_changed.emit()
 	
 	if Global.game_manager.maintenance:
 		if Global.game_manager.admin:

@@ -129,7 +129,6 @@ func get_version(data: PackedByteArray) -> int:
 
 func play_bytes(data: PackedByteArray, is_ghost := false) -> void:
 	var version := get_version(data)
-	print(version)
 	var frames := frames_from_bytes(data)
 	play_frames(version, frames, is_ghost)
 

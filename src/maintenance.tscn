@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://dg0sb2ihpsb5m"]
 
-[ext_resource type="Script" uid="uid://dlpcs641pa7hr" path="res://src/maintenance.gd" id="1_rcaxt"]
+[ext_resource type="Script" uid="uid://dp3ahjxludfpm" path="res://src/maintenance.gd" id="1_rcaxt"]
 [ext_resource type="PackedScene" uid="uid://ejiq20awxkya" path="res://src/maps/presets/ladder.tscn" id="2_gc2s1"]
 [ext_resource type="PackedScene" uid="uid://d0rpe3n6n6hgj" path="res://src/maps/tiles/structure.glb" id="6_d6ev0"]
 [ext_resource type="Material" uid="uid://dxgfaq8mgbtph" path="res://src/maps/presets/test.tres" id="7_hd26s"]
@@ -64,7 +64,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "The game is currently down for maintenance, or you
 have launched an incorrect version of the game. Please check
-for any updates or wait here until the maintenance is complete."
+for any updates."
 horizontal_alignment = 1
 
 [node name="Map" type="Node3D" parent="."]
@@ -115,5 +115,20 @@ environment = SubResource("Environment_atrtg")
 
 [node name="Camera2D" type="Camera3D" parent="Map"]
 transform = Transform3D(0.907982, 0, 0.419008, 0, 1, 0, -0.419008, 0, 0.907982, -3.36399, 1.91718, -8.38237)
+
+[node name="Quit" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -21.0
+offset_top = -164.0
+offset_right = 21.0
+offset_bottom = -133.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Quit"
 
 [editable path="Map/structure"]
