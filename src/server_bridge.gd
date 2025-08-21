@@ -165,7 +165,15 @@ func publish_run(mode: String, recording: PackedByteArray, map_name: String, tim
 	var data := await data_or_print_error(response)
 	
 	if data != null:
-		Info.alert(data as String)
+		var msg := data as String
+		Info.alert(msg)
+		
+		var mode_info: Dictionary = Global.game_manager.map_name_to_pb_info[map_name].mode_to_map_info[mode]
+		var time_s := time_ms / 1000.0
+		var is_pb: bool = time_s < mode_info.pb
+		
+		if is_pb:
+			mode_info.pb = time_s
 
 func is_admin(steam_id: int) -> bool:
 	var url := "/admin/player/%d" % steam_id 

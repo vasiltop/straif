@@ -66,7 +66,13 @@ func _instantiate_maps() -> void:
 	for map in Global.map_manager.maps:
 		for mode: String in map.modes:
 			var container := mode_to_container[mode]
-			container.add_map(map)
+			var pb_info := Global.game_manager.map_name_to_pb_info.get(map.name, null)
+			
+			if pb_info == null:
+				container.add_map(map, mode, INF, 0, 0)
+			else:
+				var mode_info: Dictionary = pb_info.mode_to_map_info[mode]
+				container.add_map(map, mode, mode_info.pb as float, mode_info.position as int, mode_info.total as int)
 
 	for mode in mode_to_container:
 		var response := await Global.server_bridge.get_my_runs(mode)
@@ -76,7 +82,7 @@ func _instantiate_maps() -> void:
 		for run in response.runs:
 			var btn := mode_to_container[mode].get_map(run.map_name)
 			if btn == null: continue
-			btn.set_personal_best(snapped(float(run.time_ms) / 1000, 0.01) as float, run.position, run.total)
+			btn.set_personal_best(snapped(float(run.time_ms) / 1000, 0.001) as float, run.position, run.total, mode)
 
 func _on_my_lobby_changed() -> void:
 	_on_refresh_lobby_search()

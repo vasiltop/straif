@@ -24,12 +24,12 @@ func _ready() -> void:
 	map_container.add_theme_constant_override("h_separation", 15)
 	map_container.add_theme_constant_override("v_separation", 15)
 
-func add_map(map: MapData) -> void:
+func add_map(map: MapData, mode: String, pb: float, position: int, total: int) -> void:
 	var btn: MapButton = MapButtonScene.instantiate()
 	btn.map_name = map.name
 	btn.mode = mode
 	map_container.add_child(btn)
-	btn.set_personal_best(-INF, 0, 0)
+	btn.set_personal_best(pb, position, total, mode)
 
 func get_map(name: String) -> MapButton:
 	for child: MapButton in map_container.get_children():

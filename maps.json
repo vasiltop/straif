@@ -77,6 +77,30 @@
 			]
 		},
 		{
+			"name": "map_line",
+			"tier": 0.0,
+			"modes": ["bhop"],
+			"medals_bhop": [
+				20.0,
+				16.0,
+				12.5,
+				11.0,
+				10.2
+			]
+		},
+		{
+			"name": "map_slope",
+			"tier": 0.0,
+			"modes": ["bhop"],
+			"medals_bhop": [
+				20.0,
+				16.0,
+				12.5,
+				11.0,
+				10.2
+			]
+		},
+		{
 			"name": "map_structure",
 			"tier": 1.0,
 			"modes": ["target", "bhop"],

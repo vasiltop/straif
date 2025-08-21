@@ -20,6 +20,28 @@ var admin: bool
 var maintenance: bool
 var network_type: NETWORK_TYPE = NETWORK_TYPE.STEAM
 var is_target_mode := true
+var map_name_to_pb_info: Dictionary[String, PbInfo]
+
+# TODO: Populate this automatically if theres more modes
+class PbInfo:
+	var mode_to_map_info: Dictionary[String, Dictionary] = {
+		"target": {
+			"total": 0,
+			"position": 0,
+			"pb": INF
+		},
+		"bhop": {
+			"total": 0,
+			"position": 0,
+			"pb": INF
+		},
+	}
+	
+	func _init(total := 0, position := 0, pb := INF) -> void:
+		for mode: String in ["target", "bhop"]:
+			self.mode_to_map_info[mode].total = total
+			self.mode_to_map_info[mode].position = position
+			self.mode_to_map_info[mode].pb = pb
 
 @rpc("any_peer", "call_remote", "reliable")
 func switched_map(mid: int) -> void:

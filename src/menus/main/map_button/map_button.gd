@@ -42,11 +42,20 @@ func _ready() -> void:
 	sb.texture = map.image
 	add_theme_stylebox_override("panel", sb)
 
-func set_personal_best(time: float, position: int, total: int) -> void:
+func set_personal_best(time: float, position: int, total: int, mode: String) -> void:
 	timer_label.text = "Not Completed..."
+
+	var info := Global.game_manager.map_name_to_pb_info.get(map_name)
+	if info == null:
+		Global.game_manager.map_name_to_pb_info[map_name] = Global.game_manager.PbInfo.new()
 	
-	if time == -INF: return
+	var dict := Global.game_manager.map_name_to_pb_info[map_name].mode_to_map_info[mode]
+	dict.position = position
+	dict.total = total
+	dict.pb = time
+
 	
+	if time == INF: return
 	timer_label.text = "Personal Best: %.3fs\nPosition: %d / %d" % [time, position, total]
 	
 	var medal_times: Array = Global.map_manager.get_map_with_name(map_name).medals[mode]
