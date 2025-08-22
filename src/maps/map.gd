@@ -210,8 +210,9 @@ func restart() -> void:
 
 	player.global_position = start_pos
 	player_in_end_zone = false
-	player.camera._input_rotation.y = -start_rotation.y
-	player.camera._input_rotation.x = 0
+	
+	player.camera._input_rotation = start_rotation
+	
 	player.pre_strafe_speed.visible = false
 	if recorder.ghost:
 		recorder.ghost.visible = false

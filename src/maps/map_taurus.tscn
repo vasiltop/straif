@@ -1,17 +1,59 @@
-[gd_scene load_steps=11 format=3 uid="uid://di2rykswpqipj"]
+[gd_scene load_steps=22 format=3 uid="uid://cgfpiregy8ege"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_jff7h"]
 [ext_resource type="Texture2D" uid="uid://daquwrro31gm" path="res://src/textures/texture_01.png" id="3_2u8jv"]
-[ext_resource type="PackedScene" uid="uid://mdwpv32g85u" path="res://src/maps/tiles/medium_box.tscn" id="4_cqrp6"]
-[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://src/maps/tiles/large_box.tscn" id="5_curnt"]
-[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://src/maps/tiles/extra_large.tscn" id="6_nyv5r"]
-[ext_resource type="Material" uid="uid://dva488wqryyh3" path="res://src/maps/tiles/test_mat.tres" id="8_qi8a4"]
-[ext_resource type="PackedScene" uid="uid://nn4mtur3ev0n" path="res://src/maps/tiles/small_box.tscn" id="9_01mwx"]
+[ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="3_b3ady"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/medium_box.tscn" id="4_cqrp6"]
+[ext_resource type="Texture2D" uid="uid://cnpg2otbjlocx" path="res://src/textures/greybox_texture/greybox_dark_solid.png" id="4_degwk"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/large_box.tscn" id="5_curnt"]
+[ext_resource type="Texture2D" uid="uid://ce1du0kqe8ls7" path="res://src/textures/greybox_texture/greybox_dark_grid.png" id="5_dgq2u"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/extra_large.tscn" id="6_nyv5r"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/small_box.tscn" id="9_01mwx"]
+[ext_resource type="Texture2D" uid="uid://doxcfhjaq03yn" path="res://src/textures/skyboxes/cloudy_gray.png" id="10_6ta1v"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="12_player"]
+[ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="13_degwk"]
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="13_zone"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i8f8m"]
 albedo_texture = ExtResource("3_2u8jv")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6qexp"]
+render_priority = 0
+shader = ExtResource("3_b3ady")
+shader_parameter/texture_wall = ExtResource("5_dgq2u")
+shader_parameter/texture_roof = ExtResource("4_degwk")
+shader_parameter/wall_texture_scale = 0.34
+shader_parameter/roof_texture_scale = 0.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_b3ady"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_degwk"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_i3jh3"]
+panorama = ExtResource("10_6ta1v")
+energy_multiplier = 0.3
+
+[sub_resource type="Sky" id="Sky_hmumi"]
+sky_material = SubResource("PanoramaSkyMaterial_i3jh3")
+
+[sub_resource type="Environment" id="Environment_b3ady"]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_hmumi")
+tonemap_mode = 2
+fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
+fog_light_energy = 1.34
+fog_sky_affect = 0.0
+fog_height = -22.35
+fog_height_density = 0.292
+volumetric_fog_density = 0.0813
+volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
+volumetric_fog_anisotropy = 0.0
+volumetric_fog_length = 80.09
+volumetric_fog_detail_spread = 6.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dgq2u"]
+size = Vector3(200, 13.7217, 119.192)
 
 [node name="bhop_taurus" type="Node3D"]
 script = ExtResource("1_jff7h")
@@ -23,81 +65,120 @@ use_collision = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -5.78647)
 material_override = SubResource("StandardMaterial3D_i8f8m")
 size = Vector3(2, 1.78718, 2)
-material = ExtResource("8_qi8a4")
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D" parent="Level" instance=ExtResource("4_cqrp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -5.78647)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D3" parent="Level" instance=ExtResource("4_cqrp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -9.65065)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D4" parent="Level" instance=ExtResource("4_cqrp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -9.65065)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D6" parent="Level" instance=ExtResource("4_cqrp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -17.625)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D7" parent="Level" instance=ExtResource("4_cqrp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -17.625)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D8" parent="Level" instance=ExtResource("4_cqrp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -21.4892)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D9" parent="Level" instance=ExtResource("4_cqrp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -21.4892)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D5" parent="Level" instance=ExtResource("5_curnt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00543594, -0.617405, -13.4476)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D10" parent="Level" instance=ExtResource("6_nyv5r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, -27.3287)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D16" parent="Level" instance=ExtResource("6_nyv5r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.1667, 0.0387268, -27.3287)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D26" parent="Level" instance=ExtResource("6_nyv5r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.8625, -39.949, -27.4557)
 size = Vector3(1.4325, 0.1, 1.45068)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D17" parent="Level" instance=ExtResource("6_nyv5r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.8141, -20.7176, -23.9757)
 size = Vector3(21.0374, 41.6127, 0.293945)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D18" parent="Level" instance=ExtResource("6_nyv5r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.9723, -20.702, -30.7249)
 size = Vector3(21.3538, 41.5815, 0.293945)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D19" parent="Level" instance=ExtResource("6_nyv5r")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 39.3657, -18.1277, -27.2936)
 size = Vector3(7, 36.4329, 14.651)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D20" parent="Level" instance=ExtResource("6_nyv5r")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 25.3338, -20.4597, -27.2936)
 size = Vector3(7, 41.0969, 0.293945)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D11" parent="Level" instance=ExtResource("5_curnt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.86168, 0.0807269, -40.1351)
 size = Vector3(0.235, 0.1, 13.346)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D12" parent="Level" instance=ExtResource("5_curnt")]
 transform = Transform3D(-0.441713, -0.0941384, -0.892204, 0.0746905, 0.987169, -0.141136, 0.894042, -0.128981, -0.429014, -4.32204, 2.49296, -34.8288)
 size = Vector3(0.235, 0.1, 20.7579)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D13" parent="Level" instance=ExtResource("9_01mwx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0118, 0, -44.9329)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D14" parent="Level" instance=ExtResource("9_01mwx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.8586, 0, -41.2417)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D15" parent="Level" instance=ExtResource("5_curnt")]
 transform = Transform3D(0.353573, 0, -0.935407, 0, 1, 0, 0.935407, 0, 0.353573, -2.70671, 0.161454, -47.8326)
 size = Vector3(0.235, 0.1, 12.2871)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D21" parent="Level" instance=ExtResource("6_nyv5r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0774536, 0.256992)
+material = SubResource("ShaderMaterial_6qexp")
 
 [node name="CSGBox3D22" parent="Level" instance=ExtResource("6_nyv5r")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.4305, -39.9577, -27.4423)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.4305, -39.9577, -27.4423)
+material = SubResource("ShaderMaterial_6qexp")
+
+[node name="Light2" type="Node3D" parent="Level"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.308608, 0, -1, 0, -4.37114e-08, 32.8656, -36.3425, -27.2935)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/Light2"]
+transform = Transform3D(1.6, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_b3ady")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Level/Light2"]
+transform = Transform3D(1, 0, 0, 0, 3.24036, 0, 0, 0, 1, 0, -0.669153, 0)
+light_energy = 16.0
+omni_range = 19.0
+omni_attenuation = 1.873
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Level/Light2"]
+transform = Transform3D(1.4, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.0926242, 0)
+mesh = SubResource("BoxMesh_degwk")
 
 [node name="Player" parent="." instance=ExtResource("12_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 1.08873, 0.24421)
@@ -106,10 +187,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 1.08873, 0.24421)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
 
 [node name="EndZone" parent="." instance=ExtResource("13_zone")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 38.7333, -39.7579, -27.4207)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 36.7333, -39.7579, -27.4207)
 
 [node name="Targets" type="Node" parent="."]
 
 [node name="TargetSpawns" type="Node" parent="."]
 
 [node name="Players" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_b3ady")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.97949, 0.00307149, 0.201472, -0.0430619, 0.979974, 0.194413, -0.19684, -0.199101, 0.960007, 37.4305, -39.9577, -27.4423)
+light_energy = 0.2
+shadow_enabled = true
+
+[node name="Killzones" type="Node" parent="."]
+
+[node name="Area3D" type="Area3D" parent="Killzones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -44, 9)
+collision_mask = 2
+script = ExtResource("13_degwk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Killzones/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.36084, -32.7896)
+shape = SubResource("BoxShape3D_dgq2u")

@@ -21,13 +21,13 @@ shader_parameter/roof_texture_scale = 0.45
 panorama = ExtResource("8_oc3yi")
 energy_multiplier = 0.3
 
-[sub_resource type="Sky" id="Sky_o3qlu"]
+[sub_resource type="Sky" id="Sky_oc3yi"]
 sky_material = SubResource("PanoramaSkyMaterial_7t04v")
 
 [sub_resource type="Environment" id="Environment_oc3yi"]
 background_mode = 2
 background_energy_multiplier = 0.75
-sky = SubResource("Sky_o3qlu")
+sky = SubResource("Sky_oc3yi")
 tonemap_mode = 2
 fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
 fog_light_energy = 1.34

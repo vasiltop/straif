@@ -54,7 +54,8 @@ func _ready() -> void:
 	set_start_position.pressed.connect(
 		func() -> void:
 			if not player.map.completed and not player.map.running:
-				player.map.start_pos = player.global_position 
+				player.map.start_pos = player.global_position
+				player.map.start_rotation = player.camera._input_rotation
 	)
 
 func _process(_delta: float) -> void:

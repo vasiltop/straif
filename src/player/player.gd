@@ -25,7 +25,9 @@ const MAX_A_SPEED := 0.7
 const MAX_A_ACCEL: float = 200
 const MAX_SLOPE: float = 1
 const JUMP_FORCE: float = 4
+const RUN_SOUND_DELAY := 0.4
 
+var _time_since_last_run_sound := RUN_SOUND_DELAY
 var gravity: float = 12
 var pid: int
 var map: Map
@@ -66,7 +68,7 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if not is_me(): return
 
 	if Input.is_action_just_pressed("main_menu"):
@@ -78,6 +80,7 @@ func _process(_delta: float) -> void:
 		ui.visible = not ui.visible
 	
 	(get_node("UI/UiContainer/TopLeft/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
+	_time_since_last_run_sound += delta
 
 func _physics_process(delta: float) -> void:
 	if not is_me(): return
@@ -113,9 +116,11 @@ func _movement_process(delta: float) -> void:
 
 	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
 	
-	if velocity.length() > 0 and not _run_audio_player.playing and grounded():
+	if velocity.length() > 0 and _time_since_last_run_sound >= RUN_SOUND_DELAY and grounded():
 		_run_audio_player.stream = RunSound
+		_run_audio_player.pitch_scale = randf_range(0.95, 1.05)
 		_run_audio_player.play()
+		_time_since_last_run_sound = 0
 
 	move_and_slide()
 
@@ -149,6 +154,7 @@ func _check_for_jump(vel_vertical: float) -> float:
 
 	if jump_input and grounded():
 		jumped.emit()
+		#_time_since_last_run_sound = RUN_SOUND_DELAY
 		return JUMP_FORCE
 
 	return vel_vertical

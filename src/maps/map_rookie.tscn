@@ -1,11 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://bt2xvunj17isd"]
+[gd_scene load_steps=12 format=3 uid="uid://dtyinv0hw6ssp"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_cipox"]
-[ext_resource type="PackedScene" uid="uid://mdwpv32g85u" path="res://src/maps/tiles/medium_box.tscn" id="5_1p5ka"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/medium_box.tscn" id="5_1p5ka"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="5_e62r5"]
-[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://src/maps/tiles/large_box.tscn" id="6_diav7"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/large_box.tscn" id="6_diav7"]
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="6_y7vrs"]
-[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://src/maps/tiles/extra_large.tscn" id="7_s4jwc"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/extra_large.tscn" id="7_s4jwc"]
+[ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="7_y7vrs"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
 sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
@@ -34,6 +35,9 @@ fog_light_energy = 0.79
 fog_sun_scatter = 0.21
 fog_density = 0.0399
 fog_height_density = 0.0155
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d8ar8"]
+size = Vector3(200, 13.7217, 119.192)
 
 [node name="bhop_rookie" type="Node3D"]
 script = ExtResource("1_cipox")
@@ -66,13 +70,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -21.4892)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -21.4892)
 
 [node name="CSGBox3D5" parent="Level" instance=ExtResource("6_diav7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00543594, -0.617405, -13.4476)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00543594, -0.888569, -13.4476)
 
 [node name="CSGBox3D10" parent="Level" instance=ExtResource("7_s4jwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, -27.3287)
 
-[node name="CSGBox3D10" parent="Level/CSGBox3D10" instance=ExtResource("7_s4jwc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, 27.4527)
+[node name="CSGBox3D11" parent="Level" instance=ExtResource("7_s4jwc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0774536, 0.124001)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l4w43")
@@ -91,3 +95,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0532242)
 [node name="TargetSpawns" type="Node" parent="."]
 
 [node name="Players" type="Node" parent="."]
+
+[node name="Killzones" type="Node" parent="."]
+
+[node name="Area3D" type="Area3D" parent="Killzones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -44, 9)
+collision_mask = 2
+script = ExtResource("7_y7vrs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Killzones/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 32.2668, -32.7896)
+shape = SubResource("BoxShape3D_d8ar8")

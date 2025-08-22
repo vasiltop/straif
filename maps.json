@@ -1,41 +1,6 @@
 {
 	"maps": [
 		{
-			"name": "map_rookie",
-			"tier": 0.0,
-			"modes": ["bhop"],
-			"medals_bhop": [
-				5.0,
-				4.0,
-				3.5,
-				3.0,
-				2.6
-			]
-		},
-		{
-			"name": "map_dawn",
-			"tier": 0.0,
-			"modes": ["bhop"],
-			"medals_bhop": [
-				5.0,
-				4.0,
-				3.5,
-				3.0,
-				2.6
-			]
-		},{
-			"name": "map_taurus",
-			"tier": 0.0,
-			"modes": ["bhop"],
-			"medals_bhop": [
-				5.0,
-				4.0,
-				3.5,
-				3.0,
-				2.6
-			]
-		},
-		{
 			"name": "Tutorial",
 			"tier": 0.0,
 			"modes": ["target", "bhop"],
@@ -123,7 +88,30 @@
 				10.0
 			]
 		},
-		
+		{
+			"name": "map_rookie",
+			"tier": 0.0,
+			"modes": ["bhop"],
+			"medals_bhop": [
+				5.0,
+				4.0,
+				3.5,
+				3.0,
+				2.6
+			]
+		},
+		{
+			"name": "map_dawn",
+			"tier": 0.0,
+			"modes": ["bhop"],
+			"medals_bhop": [
+				20.0,
+				17.5,
+				15.5,
+				14.0,
+				12.5
+			]
+		},
 		{
 			"name": "map_structure",
 			"tier": 1.0,
@@ -229,6 +217,18 @@
 				19.0,
 				17.0,
 				15.0
+			]
+		},
+		{
+			"name": "map_taurus",
+			"tier": 0.0,
+			"modes": ["bhop"],
+			"medals_bhop": [
+				20.0,
+				17.5,
+				15.5,
+				14.0,
+				13.0
 			]
 		}
 	]

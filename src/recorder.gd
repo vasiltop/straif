@@ -78,6 +78,8 @@ func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 	else:
 		target = camera
 	
+	target.global_rotation.x = 0
+	
 	if not is_ghost:
 		camera.make_current()
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

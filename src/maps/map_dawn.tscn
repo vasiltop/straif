@@ -1,27 +1,20 @@
-[gd_scene load_steps=13 format=3 uid="uid://b3snjkigxmqmg"]
+[gd_scene load_steps=15 format=3 uid="uid://cjr4ghk1r3u0t"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_uq7kc"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="5_e62r5"]
-[ext_resource type="PackedScene" uid="uid://mdwpv32g85u" path="res://src/maps/tiles/medium_box.tscn" id="5_r5xnt"]
-[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://src/maps/tiles/large_box.tscn" id="6_1u0ef"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/medium_box.tscn" id="5_r5xnt"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/large_box.tscn" id="6_1u0ef"]
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="6_y7vrs"]
-[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://src/maps/tiles/extra_large.tscn" id="7_673i6"]
-[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://src/maps/tiles/medium.tscn" id="8_25t8d"]
-[ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://src/maps/tiles/small.tscn" id="9_we8jm"]
-[ext_resource type="PackedScene" uid="uid://gdrhguyyuy8i" path="res://src/maps/tiles/large.tscn" id="11_q1ael"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/extra_large.tscn" id="7_673i6"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/medium.tscn" id="8_25t8d"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/small.tscn" id="9_we8jm"]
+[ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="10_21msk"]
+[ext_resource type="PackedScene" path="res://src/maps/tiles/large.tscn" id="11_q1ael"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
-sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
-sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
-sky_energy_multiplier = 0.85
-ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
-ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
-ground_curve = 0.0627669
-sun_angle_max = 14.4
-sun_curve = 0.0724453
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_21msk"]
 
 [sub_resource type="Sky" id="Sky_uwpxi"]
-sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
+sky_material = SubResource("ProceduralSkyMaterial_21msk")
 radiance_size = 2
 
 [sub_resource type="Environment" id="Environment_l4w43"]
@@ -36,6 +29,9 @@ fog_light_color = Color(0.827848, 0.783401, 0.749716, 1)
 fog_light_energy = 0.34
 fog_density = 0.0399
 fog_height_density = 16.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jsvsq"]
+size = Vector3(200, 13.7217, 119.192)
 
 [node name="bhop_dawn" type="Node3D"]
 script = ExtResource("1_uq7kc")
@@ -186,3 +182,14 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.808
 [node name="TargetSpawns" type="Node" parent="."]
 
 [node name="Players" type="Node" parent="."]
+
+[node name="Killzones" type="Node" parent="."]
+
+[node name="Area3D" type="Area3D" parent="Killzones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -44, 9)
+collision_mask = 2
+script = ExtResource("10_21msk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Killzones/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 34.7764, -19.756)
+shape = SubResource("BoxShape3D_jsvsq")

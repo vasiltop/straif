@@ -156,6 +156,7 @@ func _try_shoot() -> void:
 
 	if current_weapon.shoot_sound:
 		audio_player.stream = current_weapon.shoot_sound
+		audio_player.pitch_scale = randf_range(0.95, 1.05)
 		audio_player.play()
 
 	if current_weapon.is_melee: 
