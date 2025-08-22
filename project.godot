@@ -39,6 +39,7 @@ gdscript/warnings/inference_on_variant=0
 
 [display]
 
+window/size/mode=3
 window/stretch/mode="viewport"
 window/stretch/aspect="ignore"
 window/vsync/vsync_mode=0
@@ -46,6 +47,10 @@ window/vsync/vsync_mode=0
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gdmaim/plugin.cfg")
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 

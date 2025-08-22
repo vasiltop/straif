@@ -1,0 +1,93 @@
+[gd_scene load_steps=10 format=3 uid="uid://dhypmk67d2mma"]
+
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_cipox"]
+[ext_resource type="PackedScene" uid="uid://oro3a0pyehp7" path="res://src/maps/tiles/medium_box.tscn" id="5_1p5ka"]
+[ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="5_e62r5"]
+[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://src/maps/tiles/large_box.tscn" id="6_diav7"]
+[ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="6_y7vrs"]
+[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://src/maps/tiles/extra_large.tscn" id="7_s4jwc"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vdnhj"]
+sky_top_color = Color(0.298039, 0.490196, 0.458824, 1)
+sky_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+sky_energy_multiplier = 0.85
+ground_bottom_color = Color(0.0862745, 0.2, 0.168627, 1)
+ground_horizon_color = Color(0.603922, 0.670588, 0.682353, 1)
+ground_curve = 0.0627669
+sun_angle_max = 14.4
+sun_curve = 0.0724453
+
+[sub_resource type="Sky" id="Sky_hpyxj"]
+sky_material = SubResource("ProceduralSkyMaterial_vdnhj")
+radiance_size = 2
+
+[sub_resource type="Environment" id="Environment_l4w43"]
+background_mode = 2
+background_energy_multiplier = 2.35
+sky = SubResource("Sky_hpyxj")
+ambient_light_source = 3
+ambient_light_color = Color(0.427451, 0.658824, 0.505882, 1)
+ambient_light_energy = 0.0
+fog_enabled = true
+fog_light_color = Color(0.47451, 0.576471, 0.560784, 1)
+fog_light_energy = 0.79
+fog_sun_scatter = 0.21
+fog_density = 0.0399
+fog_height_density = 0.0155
+
+[node name="bhop_rookie" type="Node3D"]
+script = ExtResource("1_cipox")
+
+[node name="Level" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D" parent="Level" instance=ExtResource("5_1p5ka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -5.78647)
+
+[node name="CSGBox3D2" parent="Level" instance=ExtResource("5_1p5ka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -5.78647)
+
+[node name="CSGBox3D3" parent="Level" instance=ExtResource("5_1p5ka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -9.65065)
+
+[node name="CSGBox3D4" parent="Level" instance=ExtResource("5_1p5ka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -9.65065)
+
+[node name="CSGBox3D6" parent="Level" instance=ExtResource("5_1p5ka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -17.625)
+
+[node name="CSGBox3D7" parent="Level" instance=ExtResource("5_1p5ka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -17.625)
+
+[node name="CSGBox3D8" parent="Level" instance=ExtResource("5_1p5ka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58036, -0.8877, -21.4892)
+
+[node name="CSGBox3D9" parent="Level" instance=ExtResource("5_1p5ka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70463, -0.8877, -21.4892)
+
+[node name="CSGBox3D5" parent="Level" instance=ExtResource("6_diav7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00543594, -0.617405, -13.4476)
+
+[node name="CSGBox3D10" parent="Level" instance=ExtResource("7_s4jwc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, -27.3287)
+
+[node name="CSGBox3D10" parent="Level/CSGBox3D10" instance=ExtResource("7_s4jwc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0387268, 27.4527)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l4w43")
+
+[node name="Player" parent="." instance=ExtResource("5_e62r5")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.154984, 1.08873, -27.302)
+
+[node name="StartZone" parent="." instance=ExtResource("6_y7vrs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -27.2985)
+
+[node name="EndZone" parent="." instance=ExtResource("6_y7vrs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0532242)
+
+[node name="Targets" type="Node" parent="."]
+
+[node name="TargetSpawns" type="Node" parent="."]
+
+[node name="Players" type="Node" parent="."]
