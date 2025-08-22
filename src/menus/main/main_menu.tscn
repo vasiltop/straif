@@ -281,6 +281,7 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Content/Body/Lobby"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -425,6 +426,14 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Lobby"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 14.0
+offset_right = 581.0
+offset_bottom = 46.0
+text = "Broken right now, will be reworked in future updates."
 
 [node name="Settings" type="Control" parent="MarginContainer/Content/Body"]
 visible = false

@@ -400,7 +400,7 @@ layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 10
 
 [node name="V" type="VBoxContainer" parent="UI/UiContainer/GameInfo/Leaderboard/M"]
 layout_mode = 2
@@ -531,33 +531,17 @@ layout_mode = 2
 focus_mode = 0
 text = ">"
 
+[node name="SetStartPosition" type="Button" parent="UI/UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 0
+text = "Set Start Position"
+
 [node name="ReplayLastRun" type="Button" parent="UI/UiContainer/GameInfo/Leaderboard/M/V"]
 layout_mode = 2
+size_flags_vertical = 8
 focus_mode = 0
 text = "Replay Last Run"
-
-[node name="Lobby" type="Panel" parent="UI/UiContainer/GameInfo"]
-visible = false
-custom_minimum_size = Vector2(200, 100)
-layout_mode = 2
-theme_override_styles/panel = ExtResource("5_cwolq")
-
-[node name="M" type="MarginContainer" parent="UI/UiContainer/GameInfo/Lobby"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
-
-[node name="V" type="VBoxContainer" parent="UI/UiContainer/GameInfo/Lobby/M"]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="UI/UiContainer/GameInfo/Lobby/M/V"]
-layout_mode = 2
-text = "Lobby"
 
 [node name="Admin" type="PanelContainer" parent="UI/UiContainer/GameInfo"]
 visible = false

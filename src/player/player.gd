@@ -74,6 +74,9 @@ func _process(_delta: float) -> void:
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
+	if Input.is_action_just_pressed("ui_hide"):
+		ui.visible = not ui.visible
+	
 	(get_node("UI/UiContainer/TopLeft/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
 
 func _physics_process(delta: float) -> void:

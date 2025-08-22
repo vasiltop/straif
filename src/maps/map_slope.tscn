@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=3 uid="uid://3bmsmr64u6t2"]
+
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_0adi2"]
+[ext_resource type="PackedScene" uid="uid://cg8febhs8agj" path="res://src/maps/tiles/slope.glb" id="2_qhpkl"]
+[ext_resource type="Material" uid="uid://dxgfaq8mgbtph" path="res://src/maps/presets/test.tres" id="3_naqg8"]
+[ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="6_ecrpg"]
+[ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/skyboxes/pink.png" id="6_naqg8"]
+[ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="7_mmewr"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7t04v"]
+panorama = ExtResource("6_naqg8")
+
+[sub_resource type="Sky" id="Sky_o3qlu"]
+sky_material = SubResource("PanoramaSkyMaterial_7t04v")
+
+[sub_resource type="Environment" id="Environment_oc3yi"]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_o3qlu")
+tonemap_mode = 2
+fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
+fog_light_energy = 1.34
+fog_sky_affect = 0.0
+fog_height = -22.35
+fog_height_density = 0.292
+volumetric_fog_density = 0.0813
+volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
+volumetric_fog_anisotropy = 0.0
+volumetric_fog_length = 80.09
+volumetric_fog_detail_spread = 6.0
+
+[node name="TestMap" type="Node3D"]
+script = ExtResource("1_0adi2")
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="slope" parent="Map" instance=ExtResource("2_qhpkl")]
+
+[node name="slope" parent="Map/slope" index="0"]
+surface_material_override/0 = ExtResource("3_naqg8")
+
+[node name="Player" parent="." instance=ExtResource("6_ecrpg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -2)
+
+[node name="Targets" type="Node" parent="."]
+
+[node name="EndZone" parent="." instance=ExtResource("7_mmewr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -108)
+
+[node name="Collider" parent="EndZone" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
+
+[node name="StartZone" parent="." instance=ExtResource("7_mmewr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="Collider" parent="StartZone" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
+
+[node name="Players" type="Node" parent="."]
+
+[node name="TargetSpawns" type="Node" parent="."]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.191897, 0.199083, -0.961011, -0.0430619, 0.979974, 0.194412, 0.98047, 0.00407578, 0.196627, 0, 0, 0)
+light_energy = 0.9
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_oc3yi")
+
+[editable path="Map/slope"]
+[editable path="EndZone"]
+[editable path="StartZone"]

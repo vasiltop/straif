@@ -22,13 +22,13 @@ shader_parameter/roof_texture_scale = 0.45
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_i4ksc"]
 panorama = ExtResource("8_j17js")
 
-[sub_resource type="Sky" id="Sky_avumo"]
+[sub_resource type="Sky" id="Sky_jug4b"]
 sky_material = SubResource("PanoramaSkyMaterial_i4ksc")
 
 [sub_resource type="Environment" id="Environment_b2emv"]
 background_mode = 2
 background_energy_multiplier = 0.75
-sky = SubResource("Sky_avumo")
+sky = SubResource("Sky_jug4b")
 tonemap_mode = 2
 fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
 fog_light_energy = 1.34

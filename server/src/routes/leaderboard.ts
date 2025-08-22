@@ -17,7 +17,7 @@ const app = new Hono<{ Variables: Variables }>();
 
 const RunInput = z.object({
   recording: z.string(),
-  time_ms: z.number(),
+  time_ms: z.number().min(1000), // Must be at least 1 seconds, since no map will be this short.
   username: z.string(), // TODO: Remove username and send username in a different request instead to update it globally.
 });
 
