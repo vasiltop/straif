@@ -40,7 +40,7 @@ func set_name_label(value: String) -> void:
 func setup(map: Map) -> void:
 	camera.make_current()
 	gun_camera.make_current()
-	ui.visible = false
+	ui.visible = true
 	pid = multiplayer.get_unique_id()
 	self.map = map
 	

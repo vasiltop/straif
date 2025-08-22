@@ -1,6 +1,5 @@
-[gd_scene load_steps=12 format=3 uid="uid://dmliiccspv85j"]
+[gd_scene load_steps=11 format=3 uid="uid://dmliiccspv85j"]
 
-[ext_resource type="PackedScene" uid="uid://ejiq20awxkya" path="res://src/maps/presets/ladder.tscn" id="1_6mjka"]
 [ext_resource type="PackedScene" uid="uid://d0rpe3n6n6hgj" path="res://src/maps/tiles/structure.glb" id="2_81lry"]
 [ext_resource type="Material" uid="uid://dxgfaq8mgbtph" path="res://src/maps/presets/test.tres" id="3_m7o0g"]
 [ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="4_cwo1s"]
@@ -42,33 +41,6 @@ volumetric_fog_detail_spread = 6.0
 [node name="Init" type="Node"]
 
 [node name="Map" type="Node3D" parent="."]
-
-[node name="Ladder" parent="Map" instance=ExtResource("1_6mjka")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 3.8397, -34.441)
-
-[node name="Ladder2" parent="Map" instance=ExtResource("1_6mjka")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 4.8397, -34.441)
-
-[node name="Ladder3" parent="Map" instance=ExtResource("1_6mjka")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 5.8397, -34.441)
-
-[node name="Ladder4" parent="Map" instance=ExtResource("1_6mjka")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 6.8397, -34.441)
-
-[node name="Ladder5" parent="Map" instance=ExtResource("1_6mjka")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 7.8397, -34.441)
-
-[node name="Ladder6" parent="Map" instance=ExtResource("1_6mjka")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 8.8397, -34.441)
-
-[node name="Ladder7" parent="Map" instance=ExtResource("1_6mjka")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 9.8397, -34.441)
-
-[node name="Ladder8" parent="Map" instance=ExtResource("1_6mjka")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 10.8397, -34.441)
-
-[node name="Ladder9" parent="Map" instance=ExtResource("1_6mjka")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 11.8397, -34.441)
 
 [node name="structure" parent="Map" instance=ExtResource("2_81lry")]
 
