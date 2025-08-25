@@ -16,6 +16,6 @@ attack_range = 100.0
 is_melee = false
 automatic = false
 is_sniper = false
-spread = 5.0
+spread = 2.0
 bullet_count = 8.0
 metadata/_custom_type_script = "uid://bmwqlto471f6e"

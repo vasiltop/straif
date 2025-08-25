@@ -2,8 +2,8 @@ class_name WeaponHandler extends Node3D
 
 @onready var player: Player = $"../../.."
 @onready var weapon_scene: Node3D = null
-@onready var r_hand_ik: SkeletonIK3D = $Arms/ArmArmature/Skeleton3D/RHandIk
-@onready var l_hand_ik: SkeletonIK3D = $Arms/ArmArmature/Skeleton3D/LHandIk
+@onready var r_hand_ik: SkeletonIK3D = $Arms/Armature/Skeleton3D/RHandIk
+@onready var l_hand_ik: SkeletonIK3D = $Arms/Armature/Skeleton3D/LHandIk
 @onready var start_pos := position
 @onready var audio_player: AudioStreamPlayer3D = $AudioPlayer
 @onready var gun_container: Node3D = $GunContainer
@@ -113,7 +113,8 @@ func toggle_sniper_scope() -> void:
 		false:
 			player.camera.fov += FOV_DIFF
 	
-	player.alt_speed_label.visible = visible
+	if visible:
+		player.alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
 
 func _physics_process(delta: float) -> void:
 	_sway(delta)

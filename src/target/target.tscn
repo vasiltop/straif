@@ -5,11 +5,11 @@
 [ext_resource type="Script" uid="uid://cuhfu4wnvmo3h" path="res://src/target/body_part.gd" id="2_5hcwb"]
 [ext_resource type="PackedScene" uid="uid://bv73fv6rqmser" path="res://src/target/target.glb" id="4_s6ky1"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_0tpb1"]
-size = Vector3(0.246576, 0.448712, 0.103931)
+[sub_resource type="SphereShape3D" id="SphereShape3D_s6ky1"]
+radius = 0.247431
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_s6ky1"]
-size = Vector3(0.891541, 1.12294, 0.139648)
+size = Vector3(0.145633, 2.04079, 0.0585936)
 
 [node name="Target" type="Node3D"]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
@@ -21,15 +21,15 @@ script = ExtResource("2_0tpb1")
 metadata/_custom_type_script = "uid://daiqu1ltgie0e"
 
 [node name="HeadCollider" type="CollisionShape3D" parent="Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000601187, 1.16521, -0.00369873)
-shape = SubResource("BoxShape3D_0tpb1")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000130487, 1.18437, -0.00242611)
+shape = SubResource("SphereShape3D_s6ky1")
 
 [node name="Torso" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.994858, 0)
 script = ExtResource("2_5hcwb")
 
 [node name="BodyCollider" type="CollisionShape3D" parent="Torso"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00430297, 0.477725, 0.000488281)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.22496e-05, 0.0738906, -0.00195318)
 shape = SubResource("BoxShape3D_s6ky1")
 
 [node name="target2" parent="." instance=ExtResource("4_s6ky1")]

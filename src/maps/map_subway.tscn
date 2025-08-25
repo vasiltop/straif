@@ -186,7 +186,7 @@ texture_filter = 0
 [sub_resource type="BoxShape3D" id="BoxShape3D_pcvff"]
 size = Vector3(200, 1, 7.03027)
 
-[node name="TestMap" type="Node3D"]
+[node name="TestMap2" type="Node3D"]
 script = ExtResource("1_sd13r")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

@@ -17,6 +17,7 @@ signal jumped
 @onready var sniper_overlay: TextureRect = $UI/UiContainer/SniperOverlay
 @onready var raycast: RayCast3D = $Eye/Camera/RayCast
 @onready var pre_strafe_speed: Label = $UI/UiContainer/Middle/PreStrafeSpeed
+@onready var character: Node3D = $character
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
@@ -154,7 +155,6 @@ func _check_for_jump(vel_vertical: float) -> float:
 
 	if jump_input and grounded():
 		jumped.emit()
-		#_time_since_last_run_sound = RUN_SOUND_DELAY
 		return JUMP_FORCE
 
 	return vel_vertical

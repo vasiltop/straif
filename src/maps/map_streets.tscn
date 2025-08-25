@@ -74,7 +74,7 @@ texture_filter = 0
 [sub_resource type="BoxShape3D" id="BoxShape3D_n0bts"]
 size = Vector3(300, 40, 300)
 
-[node name="TestMap" type="Node3D"]
+[node name="TestMap2" type="Node3D"]
 script = ExtResource("1_7mg6k")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

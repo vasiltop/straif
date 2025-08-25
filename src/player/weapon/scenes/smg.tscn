@@ -194,13 +194,13 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_p20rx")
 
-[node name="Rifle" type="Node3D"]
+[node name="Smg" type="Node3D"]
 
 [node name="RHandTarget" type="Node3D" parent="."]
-transform = Transform3D(-0.689897, 0.0592892, -0.102601, 0.107572, 0.0591386, -0.689153, -0.0497022, -0.694974, -0.0673963, 0.0346388, -0.277214, 0.0974672)
+transform = Transform3D(0.126791, -0.046133, -0.686875, 0.669878, 0.169281, 0.112285, 0.158707, -0.677656, 0.0748098, 0.0346388, -0.298302, 0.177939)
 
 [node name="LHandTarget" type="Node3D" parent="."]
-transform = Transform3D(0.215437, 0.518332, 0.418234, -0.411944, 0.449106, -0.344393, -0.523344, -0.140134, 0.443253, -0.0273555, -0.317493, -0.281311)
+transform = Transform3D(-0.521896, 0.450922, 0.11956, 0.265296, 0.434454, -0.480487, -0.383722, -0.312923, -0.49481, -0.081677, -0.364642, -0.0736958)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

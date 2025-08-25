@@ -217,10 +217,10 @@ size = Vector2(0.4, 0.4)
 [node name="Sword" type="Node3D"]
 
 [node name="RHandTarget" type="Node3D" parent="."]
-transform = Transform3D(-0.324917, -0.587885, -0.197029, 0.310871, 0.0379991, -0.626032, 0.536459, -0.378084, 0.243443, -0.00788133, -0.256674, -0.0416889)
+transform = Transform3D(0.202715, -0.117374, -0.659645, 0.534565, 0.443805, 0.0853086, 0.403914, -0.528452, 0.218157, -0.048, -0.337, 0.018)
 
 [node name="LHandTarget" type="Node3D" parent="."]
-transform = Transform3D(0.205517, 0.667092, 0.0524527, -0.0846789, 0.0803572, -0.690198, -0.663772, 0.196294, 0.104291, -0.283229, -0.412647, -0.136069)
+transform = Transform3D(0.371806, 0.50929, 0.303948, -0.49069, 0.465647, -0.179993, -0.333144, -0.117459, 0.604334, -0.303, -0.493, -0.071)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

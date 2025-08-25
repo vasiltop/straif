@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_uq7kc"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="5_e62r5"]
-[ext_resource type="PackedScene" path="res://src/maps/tiles/medium_box.tscn" id="5_r5xnt"]
-[ext_resource type="PackedScene" path="res://src/maps/tiles/large_box.tscn" id="6_1u0ef"]
+[ext_resource type="PackedScene" uid="uid://mdwpv32g85u" path="res://src/maps/tiles/medium_box.tscn" id="5_r5xnt"]
+[ext_resource type="PackedScene" uid="uid://dnmubsd7a257p" path="res://src/maps/tiles/large_box.tscn" id="6_1u0ef"]
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="6_y7vrs"]
-[ext_resource type="PackedScene" path="res://src/maps/tiles/extra_large.tscn" id="7_673i6"]
-[ext_resource type="PackedScene" path="res://src/maps/tiles/medium.tscn" id="8_25t8d"]
-[ext_resource type="PackedScene" path="res://src/maps/tiles/small.tscn" id="9_we8jm"]
+[ext_resource type="PackedScene" uid="uid://cjshk86a2m7g" path="res://src/maps/tiles/extra_large.tscn" id="7_673i6"]
+[ext_resource type="PackedScene" uid="uid://ddgl8byb0fu5p" path="res://src/maps/tiles/medium.tscn" id="8_25t8d"]
+[ext_resource type="PackedScene" uid="uid://bn0ce7iexx55g" path="res://src/maps/tiles/small.tscn" id="9_we8jm"]
 [ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="10_21msk"]
-[ext_resource type="PackedScene" path="res://src/maps/tiles/large.tscn" id="11_q1ael"]
+[ext_resource type="PackedScene" uid="uid://gdrhguyyuy8i" path="res://src/maps/tiles/large.tscn" id="11_q1ael"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_21msk"]
 

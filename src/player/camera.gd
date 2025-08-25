@@ -33,6 +33,7 @@ func _process(delta: float) -> void:
 	
 	player.camera_anchor.transform.basis = Basis.from_euler(Vector3(_input_rotation.x, 0.0, 0.0))
 	player.global_transform.basis = Basis.from_euler(Vector3(0.0, _input_rotation.y, 0.0))
+	#player.character.global_transform.basis = player.global_transform.basis
 	
 	_mouse_input = Vector2.ZERO
 

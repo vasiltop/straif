@@ -27,6 +27,7 @@ var can_win: bool = false
 var currently_racing_steam_id: int
 var race_recording_bytes: PackedByteArray
 var player_in_end_zone: bool
+var _has_jumped: bool
 
 func _ready() -> void:
 	player.setup(self)
@@ -167,12 +168,18 @@ func _start_run() -> void:
 	sound_player.play()
 	running = true
 	end_zone.monitoring = true
+	
+func _show_pre_label() -> void:
 	player.pre_strafe_speed.text = player.speed_label.text
-	player.pre_strafe_speed.visible = true
+	player.pre_strafe_speed.visible = Global.settings_manager.value("Display", "speed")
 
 func _on_player_jump() -> void:
 	if not completed and not running:
 		_start_run()
+		
+	if not _has_jumped:
+		_has_jumped = true
+		_show_pre_label()
 
 func _on_start_zone_exited(body: Node3D) -> void:
 	if body is Player and not completed and not running:
@@ -248,4 +255,5 @@ func restart() -> void:
 	timer = 0.0
 	player.set_timer(timer)
 	end_zone.monitoring = false
+	_has_jumped = false
 	

@@ -29,21 +29,21 @@ func _ready() -> void:
 	_instantiate_maps()
 	Steam.avatar_loaded.connect(_on_loaded_avatar)
 	quit_btn.pressed.connect(get_tree().quit)
-	create_lobby_btn.pressed.connect(_on_create_lobby)
-	refresh_lobby_search_btn.pressed.connect(_on_refresh_lobby_search)
-	Steam.lobby_match_list.connect(_on_lobby_match_list)
+	#create_lobby_btn.pressed.connect(_on_create_lobby)
+	#refresh_lobby_search_btn.pressed.connect(_on_refresh_lobby_search)
+	#Steam.lobby_match_list.connect(_on_lobby_match_list)
 	Global.game_manager.my_lobby_changed.connect(_on_my_lobby_changed)
-	leave_lobby_btn.pressed.connect(Global.game_manager.leave)
-	host_local_btn.pressed.connect(Global.game_manager.create_enet_lobby)
-	join_local_btn.pressed.connect(Global.game_manager.join_enet_lobby)
+	#leave_lobby_btn.pressed.connect(Global.game_manager.leave)
+	#host_local_btn.pressed.connect(Global.game_manager.create_enet_lobby)
+	#join_local_btn.pressed.connect(Global.game_manager.join_enet_lobby)
 	save_settings_btn.pressed.connect(Global.settings_manager.save)
 	Global.server_bridge.invalid_version.connect(func() -> void: version_error.visible = true)
 	
 	Steam.getPlayerAvatar()
 	username_label.text = Steam.getPersonaName()
 
-	my_lobby_control.visible = false
-	create_lobby_control.visible = true
+	#my_lobby_control.visible = false
+	#create_lobby_control.visible = true
 
 	_lobby_refresh_timer.start()
 		
@@ -103,8 +103,8 @@ func _on_my_lobby_changed() -> void:
 		my_lobby_members_container.add_child(name_label)
 
 func _on_lobby_match_list(lobbies: Array) -> void:
-	for child in lobby_list_container.get_children():
-		child.queue_free()
+	#for child in lobby_list_container.get_children():
+	#	child.queue_free()
 
 	for lobby_id: int in lobbies:
 		var lobby_name := Steam.getLobbyData(lobby_id, "name")
