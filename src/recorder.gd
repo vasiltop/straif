@@ -53,7 +53,7 @@ func set_frame(value: int) -> void:
 		
 		if currently_playing_version == -1:
 			target.global_rotation.x = frame.rot_x
-			
+		
 	if value > 0:
 		var prev_frame: Variant = currently_playing[current_frame - 1]
 		var prev_position: Vector3 = prev_frame.position
@@ -66,6 +66,15 @@ func set_frame(value: int) -> void:
 		var dt := 1.0 / 60.0
 		
 		speed = diff.length() / dt
+		
+		_set_animation_blend(1.0 if speed >= 3.0 else 0.0)
+
+func _set_animation_blend(value: float) -> void:
+	if target == null: return
+	
+	if target is not Camera3D:
+		var anim_tree: AnimationTree = target.get_node("AnimationTree")
+		anim_tree.set("parameters/blend/blend_amount", value)
 
 func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 	currently_playing = frames
@@ -77,18 +86,19 @@ func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 		ghost.visible = true
 	else:
 		target = camera
-	
-	target.global_rotation.x = 0
-	
-	if not is_ghost:
 		camera.make_current()
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	target.global_rotation.x = 0
 
 func is_playing() -> bool:
 	return current_frame < len(currently_playing)
 
 func _physics_process(_delta: float) -> void:
-	if not is_playing(): return
+	if not is_playing():
+		_set_animation_blend(0.0)
+		return
+	
 	if paused: return
 	
 	set_frame(current_frame)

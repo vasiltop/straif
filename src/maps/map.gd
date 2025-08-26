@@ -8,7 +8,6 @@ signal target_killed
 @onready var target_container: Node = $Targets
 @onready var start_pos: Vector3 = player.global_position
 @onready var start_rotation: Vector3 = player.global_rotation
-@onready var player_container: Node = $Players
 @onready var target_spawns_container: Node = $TargetSpawns
 @onready var sound_player := AudioStreamPlayer.new()
 @onready var recorder := Recorder.new(player.camera)
@@ -40,10 +39,6 @@ func _ready() -> void:
 	start_zone.body_exited.connect(_on_start_zone_exited)
 	end_zone.body_entered.connect(func(_body: Node3D) -> void: can_win = true)
 	player.jumped.connect(_on_player_jump)
-	Global.game_manager.player_switched_map.connect(_on_player_switched_map)
-	Global.game_manager.player_diconnected.connect(_on_player_disconnected)
-	Global.game_manager.player_left_map.connect(_on_player_disconnected)
-	Global.game_manager.switched_map.rpc(Global.game_manager.current_map.mid)
 	Global.game_manager.replay_requested.connect(_on_replay_requested)
 	target_killed.connect(_on_target_killed)
 	_on_target_killed()
@@ -59,7 +54,7 @@ func _ready() -> void:
 				if p.is_me():
 					player_in_end_zone = true
 	)
-	
+
 	end_zone.body_exited.connect(
 		func(body: Node3D) -> void:
 			if body is Player:
@@ -92,32 +87,7 @@ func _on_replay_requested(data: String) -> void:
 	player.ui.visible = false
 	recorder.play_bytes(Marshalls.base64_to_raw(data))
 	map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
-
-func _on_player_disconnected(pid: int) -> void:
-	var p := find_player(pid)
-	if p == null: return
-	p.queue_free()
-
-func _on_player_switched_map(pid: int, map: MapData) -> void:
-	if Global.game_manager.current_map.mid != map.mid: return
-
-	_received_switch.rpc_id(pid)
-	if not player_exists(pid):
-		spawn_player(pid)
-
-@rpc("any_peer", "call_remote", "reliable")
-func _received_switch() -> void:
-	if not player_exists(multiplayer.get_remote_sender_id()):
-		spawn_player(multiplayer.get_remote_sender_id())
-
-func spawn_player(pid: int) -> void:
-	var inst: Player = PlayerScene.instantiate()
-	player_container.add_child(inst)
-	inst.name = str(pid)
-	inst.pid = pid
-	inst.global_position = start_pos
-	inst.set_name_label(Global.game_manager.get_player_name(pid))
-
+	
 func _physics_process(_delta: float) -> void:
 	if running:
 		var frame := Recorder.FrameInfoV2.new(player.global_position, player.global_rotation.y, player.camera.global_rotation.x)
@@ -126,38 +96,11 @@ func _physics_process(_delta: float) -> void:
 		
 	if recorder.is_playing():
 		map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
-	
-@rpc("any_peer", "call_remote", "unreliable")
-func moved(pos: Vector3, y_rot: float) -> void:
-	var p := find_player(multiplayer.get_remote_sender_id())
-	if p == null: return
-
-	p.global_position = pos
-	p.global_rotation.y = y_rot
-
-func find_player(pid: int) -> Player:
-	var players := player_container.get_children()
-
-	for p in players:
-		if p is Player:
-			var dp := p as Player 
-			if dp.pid == pid:
-				return dp
-
-	return null
-
-func get_players() -> Array[Player]:
-	var ret: Array[Player]	
-	ret.assign(player_container.get_children())
-	return ret
 
 func get_target_spawns() -> Array[Node3D]:
 	var ret: Array[Node3D]
 	ret.assign(target_spawns_container.get_children())
 	return ret
-
-func player_exists(pid: int) -> bool:
-	return find_player(pid) != null
 
 func _start_run() -> void:
 	if currently_racing_steam_id != 0:

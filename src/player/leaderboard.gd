@@ -174,8 +174,9 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 				
 				if player.map.recorder.ghost:
 					player.map.recorder.ghost.visible = false
-					
-			race_btn.text = setup_race_btn_text.call()
+			
+			if race_btn:
+				race_btn.text = setup_race_btn_text.call()
 	)
 	
 	var replay_btn := Button.new()

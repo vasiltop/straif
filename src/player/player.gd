@@ -41,8 +41,10 @@ func set_name_label(value: String) -> void:
 	name_label.text = value
 
 func setup(map: Map) -> void:
+	# This only gets called on the player we are controlling
 	camera.make_current()
 	gun_camera.make_current()
+	
 	ui.visible = true
 	pid = multiplayer.get_unique_id()
 	self.map = map
@@ -50,11 +52,10 @@ func setup(map: Map) -> void:
 	weapon_handler.visible = true
 	weapon_handler.add_child(weapon_handler.hit_sound)
 	add_child(_run_audio_player)
+	
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_on_viewport_resized()
 
-	(get_node("HeadMesh") as Node3D).visible = false
-	(get_node("BodyMesh") as Node3D).visible = false
 	name_label.visible = false
 
 func _on_viewport_resized() ->  void:
@@ -73,7 +74,6 @@ func _process(delta: float) -> void:
 	if not is_me(): return
 
 	if Input.is_action_just_pressed("main_menu"):
-		Global.game_manager.switched_map.rpc(-1)
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
@@ -86,10 +86,6 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_me(): return
 
-	var map: Map = get_parent()
-	for member in map.get_players():
-		map.moved.rpc_id(member.pid, global_position, global_rotation.y)
-	
 	_movement_process(delta)
 	
 	var current_vel := velocity

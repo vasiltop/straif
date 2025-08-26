@@ -168,6 +168,11 @@ func _try_shoot() -> void:
 	player.camera._mouse_input.x = randf_range(-rad, rad)
 	
 	var spread := current_weapon.spread if not player.sniper_overlay.visible else 0.0
+	var is_moving := player.velocity.length() >= 0.5
+	
+	if is_moving: spread = current_weapon.moving_spread
+	if not player.grounded(): spread *= 2
+	
 	if current_weapon.is_sniper and player.sniper_overlay.visible:
 		toggle_sniper_scope()
 	
