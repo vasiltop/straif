@@ -27,6 +27,7 @@ var gravity: float = 12
 var pid: int
 var _run_audio_player := AudioStreamPlayer.new()
 var can_move := true
+var can_turn := true
 
 func is_me() -> bool:
 	return multiplayer.get_unique_id() == pid
@@ -72,9 +73,10 @@ func _physics_process(delta: float) -> void:
 	var jump_input := Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")
 	_movement_process(delta, wish_dir(), jump_input)
 	
+func get_ups() -> float:
 	var current_vel := velocity
-	current_vel.y = 0
-
+	current_vel.y = 0.0
+	return current_vel.length()
 
 func wish_dir_from(left: bool, right: bool, up: bool, down: bool) -> Vector2:
 	var wish_dir = Vector2(float(right) - float(left), float(down) - float(up))

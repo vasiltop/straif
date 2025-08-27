@@ -53,7 +53,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard"):
 		middle.visible = true
-		
+		map_ui.map.player.can_turn = false
 		if Global.game_manager.admin and Input.is_action_pressed("ui_admin"):
 			admin_panel.visible = true
 
@@ -62,7 +62,7 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_just_released("leaderboard"):
 		middle.visible = false
 		admin_panel.visible = false
-		
+		map_ui.map.player.can_turn = true
 		if not map_ui.map.is_watching_replay():
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -150,9 +150,7 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 				
 				map_ui.map.race_recording_bytes = Marshalls.base64_to_raw(replay)
 				map_ui.map.currently_racing_steam_id = steam_id
-				
-				#var ghost_name_label: Label3D = map_ui.map.recorder.ghost.get_node("Name")
-				#ghost_name_label.text = "%s's Ghost" % player_name
+				map_ui.map.recorder.controller.get_node("Name").text = "%s's Ghost" % player_name
 				
 				for child in t_rows.get_children():
 					if child.has_meta("player_name"):

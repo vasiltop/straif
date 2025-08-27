@@ -158,16 +158,12 @@ func _start_run() -> void:
 	end_zone.monitoring = true
 	player.can_move = true
 
-	#player.ui.visible = true
-	
-#func _show_pre_label() -> void:
-	#player.pre_strafe_speed.text = player.speed_label.text
-	#player.pre_strafe_speed.visible = Global.settings_manager.value("Display", "speed")
-
 func _on_player_jump() -> void:
 	if not _has_jumped:
 		_has_jumped = true
-		#_show_pre_label()
+		map_ui.first_jump_speed_label.visible = map_ui.alt_speed_label.visible
+		map_ui.first_jump_speed_label.text = map_ui.speed_label.text
+		print(map_ui.speed_label.text)
 
 func _process(delta: float) -> void:
 	if map_ui.is_replay_visible(): return
@@ -203,6 +199,8 @@ func spawn_target(pos: Vector3) -> void:
 	inst.global_position = pos
 
 func restart(player: Player) -> void:
+	recorder.pause_playback()
+	recorder.controller.visible = false
 	player.can_move = false
 	
 	if player.sniper_overlay.visible:
@@ -229,6 +227,7 @@ func restart(player: Player) -> void:
 	map_ui.set_timer(timer)
 	end_zone.monitoring = false
 	_has_jumped = false
+	map_ui.first_jump_speed_label.visible = false
 	
 	start_timer = START_ZONE_TIMER
 

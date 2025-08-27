@@ -37,6 +37,7 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if not player.can_move: return
+	if not player.can_turn: return
 	
 	var sens: float = Global.settings_manager.value("Controls", "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity")
 	sens = sens / 1000

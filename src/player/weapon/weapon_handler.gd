@@ -209,34 +209,34 @@ func _try_shoot(ghost_bullet := false) -> void:
 
 		direction = (spread_basis * direction).normalized()
 	
-	if not ghost_bullet:
-		var space_state := get_world_3d().direct_space_state
-		var query := PhysicsRayQueryParameters3D.create(origin, origin + direction*distance)
-		var result := space_state.intersect_ray(query)
-		var hit_pos := origin + direction * distance
-		
-		if result != {}:
-			hit_pos = result.position
-			var collider = result.collider
+	
+	var space_state := get_world_3d().direct_space_state
+	var query := PhysicsRayQueryParameters3D.create(origin, origin + direction*distance)
+	var result := space_state.intersect_ray(query)
+	var hit_pos := origin + direction * distance
+	
+	if result != {}:
+		hit_pos = result.position
+		var collider = result.collider
 
-			var inst: Decal = BulletHoleScene.instantiate()
-			collider.get_parent().add_child(inst)
-			inst.global_position = hit_pos
+		var inst: Decal = BulletHoleScene.instantiate()
+		collider.get_parent().add_child(inst)
+		inst.global_position = hit_pos
 
-			# no clue what this does lol took it from reddit
-			var normal: Vector3 = result.normal
-			if normal != Vector3.UP:
-				inst.look_at(hit_pos + normal, Vector3.UP)
-				inst.transform = inst.transform.rotated_local(Vector3.RIGHT, PI/2.0)
+		# no clue what this does lol took it from reddit
+		var normal: Vector3 = result.normal
+		if normal != Vector3.UP:
+			inst.look_at(hit_pos + normal, Vector3.UP)
+			inst.transform = inst.transform.rotated_local(Vector3.RIGHT, PI/2.0)
 
-			inst.rotate(normal, randf_range(0, 2*PI))
+		inst.rotate(normal, randf_range(0, 2*PI))
 
-			if collider is BodyPart:
-				var body_part: BodyPart = collider
-				body_part.apply_damage(hit_sound, current_weapon.damage)
-		
-		if not current_weapon.is_melee:
-				BulletTracer.spawn(self, tracer_pos, hit_pos)
+		if not ghost_bullet and collider is BodyPart:
+			var body_part: BodyPart = collider
+			body_part.apply_damage(hit_sound, current_weapon.damage)
+	
+	if not current_weapon.is_melee:
+		BulletTracer.spawn(self, tracer_pos, hit_pos)
 
 func _input(event: InputEvent) -> void:
 	if not player.is_me(): return
