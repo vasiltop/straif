@@ -1,20 +1,373 @@
-[gd_scene load_steps=3 format=3 uid="uid://bnati2e7fo1g"]
+[gd_scene load_steps=13 format=3 uid="uid://bnati2e7fo1g"]
 
 [ext_resource type="Script" uid="uid://vuacki0u3vnw" path="res://src/maps/map_ui.gd" id="1_jnrmt"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_uralg"]
+[ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="3_rr83r"]
+[ext_resource type="Script" uid="uid://benori4j4wu38" path="res://src/player/leaderboard.gd" id="5_xab72"]
+[ext_resource type="Texture2D" uid="uid://ddwv6d1j2fuuq" path="res://src/textures/bronze_medal.png" id="6_73vsl"]
+[ext_resource type="Texture2D" uid="uid://bbyo6tb1eqrns" path="res://src/textures/silver_medal.png" id="7_4gqp6"]
+[ext_resource type="Texture2D" uid="uid://bo4kloegfbey2" path="res://src/textures/gold_medal.png" id="8_iw0sd"]
+[ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="9_k6ak5"]
+[ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="10_dxk01"]
+[ext_resource type="FontFile" uid="uid://reim7hyo6sqy" path="res://src/fonts/OpenSans-Regular.ttf" id="11_5vm7s"]
+
+[sub_resource type="Theme" id="Theme_of3v1"]
+default_font_size = 15
+
+[sub_resource type="Theme" id="Theme_nvgh5"]
+default_font = ExtResource("11_5vm7s")
 
 [node name="MapUi" type="CanvasLayer"]
 script = ExtResource("1_jnrmt")
 
-[node name="V" type="VBoxContainer" parent="."]
+[node name="UiContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("2_uralg")
+
+[node name="Middle" type="Control" parent="UiContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Speed" type="Label" parent="UiContainer/Middle"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 5.0
+offset_right = 60.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+text = "59.98 u/s"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PreStrafeSpeed" type="Label" parent="UiContainer/Middle"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 43.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 15
+text = "59.98 u/s"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Crosshair" type="Control" parent="UiContainer/Middle"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="ColorRect" type="ColorRect" parent="UiContainer/Middle/Crosshair"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 2.0
+offset_bottom = 8.0
+
+[node name="ColorRect2" type="ColorRect" parent="UiContainer/Middle/Crosshair"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -2.0
+offset_right = 8.0
+offset_bottom = 2.0
+
+[node name="TopLeft" type="Panel" parent="UiContainer"]
+custom_minimum_size = Vector2(120, 30)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = ExtResource("3_rr83r")
+
+[node name="Fps" type="Label" parent="UiContainer/TopLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 17
+text = "60 fps"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomLeft" type="Panel" parent="UiContainer"]
+custom_minimum_size = Vector2(120, 80)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+offset_right = 120.0
+grow_vertical = 0
+theme_override_styles/panel = ExtResource("3_rr83r")
+
+[node name="V" type="VBoxContainer" parent="UiContainer/BottomLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EnemiesLeft" type="Label" parent="UiContainer/BottomLeft/V"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Targets: 0/0"
+horizontal_alignment = 1
+
+[node name="Timer" type="Label" parent="UiContainer/BottomLeft/V"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Time: 0.00"
+horizontal_alignment = 1
+
+[node name="Speed" type="Label" parent="UiContainer/BottomLeft/V"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "59.98 u/s"
+horizontal_alignment = 1
+
+[node name="GameInfo" type="HBoxContainer" parent="UiContainer"]
+custom_minimum_size = Vector2(600, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -325.0
+offset_right = 450.0
+offset_bottom = 325.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_of3v1")
+
+[node name="Leaderboard" type="PanelContainer" parent="UiContainer/GameInfo"]
+z_index = 5
+custom_minimum_size = Vector2(900, 500)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_rr83r")
+script = ExtResource("5_xab72")
+
+[node name="M" type="MarginContainer" parent="UiContainer/GameInfo/Leaderboard"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Leaderboard/M"]
+layout_mode = 2
+
+[node name="MapName" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+text = "Current Map: Unknown"
+
+[node name="MedalInfo" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+columns = 5
+
+[node name="Bronze" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("6_73vsl")
+
+[node name="Silver" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("7_4gqp6")
+
+[node name="Gold" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("8_iw0sd")
+
+[node name="Plat" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("9_k6ak5")
+
+[node name="Author" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("10_dxk01")
+
+[node name="BronzeTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="SilverTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="GoldTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="PlatTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="AuthorTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+layout_mode = 2
+text = "0.0s"
+horizontal_alignment = 1
+
+[node name="LeaderboardTitle" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+text = "Leaderboard"
+
+[node name="TH" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+theme_override_constants/h_separation = 30
+columns = 6
+
+[node name="Pos" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "Pos"
+
+[node name="Name" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player Name"
+
+[node name="Time" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Time (s)"
+
+[node name="DateSubmitted" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Date Submitted"
+
+[node name="RaceGhost" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Race Ghost"
+
+[node name="RaceGhost2" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "View Replay"
+
+[node name="TRows" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+theme = SubResource("Theme_nvgh5")
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 4
+columns = 6
+
+[node name="H" type="HBoxContainer" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+
+[node name="<" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V/H"]
+layout_mode = 2
+focus_mode = 0
+text = "<"
+
+[node name="Page" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/H"]
+layout_mode = 2
+text = "Page 0 of 0"
+
+[node name=">" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V/H"]
+layout_mode = 2
+focus_mode = 0
+text = ">"
+
+[node name="SetStartPosition" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 0
+text = "Set Start Position"
+
+[node name="ReplayLastRun" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+size_flags_vertical = 8
+focus_mode = 0
+text = "Replay Last Run"
+
+[node name="Admin" type="PanelContainer" parent="UiContainer/GameInfo"]
+visible = false
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_rr83r")
+
+[node name="M" type="MarginContainer" parent="UiContainer/GameInfo/Admin"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Admin/M"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UiContainer/GameInfo/Admin/M/V"]
+layout_mode = 2
+text = "Admin - Click any player's name to view details."
+
+[node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Admin/M/V"]
+layout_mode = 2
+
+[node name="V" type="VBoxContainer" parent="UiContainer"]
 custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -150.0
-offset_top = -48.0
+offset_top = -188.0
 offset_right = 150.0
 offset_bottom = -5.0
 grow_horizontal = 2
@@ -22,26 +375,46 @@ grow_vertical = 0
 theme = ExtResource("2_uralg")
 alignment = 1
 
-[node name="Label" type="Label" parent="V"]
+[node name="Label" type="Label" parent="UiContainer/V"]
 layout_mode = 2
 text = "Frame: 0 / 999"
 horizontal_alignment = 1
 
-[node name="Speed" type="Label" parent="V"]
+[node name="Speed" type="Label" parent="UiContainer/V"]
 layout_mode = 2
 text = "Speed: 0 u/s"
 horizontal_alignment = 1
 
-[node name="Info" type="Label" parent="V"]
+[node name="Info" type="Label" parent="UiContainer/V"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "Press Ctrl to toggle UI
 Press Restart to restart"
 horizontal_alignment = 1
 
-[node name="Slider" type="HSlider" parent="V"]
+[node name="Slider" type="HSlider" parent="UiContainer/V"]
 layout_mode = 2
 
-[node name="Done" type="Button" parent="V"]
+[node name="Done" type="Button" parent="UiContainer/V"]
 layout_mode = 2
 text = "Back"
+
+[node name="StartTime" type="Label" parent="UiContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -124.0
+offset_right = 31.5
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uralg")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 45
+text = "3.0"
+horizontal_alignment = 1

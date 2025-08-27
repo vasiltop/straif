@@ -5,19 +5,13 @@ signal jumped
 @onready var camera: PlayerCamera = $Eye/Camera
 @onready var gun_camera: Camera3D = $Eye/Camera/GunVPContainer/GunVP/GunCam
 @onready var gun_vp: SubViewport = $Eye/Camera/GunVPContainer/GunVP
-@onready var timer_label: Label = $UI/UiContainer/BottomLeft/V/Timer
-@onready var target_label: Label = $UI/UiContainer/BottomLeft/V/EnemiesLeft
-@onready var ui: CanvasLayer = $UI
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var camera_anchor: Marker3D = $CameraAnchor
-@onready var leaderboard: Leaderboard = $UI/UiContainer/GameInfo/Leaderboard
-@onready var speed_label: Label = $UI/UiContainer/BottomLeft/V/Speed
-@onready var alt_speed_label: Label = $UI/UiContainer/Middle/Speed
-@onready var sniper_overlay: TextureRect = $UI/UiContainer/SniperOverlay
+@onready var sniper_overlay: TextureRect = $UI/SniperOverlay
 @onready var raycast: RayCast3D = $Eye/Camera/RayCast
-@onready var pre_strafe_speed: Label = $UI/UiContainer/Middle/PreStrafeSpeed
 @onready var character: Node3D = $character
+@onready var third_person: Node3D = $ThirdPerson
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
@@ -31,8 +25,8 @@ const RUN_SOUND_DELAY := 0.4
 var _time_since_last_run_sound := RUN_SOUND_DELAY
 var gravity: float = 12
 var pid: int
-var map: Map
 var _run_audio_player := AudioStreamPlayer.new()
+var can_move := true
 
 func is_me() -> bool:
 	return multiplayer.get_unique_id() == pid
@@ -40,22 +34,15 @@ func is_me() -> bool:
 func set_name_label(value: String) -> void:
 	name_label.text = value
 
-func setup(map: Map) -> void:
-	# This only gets called on the player we are controlling
+# This only gets called on the player we are controlling
+func setup() -> void:
 	camera.make_current()
 	gun_camera.make_current()
-	
-	ui.visible = true
 	pid = multiplayer.get_unique_id()
-	self.map = map
-	
 	weapon_handler.visible = true
 	weapon_handler.add_child(weapon_handler.hit_sound)
 	add_child(_run_audio_player)
-	
-	get_viewport().size_changed.connect(_on_viewport_resized)
-	_on_viewport_resized()
-
+	third_person.visible = false
 	name_label.visible = false
 
 func _on_viewport_resized() ->  void:
@@ -65,10 +52,10 @@ func _on_viewport_resized() ->  void:
 func _ready() -> void:
 	camera.current = false
 	gun_camera.current = false
-	ui.visible = false
 	weapon_handler.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
+	get_viewport().size_changed.connect(_on_viewport_resized)
+	_on_viewport_resized()
 
 func _process(delta: float) -> void:
 	if not is_me(): return
@@ -77,39 +64,41 @@ func _process(delta: float) -> void:
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
-	if Input.is_action_just_pressed("ui_hide"):
-		ui.visible = not ui.visible
-	
-	(get_node("UI/UiContainer/TopLeft/Fps") as Label).text = str(Engine.get_frames_per_second()) + " fps"
 	_time_since_last_run_sound += delta
 
 func _physics_process(delta: float) -> void:
 	if not is_me(): return
-
-	_movement_process(delta)
+	
+	var jump_input := Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")
+	_movement_process(delta, wish_dir(), jump_input)
 	
 	var current_vel := velocity
 	current_vel.y = 0
-	speed_label.text = "%.2fu/s" % current_vel.length()
-	alt_speed_label.text = speed_label.text
 
-func set_timer(value: float) -> void:
-	timer_label.text = "Time: %.3fs" % value
 
-func set_target_status(left: int, total: int) -> void:
-	target_label.text = "Targets: %d/%d" % [left, total]
-
-func _movement_process(delta: float) -> void:
-	if map.is_watching_replay(): return
+func wish_dir_from(left: bool, right: bool, up: bool, down: bool) -> Vector2:
+	var wish_dir = Vector2(float(right) - float(left), float(down) - float(up))
+	wish_dir = wish_dir.normalized()
 	
-	var wish_dir := Input.get_vector("left", "right", "up", "down")
+	return wish_dir
+
+func wish_dir() -> Vector2:
+	var left_input := Input.is_action_pressed("left")
+	var right_input := Input.is_action_pressed("right")
+	var up_input := Input.is_action_pressed("up")
+	var down_input := Input.is_action_pressed("down")
+	return wish_dir_from(left_input, right_input, up_input, down_input)
+
+func _movement_process(delta: float, wish_dir: Vector2, jump_input: bool) -> void:
+	if not can_move: return
+	
 	wish_dir = wish_dir.rotated(-rotation.y)
 
 	var vel_planar := Vector2(velocity.x, velocity.z)
 	var vel_vertical := _apply_gravity(velocity.y, delta)
 	vel_planar = _apply_friction(vel_planar, delta, wish_dir)
 	vel_planar = _update_velocity_ground(vel_planar, wish_dir, delta)
-	vel_vertical = _check_for_jump(vel_vertical)
+	vel_vertical = _check_for_jump(vel_vertical, jump_input)
 
 	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
 	
@@ -146,9 +135,7 @@ func _update_velocity_ground(vel_planar: Vector2, wish_dir: Vector2, delta: floa
 	var add_speed: float = clamp(max_speed - current_speed, 0.0, max_accel * delta)
 	return vel_planar + wish_dir * add_speed
 
-func _check_for_jump(vel_vertical: float) -> float:
-	var jump_input := Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")
-
+func _check_for_jump(vel_vertical: float, jump_input: bool) -> float:
 	if jump_input and grounded():
 		jumped.emit()
 		return JUMP_FORCE

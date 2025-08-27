@@ -37,9 +37,30 @@ class PbInfo:
 			self.mode_to_map_info[mode].position = position
 			self.mode_to_map_info[mode].pb = pb
 
+var weapons: Array[WeaponData] = [null]
+
 func _init() -> void:
 	Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
 	Steam.getAuthTicketForWebApi("munost")
+	
+	var path := "res://src/player/weapon/resources/"
+	var dir := DirAccess.open(path)
+	
+	for file in dir.get_files():
+		weapons.append(load(path + file))
+
+func get_weapon_index(weapon: WeaponData) -> int:
+	if weapon == null: return 0
+	
+	for i in range(1, len(weapons)):
+		var w := weapons[i]
+		if w.name == weapon.name:
+			return i
+	
+	return -1
+
+func get_weapon_from_index(index: int) -> WeaponData:
+	return weapons[index]
 
 func _on_get_ticket_for_web_api(_auth_ticket: int, _result: int, _ticket_size: int, ticket_buffer: Array) -> void:
 	auth_ticket_hex = PackedByteArray(ticket_buffer).hex_encode()

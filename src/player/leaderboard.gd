@@ -8,7 +8,7 @@ signal ghost_enabled(steam_id: int)
 @onready var inc_page_btn: Button = $"M/V/H/>"
 @onready var page_label: Label = $M/V/H/Page
 @onready var middle: HBoxContainer = $".."
-@onready var player: Player = $"../../../.."
+@onready var map_ui: MapUi = $"../../.."
 @onready var admin_panel: PanelContainer = $"../Admin"
 @onready var admin_actions_container: VBoxContainer = $"../Admin/M/V/V"
 @onready var replay_last_run: Button = $M/V/ReplayLastRun
@@ -44,18 +44,18 @@ func _ready() -> void:
 	
 	replay_last_run.pressed.connect(
 		func() -> void:
-			if player.map.recorder.frames.size() <= 0:
+			if map_ui.map.recorder.frames.size() <= 0:
 				Info.alert("Cannot play empty recording.")
 				return
-			var replay := player.map.recorder.to_hex()
+			var replay := map_ui.map.recorder.to_hex()
 			Global.game_manager.replay_requested.emit(replay)
 	)
 	
 	set_start_position.pressed.connect(
 		func() -> void:
-			if not player.map.completed and not player.map.running:
-				player.map.start_pos = player.global_position
-				player.map.start_rotation = player.camera._input_rotation
+			if not map_ui.map.completed and not map_ui.map.running:
+				map_ui.map.start_pos = map_ui.global_position
+				map_ui.map.start_rotation = map_ui.camera._input_rotation
 	)
 
 func _process(_delta: float) -> void:
@@ -71,7 +71,7 @@ func _process(_delta: float) -> void:
 		middle.visible = false
 		admin_panel.visible = false
 		
-		if not player.map.is_watching_replay():
+		if not map_ui.map.is_watching_replay():
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _load_runs() -> void:
@@ -139,7 +139,7 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	date_label.size_flags_horizontal = Control.SIZE_EXPAND
 	
 	var setup_race_btn_text := func() -> String:
-		return "Race %s" % player_name if not player.map.currently_racing_steam_id == steam_id else "Stop Racing"
+		return "Race %s" % player_name if not map_ui.map.currently_racing_steam_id == steam_id else "Stop Racing"
 	
 	const BUTTON_FONT_SIZES := 10
 	var race_btn := Button.new()
@@ -153,14 +153,14 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	
 	race_btn.pressed.connect(
 		func() -> void:
-			if not player.map.currently_racing_steam_id == steam_id:
+			if not map_ui.map.currently_racing_steam_id == steam_id:
 				var replay := await Global.server_bridge.get_replay(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
 				
-				player.map.race_recording_bytes = Marshalls.base64_to_raw(replay)
-				player.map.currently_racing_steam_id = steam_id
+				map_ui.map.race_recording_bytes = Marshalls.base64_to_raw(replay)
+				map_ui.map.currently_racing_steam_id = steam_id
 				
-				var ghost_name_label: Label3D = player.map.recorder.ghost.get_node("Name")
-				ghost_name_label.text = "%s's Ghost" % player_name
+				#var ghost_name_label: Label3D = map_ui.map.recorder.ghost.get_node("Name")
+				#ghost_name_label.text = "%s's Ghost" % player_name
 				
 				for child in t_rows.get_children():
 					if child.has_meta("player_name"):
@@ -169,11 +169,11 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 						b.text = "Race %s" % this_player_name
 						
 			else:
-				player.map.race_recording_bytes.clear()
-				player.map.currently_racing_steam_id = 0
+				map_ui.map.race_recording_bytes.clear()
+				map_ui.map.currently_racing_steam_id = 0
 				
-				if player.map.recorder.ghost:
-					player.map.recorder.ghost.visible = false
+				#if map_ui.map.recorder.ghost:
+				#	map_ui.map.recorder.ghost.visible = false
 			
 			if race_btn:
 				race_btn.text = setup_race_btn_text.call()

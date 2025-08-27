@@ -1,8 +1,8 @@
 class_name WeaponPickup extends Area3D
 
-@onready var player: Player = $"../../Player"
 @onready var weapon_spawn: Node3D = $WeaponSpawn
 @export var weapon: WeaponData
+@onready var map: Map = $"../.."
 
 const EquipSound = preload("res://src/sounds/equip.mp3")
 
@@ -10,6 +10,9 @@ var audio_player := AudioStreamPlayer.new()
 var weapon_scene: Node3D
 var active := true
 var is_touching_player := false
+var currently_touching: Player
+var frame_picked_up := -1
+var previous_weapon: WeaponData
 
 func _ready() -> void:
 	var inst: Node3D = weapon.scene.instantiate()
@@ -27,23 +30,21 @@ func _ready() -> void:
 	body_entered.connect(
 		func(body: Node3D) -> void:
 			if body is Player:
-				var p := body as Player
-				if p.is_me():
-					is_touching_player = true
+				currently_touching = body
+				is_touching_player = true
 	)
 	
 	body_exited.connect(
 		func(body: Node3D) -> void:
 			if body is Player:
-				var p := body as Player
-				if p.is_me():
-					is_touching_player = false
+				is_touching_player = false
 	)
 
 func reset() -> void:
 	weapon_scene.visible = true
 	active = true
 	is_touching_player = false
+	frame_picked_up = -1
 
 func _process(delta: float) -> void:
 	if not active: return
@@ -51,8 +52,10 @@ func _process(delta: float) -> void:
 	weapon_scene.rotate_y(deg_to_rad(45 * delta))
 	weapon_scene.global_position.y = weapon_spawn.global_position.y + sin(float(Time.get_ticks_msec()) / 1000) / 7
 	
-	if player.map.running and is_touching_player and (player.weapon_handler.current_weapon == null or Input.is_action_just_pressed("interact")):
-		player.weapon_handler.set_weapon(weapon)
+	if is_touching_player and currently_touching.is_me():
+		frame_picked_up = map.recorder.current_frame
+		previous_weapon = currently_touching.weapon_handler.current_weapon
+		currently_touching.weapon_handler.set_weapon(weapon)
 		audio_player.stream = EquipSound
 		audio_player.play()
 		deactivate()

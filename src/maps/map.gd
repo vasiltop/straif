@@ -10,7 +10,7 @@ signal target_killed
 @onready var start_rotation: Vector3 = player.global_rotation
 @onready var target_spawns_container: Node = $TargetSpawns
 @onready var sound_player := AudioStreamPlayer.new()
-@onready var recorder := Recorder.new(player.camera)
+@onready var recorder := Recorder.new(player.camera, self)
 @onready var map_ui: MapUi = MapUiScene.instantiate()
 
 const PlayerScene := preload("res://src/player/player.tscn")
@@ -18,35 +18,42 @@ const TargetScene := preload("res://src/target/target.tscn")
 const StartRunSound = preload("res://src/sounds/run.wav")
 const WinRunSound = preload("res://src/sounds/win.wav")
 const MapUiScene = preload("res://src/maps/map_ui.tscn")
+const START_ZONE_TIMER := 1.5
 
-var timer: float = 0.0
+var timer := 0.0
+var start_timer := 0.0
 var completed: bool = false
 var running: bool = false
-var can_win: bool = false
 var currently_racing_steam_id: int
 var race_recording_bytes: PackedByteArray
 var player_in_end_zone: bool
 var _has_jumped: bool
+var dragging_frame_slider: bool
 
 func _ready() -> void:
-	player.setup(self)
-	restart()
+	player.setup()
 	add_child(recorder)
 	add_child(sound_player)
 	add_child(map_ui)
 	map_ui.return_control_to_player.connect(_on_return_control_to_player)
-	map_ui.visible = false
-	start_zone.body_exited.connect(_on_start_zone_exited)
-	end_zone.body_entered.connect(func(_body: Node3D) -> void: can_win = true)
+	map_ui.set_replay_visible(false)
 	player.jumped.connect(_on_player_jump)
 	Global.game_manager.replay_requested.connect(_on_replay_requested)
 	target_killed.connect(_on_target_killed)
 	_on_target_killed()
-	
+
 	map_ui.slider.value_changed.connect(_on_replay_slider_changed)
-	map_ui.slider.drag_started.connect(recorder.pause_playback)
-	map_ui.slider.drag_ended.connect(func(changed: bool) -> void: recorder.resume_playback())
-	
+	map_ui.slider.drag_started.connect(
+		func() -> void:
+			recorder.pause_playback()
+			dragging_frame_slider = true
+			)
+	map_ui.slider.drag_ended.connect(
+		func(changed: bool) -> void:
+			recorder.resume_playback()
+			dragging_frame_slider = false
+			)
+
 	end_zone.body_entered.connect(
 		func(body: Node3D) -> void:
 			if body is Player:
@@ -63,39 +70,77 @@ func _ready() -> void:
 					player_in_end_zone = false
 	)
 	
+	restart(player)
+
 func _on_replay_slider_changed(value: float) -> void:
 	recorder.set_frame(value)
+	'''
+	var weapon_pickups := get_tree().get_nodes_in_group("weapon_pickup")
+	weapon_pickups.sort_custom(func(a, b): return a.frame_picked_up < b.frame_picked_up)
+	
+	for i in range(len(weapon_pickups) - 1, -1, -1):
+		var wp: WeaponPickup = weapon_pickups[i]
+		if wp.frame_picked_up > value:
+			wp.frame_picked_up = -1
+			recorder.controller.weapon_handler.set_weapon(wp.previous_weapon)
+			wp.reset()
+			
+	if dragging_frame_slider:
+		for i in range(value):
+			print(i)
+			recorder.set_frame(value)'''
 
 func is_watching_replay() -> bool:
-	return map_ui.visible
+	return map_ui.is_replay_visible()
 
 func _on_return_control_to_player() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	map_ui.visible = false
-	player.camera.make_current()
-	player.camera.visible = true
-	player.ui.visible = true
-	restart()
+	map_ui.set_replay_visible(false)
+	player.camera.current = true
+	player.gun_camera.current = true
+	recorder.controller.camera.current = false
+	recorder.controller.gun_camera.current = false
+	player.can_move = true
+	player.weapon_handler.visible = true
+	recorder.pause_playback()
+	restart(player)
 
 func _on_target_killed() -> void:
-	player.set_target_status(target_container.get_child_count(), target_spawns_container.get_child_count())
+	map_ui.set_target_status(target_container.get_child_count(), target_spawns_container.get_child_count())
 
 func _on_replay_requested(data: String) -> void:
-	restart()
-	map_ui.visible = true
-	player.camera.visible = false
-	player.ui.visible = false
+	restart(recorder.controller)
+	map_ui.set_replay_visible(true)
+	player.camera.current = false
+	player.gun_camera.current = false
+	player.can_move = false
+	player.weapon_handler.visible = false
 	recorder.play_bytes(Marshalls.base64_to_raw(data))
 	map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
-	
+
 func _physics_process(_delta: float) -> void:
 	if running:
-		var frame := Recorder.FrameInfoV2.new(player.global_position, player.global_rotation.y, player.camera.global_rotation.x)
-		recorder.add_frame(frame)
-		player.set_timer(timer)
-		
+		map_ui.set_timer(timer)
+		_recorder_process()
+
 	if recorder.is_playing():
 		map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
+
+func _recorder_process() -> void:
+	var interact_input := Input.is_action_just_pressed("interact")
+	var shoot_input := Input.is_action_just_pressed("attack") or Input.is_action_pressed("attack") 
+	var rot_y := player.global_rotation.y
+	var rot_x := player.camera.global_rotation.x
+	var rot := Vector2(rot_x, rot_y)
+	
+	var frame: Recorder.Frame = Recorder.Frame.new()
+
+	frame.rot = rot
+	frame.position = player.global_position
+	frame.shoot_input = shoot_input
+	frame.interact_input = interact_input
+	frame.weapon_index = Global.game_manager.get_weapon_index(player.weapon_handler.current_weapon)
+
+	recorder.add_frame(frame)
 
 func get_target_spawns() -> Array[Node3D]:
 	var ret: Array[Node3D]
@@ -111,31 +156,34 @@ func _start_run() -> void:
 	sound_player.play()
 	running = true
 	end_zone.monitoring = true
+	player.can_move = true
+
+	#player.ui.visible = true
 	
-func _show_pre_label() -> void:
-	player.pre_strafe_speed.text = player.speed_label.text
-	player.pre_strafe_speed.visible = Global.settings_manager.value("Display", "speed")
+#func _show_pre_label() -> void:
+	#player.pre_strafe_speed.text = player.speed_label.text
+	#player.pre_strafe_speed.visible = Global.settings_manager.value("Display", "speed")
 
 func _on_player_jump() -> void:
-	if not completed and not running:
-		_start_run()
-		
 	if not _has_jumped:
 		_has_jumped = true
-		_show_pre_label()
-
-func _on_start_zone_exited(body: Node3D) -> void:
-	if body is Player and not completed and not running:
-		var p := body as Player
-		if p.is_me():
-			_start_run()
+		#_show_pre_label()
 
 func _process(delta: float) -> void:
+	if map_ui.is_replay_visible(): return
+	
 	if not completed and player_in_end_zone and target_container.get_child_count() == 0:
 		await _win()
-
+	
+	if not running and not completed:
+		start_timer -= delta
+		map_ui.set_start_time(start_timer)
+		
+		if start_timer <= 0.0:
+			_start_run()
+	
 	if Input.is_action_just_pressed("restart"):
-		restart()
+		restart(player)
 
 	if running:
 		timer += delta
@@ -145,7 +193,7 @@ func _win() -> void:
 	running = false
 	sound_player.stream = WinRunSound
 	sound_player.play()
-
+	
 	var bytes := recorder.to_bytes()
 	await Global.server_bridge.publish_run(Global.game_manager.current_mode, bytes, Global.game_manager.current_map.name, int(timer * 1000))
 
@@ -154,29 +202,39 @@ func spawn_target(pos: Vector3) -> void:
 	target_container.add_child(inst)
 	inst.global_position = pos
 
-func restart() -> void:
+func restart(player: Player) -> void:
+	player.can_move = false
+	
 	if player.sniper_overlay.visible:
 		player.weapon_handler.toggle_sniper_scope()
 
 	player.global_position = start_pos
-	player_in_end_zone = false
-	
 	player.camera._input_rotation = start_rotation
-	
-	player.pre_strafe_speed.visible = false
-	if recorder.ghost:
-		recorder.ghost.visible = false
-		
+	player_in_end_zone = false
+
 	player.velocity = Vector3.ZERO
 	player.weapon_handler.set_weapon(null)
-
-	can_win = false
 	
 	var mode := Global.game_manager.current_mode
 	
 	for node in get_tree().get_nodes_in_group("decal"):
 		node.queue_free()
 
+	reset_weapon_pickups()
+	reset_targets()
+
+	completed = false
+	running = false
+	timer = 0.0
+	map_ui.set_timer(timer)
+	end_zone.monitoring = false
+	_has_jumped = false
+	
+	start_timer = START_ZONE_TIMER
+
+func reset_weapon_pickups() -> void:
+	var mode := Global.game_manager.current_mode
+	
 	for node in get_tree().get_nodes_in_group("weapon_pickup"):
 		var wp: WeaponPickup = node
 		if mode == "target":
@@ -184,19 +242,14 @@ func restart() -> void:
 		else:
 			wp.deactivate()
 
+func reset_targets() -> void:
+	var mode := Global.game_manager.current_mode
+	
 	for node in target_container.get_children():
 		node.queue_free()
-	
+
 	if mode == "target":
 		for spawn in get_target_spawns():
 			spawn_target(spawn.global_position)
 	
 	_on_target_killed()
-
-	completed = false
-	running = false
-	timer = 0.0
-	player.set_timer(timer)
-	end_zone.monitoring = false
-	_has_jumped = false
-	

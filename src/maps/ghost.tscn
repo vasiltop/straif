@@ -10,6 +10,7 @@ albedo_texture = ExtResource("2_ssg5i")
 texture_filter = 0
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_xif4h"]
+filters = ["FullArmature/Skeleton3D:foot.l", "FullArmature/Skeleton3D:foot.r", "FullArmature/Skeleton3D:lowerleg.l", "FullArmature/Skeleton3D:lowerleg.r", "FullArmature/Skeleton3D:middle", "FullArmature/Skeleton3D:upperleg.l", "FullArmature/Skeleton3D:upperleg.r"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qo2m1"]
 animation = &"idle"
@@ -42,15 +43,15 @@ text = "Ghost"
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.0983254, 0)
 
 [node name="Skeleton3D" parent="Model/FullArmature" index="0"]
-bones/0/rotation = Quaternion(0.077262, 7.92418e-19, 7.84823e-19, 0.997011)
-bones/1/rotation = Quaternion(0.00335031, 0.0492726, 0.99802, -0.0389434)
-bones/2/rotation = Quaternion(-0.168949, 0.00577909, -0.0250731, 0.985289)
-bones/4/rotation = Quaternion(0.000190903, 0.143944, 0.989447, 0.0165912)
+bones/0/rotation = Quaternion(0.0747925, 2.51981e-19, -5.91542e-18, 0.997199)
+bones/1/rotation = Quaternion(0.00360724, 0.0560929, 0.997624, -0.0398317)
+bones/2/rotation = Quaternion(-0.174554, 0.0064635, -0.0249433, 0.98431)
+bones/4/rotation = Quaternion(0.000233332, 0.141413, 0.989812, 0.0165906)
 bones/5/rotation = Quaternion(-0.135345, -7.29387e-05, -0.013192, 0.990711)
 bones/6/rotation = Quaternion(-0.601822, -7.07935e-08, 0.00584188, 0.798609)
-bones/7/rotation = Quaternion(-0.00362325, 0.056649, 0.997624, 0.0390378)
-bones/8/rotation = Quaternion(-0.16069, -0.00534759, 0.025158, 0.98667)
-bones/10/rotation = Quaternion(-0.000190903, 0.143944, 0.989447, -0.0165912)
+bones/7/rotation = Quaternion(-0.00350304, 0.0556183, 0.997657, 0.0396887)
+bones/8/rotation = Quaternion(-0.163546, -0.00538174, 0.0250804, 0.986202)
+bones/10/rotation = Quaternion(-0.000233332, 0.141413, 0.989812, -0.0165906)
 bones/11/rotation = Quaternion(-0.135345, 7.29387e-05, 0.013192, 0.990711)
 bones/12/rotation = Quaternion(-0.601822, 7.07935e-08, -0.00584188, 0.798609)
 

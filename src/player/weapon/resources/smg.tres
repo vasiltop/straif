@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("2_78gc6")
 name = "Smg"
-weapon_shot_delay = 0.07
+weapon_shot_delay = 0.08
 damage = 34.0
 scene = ExtResource("1_lrjev")
 shoot_sound = ExtResource("3_wqpf5")
@@ -17,6 +17,6 @@ is_melee = false
 automatic = true
 is_sniper = false
 spread = 0.0
-moving_spread = 5.0
+moving_spread = 12.0
 bullet_count = 1.0
 metadata/_custom_type_script = "uid://bmwqlto471f6e"

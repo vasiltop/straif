@@ -4,10 +4,14 @@ class_name WeaponHandler extends Node3D
 @onready var weapon_scene: Node3D = null
 @onready var r_hand_ik: SkeletonIK3D = $Arms/Armature/Skeleton3D/RHandIk
 @onready var l_hand_ik: SkeletonIK3D = $Arms/Armature/Skeleton3D/LHandIk
+@onready var r_hand_ik_tp: SkeletonIK3D = $"../../../ThirdPerson/Model/FullArmature/Skeleton3D/RHandIk"
+@onready var l_hand_ik_tp: SkeletonIK3D = $"../../../ThirdPerson/Model/FullArmature/Skeleton3D/LHandIk"
+
 @onready var start_pos := position
 @onready var audio_player: AudioStreamPlayer3D = $AudioPlayer
 @onready var gun_container: Node3D = $GunContainer
 @onready var arms: Node3D = $Arms
+@onready var weapon_pos_tp: Marker3D = $"../../../ThirdPerson/WeaponPosTP"
 
 @export var sway_left: Vector3
 @export var sway_right: Vector3
@@ -30,28 +34,34 @@ var time_since_last_shot: float = 0
 func _ready() -> void:
 	if not player.is_me(): return
 
-	init_ik()
-
-func set_weapon(weapon: WeaponData) -> void:
+func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 	current_weapon = weapon
 
 	if weapon_scene:
 		weapon_scene.queue_free()
-
+		
 	if current_weapon != null:
 		time_since_last_shot = current_weapon.weapon_shot_delay
 		weapon_scene = weapon.scene.instantiate()
-		gun_container.add_child(weapon_scene)
-
+		
 		# move it out of the way so it doesnt flicker
 		weapon_scene.global_position = Vector3.ZERO
+		
+		var gun_parent := gun_container
+		if is_third_person: 
+			gun_parent = weapon_pos_tp
+			var mesh := weapon_scene.get_node("Mesh") as MeshInstance3D
+			mesh.set_layer_mask_value(1, true)
+			mesh.set_layer_mask_value(2, false)
+			weapon_scene.scale *= 0.4
+			
+		gun_parent.add_child(weapon_scene)
 
-		init_ik()
 		arms.visible = true
 
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 		anim.play("equip")
-
+		
 		if current_weapon.is_melee:
 			var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
 			hitbox.monitoring = false
@@ -60,6 +70,8 @@ func set_weapon(weapon: WeaponData) -> void:
 			hitbox.body_entered.connect(_on_sword_hit)
 	else:
 		arms.visible = false
+		
+	init_ik(is_third_person)
 
 func _on_animation_started(anim_name: String) -> void:
 	if anim_name == "shoot": 
@@ -78,15 +90,19 @@ func _on_sword_hit(body: Node3D) -> void:
 		player.camera.shake(0.1, 0.03)
 
 func _process(delta: float) -> void:
+	time_since_last_shot += delta
+	#if weapon_scene: print(weapon_scene.position)
+	_handle_inputs()
+
+func _handle_inputs() -> void:
 	if not player.is_me(): return
 	if not current_weapon: return
-	if player.map.is_watching_replay(): return
-
+	if not player.can_move: return
+	
 	var attack_input := Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
-	if attack_input and time_since_last_shot > current_weapon.weapon_shot_delay:
+	if attack_input:
 		for i in range(current_weapon.bullet_count):
 			_try_shoot()
-		time_since_last_shot = 0
 	
 	if current_weapon and Input.is_action_just_pressed("inspect"):
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
@@ -99,8 +115,6 @@ func _process(delta: float) -> void:
 	
 	if current_weapon and Input.is_action_just_pressed("scope") and current_weapon.is_sniper:
 		toggle_sniper_scope()
-	
-	time_since_last_shot += delta
 
 func toggle_sniper_scope() -> void:
 	player.sniper_overlay.visible = not player.sniper_overlay.visible
@@ -113,10 +127,11 @@ func toggle_sniper_scope() -> void:
 		false:
 			player.camera.fov += FOV_DIFF
 	
-	if visible:
-		player.alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
+	#if visible:
+		#player.alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
 
 func _physics_process(delta: float) -> void:
+	if not player.is_me(): return
 	_sway(delta)
 
 func _sway(delta: float) -> void:
@@ -141,10 +156,14 @@ func _sway(delta: float) -> void:
 	rotation = rotation.lerp(sway_rot, SWAY_LERP * delta)
 	mouse_mov = 0
 
-func _try_shoot() -> void:
-	if not player.map: return
-	if not player.map.running and not player.map.completed: return
-
+func _try_shoot(ghost_bullet := false) -> void:
+	#if not player.map: return
+	#if not player.map.running and not player.map.completed: return
+	if current_weapon == null: return
+	if time_since_last_shot < current_weapon.weapon_shot_delay: return
+	
+	
+	time_since_last_shot = 0
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 	if anim.current_animation == "inspect" or not anim.is_playing():
 		anim.play("shoot")
@@ -168,10 +187,7 @@ func _try_shoot() -> void:
 	player.camera._mouse_input.x = randf_range(-rad, rad)
 	
 	var spread := current_weapon.spread if not player.sniper_overlay.visible else 0.0
-	var is_moving := player.velocity.length() >= 0.5
-	
-	if is_moving: spread = current_weapon.moving_spread
-	if not player.grounded(): spread *= 2
+	if not player.grounded(): spread = current_weapon.moving_spread
 	
 	if current_weapon.is_sniper and player.sniper_overlay.visible:
 		toggle_sniper_scope()
@@ -192,34 +208,35 @@ func _try_shoot() -> void:
 		spread_basis = spread_basis.rotated(Vector3.BACK, rand_rot_z)
 
 		direction = (spread_basis * direction).normalized()
-
-	var space_state := get_world_3d().direct_space_state
-	var query := PhysicsRayQueryParameters3D.create(origin, origin + direction*distance)
-	var result := space_state.intersect_ray(query)
-	var hit_pos := origin + direction * distance
 	
-	if result != {}:
-		hit_pos = result.position
-		var collider: Object = result.collider
+	if not ghost_bullet:
+		var space_state := get_world_3d().direct_space_state
+		var query := PhysicsRayQueryParameters3D.create(origin, origin + direction*distance)
+		var result := space_state.intersect_ray(query)
+		var hit_pos := origin + direction * distance
+		
+		if result != {}:
+			hit_pos = result.position
+			var collider = result.collider
 
-		var inst: Decal = BulletHoleScene.instantiate()
-		player.map.add_child(inst)
-		inst.global_position = hit_pos
+			var inst: Decal = BulletHoleScene.instantiate()
+			collider.add_child(inst)
+			inst.global_position = hit_pos
 
-		# no clue what this does lol took it from reddit
-		var normal: Vector3 = result.normal
-		if normal != Vector3.UP:
-			inst.look_at(hit_pos + normal, Vector3.UP)
-			inst.transform = inst.transform.rotated_local(Vector3.RIGHT, PI/2.0)
+			# no clue what this does lol took it from reddit
+			var normal: Vector3 = result.normal
+			if normal != Vector3.UP:
+				inst.look_at(hit_pos + normal, Vector3.UP)
+				inst.transform = inst.transform.rotated_local(Vector3.RIGHT, PI/2.0)
 
-		inst.rotate(normal, randf_range(0, 2*PI))
+			inst.rotate(normal, randf_range(0, 2*PI))
 
-		if collider is BodyPart:
-			var body_part: BodyPart = collider
-			body_part.apply_damage(hit_sound, current_weapon.damage)
-	
-	if not current_weapon.is_melee:
-			BulletTracer.spawn(self, tracer_pos, hit_pos)
+			if collider is BodyPart:
+				var body_part: BodyPart = collider
+				body_part.apply_damage(hit_sound, current_weapon.damage)
+		
+		if not current_weapon.is_melee:
+				BulletTracer.spawn(self, tracer_pos, hit_pos)
 
 func _input(event: InputEvent) -> void:
 	if not player.is_me(): return
@@ -228,14 +245,20 @@ func _input(event: InputEvent) -> void:
 		var motion: InputEventMouseMotion = event
 		mouse_mov = -motion.relative.x
 
-func init_ik() -> void:
-	if not weapon_scene: return
+func init_ik(is_third_person: bool) -> void:
+	var rik = r_hand_ik_tp if is_third_person else r_hand_ik
+	var lik = l_hand_ik_tp if is_third_person else l_hand_ik
+	
+	if not current_weapon:
+		rik.stop()
+		lik.stop()
+		return
 
 	var left_target := weapon_scene.get_node("LHandTarget").get_path()
 	var right_target := weapon_scene.get_node("RHandTarget").get_path()
 	
-	r_hand_ik.target_node = right_target
-	l_hand_ik.target_node = left_target
+	rik.target_node = right_target
+	lik.target_node = left_target
 
-	r_hand_ik.start()
-	l_hand_ik.start()
+	rik.start()
+	lik.start()

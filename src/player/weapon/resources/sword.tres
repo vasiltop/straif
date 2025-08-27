@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("2_yx0at")
-name = "Rifle"
+name = "Sword"
 weapon_shot_delay = 0.1
 damage = 100.0
 scene = ExtResource("1_w14qs")
@@ -15,5 +15,6 @@ is_melee = true
 automatic = false
 is_sniper = false
 spread = 0.0
+moving_spread = 0.0
 bullet_count = 1.0
 metadata/_custom_type_script = "uid://bmwqlto471f6e"

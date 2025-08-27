@@ -11,4 +11,4 @@ func _on_body_entered(body: Node3D) -> void:
 	var p: Player = body
 	if not p.is_me(): return
 
-	map.restart()
+	map.restart(p)
