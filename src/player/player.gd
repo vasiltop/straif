@@ -9,8 +9,6 @@ signal jumped
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var camera_anchor: Marker3D = $CameraAnchor
 @onready var sniper_overlay: TextureRect = $UI/SniperOverlay
-@onready var raycast: RayCast3D = $Eye/Camera/RayCast
-@onready var character: Node3D = $character
 @onready var third_person: Node3D = $ThirdPerson
 
 const RunSound := preload("res://src/sounds/run.mp3")
@@ -45,6 +43,7 @@ func setup() -> void:
 	add_child(_run_audio_player)
 	third_person.visible = false
 	name_label.visible = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size
@@ -54,7 +53,6 @@ func _ready() -> void:
 	camera.current = false
 	gun_camera.current = false
 	weapon_handler.visible = false
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_on_viewport_resized()
 
@@ -62,6 +60,7 @@ func _process(delta: float) -> void:
 	if not is_me(): return
 
 	if Input.is_action_just_pressed("main_menu"):
+		Global.multiplayer.multiplayer_peer = null
 		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
@@ -72,6 +71,20 @@ func _physics_process(delta: float) -> void:
 	
 	var jump_input := Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")
 	_movement_process(delta, wish_dir(), jump_input)
+
+	_update_state.rpc(global_position, global_rotation.y, camera.global_rotation.x, get_ups())
+
+@rpc("any_peer", "call_remote", "unreliable")
+func _update_state(pos: Vector3, rot_y: float, rot_x: float, speed: float) -> void:
+	global_position = pos
+	camera._input_rotation.y = rot_y
+	camera._input_rotation.x = rot_x
+	
+	set_animation_blend(1.0 if speed >= 3.0 else 0.0)
+		
+func set_animation_blend(value: float) -> void:
+	var anim_tree: AnimationTree = get_node("ThirdPerson/AnimationTree")
+	anim_tree.set("parameters/blend/blend_amount", value)
 	
 func get_ups() -> float:
 	var current_vel := velocity
@@ -117,7 +130,8 @@ func _apply_gravity(velocity_y: float, delta: float) -> float:
 	return velocity_y - gravity * delta
 
 func grounded() -> bool:
-	return test_move(global_transform, Vector3(0, -0.01, 0))
+	return is_on_floor()
+	#return test_move(global_transform, Vector3(0, -0.01, 0))
 
 func _apply_friction(vel_planar: Vector2, delta: float, wish_dir: Vector2) -> Vector2:
 	if not grounded(): return vel_planar

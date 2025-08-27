@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://taw7qljauqyg"]
+[gd_scene load_steps=45 format=3 uid="uid://taw7qljauqyg"]
 
 [ext_resource type="Script" uid="uid://c3c48ot8m7wcr" path="res://src/menus/main/main_menu.gd" id="1_cput1"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="1_wwn1r"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c4crre3khf17f" path="res://src/textures/discord.png" id="3_og6j4"]
 [ext_resource type="PackedScene" uid="uid://t8r6jl03nerq" path="res://src/maps/tiles/vent.tscn" id="4_wwn1r"]
 [ext_resource type="Script" uid="uid://be34vbfubnjti" path="res://src/menus/main/mode_container.gd" id="5_0gscq"]
+[ext_resource type="PackedScene" uid="uid://bdpgbrehy0o7b" path="res://src/menus/multiplayer/multiplayer.tscn" id="6_og6j4"]
 [ext_resource type="PackedScene" uid="uid://s1gi6bk381wf" path="res://src/maps/tiles/planks.tscn" id="7_1yh6f"]
 [ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="8_egtdo"]
 [ext_resource type="Texture2D" uid="uid://c3suaqcwwqgym" path="res://src/textures/building_roof.jpg" id="9_t0jo6"]
@@ -249,8 +250,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="V" type="VBoxContainer" parent="MarginContainer/Content/Body/Play/M"]
 layout_mode = 2
@@ -275,10 +276,15 @@ mode = "bhop"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 1
 
-[node name="Settings" type="Control" parent="MarginContainer/Content/Body"]
+[node name="Multiplayer" parent="MarginContainer/Content/Body" instance=ExtResource("6_og6j4")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="Settings" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Content/Body/Settings"]
 layout_mode = 1
@@ -289,7 +295,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 50
+theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 50
 
 [node name="SettingsMenu" parent="MarginContainer/Content/Body/Settings/MarginContainer" instance=ExtResource("2_juxiq")]

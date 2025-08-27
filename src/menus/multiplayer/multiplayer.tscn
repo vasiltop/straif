@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdpgbrehy0o7b"]
+
+[ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="1_c5rfe"]
+[ext_resource type="Script" uid="uid://baftybw27iasg" path="res://src/menus/multiplayer/multiplayer.gd" id="2_tfc8f"]
+
+[node name="Multiplayer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_c5rfe")
+script = ExtResource("2_tfc8f")
+
+[node name="M" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="P" type="PanelContainer" parent="M"]
+layout_mode = 2
+
+[node name="M" type="MarginContainer" parent="M/P"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="V" type="VBoxContainer" parent="M/P/M"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="M/P/M/V"]
+layout_mode = 2
+text = "Server List"
+
+[node name="Refresh" type="Button" parent="M/P/M/V"]
+layout_mode = 2
+text = "Refresh Servers"
+
+[node name="ServerContainer" type="HFlowContainer" parent="M/P/M/V"]
+layout_mode = 2

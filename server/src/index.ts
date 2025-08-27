@@ -5,6 +5,7 @@ import { openAPISpecs } from 'hono-openapi';
 import leaderboard from './routes/leaderboard';
 import admin from './routes/admin';
 import game from './routes/game';
+import browser from './routes/browser';
 import { Client, GatewayIntentBits } from 'discord.js';
 
 export type Variables = {
@@ -16,6 +17,7 @@ const app = new Hono();
 app.route('/leaderboard', leaderboard);
 app.route('/admin', admin);
 app.route('/game', game);
+app.route('/browser', browser);
 
 const open_api_doc = {
   documentation: {

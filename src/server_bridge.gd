@@ -6,11 +6,11 @@ const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
-#var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straifapi.pumped.software"
+var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straifapi.pumped.software"
 #var api_url := "https://straifapi.pumped.software"
-var version := "0.1.7"
-var api_url := "https://straifapi-staging.pumped.software"
-#var version := "dev" if OS.has_feature("editor") else "0.1.7"
+#var version := "0.1.7"
+#var api_url := "https://straifapi-staging.pumped.software"
+var version := "dev" if OS.has_feature("editor") else "0.1.7"
 var heartbeat_timer: BetterTimer
 
 func get_leaderboard_base(mode: String) -> String:
@@ -257,3 +257,50 @@ func get_my_runs(mode: String) -> RunsRequestResponse:
 	for run: Dictionary in data:
 		runs.append(RunsRequestResponse.Run.new(run.time_ms as int, run.map_name as String, run.created_at as String, run.position as int, run.total as int))
 	return RunsRequestResponse.new(runs)
+
+class ServerResponse:
+	var port: int
+	var name: String
+	var mode: String
+	var map: String
+	var player_count: int
+	var max_players: int
+	var last_ping: String
+	var ip: String
+
+func get_servers() -> Array[ServerResponse]:
+	var response := await (client
+		.http_get("/browser")
+		).send()
+	var data := await data_or_print_error(response)
+	if data == null: return []
+	var res: Array[ServerResponse]
+	
+	for s in data:
+		var sr := ServerResponse.new()
+		sr.port = s.port
+		sr.name = s.name
+		sr.mode = s.mode
+		sr.map = s.map
+		sr.player_count = s.player_count
+		sr.max_players = s.max_players
+		sr.ip = s.ip
+		sr.last_ping = s.last_ping
+		res.append(sr)
+	
+	return res
+
+func ping_server_browser() -> void:
+	var map_name := Global.game_manager.current_pvp_map
+	map_name = map_name.substr(0, len(map_name) - len(".tscn"))
+	
+	await (client
+		.http_post("/browser")
+		.json({
+			"port": Global.game_manager.port,
+			"name": Global.game_manager.server_name,
+			"mode": Global.game_manager.current_pvp_mode,
+			"map": map_name,
+			"player_count": 0,
+			"max_players": Global.game_manager.max_players
+		}).send())

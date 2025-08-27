@@ -76,31 +76,6 @@ text = "59.98 u/s"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Crosshair" type="Control" parent="UiContainer/Middle"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.5, 0.5)
-
-[node name="ColorRect" type="ColorRect" parent="UiContainer/Middle/Crosshair"]
-layout_mode = 0
-offset_left = -2.0
-offset_top = -8.0
-offset_right = 2.0
-offset_bottom = 8.0
-
-[node name="ColorRect2" type="ColorRect" parent="UiContainer/Middle/Crosshair"]
-layout_mode = 0
-offset_left = -8.0
-offset_top = -2.0
-offset_right = 8.0
-offset_bottom = 2.0
-
 [node name="TopLeft" type="Panel" parent="UiContainer"]
 custom_minimum_size = Vector2(120, 30)
 layout_mode = 1
@@ -396,9 +371,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -31.5
-offset_top = -124.0
+offset_top = 66.0
 offset_right = 31.5
-offset_bottom = -61.0
+offset_bottom = 129.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_uralg")

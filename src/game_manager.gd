@@ -8,6 +8,8 @@ signal maintenance_changed
 
 enum NETWORK_TYPE { ENET, STEAM }
 
+const SERVER_BROWSER_PING_INTERVAL := 5
+
 var current_map: MapData
 var current_mode := "target"
 var auth_ticket_hex: String
@@ -15,6 +17,13 @@ var admin: bool
 var maintenance: bool
 var is_target_mode := true
 var map_name_to_pb_info: Dictionary[String, PbInfo]
+var is_server := false
+var port: int
+var max_players: int
+var _server_browser_ping_timer: BetterTimer
+var server_name: String
+var current_pvp_map: String
+var current_pvp_mode: String
 
 # TODO: Populate this automatically if theres more modes
 class PbInfo:
@@ -65,3 +74,52 @@ func get_weapon_from_index(index: int) -> WeaponData:
 func _on_get_ticket_for_web_api(_auth_ticket: int, _result: int, _ticket_size: int, ticket_buffer: Array) -> void:
 	auth_ticket_hex = PackedByteArray(ticket_buffer).hex_encode()
 	Global.server_bridge.heartbeat_timer.start()
+
+func init_server(server_name: String, port: int, max_players: int, mode: String) -> void:
+	var peer = ENetMultiplayerPeer.new()
+	peer.create_server(port, max_players)
+	Global.multiplayer.multiplayer_peer = peer
+	is_server = true
+	self.port = port
+	self.max_players = max_players
+	self.current_pvp_mode = mode
+	self.server_name = server_name
+	
+	current_pvp_map = Global.map_manager.switch_to_random_map(mode)
+	
+	_server_browser_ping_timer = BetterTimer.new(self, SERVER_BROWSER_PING_INTERVAL, Global.server_bridge.ping_server_browser)
+	_server_browser_ping_timer = BetterTimer.new(self, SERVER_BROWSER_PING_INTERVAL, Global.server_bridge.ping_server_browser)
+	_server_browser_ping_timer.start()
+	
+	print("Created server on port %d." % port)
+
+@rpc("authority", "call_remote", "reliable")
+func _server_ready() -> void:
+	Global.map_manager.switch_to_map(current_pvp_mode, current_pvp_map)
+
+func connect_to_server(ip: String, port: int) -> void:
+	var peer = ENetMultiplayerPeer.new()
+	peer.create_client(ip, port)
+	Global.multiplayer.multiplayer_peer = peer
+
+func on_peer_connected(id: int) -> void:
+	Global.mp_print("Connected to player %d" % id)
+	
+	if Global.is_sv():
+		_server_ready.rpc_id(id)
+
+func on_peer_disconnected(id: int) -> void:
+	Global.mp_print("Disconnected from player %d" % id)
+	player_diconnected.emit(id)
+
+# only called on client
+func on_connected_to_server() -> void:
+	pass
+
+# only called on client
+func on_connection_failed() -> void:
+	Info.alert("Failed to connect to server.")
+
+# only called on client
+func on_server_disconnected() -> void:
+	Info.alert("Disconnected from the server.")

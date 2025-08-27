@@ -28,7 +28,7 @@ func _ready() -> void:
 
 	play_btn.pressed.connect(
 		func() -> void:
-			var base_path := "res://src/maps/"
+			var base_path := "res://src/maps/speedrun/"
 			var path := base_path + map.name.to_lower().replace(" ", "_") + ".tscn"
 			get_tree().change_scene_to_file(path)
 			Global.game_manager.current_map = map
@@ -54,10 +54,9 @@ func set_personal_best(time: float, position: int, total: int, mode: String) -> 
 	dict.total = total
 	dict.pb = time
 
-	
 	if time == INF: return
 	timer_label.text = "Personal Best: %.3fs\nPosition: %d / %d" % [time, position, total]
-	
+
 	var medal_times: Array = Global.map_manager.get_map_with_name(map_name).medals[mode]
 	for i in range(MEDAL_COUNT):
 		var medal: TextureRect = medals.get_child(i)

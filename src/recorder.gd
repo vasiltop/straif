@@ -61,6 +61,7 @@ func set_frame(value: int) -> void:
 		controller.weapon_handler._try_shoot(true)
 
 	var prev_frame: Frame = currently_playing[current_frame]
+	#var last_frame: Frame = currently_playing[max(value - 1, 0)]
 	
 	var prev_position: Vector3 = prev_frame.position
 	var current_position: Vector3 = frame.position
@@ -73,7 +74,7 @@ func set_frame(value: int) -> void:
 	var speed := diff.length() / dt
 	
 	if is_ghost:
-		_set_animation_blend(1.0 if speed >= 3.0 else 0.0)
+		controller.set_animation_blend(1.0 if speed >= 3.0 else 0.0)
 	else:
 		map.map_ui.set_speed(speed)
 		map.map_ui.set_timer(current_frame * dt)
@@ -82,10 +83,6 @@ func set_frame(value: int) -> void:
 		controller.weapon_handler.set_weapon(Global.game_manager.get_weapon_from_index(frame.weapon_index), is_ghost)
 
 	current_frame = value
-	
-func _set_animation_blend(value: float) -> void:
-	var anim_tree: AnimationTree = controller.get_node("ThirdPerson/AnimationTree")
-	anim_tree.set("parameters/blend/blend_amount", value)
 
 func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 	current_frame = 0

@@ -100,6 +100,7 @@ shape = SubResource("CapsuleShape3D_5f2sf")
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30343, 0)
 billboard = 2
+texture_filter = 0
 text = "Unnamed Player"
 
 [node name="CameraAnchor" type="Marker3D" parent="."]
@@ -116,21 +117,46 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("11_ylhto")
 
+[node name="Crosshair" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="ColorRect" type="ColorRect" parent="UI/Crosshair"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 2.0
+offset_bottom = 8.0
+
+[node name="ColorRect2" type="ColorRect" parent="UI/Crosshair"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -2.0
+offset_right = 8.0
+offset_bottom = 2.0
+
 [node name="ThirdPerson" type="Node3D" parent="."]
 
 [node name="Model" parent="ThirdPerson" instance=ExtResource("6_jiejy")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.11, 0)
 
 [node name="Skeleton3D" parent="ThirdPerson/Model/FullArmature" index="0"]
-bones/0/rotation = Quaternion(0.0736399, 2.51079e-19, -5.9144e-18, 0.997285)
-bones/1/rotation = Quaternion(0.00360519, 0.0560543, 0.997624, -0.0398863)
-bones/2/rotation = Quaternion(-0.168883, 0.00607565, -0.0250193, 0.9853)
-bones/4/rotation = Quaternion(0.00025347, 0.140211, 0.989983, 0.0165903)
+bones/0/rotation = Quaternion(0.0752203, 7.90809e-19, 7.86444e-19, 0.997167)
+bones/1/rotation = Quaternion(0.00332921, 0.0487319, 0.998047, -0.0389452)
+bones/2/rotation = Quaternion(-0.163888, 0.00551468, -0.0251254, 0.986144)
+bones/4/rotation = Quaternion(0.000225632, 0.141872, 0.989746, 0.0165907)
 bones/5/rotation = Quaternion(-0.135345, -7.29387e-05, -0.013192, 0.990711)
 bones/6/rotation = Quaternion(-0.601822, -7.07935e-08, 0.00584188, 0.798609)
-bones/7/rotation = Quaternion(-0.00349922, 0.0555855, 0.997658, 0.0397094)
-bones/8/rotation = Quaternion(-0.161545, -0.00530354, 0.0251119, 0.986531)
-bones/10/rotation = Quaternion(-0.00025347, 0.140211, 0.989983, -0.0165903)
+bones/7/rotation = Quaternion(-0.00362862, 0.056695, 0.997623, 0.0390087)
+bones/8/rotation = Quaternion(-0.159143, -0.0052668, 0.0251737, 0.986921)
+bones/10/rotation = Quaternion(-0.000225632, 0.141872, 0.989746, -0.0165907)
 bones/11/rotation = Quaternion(-0.135345, 7.29387e-05, 0.013192, 0.990711)
 bones/12/rotation = Quaternion(-0.601822, 7.07935e-08, -0.00584188, 0.798609)
 

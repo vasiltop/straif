@@ -74,21 +74,6 @@ func _ready() -> void:
 
 func _on_replay_slider_changed(value: float) -> void:
 	recorder.set_frame(value)
-	'''
-	var weapon_pickups := get_tree().get_nodes_in_group("weapon_pickup")
-	weapon_pickups.sort_custom(func(a, b): return a.frame_picked_up < b.frame_picked_up)
-	
-	for i in range(len(weapon_pickups) - 1, -1, -1):
-		var wp: WeaponPickup = weapon_pickups[i]
-		if wp.frame_picked_up > value:
-			wp.frame_picked_up = -1
-			recorder.controller.weapon_handler.set_weapon(wp.previous_weapon)
-			wp.reset()
-			
-	if dragging_frame_slider:
-		for i in range(value):
-			print(i)
-			recorder.set_frame(value)'''
 
 func is_watching_replay() -> bool:
 	return map_ui.is_replay_visible()
@@ -163,7 +148,6 @@ func _on_player_jump() -> void:
 		_has_jumped = true
 		map_ui.first_jump_speed_label.visible = map_ui.alt_speed_label.visible
 		map_ui.first_jump_speed_label.text = map_ui.speed_label.text
-		print(map_ui.speed_label.text)
 
 func _process(delta: float) -> void:
 	if map_ui.is_replay_visible(): return

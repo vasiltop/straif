@@ -1,7 +1,12 @@
 class_name MapManager
 
+const BASE_MAP_PATH := "res://src/maps/"
 const MAPS_FILE_PATH := "res://maps.json"
 var maps: Array[MapData]
+
+func get_map_image(map_name: String) -> Texture2D:
+	const IMAGES_LOCATION := "res://images/screenshots/"
+	return load(IMAGES_LOCATION + map_name + ".png")
 
 func load_maps() -> Array[MapData]:
 	var file := FileAccess.open(MAPS_FILE_PATH, FileAccess.READ)
@@ -12,9 +17,8 @@ func load_maps() -> Array[MapData]:
 		var map: Dictionary = map_list[i]
 		var map_name: String = map.name
 		var map_tier: int = map.tier
-		
-		const IMAGES_LOCATION := "res://images/screenshots/"
-		var image: Texture2D = load(IMAGES_LOCATION + map_name + ".png")
+
+		var image: Texture2D = get_map_image(map_name)
 		
 		var modes: Array = map.modes
 		var mode_times := {}
@@ -28,6 +32,21 @@ func load_maps() -> Array[MapData]:
 		
 	return maps
 
+func switch_to_map(mode: String, name: String) -> void:
+	var path := BASE_MAP_PATH + mode + "/" + name + ".tscn"
+	Global.get_tree().change_scene_to_file(path)
+
+func switch_to_random_map(mode: String) -> String:
+	var path := BASE_MAP_PATH + mode + "/"
+	var dir_access := DirAccess.open(path)
+
+	var files := dir_access.get_files()
+	var index := randi_range(0, len(files) - 1)
+	var map_scene_name := files[index]
+	Global.get_tree().change_scene_to_file(path + map_scene_name)
+
+	return map_scene_name
+
 func get_map_with_id(mid: int) -> MapData:
 	for map in maps:
 		if map.mid == mid:
@@ -39,5 +58,5 @@ func get_map_with_name(mname: String) -> MapData:
 	for map in maps:
 		if map.name == mname:
 			return map
-			
+
 	return null
