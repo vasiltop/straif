@@ -54,11 +54,11 @@ func _process(delta: float) -> void:
 	if map.running:
 		set_speed(map.player.get_ups())
 	
-	if Input.is_action_just_pressed("ui_admin"):
+	if Input.is_action_just_pressed("ui_admin") and is_replay_visible():
 		visible = not visible
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if not visible else Input.MOUSE_MODE_VISIBLE
 	
-	if Input.is_action_just_pressed("restart"):
+	if Input.is_action_just_pressed("restart") and is_replay_visible():
 		map.recorder.set_frame(0)
 
 func set_timer(value: float) -> void:

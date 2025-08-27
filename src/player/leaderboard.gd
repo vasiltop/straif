@@ -51,7 +51,7 @@ func _ready() -> void:
 	)
 
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("leaderboard"):
+	if Input.is_action_just_pressed("leaderboard") and map_ui.visible:
 		middle.visible = true
 		map_ui.map.player.can_turn = false
 		if Global.game_manager.admin and Input.is_action_pressed("ui_admin"):

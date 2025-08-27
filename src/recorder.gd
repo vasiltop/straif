@@ -76,6 +76,7 @@ func set_frame(value: int) -> void:
 		_set_animation_blend(1.0 if speed >= 3.0 else 0.0)
 	else:
 		map.map_ui.set_speed(speed)
+		map.map_ui.set_timer(current_frame * dt)
 		
 	if prev_frame.weapon_index != frame.weapon_index:
 		controller.weapon_handler.set_weapon(Global.game_manager.get_weapon_from_index(frame.weapon_index), is_ghost)
