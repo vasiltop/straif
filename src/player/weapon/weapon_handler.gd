@@ -220,7 +220,7 @@ func _try_shoot(ghost_bullet := false) -> void:
 			var collider = result.collider
 
 			var inst: Decal = BulletHoleScene.instantiate()
-			collider.add_child(inst)
+			collider.get_parent().add_child(inst)
 			inst.global_position = hit_pos
 
 			# no clue what this does lol took it from reddit

@@ -12,7 +12,6 @@ signal ghost_enabled(steam_id: int)
 @onready var admin_panel: PanelContainer = $"../Admin"
 @onready var admin_actions_container: VBoxContainer = $"../Admin/M/V/V"
 @onready var replay_last_run: Button = $M/V/ReplayLastRun
-@onready var set_start_position: Button = $M/V/SetStartPosition
 
 @onready var medal_time_labels: Array[Label] = [
 	$M/V/MedalInfo/BronzeTime,
@@ -49,13 +48,6 @@ func _ready() -> void:
 				return
 			var replay := map_ui.map.recorder.to_hex()
 			Global.game_manager.replay_requested.emit(replay)
-	)
-	
-	set_start_position.pressed.connect(
-		func() -> void:
-			if not map_ui.map.completed and not map_ui.map.running:
-				map_ui.map.start_pos = map_ui.global_position
-				map_ui.map.start_rotation = map_ui.camera._input_rotation
 	)
 
 func _process(_delta: float) -> void:

@@ -29,7 +29,8 @@ func _ready() -> void:
 	
 	add_child(inst)
 	inst.visible = false
-	
+	var mesh := inst.get_node("ThirdPerson/Model/FullArmature/Skeleton3D/character") as MeshInstance3D
+	mesh.set_surface_override_material(0, load("res://src/player/player_transparent.tres"))
 	controller = inst
 
 func add_frame(frame: Frame) -> void:
@@ -52,6 +53,9 @@ func set_frame(value: int) -> void:
 	controller.global_position = frame.position
 	controller.camera._input_rotation.y = frame.rot.y
 	controller.camera._input_rotation.x = frame.rot.x
+	
+	if is_ghost and controller.weapon_handler.weapon_scene:
+		controller.weapon_handler.weapon_scene.get_parent().rotation.x = frame.rot.x
 	
 	if frame.shoot_input:
 		controller.weapon_handler._try_shoot(true)

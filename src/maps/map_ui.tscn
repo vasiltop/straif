@@ -323,15 +323,9 @@ layout_mode = 2
 focus_mode = 0
 text = ">"
 
-[node name="SetStartPosition" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V"]
-layout_mode = 2
-size_flags_vertical = 10
-focus_mode = 0
-text = "Set Start Position"
-
 [node name="ReplayLastRun" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V"]
 layout_mode = 2
-size_flags_vertical = 8
+size_flags_vertical = 10
 focus_mode = 0
 text = "Replay Last Run"
 
