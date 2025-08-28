@@ -1,7 +1,7 @@
 class_name Player extends CharacterBody3D
 
 signal jumped
-signal dead(id: int)
+signal dead(sender: int, id: int)
 
 @onready var camera: PlayerCamera = $Eye/Camera
 @onready var gun_camera: Camera3D = $Eye/Camera/GunVPContainer/GunVP/GunCam
@@ -34,15 +34,20 @@ var can_turn := true
 var health := MAX_HEALTH
 var is_dead := false
 
+func player_name() -> String:
+	return get_node("Name").text
+
 @rpc("call_remote", "any_peer", "reliable")
 func on_damage(value: float) -> void:
 	if not Global.is_sv(): return
 	if is_dead: return
 	
+	var sender := multiplayer.get_remote_sender_id()
+	
 	health -= value
 	
 	if health <= 0:
-		dead.emit(pid)
+		dead.emit(sender, pid)
 
 @rpc("call_local", "authority", "reliable")
 func ragdoll() -> void:
