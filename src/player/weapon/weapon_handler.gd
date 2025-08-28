@@ -34,7 +34,9 @@ var time_since_last_shot: float = 0
 func _ready() -> void:
 	if not player.is_me(): return
 
+@rpc("any_peer", "call_local", "reliable")
 func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
+	Global.mp_print("Gave weapon %s to player %d with tp := %s" % [weapon.name, player.pid, is_third_person])
 	current_weapon = weapon
 
 	if weapon_scene:
@@ -102,7 +104,7 @@ func _handle_inputs() -> void:
 	var attack_input := Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
 	if attack_input:
 		for i in range(current_weapon.bullet_count):
-			_try_shoot()
+			_try_shoot.rpc()
 	
 	if current_weapon and Input.is_action_just_pressed("inspect"):
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
@@ -156,12 +158,12 @@ func _sway(delta: float) -> void:
 	rotation = rotation.lerp(sway_rot, SWAY_LERP * delta)
 	mouse_mov = 0
 
+@rpc("call_local", "any_peer", "unreliable")
 func _try_shoot(ghost_bullet := false) -> void:
 	#if not player.map: return
 	#if not player.map.running and not player.map.completed: return
 	if current_weapon == null: return
 	if time_since_last_shot < current_weapon.weapon_shot_delay: return
-	
 	
 	time_since_last_shot = 0
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")

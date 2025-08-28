@@ -79,9 +79,9 @@ func _update_state(pos: Vector3, rot_y: float, rot_x: float, speed: float) -> vo
 	global_position = pos
 	camera._input_rotation.y = rot_y
 	camera._input_rotation.x = rot_x
-	
+	weapon_handler.weapon_scene.get_parent().rotation.x = rot_x
 	set_animation_blend(1.0 if speed >= 3.0 else 0.0)
-		
+
 func set_animation_blend(value: float) -> void:
 	var anim_tree: AnimationTree = get_node("ThirdPerson/AnimationTree")
 	anim_tree.set("parameters/blend/blend_amount", value)

@@ -148,15 +148,15 @@ offset_bottom = 2.0
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.11, 0)
 
 [node name="Skeleton3D" parent="ThirdPerson/Model/FullArmature" index="0"]
-bones/0/rotation = Quaternion(0.0752203, 7.90809e-19, 7.86444e-19, 0.997167)
-bones/1/rotation = Quaternion(0.00332921, 0.0487319, 0.998047, -0.0389452)
-bones/2/rotation = Quaternion(-0.163888, 0.00551468, -0.0251254, 0.986144)
-bones/4/rotation = Quaternion(0.000225632, 0.141872, 0.989746, 0.0165907)
+bones/0/rotation = Quaternion(0.0730407, 3.18728e-19, -5.06606e-18, 0.997329)
+bones/1/rotation = Quaternion(0.00358421, 0.0556533, 0.997625, -0.0404189)
+bones/2/rotation = Quaternion(-0.144263, 0.0033296, -0.0276279, 0.989148)
+bones/4/rotation = Quaternion(0.000272803, 0.139057, 0.990145, 0.01659)
 bones/5/rotation = Quaternion(-0.135345, -7.29387e-05, -0.013192, 0.990711)
 bones/6/rotation = Quaternion(-0.601822, -7.07935e-08, 0.00584188, 0.798609)
-bones/7/rotation = Quaternion(-0.00362862, 0.056695, 0.997623, 0.0390087)
-bones/8/rotation = Quaternion(-0.159143, -0.0052668, 0.0251737, 0.986921)
-bones/10/rotation = Quaternion(-0.000225632, 0.141872, 0.989746, -0.0165907)
+bones/7/rotation = Quaternion(-0.00348178, 0.055436, 0.997663, 0.0398038)
+bones/8/rotation = Quaternion(-0.151491, -0.00501235, 0.0258343, 0.988108)
+bones/10/rotation = Quaternion(-0.000272803, 0.139057, 0.990145, -0.01659)
 bones/11/rotation = Quaternion(-0.135345, 7.29387e-05, 0.013192, 0.990711)
 bones/12/rotation = Quaternion(-0.601822, 7.07935e-08, -0.00584188, 0.798609)
 
