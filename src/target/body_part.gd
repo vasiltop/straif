@@ -1,10 +1,9 @@
 class_name BodyPart extends Node3D
 
 @export var owned_by: Node3D
+@export var multiplier: float = 1.0
 
 const DamageSound := preload("res://src/sounds/hit.mp3")
-
-var multiplier: float = 1.0
 
 func apply_damage(audio_player: AudioStreamPlayer, amount: float) -> void:
 	if not owned_by: return

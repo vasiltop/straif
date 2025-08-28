@@ -94,7 +94,6 @@ func _on_sword_hit(body: Node3D) -> void:
 
 func _process(delta: float) -> void:
 	time_since_last_shot += delta
-	#if weapon_scene: print(weapon_scene.position)
 	_handle_inputs()
 
 func _handle_inputs() -> void:
@@ -240,7 +239,6 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 	if result != {}:
 		hit_pos = result.position
 		var collider = result.collider
-		print(collider)
 		if not ghost_bullet and collider is BodyPart:
 			var body_part: BodyPart = collider
 			body_part.apply_damage(hit_sound, current_weapon.damage)

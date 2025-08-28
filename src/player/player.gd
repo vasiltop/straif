@@ -37,6 +37,7 @@ var is_dead := false
 @rpc("call_remote", "any_peer", "reliable")
 func on_damage(value: float) -> void:
 	if not Global.is_sv(): return
+	if is_dead: return
 	
 	health -= value
 	

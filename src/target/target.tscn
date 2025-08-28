@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://voqeaw37jglb"]
+[gd_scene load_steps=6 format=3 uid="uid://voqeaw37jglb"]
 
 [ext_resource type="Script" uid="uid://ddc5clobxxwp2" path="res://src/target/target.gd" id="1_i0tq7"]
-[ext_resource type="Script" uid="uid://daiqu1ltgie0e" path="res://src/target/head_body_part.gd" id="2_0tpb1"]
 [ext_resource type="Script" uid="uid://cuhfu4wnvmo3h" path="res://src/target/body_part.gd" id="2_5hcwb"]
 [ext_resource type="PackedScene" uid="uid://bv73fv6rqmser" path="res://src/target/target.glb" id="4_s6ky1"]
 
@@ -17,8 +16,9 @@ script = ExtResource("1_i0tq7")
 
 [node name="Head" type="StaticBody3D" parent="." node_paths=PackedStringArray("owned_by")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09486, 0)
-script = ExtResource("2_0tpb1")
+script = ExtResource("2_5hcwb")
 owned_by = NodePath("..")
+multiplier = 3.0
 metadata/_custom_type_script = "uid://daiqu1ltgie0e"
 
 [node name="HeadCollider" type="CollisionShape3D" parent="Head"]

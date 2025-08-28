@@ -1,6 +1,6 @@
 class_name Deathmatch extends Node
 
-@onready var spawn: Marker3D = $Spawn
+@onready var spawn: Marker3D = $Spawns/Spawn
 @onready var players: Node = $Players
 
 const PlayerScene := preload("res://src/player/player.tscn")
