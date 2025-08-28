@@ -1,6 +1,7 @@
 class_name Player extends CharacterBody3D
 
 signal jumped
+signal dead(id: int)
 
 @onready var camera: PlayerCamera = $Eye/Camera
 @onready var gun_camera: Camera3D = $Eye/Camera/GunVPContainer/GunVP/GunCam
@@ -10,6 +11,9 @@ signal jumped
 @onready var camera_anchor: Marker3D = $CameraAnchor
 @onready var sniper_overlay: TextureRect = $UI/SniperOverlay
 @onready var third_person: Node3D = $ThirdPerson
+
+@export var bone_simulator: PhysicalBoneSimulator3D
+@export var ragdoll_camera: Camera3D
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
@@ -26,6 +30,30 @@ var pid: int
 var _run_audio_player := AudioStreamPlayer.new()
 var can_move := true
 var can_turn := true
+var health := 100.0
+var is_dead := false
+
+@rpc("call_remote", "any_peer", "reliable")
+func on_damage(value: float) -> void:
+	if not Global.is_sv(): return
+	
+	health -= value
+	
+	if health <= 0:
+		dead.emit(pid)
+
+@rpc("call_local", "authority", "reliable")
+func ragdoll() -> void:
+	bone_simulator.physical_bones_start_simulation()
+	is_dead = true
+	can_move = false
+	
+	if is_me():
+		ragdoll_camera.current = true
+		weapon_handler.visible = false
+
+func on_death() -> void:
+	pass
 
 func is_me() -> bool:
 	if not Global.multiplayer.multiplayer_peer:
@@ -47,6 +75,9 @@ func setup() -> void:
 	third_person.visible = false
 	name_label.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	for child: PhysicalBone3D in bone_simulator.get_children():
+		child.collision_layer = 0
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size

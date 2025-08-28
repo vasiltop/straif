@@ -25,10 +25,12 @@ func _init(player_cam: Camera3D, map: Map) -> void:
 	self.map = map
 
 func _ready() -> void:
+	print(PlayerScene)
 	var inst := PlayerScene.instantiate()
-	
+	print(inst)
 	add_child(inst)
 	inst.visible = false
+	
 	var mesh := inst.get_node("ThirdPerson/Model/FullArmature/Skeleton3D/character") as MeshInstance3D
 	mesh.set_surface_override_material(0, load("res://src/player/player_transparent.tres"))
 	controller = inst

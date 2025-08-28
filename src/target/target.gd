@@ -14,3 +14,9 @@ func _process(_delta: float) -> void:
 	target_position.y = current_position.y
 
 	look_at(target_position, Vector3.UP)
+
+func on_death() -> void:
+	queue_free()
+
+func on_damage() -> void:
+	pass

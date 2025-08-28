@@ -41,3 +41,17 @@ func _create_player(id: int, spawn_point: Vector3, steam_name: String) -> void:
 	
 	if id == Global.id():
 		inst.setup()
+		
+	if Global.is_sv():
+		inst.dead.connect(_on_player_death)
+
+func get_player(id: int) -> Player:
+	for player: Player in players.get_children():
+		if player.pid == id:
+			return player
+			
+	return null
+
+func _on_player_death(id: int) -> void:
+	Global.mp_print("Player %d has been killed." % id)
+	get_player(id).ragdoll.rpc()

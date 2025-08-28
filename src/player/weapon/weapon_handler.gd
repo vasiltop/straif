@@ -233,13 +233,14 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 
 	var space_state := get_world_3d().direct_space_state
 	var query := PhysicsRayQueryParameters3D.create(origin, origin + direction*distance)
+	query.collision_mask = 1 << 0 | 1 << 2
 	var result := space_state.intersect_ray(query)
 	var hit_pos := origin + direction * distance
 	
 	if result != {}:
 		hit_pos = result.position
 		var collider = result.collider
-
+		print(collider)
 		if not ghost_bullet and collider is BodyPart:
 			var body_part: BodyPart = collider
 			body_part.apply_damage(hit_sound, current_weapon.damage)

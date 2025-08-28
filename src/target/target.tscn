@@ -15,24 +15,26 @@ size = Vector3(0.145633, 2.04079, 0.0585936)
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
 script = ExtResource("1_i0tq7")
 
-[node name="Head" type="StaticBody3D" parent="."]
+[node name="Head" type="StaticBody3D" parent="." node_paths=PackedStringArray("owned_by")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09486, 0)
 script = ExtResource("2_0tpb1")
+owned_by = NodePath("..")
 metadata/_custom_type_script = "uid://daiqu1ltgie0e"
 
 [node name="HeadCollider" type="CollisionShape3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000130487, 1.18437, -0.00242611)
 shape = SubResource("SphereShape3D_s6ky1")
 
-[node name="Torso" type="StaticBody3D" parent="."]
+[node name="Torso" type="StaticBody3D" parent="." node_paths=PackedStringArray("owned_by")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.994858, 0)
 script = ExtResource("2_5hcwb")
+owned_by = NodePath("..")
 
 [node name="BodyCollider" type="CollisionShape3D" parent="Torso"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.22496e-05, 0.0738906, -0.00195318)
 shape = SubResource("BoxShape3D_s6ky1")
 
-[node name="target2" parent="." instance=ExtResource("4_s6ky1")]
+[node name="Mesh" parent="." instance=ExtResource("4_s6ky1")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 1.72028, 0)
 
-[editable path="target2"]
+[editable path="Mesh"]

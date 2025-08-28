@@ -1,6 +1,6 @@
-class_name BodyPart extends StaticBody3D
+class_name BodyPart extends Node3D
 
-@onready var owned_by: Target = get_parent()
+@export var owned_by: Node3D
 
 const DamageSound := preload("res://src/sounds/hit.mp3")
 
@@ -13,6 +13,9 @@ func apply_damage(audio_player: AudioStreamPlayer, amount: float) -> void:
 
 	audio_player.stream = DamageSound
 	audio_player.play()
-
+	
+	if Global.mp():
+		owned_by.on_damage.rpc_id(1, amount * multiplier)
+	
 	if owned_by.health <= 0:
-		owned_by.queue_free()
+		owned_by.on_death()
