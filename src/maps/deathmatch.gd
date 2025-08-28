@@ -14,7 +14,7 @@ func _ready() -> void:
 
 func _on_player_disconnected(id: int) -> void:
 	for player in players.get_children():
-		if player.pid == id:
+		if player.pid == id: # TODO: Make the bullet holes not hit the player
 			player.queue_free()
 
 @rpc("call_remote", "any_peer", "reliable")

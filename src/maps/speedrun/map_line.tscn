@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://c5x3tbe35abud"]
 
-[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_l5tfi"]
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/speedrun.gd" id="1_l5tfi"]
 [ext_resource type="PackedScene" uid="uid://cp51cxubs1olt" path="res://src/maps/tiles/line.glb" id="2_ucha3"]
 [ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="3_oc3yi"]
 [ext_resource type="Texture2D" uid="uid://mg1shmdugh7d" path="res://src/textures/greybox_texture/greybox_grey_grid.png" id="4_1rren"]

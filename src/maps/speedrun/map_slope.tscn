@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://3bmsmr64u6t2"]
 
-[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_0adi2"]
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/speedrun.gd" id="1_0adi2"]
 [ext_resource type="PackedScene" uid="uid://cg8febhs8agj" path="res://src/maps/tiles/slope.glb" id="2_qhpkl"]
 [ext_resource type="Material" uid="uid://dxgfaq8mgbtph" path="res://src/maps/presets/test.tres" id="3_naqg8"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="6_ecrpg"]

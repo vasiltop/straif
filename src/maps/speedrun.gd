@@ -56,18 +56,14 @@ func _ready() -> void:
 
 	end_zone.body_entered.connect(
 		func(body: Node3D) -> void:
-			if body is Player:
-				var p := body as Player
-				if p.is_me():
-					player_in_end_zone = true
+			if body is Player and body.is_me():
+				player_in_end_zone = true
 	)
 
 	end_zone.body_exited.connect(
 		func(body: Node3D) -> void:
-			if body is Player:
-				var p := body as Player
-				if p.is_me():
-					player_in_end_zone = false
+			if body is Player and body.is_me():
+				player_in_end_zone = false
 	)
 	
 	restart(player)

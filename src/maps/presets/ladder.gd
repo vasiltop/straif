@@ -8,17 +8,13 @@ func _ready() -> void:
 	body_entered.connect(
 		func(body: Node3D) -> void:
 			if body is Player:
-				var p := body as Player
-				if p.is_me():
-					touching_player = true
+				touching_player = true
 	)
 	
 	body_exited.connect(
 		func(body: Node3D) -> void:
 			if body is Player:
-				var p := body as Player
-				if p.is_me():
-					touching_player = false
+				touching_player = false
 	)
 	
 func _physics_process(delta: float) -> void:

@@ -151,7 +151,7 @@ func publish_run(mode: String, recording: PackedByteArray, map_name: String, tim
 		# 356148 = 370s
 		Info.alert("Could not submit run, you went past the run size limit.")
 		return
-	
+
 	var response := await client.http_post(get_leaderboard_base(mode) + "/maps/%s/runs" % map_name).json({
 			"recording": Marshalls.raw_to_base64(recording),
 			"time_ms": time_ms,

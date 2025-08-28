@@ -10,6 +10,7 @@ class_name MainMenu extends Control
 const MapButtonScene = preload("res://src/menus/main/map_button/map_button.tscn")
 
 func _ready() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_instantiate_maps()
 	Steam.avatar_loaded.connect(_on_loaded_avatar)
 	quit_btn.pressed.connect(get_tree().quit)

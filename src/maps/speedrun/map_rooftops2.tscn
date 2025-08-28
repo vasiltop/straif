@@ -1,6 +1,6 @@
 [gd_scene load_steps=43 format=3 uid="uid://cjskdq2ultagu"]
 
-[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_57oou"]
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/speedrun.gd" id="1_57oou"]
 [ext_resource type="PackedScene" uid="uid://cpgalek8pubhp" path="res://src/maps/tiles/building.tscn" id="2_a3jkl"]
 [ext_resource type="PackedScene" uid="uid://t8r6jl03nerq" path="res://src/maps/tiles/vent.tscn" id="3_g53u3"]
 [ext_resource type="Resource" uid="uid://b1nvo3kd1wr3p" path="res://src/player/weapon/resources/sword.tres" id="4_57oou"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://d01kjuj2o1eyp"]
 
-[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_rij1j"]
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/speedrun.gd" id="1_rij1j"]
 [ext_resource type="PackedScene" uid="uid://kodv0tyhehov" path="res://src/maps/tiles/flow.glb" id="2_lwbqu"]
 [ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="3_avumo"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="4_avumo"]

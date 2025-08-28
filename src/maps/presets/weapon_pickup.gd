@@ -29,14 +29,14 @@ func _ready() -> void:
 	
 	body_entered.connect(
 		func(body: Node3D) -> void:
-			if body is Player:
+			if body is Player and body.is_me():
 				currently_touching = body
 				is_touching_player = true
 	)
 	
 	body_exited.connect(
 		func(body: Node3D) -> void:
-			if body is Player:
+			if body is Player and body.is_me():
 				is_touching_player = false
 	)
 
@@ -52,7 +52,7 @@ func _process(delta: float) -> void:
 	weapon_scene.rotate_y(deg_to_rad(45 * delta))
 	weapon_scene.global_position.y = weapon_spawn.global_position.y + sin(float(Time.get_ticks_msec()) / 1000) / 7
 	
-	if is_touching_player and currently_touching.is_me():
+	if is_touching_player:
 		frame_picked_up = map.recorder.current_frame
 		previous_weapon = currently_touching.weapon_handler.current_weapon
 		currently_touching.weapon_handler.set_weapon(weapon)

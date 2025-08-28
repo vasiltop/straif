@@ -1,6 +1,6 @@
 [gd_scene load_steps=24 format=3 uid="uid://bxx4gfqs6dk2l"]
 
-[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/map.gd" id="1_7mg6k"]
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/speedrun.gd" id="1_7mg6k"]
 [ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="2_c6feq"]
 [ext_resource type="Texture2D" uid="uid://d1lrx5nsqvy0b" path="res://src/textures/apartment.jpg" id="3_c6feq"]
 [ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="3_x1xk8"]

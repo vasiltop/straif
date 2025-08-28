@@ -31,12 +31,9 @@ var current_weapon: WeaponData
 var mouse_mov := 0.0
 var time_since_last_shot: float = 0
 
-func _ready() -> void:
-	if not player.is_me(): return
-
 @rpc("any_peer", "call_local", "reliable")
 func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
-	Global.mp_print("Gave weapon %s to player %d with tp := %s" % [weapon.name, player.pid, is_third_person])
+	#Global.mp_print("Gave weapon %s to player %d with tp := %s" % [weapon.name, player.pid, is_third_person])
 	current_weapon = weapon
 
 	if weapon_scene:
@@ -56,6 +53,10 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 			mesh.set_layer_mask_value(1, true)
 			mesh.set_layer_mask_value(2, false)
 			weapon_scene.scale *= 0.4
+			
+			var muzzle_flash := weapon_scene.get_node("MuzzleFlash") as GPUParticles3D
+			muzzle_flash.set_layer_mask_value(1, true)
+			muzzle_flash.set_layer_mask_value(2, false)
 			
 		gun_parent.add_child(weapon_scene)
 
@@ -103,8 +104,7 @@ func _handle_inputs() -> void:
 	
 	var attack_input := Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
 	if attack_input:
-		for i in range(current_weapon.bullet_count):
-			_try_shoot.rpc()
+		_try_shoot()
 	
 	if current_weapon and Input.is_action_just_pressed("inspect"):
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
@@ -159,31 +159,51 @@ func _sway(delta: float) -> void:
 	mouse_mov = 0
 
 @rpc("call_local", "any_peer", "unreliable")
-func _try_shoot(ghost_bullet := false) -> void:
-	#if not player.map: return
-	#if not player.map.running and not player.map.completed: return
-	if current_weapon == null: return
-	if time_since_last_shot < current_weapon.weapon_shot_delay: return
-	
-	time_since_last_shot = 0
+func _attack_visuals() -> void:
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 	if anim.current_animation == "inspect" or not anim.is_playing():
 		anim.play("shoot")
+		
+	audio_player.stream = current_weapon.shoot_sound
+	audio_player.pitch_scale = randf_range(0.95, 1.05)
+	audio_player.play()
 
-	var tracer_pos := Vector3.ZERO
-	if not current_weapon.is_melee:
-		var muzzle_flash: GPUParticles3D = weapon_scene.get_node("MuzzleFlash")
-		muzzle_flash.emitting = true
-		tracer_pos = muzzle_flash.global_position
+func _try_shoot(ghost_bullet := false) -> void:
+	if current_weapon == null: return
+	if time_since_last_shot < current_weapon.weapon_shot_delay: return
+	time_since_last_shot = 0
+	
+	if Global.mp():
+		_attack_visuals.rpc()
+	else:
+		_attack_visuals()
+	
+	if current_weapon.is_melee: return
+	for i in range(current_weapon.bullet_count):
+		_shoot_bullet(ghost_bullet)
 
-	if current_weapon.shoot_sound:
-		audio_player.stream = current_weapon.shoot_sound
-		audio_player.pitch_scale = randf_range(0.95, 1.05)
-		audio_player.play()
+@rpc("call_local", "any_peer", "unreliable")
+func _gun_visuals(hit_pos: Vector3) -> void:
+	var muzzle_flash: GPUParticles3D = weapon_scene.get_node("MuzzleFlash")
+	muzzle_flash.emitting = true
 
-	if current_weapon.is_melee: 
-		return
+	var tracer_pos: Vector3 = weapon_scene.get_node("MuzzleFlash").global_position
+	BulletTracer.spawn(player, tracer_pos, hit_pos)
 
+@rpc("call_local", "any_peer", "unreliable")
+func _spawn_bullet_hole(pos: Vector3, normal: Vector3) -> void:
+	var inst: Decal = BulletHoleScene.instantiate()
+	player.add_child(inst)
+	inst.global_position = pos
+	
+	# no clue what this does lol took it from reddit
+	if normal != Vector3.UP:
+		inst.look_at(pos + normal, Vector3.UP)
+		inst.transform = inst.transform.rotated_local(Vector3.RIGHT, PI/2.0)
+
+	inst.rotate(normal, randf_range(0, 2*PI))
+
+func _shoot_bullet(ghost_bullet := false) -> void:
 	var rad := deg_to_rad(current_weapon.recoil / 2)
 	player.camera._mouse_input.y += deg_to_rad(current_weapon.recoil)
 	player.camera._mouse_input.x = randf_range(-rad, rad)
@@ -210,8 +230,7 @@ func _try_shoot(ghost_bullet := false) -> void:
 		spread_basis = spread_basis.rotated(Vector3.BACK, rand_rot_z)
 
 		direction = (spread_basis * direction).normalized()
-	
-	
+
 	var space_state := get_world_3d().direct_space_state
 	var query := PhysicsRayQueryParameters3D.create(origin, origin + direction*distance)
 	var result := space_state.intersect_ray(query)
@@ -221,25 +240,20 @@ func _try_shoot(ghost_bullet := false) -> void:
 		hit_pos = result.position
 		var collider = result.collider
 
-		var inst: Decal = BulletHoleScene.instantiate()
-		collider.get_parent().add_child(inst)
-		inst.global_position = hit_pos
-
-		# no clue what this does lol took it from reddit
-		var normal: Vector3 = result.normal
-		if normal != Vector3.UP:
-			inst.look_at(hit_pos + normal, Vector3.UP)
-			inst.transform = inst.transform.rotated_local(Vector3.RIGHT, PI/2.0)
-
-		inst.rotate(normal, randf_range(0, 2*PI))
-
 		if not ghost_bullet and collider is BodyPart:
 			var body_part: BodyPart = collider
 			body_part.apply_damage(hit_sound, current_weapon.damage)
-	
-	if not current_weapon.is_melee:
-		BulletTracer.spawn(self, tracer_pos, hit_pos)
 
+		if Global.mp():
+			_spawn_bullet_hole.rpc(hit_pos, result.normal)
+		else:
+			_spawn_bullet_hole(hit_pos, result.normal)
+	
+	if Global.mp():
+		_gun_visuals.rpc(hit_pos)
+	else:
+		_gun_visuals(hit_pos)
+		
 func _input(event: InputEvent) -> void:
 	if not player.is_me(): return
 

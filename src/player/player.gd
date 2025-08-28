@@ -28,6 +28,9 @@ var can_move := true
 var can_turn := true
 
 func is_me() -> bool:
+	if not Global.multiplayer.multiplayer_peer:
+		return pid == 1
+	
 	return multiplayer.get_unique_id() == pid
 
 func set_name_label(value: String) -> void:
@@ -37,7 +40,7 @@ func set_name_label(value: String) -> void:
 func setup() -> void:
 	camera.make_current()
 	gun_camera.make_current()
-	pid = multiplayer.get_unique_id()
+	pid = Global.id()
 	weapon_handler.visible = true
 	weapon_handler.add_child(weapon_handler.hit_sound)
 	add_child(_run_audio_player)
@@ -71,8 +74,9 @@ func _physics_process(delta: float) -> void:
 	
 	var jump_input := Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")
 	_movement_process(delta, wish_dir(), jump_input)
-
-	_update_state.rpc(global_position, global_rotation.y, camera.global_rotation.x, get_ups())
+	
+	if Global.mp():
+		_update_state.rpc(global_position, global_rotation.y, camera.global_rotation.x, get_ups())
 
 @rpc("any_peer", "call_remote", "unreliable")
 func _update_state(pos: Vector3, rot_y: float, rot_x: float, speed: float) -> void:
@@ -130,8 +134,7 @@ func _apply_gravity(velocity_y: float, delta: float) -> float:
 	return velocity_y - gravity * delta
 
 func grounded() -> bool:
-	return is_on_floor()
-	#return test_move(global_transform, Vector3(0, -0.01, 0))
+	return test_move(global_transform, Vector3(0, -0.01, 0))
 
 func _apply_friction(vel_planar: Vector2, delta: float, wish_dir: Vector2) -> Vector2:
 	if not grounded(): return vel_planar
