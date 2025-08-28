@@ -55,3 +55,6 @@ func get_player(id: int) -> Player:
 func _on_player_death(id: int) -> void:
 	Global.mp_print("Player %d has been killed." % id)
 	get_player(id).ragdoll.rpc()
+	await get_tree().create_timer(1.5).timeout
+	get_player(id).respawn.rpc()
+	get_player(id)._update_state.rpc(spawn.global_position, 0, 0, 0)

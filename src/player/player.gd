@@ -23,6 +23,7 @@ const MAX_A_ACCEL: float = 200
 const MAX_SLOPE: float = 1
 const JUMP_FORCE: float = 4
 const RUN_SOUND_DELAY := 0.4
+const MAX_HEALTH := 100.0
 
 var _time_since_last_run_sound := RUN_SOUND_DELAY
 var gravity: float = 12
@@ -30,7 +31,7 @@ var pid: int
 var _run_audio_player := AudioStreamPlayer.new()
 var can_move := true
 var can_turn := true
-var health := 100.0
+var health := MAX_HEALTH
 var is_dead := false
 
 @rpc("call_remote", "any_peer", "reliable")
@@ -47,10 +48,23 @@ func ragdoll() -> void:
 	bone_simulator.physical_bones_start_simulation()
 	is_dead = true
 	can_move = false
+	weapon_handler.weapon_scene.visible = false
 	
 	if is_me():
 		ragdoll_camera.current = true
 		weapon_handler.visible = false
+
+@rpc("call_local", "authority", "reliable")
+func respawn() -> void:
+	bone_simulator.physical_bones_stop_simulation()
+	is_dead = false
+	can_move = true
+	weapon_handler.weapon_scene.visible = true
+	health = MAX_HEALTH
+	
+	if is_me():
+		camera.current = true
+		weapon_handler.visible = true
 
 func on_death() -> void:
 	pass
