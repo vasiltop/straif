@@ -34,6 +34,7 @@ func _send_info(steam_name: String) -> void:
 	for player: Player in players.get_children():
 		# we tell the new player where the current players are
 		var weapon_index := Global.game_manager.get_weapon_index(player.weapon_handler.current_weapon)
+		Global.mp_print("Sending weapon index of %d (%s) from player %d to %d" % [weapon_index, player.weapon_handler.current_weapon.name, player.pid, sender])
 		_create_player.rpc_id(sender, player.pid, player.global_position, steam_name, weapon_index)
 		
 	_create_player.rpc(sender, get_rand_spawn(), steam_name, 2)
@@ -47,11 +48,12 @@ func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_in
 	inst.pid = id
 	inst.get_node("Name").text = steam_name
 	
-	var weapon := Global.game_manager.get_weapon_from_index(weapon_index)
-	inst.weapon_handler.set_weapon(weapon, id != Global.id())
-	
 	if id == Global.id():
 		inst.setup()
+		inst.weapon_handler.shot.connect(dm_ui.on_shot)
+		
+	var weapon := Global.game_manager.get_weapon_from_index(weapon_index)
+	inst.weapon_handler.set_weapon(weapon, id != Global.id())
 		
 	if Global.is_sv():
 		inst.dead.connect(_on_player_death)

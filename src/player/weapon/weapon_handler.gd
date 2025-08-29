@@ -1,5 +1,7 @@
 class_name WeaponHandler extends Node3D
 
+signal shot(mag_ammo: int, reserve_ammo: int)
+
 @onready var player: Player = $"../../.."
 @onready var weapon_scene: Node3D = null
 @onready var r_hand_ik: SkeletonIK3D = $Arms/Armature/Skeleton3D/RHandIk
@@ -31,6 +33,9 @@ var hit_sound: AudioStreamPlayer = AudioStreamPlayer.new()
 var current_weapon: WeaponData
 var mouse_mov := 0.0
 var time_since_last_shot: float = 0
+var mag_ammo := 0
+var reserve_ammo := 0
+var max_mag_ammo := 0
 
 @rpc("any_peer", "call_local", "reliable")
 func set_weapon_to_index(index: int, is_tp := false) -> void:
@@ -39,7 +44,7 @@ func set_weapon_to_index(index: int, is_tp := false) -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
-	#Global.mp_print("Gave weapon %s to player %d with tp := %s" % [weapon.name, player.pid, is_third_person])
+	Global.mp_print("Gave weapon %s to player %d with tp := %s" % [weapon.name, player.pid, is_third_person])
 	current_weapon = weapon
 
 	if weapon_scene:
@@ -48,6 +53,10 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 	if current_weapon != null:
 		time_since_last_shot = current_weapon.weapon_shot_delay
 		weapon_scene = weapon.scene.instantiate()
+		mag_ammo = current_weapon.mag_ammo
+		max_mag_ammo = mag_ammo
+		reserve_ammo = current_weapon.reserve_ammo
+		shot.emit(mag_ammo, reserve_ammo)
 		
 		# move it out of the way so it doesnt flicker
 		weapon_scene.global_position = Vector3.ZERO
@@ -112,7 +121,7 @@ func _handle_inputs() -> void:
 	if attack_input:
 		_try_shoot()
 	
-	if current_weapon and Input.is_action_just_pressed("inspect"):
+	if Input.is_action_just_pressed("inspect"):
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 
 		if anim.is_playing() and anim.current_animation == "shoot" and current_weapon.is_melee:
@@ -121,9 +130,19 @@ func _handle_inputs() -> void:
 
 		anim.play("inspect")
 	
-	if current_weapon and Input.is_action_just_pressed("scope") and current_weapon.is_sniper:
+	if Input.is_action_just_pressed("scope") and current_weapon.is_sniper:
 		toggle_sniper_scope()
+		
+	if Input.is_action_just_pressed("restart") and not current_weapon.is_melee and not mag_ammo == max_mag_ammo:
+		reload_anim.rpc()
+		mag_ammo = max_mag_ammo
+		shot.emit(mag_ammo, reserve_ammo)
 
+@rpc("any_peer", "call_local", "unreliable")
+func reload_anim() -> void:
+	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
+	anim.play("equip")
+	
 func toggle_sniper_scope() -> void:
 	player.sniper_overlay.visible = not player.sniper_overlay.visible
 	visible = not visible
@@ -134,9 +153,6 @@ func toggle_sniper_scope() -> void:
 			player.camera.fov -= FOV_DIFF
 		false:
 			player.camera.fov += FOV_DIFF
-	
-	#if visible:
-		#player.alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
 
 func _physics_process(delta: float) -> void:
 	if not player.is_me(): return
@@ -176,7 +192,11 @@ func _attack_visuals() -> void:
 
 func _try_shoot(ghost_bullet := false) -> void:
 	if current_weapon == null: return
+	if mag_ammo <= 0: return
 	if time_since_last_shot < current_weapon.weapon_shot_delay: return
+	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
+	if anim.current_animation == "equip": return
+	
 	time_since_last_shot = 0
 	
 	if Global.mp():
@@ -185,6 +205,10 @@ func _try_shoot(ghost_bullet := false) -> void:
 		_attack_visuals()
 	
 	if current_weapon.is_melee: return
+	
+	mag_ammo -= 1
+	shot.emit(mag_ammo, reserve_ammo)
+	
 	for i in range(current_weapon.bullet_count):
 		_shoot_bullet(ghost_bullet)
 

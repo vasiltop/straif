@@ -3,6 +3,8 @@ class_name DmUi extends CanvasLayer
 @export var killfeed: Container
 @export var weapon_buttons_container: Container
 @export var weapon_select: Container
+@export var ammo_label: Label
+@export var health_label: Label
 
 const MAX_KILLFEED_LENGTH := 5
 const KILLFEED_FONT_SIZE := 15
@@ -20,13 +22,18 @@ func _ready() -> void:
 		weapon_buttons_container.add_child(btn)
 		btn.text = weapon.name
 		btn.focus_mode = Control.FOCUS_NONE
+		var index := Global.game_manager.get_weapon_index(weapon)
 		
 		btn.pressed.connect(
 			func() -> void:
 				for player in get_parent().get_players():
-					var index := Global.game_manager.get_weapon_index(weapon)
-					get_parent().get_player(Global.id()).weapon_handler.set_weapon_to_index.rpc_id(player.pid, index, Global.id() != player.pid)
+					send_weapon_update_to(index, player.pid)
+				
+				send_weapon_update_to(index, 1)
 		)
+		
+func send_weapon_update_to(weapon_index: int, to: int) -> void:
+	get_parent().get_player(Global.id()).weapon_handler.set_weapon_to_index.rpc_id(to, weapon_index, Global.id() != to)
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard"):
@@ -57,3 +64,6 @@ func log_kill(killer_name: String, player_name: String) -> void:
 	label.text = "Player %s has eliminated %s!" % [killer_name, player_name]
 	killfeed.add_child(label)
 	label.add_theme_font_size_override("font_size", KILLFEED_FONT_SIZE)
+
+func on_shot(mag_ammo: int, reserve_ammo: int) -> void:
+	ammo_label.text = "Ammo: %d / %d" % [mag_ammo, reserve_ammo]

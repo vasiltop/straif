@@ -19,4 +19,6 @@ is_sniper = true
 spread = 10.0
 moving_spread = 14.0
 bullet_count = 1.0
+mag_ammo = 5
+reserve_ammo = 25
 metadata/_custom_type_script = "uid://bmwqlto471f6e"
