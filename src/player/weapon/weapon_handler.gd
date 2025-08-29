@@ -83,7 +83,7 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 	init_ik(is_third_person)
 
 func _on_animation_started(anim_name: String) -> void:
-	if anim_name == "shoot": 
+	if anim_name == "shoot" and player.is_me(): 
 		var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
 		hitbox.monitoring = true
 
@@ -94,8 +94,9 @@ func _on_animation_finished(anim_name: String) -> void:
 
 func _on_sword_hit(body: Node3D) -> void:
 	if body is BodyPart:
-		var body_part: BodyPart = body
-		body_part.apply_damage(hit_sound, current_weapon.damage)
+		if body.owned_by is Player and body.owned_by.is_me(): return
+		
+		body.apply_damage(hit_sound, current_weapon.damage)
 		player.camera.shake(0.1, 0.03)
 
 func _process(delta: float) -> void:
