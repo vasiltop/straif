@@ -132,9 +132,14 @@ func _handle_inputs() -> void:
 	if Input.is_action_just_pressed("scope") and current_weapon.is_sniper:
 		toggle_sniper_scope()
 		
-	if Input.is_action_just_pressed("restart") and not current_weapon.is_melee and not mag_ammo == max_mag_ammo:
+	if Input.is_action_just_pressed("restart") and not current_weapon.is_melee and not mag_ammo == max_mag_ammo and reserve_ammo > 0:
 		reload_anim.rpc()
-		mag_ammo = max_mag_ammo
+		
+		reserve_ammo += mag_ammo
+		var v := min(max_mag_ammo, reserve_ammo)
+		mag_ammo = v
+		reserve_ammo -= v
+		
 		shot.emit(mag_ammo, reserve_ammo)
 
 @rpc("any_peer", "call_local", "unreliable")
