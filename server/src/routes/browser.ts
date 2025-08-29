@@ -42,7 +42,15 @@ app.post('/', zValidator('json', ServerInput), async (c) => {
   const body = c.req.valid('json');
 
   if (servers.has(body.name)) {
-    servers.get(body.name).last_ping = new Date();
+    const server = servers.get(body.name);
+
+    server.last_ping = new Date();
+    server.port = body.port;
+    server.mode = body.mode;
+    server.map = body.map;
+    server.player_count = body.player_count;
+    server.max_players = body.max_players;
+
     return c.body(null, 200);
   }
 

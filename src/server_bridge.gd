@@ -301,6 +301,6 @@ func ping_server_browser() -> void:
 			"name": Global.game_manager.server_name,
 			"mode": Global.game_manager.current_pvp_mode,
 			"map": map_name,
-			"player_count": 0,
+			"player_count": Global.game_manager.player_count,
 			"max_players": Global.game_manager.max_players
 		}).send())

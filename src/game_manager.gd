@@ -24,6 +24,7 @@ var _server_browser_ping_timer: BetterTimer
 var server_name: String
 var current_pvp_map: String
 var current_pvp_mode: String
+var player_count: int
 
 # TODO: Populate this automatically if theres more modes
 class PbInfo:
@@ -107,10 +108,14 @@ func on_peer_connected(id: int) -> void:
 	
 	if Global.is_sv():
 		_server_ready.rpc_id(id)
+		player_count += 1
 
 func on_peer_disconnected(id: int) -> void:
 	Global.mp_print("Disconnected from player %d" % id)
 	player_diconnected.emit(id)
+	
+	if Global.is_sv():
+		player_count -= 1
 
 # only called on client
 func on_connected_to_server() -> void:
