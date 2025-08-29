@@ -22,20 +22,24 @@ signal shot(mag_ammo: int, reserve_ammo: int)
 @export var sway_forward: Vector3
 @export var sway_backward: Vector3
 @export var sway_vertical: Vector3
+@export var recoil_reset_time: float
+@export var recoil_reset_speed: float
 
 const MAX_SWAY := 5
 const SWAY_LERP := 2
 const RAY_LENGTH := 1000
 const BulletHoleScene := preload("res://src/player/weapon/bullet_hole.tscn")
 const BloodScene := preload("res://src/player/weapon/blood.tscn")
+const ReloadSound = preload("res://src/sounds/reload.wav")
 
-var hit_sound: AudioStreamPlayer = AudioStreamPlayer.new()
+var audio: AudioStreamPlayer = AudioStreamPlayer.new()
 var current_weapon: WeaponData
 var mouse_mov := 0.0
 var time_since_last_shot: float = 0
 var mag_ammo := 0
 var reserve_ammo := 0
 var max_mag_ammo := 0
+var current_recoil: Vector2
 
 @rpc("any_peer", "call_local", "reliable")
 func set_weapon_to_index(index: int, is_tp := false) -> void:
@@ -104,12 +108,24 @@ func _on_sword_hit(body: Node3D) -> void:
 	if body is BodyPart:
 		if body.owned_by is Player and body.owned_by.is_me(): return
 		
-		body.apply_damage(hit_sound, current_weapon.damage)
+		body.apply_damage(audio, current_weapon.damage)
 		player.camera.shake(0.1, 0.03)
 
 func _process(delta: float) -> void:
+	if not player.is_me(): return
+	
 	time_since_last_shot += delta
 	_handle_inputs()
+	
+	if time_since_last_shot >= recoil_reset_time:
+		var dx := current_recoil.x * recoil_reset_speed / 100.0
+		var dy := current_recoil.y * recoil_reset_speed / 100.0
+		
+		player.camera._mouse_input.y -= dy * delta
+		player.camera._mouse_input.x -= dx * delta
+		
+		current_recoil.x -= dx * delta
+		current_recoil.y -= dy * delta
 
 func _handle_inputs() -> void:
 	if not player.is_me(): return
@@ -132,8 +148,11 @@ func _handle_inputs() -> void:
 	if Input.is_action_just_pressed("scope") and current_weapon.is_sniper:
 		toggle_sniper_scope()
 		
-	if Input.is_action_just_pressed("restart") and not current_weapon.is_melee and not mag_ammo == max_mag_ammo and reserve_ammo > 0:
-		reload_anim.rpc()
+	if Input.is_action_just_pressed("reload") and not current_weapon.is_melee and not mag_ammo == max_mag_ammo and reserve_ammo > 0:
+		if Global.mp():
+			reload_anim.rpc()
+		else:
+			reload_anim()
 		
 		reserve_ammo += mag_ammo
 		var v := min(max_mag_ammo, reserve_ammo)
@@ -141,6 +160,9 @@ func _handle_inputs() -> void:
 		reserve_ammo -= v
 		
 		shot.emit(mag_ammo, reserve_ammo)
+		
+		audio.stream = ReloadSound
+		audio.play()
 
 @rpc("any_peer", "call_local", "unreliable")
 func reload_anim() -> void:
@@ -245,8 +267,14 @@ func _spawn_blood(hit_pos: Vector3) -> void:
 
 func _shoot_bullet(ghost_bullet := false) -> void:
 	var rad := deg_to_rad(current_weapon.recoil / 2)
-	player.camera._mouse_input.y += deg_to_rad(current_weapon.recoil)
-	player.camera._mouse_input.x = randf_range(-rad, rad)
+	
+	var rec_y := deg_to_rad(current_weapon.recoil)
+	current_recoil.y += rec_y
+	player.camera._mouse_input.y += rec_y
+	
+	var rec_x := randf_range(-rad, rad)
+	current_recoil.x += rec_x
+	player.camera._mouse_input.x += rec_x
 	
 	var spread := current_weapon.spread if not player.sniper_overlay.visible else 0.0
 	if not player.grounded(): spread = current_weapon.moving_spread
@@ -282,7 +310,7 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 		var collider = result.collider
 		if not ghost_bullet and collider is BodyPart:
 			var body_part: BodyPart = collider
-			body_part.apply_damage(hit_sound, current_weapon.damage)
+			body_part.apply_damage(audio, current_weapon.damage)
 			if Global.mp():
 				_spawn_blood.rpc(hit_pos)
 			else:

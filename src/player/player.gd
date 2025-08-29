@@ -93,7 +93,7 @@ func setup() -> void:
 	gun_camera.make_current()
 	pid = Global.id()
 	weapon_handler.visible = true
-	weapon_handler.add_child(weapon_handler.hit_sound)
+	weapon_handler.add_child(weapon_handler.audio)
 	add_child(_run_audio_player)
 	third_person.visible = false
 	name_label.visible = false

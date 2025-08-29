@@ -1,7 +1,7 @@
 class_name Settings
 
 const PATH := "user://settings.cfg"
-const SETTINGS_VERSION := 8
+const SETTINGS_VERSION := 9
 
 var node: Node
 var config := ConfigFile.new()
@@ -13,7 +13,8 @@ var default_keybinds: Dictionary[String, Keybind] = {
 	"jump" = Keybind.new(KEY_SPACE),
 	"climb" = Keybind.new(KEY_SPACE),
 	"main_menu" = Keybind.new(KEY_ESCAPE),
-	"restart" = Keybind.new(KEY_R),
+	"restart" = Keybind.new(KEY_T),
+	"reload" = Keybind.new(KEY_R),
 	"inspect" = Keybind.new(KEY_E),
 	"interact" = Keybind.new(KEY_F),
 	"leaderboard"  = Keybind.new(KEY_TAB),
@@ -88,7 +89,7 @@ func reset_to_defaults() -> void:
 	config.set_value("Controls", "ads_sensitivity", 1.0)
 	config.set_value("Display", "mode", 0)
 	config.set_value("Display", "resolution", "1920x1080")
-	config.set_value("Display", "max_fps", 1000)
+	config.set_value("Display", "max_fps", 244)
 	config.set_value("Display", "vsync", false)
 	config.set_value("Display", "speed", false)
 	config.set_value("Audio", "master_volume", -10.0)

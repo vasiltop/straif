@@ -57,7 +57,7 @@ func _send_info(steam_name: String) -> void:
 		Global.mp_print("Sending weapon index of %d (%s) from player %d to %d" % [weapon_index, player.weapon_handler.current_weapon.name, player.pid, sender])
 		_create_player.rpc_id(sender, player.pid, player.global_position, steam_name, weapon_index)
 
-	_create_player.rpc(sender, get_rand_spawn(), steam_name, 2)
+	_create_player.rpc(sender, get_rand_spawn(), steam_name, 1)
 
 @rpc("call_local", "authority", "reliable")
 func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_index: int) -> void:
@@ -82,12 +82,12 @@ func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_in
 func new_map() -> void:
 	var map := Global.map_manager.get_random_map(Global.game_manager.current_pvp_mode)
 	
-	while map == Global.game_manager.current_pvp_map:
-		map = Global.map_manager.get_random_map(Global.game_manager.current_pvp_mode)
+	# TODO: Add a new map
+	#while map == Global.game_manager.current_pvp_map:
+	#	map = Global.map_manager.get_random_map(Global.game_manager.current_pvp_mode)
 	
 	Global.mp_print("Changing map from %s to %s" % [Global.game_manager.current_pvp_map, map])
 	Global.game_manager.current_pvp_map = map
-	
 	
 	var path := get_current_map_path()
 	change_map.rpc(path)
