@@ -4,15 +4,26 @@
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_apyh6"]
 [ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="3_0d3cy"]
 
-[node name="DmUi" type="CanvasLayer" node_paths=PackedStringArray("killfeed", "weapon_buttons_container", "weapon_select", "ammo_label", "health_label")]
+[node name="DmUi" type="CanvasLayer" node_paths=PackedStringArray("killfeed", "weapon_buttons_container", "weapon_select", "ammo_label", "health_label", "time_left_label")]
 script = ExtResource("1_4t61y")
-killfeed = NodePath("Control/Killfeed")
-weapon_buttons_container = NodePath("WeaponSelect/MarginContainer/VBoxContainer/WeaponButtons")
-weapon_select = NodePath("WeaponSelect")
-ammo_label = NodePath("BottomLeft/MarginContainer/VBoxContainer/Ammo")
-health_label = NodePath("BottomLeft/MarginContainer/VBoxContainer/Health")
+killfeed = NodePath("Control/Control/Killfeed")
+weapon_buttons_container = NodePath("Control/WeaponSelect/MarginContainer/VBoxContainer/WeaponButtons")
+weapon_select = NodePath("Control/WeaponSelect")
+ammo_label = NodePath("Control/BottomLeft/MarginContainer/VBoxContainer/Ammo")
+health_label = NodePath("Control/BottomLeft/MarginContainer/VBoxContainer/Health")
+time_left_label = NodePath("Control/TopMiddle/MarginContainer/TimeLeft")
 
-[node name="Control" type="MarginContainer" parent="."]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_apyh6")
+
+[node name="Control" type="MarginContainer" parent="Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,67 +35,93 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="Killfeed" type="VBoxContainer" parent="Control"]
+[node name="Killfeed" type="VBoxContainer" parent="Control/Control"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="WeaponSelect" type="PanelContainer" parent="."]
+[node name="WeaponSelect" type="PanelContainer" parent="Control"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -72.0
+offset_top = -28.5
+offset_right = 72.0
+offset_bottom = 28.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="WeaponSelect"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/WeaponSelect"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WeaponSelect/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WeaponSelect/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="WeaponSelect/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="Control/WeaponSelect/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Weapon Select"
 
-[node name="WeaponButtons" type="VBoxContainer" parent="WeaponSelect/MarginContainer/VBoxContainer"]
+[node name="WeaponButtons" type="VBoxContainer" parent="Control/WeaponSelect/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="BottomLeft" type="PanelContainer" parent="."]
+[node name="BottomLeft" type="PanelContainer" parent="Control"]
+layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -24.0
-offset_right = 84.0
+offset_top = -52.0
+offset_right = 158.0
 grow_vertical = 0
 theme_override_styles/panel = ExtResource("3_0d3cy")
 
-[node name="MarginContainer" type="MarginContainer" parent="BottomLeft"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/BottomLeft"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BottomLeft/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/BottomLeft/MarginContainer"]
 layout_mode = 2
 
-[node name="Ammo" type="Label" parent="BottomLeft/MarginContainer/VBoxContainer"]
+[node name="Ammo" type="Label" parent="Control/BottomLeft/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
 text = "Ammo: 30 / 180"
 horizontal_alignment = 1
 
-[node name="Health" type="Label" parent="BottomLeft/MarginContainer/VBoxContainer"]
+[node name="Health" type="Label" parent="Control/BottomLeft/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
 text = "Health: 100"
 horizontal_alignment = 1
+
+[node name="TopMiddle" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -68.0
+offset_right = 68.0
+offset_bottom = 43.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/TopMiddle"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TimeLeft" type="Label" parent="Control/TopMiddle/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Time Left: 250s"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -49,6 +49,10 @@ class PbInfo:
 
 var weapons: Array[WeaponData] = [null]
 
+var pvp_mode_to_map := {
+	"deathmatch": "res://src/maps/deathmatch.tscn"
+}
+
 func _init() -> void:
 	Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
 	Steam.getAuthTicketForWebApi("munost")
@@ -80,13 +84,15 @@ func init_server(server_name: String, port: int, max_players: int, mode: String)
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(port, max_players)
 	Global.multiplayer.multiplayer_peer = peer
-	is_server = true
+	
+	self.is_server = true
 	self.port = port
 	self.max_players = max_players
 	self.current_pvp_mode = mode
 	self.server_name = server_name
+	self.current_pvp_map = Global.map_manager.get_random_map(mode)
 	
-	current_pvp_map = Global.map_manager.switch_to_random_map(mode)
+	get_tree().change_scene_to_file(pvp_mode_to_map[mode])
 	
 	_server_browser_ping_timer = BetterTimer.new(self, SERVER_BROWSER_PING_INTERVAL, Global.server_bridge.ping_server_browser)
 	_server_browser_ping_timer = BetterTimer.new(self, SERVER_BROWSER_PING_INTERVAL, Global.server_bridge.ping_server_browser)
@@ -96,7 +102,7 @@ func init_server(server_name: String, port: int, max_players: int, mode: String)
 
 @rpc("authority", "call_remote", "reliable")
 func _server_ready() -> void:
-	Global.map_manager.switch_to_map(current_pvp_mode, current_pvp_map)
+	get_tree().change_scene_to_file(pvp_mode_to_map[current_pvp_mode])
 
 func connect_to_server(ip: String, port: int) -> void:
 	var peer = ENetMultiplayerPeer.new()

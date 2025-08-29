@@ -5,14 +5,27 @@ class_name DmUi extends CanvasLayer
 @export var weapon_select: Container
 @export var ammo_label: Label
 @export var health_label: Label
+@export var time_left_label: Label
 
 const MAX_KILLFEED_LENGTH := 5
 const KILLFEED_FONT_SIZE := 15
 const KILLFEED_TTL := 5.0
+const TIME_PER_MAP := 180.0
 
 var time_since_last_kill := 0.0
+var game_time := TIME_PER_MAP
+var game_timer := BetterTimer.new(self, 1.0, 
+	func() -> void:
+		if Global.is_sv():
+			update_time_label.rpc(game_time)
+)
+
+@rpc("call_local", "authority", "unreliable")
+func update_time_label(value: float) -> void:
+	time_left_label.text = "Time Left: %ds" % value
 
 func _ready() -> void:
+	game_timer.start()
 	weapon_select.visible = false
 	
 	for weapon in Global.game_manager.weapons:
@@ -50,6 +63,13 @@ func _process(delta: float) -> void:
 		killfeed.visible = false
 		for child in killfeed.get_children():
 			child.queue_free()
+	
+	if Global.is_sv():
+		game_time -= delta
+		
+		if game_time <= 0:
+			get_parent().new_map()
+			game_time = TIME_PER_MAP
 
 @rpc("authority", "call_local", "reliable")
 func log_kill(killer_name: String, player_name: String) -> void:

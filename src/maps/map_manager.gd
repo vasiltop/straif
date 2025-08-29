@@ -36,14 +36,17 @@ func switch_to_map(mode: String, name: String) -> void:
 	var path := BASE_MAP_PATH + mode + "/" + name + ".tscn"
 	Global.get_tree().change_scene_to_file(path)
 
-func switch_to_random_map(mode: String) -> String:
+func get_full_map_path(mode: String, map_name: String) -> String:
+	var path := BASE_MAP_PATH + mode + "/"
+	return path + map_name
+
+func get_random_map(mode: String) -> String:
 	var path := BASE_MAP_PATH + mode + "/"
 	var dir_access := DirAccess.open(path)
 
 	var files := dir_access.get_files()
 	var index := randi_range(0, len(files) - 1)
 	var map_scene_name := files[index]
-	Global.get_tree().change_scene_to_file(path + map_scene_name)
 
 	return map_scene_name
 

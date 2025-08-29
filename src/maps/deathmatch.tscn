@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://mrt0rhfkhubj"]
+
+[ext_resource type="Script" uid="uid://ceqjj76lfstkf" path="res://src/maps/deathmatch.gd" id="1_dh4cd"]
+
+[node name="Deathmatch" type="Node3D" node_paths=PackedStringArray("players")]
+script = ExtResource("1_dh4cd")
+players = NodePath("Players")
+
+[node name="Players" type="Node" parent="."]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.727773, -0.646481, -0.228931, 0, -0.333807, 0.942642, -0.685819, 0.686029, 0.242936, 0, 0, 0)
+light_energy = 1.5
+shadow_enabled = true
