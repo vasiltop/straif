@@ -17,8 +17,9 @@ default_font_size = 15
 [sub_resource type="Theme" id="Theme_nvgh5"]
 default_font = ExtResource("11_5vm7s")
 
-[node name="MapUi" type="CanvasLayer"]
+[node name="MapUi" type="CanvasLayer" node_paths=PackedStringArray("ammo_label")]
 script = ExtResource("1_jnrmt")
+ammo_label = NodePath("UiContainer/BottomLeft/V/Ammo")
 
 [node name="UiContainer" type="Control" parent="."]
 layout_mode = 3
@@ -102,24 +103,24 @@ text = "60 fps"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BottomLeft" type="Panel" parent="UiContainer"]
-custom_minimum_size = Vector2(120, 80)
+[node name="BottomLeft" type="PanelContainer" parent="UiContainer"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -80.0
+offset_top = -108.0
 offset_right = 120.0
 grow_vertical = 0
 theme_override_styles/panel = ExtResource("3_rr83r")
 
 [node name="V" type="VBoxContainer" parent="UiContainer/BottomLeft"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
+
+[node name="Ammo" type="Label" parent="UiContainer/BottomLeft/V"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Ammo: 0 / 0"
+horizontal_alignment = 1
 
 [node name="EnemiesLeft" type="Label" parent="UiContainer/BottomLeft/V"]
 layout_mode = 2

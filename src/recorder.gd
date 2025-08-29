@@ -25,9 +25,7 @@ func _init(player_cam: Camera3D, map: Map) -> void:
 	self.map = map
 
 func _ready() -> void:
-	print(PlayerScene)
 	var inst := PlayerScene.instantiate()
-	print(inst)
 	add_child(inst)
 	inst.visible = false
 	

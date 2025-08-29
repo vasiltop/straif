@@ -67,3 +67,6 @@ func log_kill(killer_name: String, player_name: String) -> void:
 
 func on_shot(mag_ammo: int, reserve_ammo: int) -> void:
 	ammo_label.text = "Ammo: %d / %d" % [mag_ammo, reserve_ammo]
+
+func on_damaged(health: float) -> void:
+	health_label.text = "Health: %d" % [health]

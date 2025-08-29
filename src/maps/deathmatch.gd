@@ -51,6 +51,7 @@ func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_in
 	if id == Global.id():
 		inst.setup()
 		inst.weapon_handler.shot.connect(dm_ui.on_shot)
+		inst.damaged.connect(dm_ui.on_damaged)
 		
 	var weapon := Global.game_manager.get_weapon_from_index(weapon_index)
 	inst.weapon_handler.set_weapon(weapon, id != Global.id())

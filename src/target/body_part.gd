@@ -14,7 +14,9 @@ func apply_damage(audio_player: AudioStreamPlayer, amount: float) -> void:
 	audio_player.play()
 	
 	if Global.mp():
+		Global.mp_print("Sending damage to %d" % owned_by.pid)
 		owned_by.on_damage.rpc_id(1, amount * multiplier)
+		owned_by.on_damage.rpc_id(owned_by.pid, amount * multiplier)
 	
 	if owned_by.health <= 0:
 		owned_by.on_death()

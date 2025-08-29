@@ -31,10 +31,12 @@ var _has_jumped: bool
 var dragging_frame_slider: bool
 
 func _ready() -> void:
+	Global.multiplayer.multiplayer_peer = null
 	player.setup()
 	add_child(recorder)
 	add_child(sound_player)
 	add_child(map_ui)
+	player.weapon_handler.shot.connect(map_ui.on_shot)
 	map_ui.return_control_to_player.connect(_on_return_control_to_player)
 	map_ui.set_replay_visible(false)
 	player.jumped.connect(_on_player_jump)
@@ -189,6 +191,7 @@ func restart(player: Player) -> void:
 	player.global_position = start_pos
 	player.camera._input_rotation = start_rotation
 	player_in_end_zone = false
+	player.weapon_handler.shot.emit(0, 0)
 
 	player.velocity = Vector3.ZERO
 	player.weapon_handler.set_weapon(null)

@@ -10,10 +10,14 @@ signal return_control_to_player
 @onready var start_time: Label = $UiContainer/StartTime
 @onready var timer_label: Label = $UiContainer/BottomLeft/V/Timer
 @onready var target_label: Label = $UiContainer/BottomLeft/V/EnemiesLeft
-
 @onready var speed_label: Label = $UiContainer/BottomLeft/V/Speed
 @onready var alt_speed_label: Label = $UiContainer/Middle/Speed
 @onready var first_jump_speed_label: Label = $UiContainer/Middle/PreStrafeSpeed
+
+@export var ammo_label: Label
+
+func on_shot(mag_ammo: int, reserve_ammo: int) -> void:
+	ammo_label.text = "Ammo: %d / %d" % [mag_ammo, reserve_ammo]
 
 func _ready() -> void:
 	done.pressed.connect(func() -> void:

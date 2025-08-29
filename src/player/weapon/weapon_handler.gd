@@ -44,7 +44,6 @@ func set_weapon_to_index(index: int, is_tp := false) -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
-	Global.mp_print("Gave weapon %s to player %d with tp := %s" % [weapon.name, player.pid, is_third_person])
 	current_weapon = weapon
 
 	if weapon_scene:
