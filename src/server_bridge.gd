@@ -28,8 +28,8 @@ func _on_heartbeat_timer() -> void:
 		).header(
 			"version", version
 		).send()
-
-	if response.status() != 200:
+	
+	if not response or response.status() != 200:
 		Global.get_tree().change_scene_to_file("res://src/maintenance.tscn")
 		return
 	
