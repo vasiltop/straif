@@ -5,7 +5,7 @@ class_name MainMenu extends Control
 @onready var quit_btn: Button = $MarginContainer/Content/Header/Right/Quit
 @onready var save_settings_btn: Button = $MarginContainer/Content/Body/Settings/Save
 @onready var discord_btn: TextureButton = $MarginContainer/Content/Header/Right/Discord
-@onready var mode_switcher: TabContainer = $MarginContainer/Content/Body/Play/M/V/ModeSwitcher
+@onready var mode_switcher: TabContainer = $MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher
 
 const MapButtonScene = preload("res://src/menus/main/map_button/map_button.tscn")
 

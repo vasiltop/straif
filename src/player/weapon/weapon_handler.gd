@@ -32,6 +32,11 @@ var mouse_mov := 0.0
 var time_since_last_shot: float = 0
 
 @rpc("any_peer", "call_local", "reliable")
+func set_weapon_to_index(index: int, is_tp := false) -> void:
+	var weapon := Global.game_manager.get_weapon_from_index(index)
+	set_weapon(weapon, is_tp)
+
+@rpc("any_peer", "call_local", "reliable")
 func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 	#Global.mp_print("Gave weapon %s to player %d with tp := %s" % [weapon.name, player.pid, is_third_person])
 	current_weapon = weapon

@@ -3,9 +3,11 @@
 [ext_resource type="Script" uid="uid://dxy605d5e1r8s" path="res://src/maps/dm_ui.gd" id="1_4t61y"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_apyh6"]
 
-[node name="DmUi" type="CanvasLayer" node_paths=PackedStringArray("killfeed")]
+[node name="DmUi" type="CanvasLayer" node_paths=PackedStringArray("killfeed", "weapon_buttons_container", "weapon_select")]
 script = ExtResource("1_4t61y")
 killfeed = NodePath("Control/Killfeed")
+weapon_buttons_container = NodePath("WeaponSelect/MarginContainer/VBoxContainer/WeaponButtons")
+weapon_select = NodePath("WeaponSelect")
 
 [node name="Control" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -22,3 +24,33 @@ theme_override_constants/margin_bottom = 15
 [node name="Killfeed" type="VBoxContainer" parent="Control"]
 layout_mode = 2
 theme_override_constants/separation = 0
+
+[node name="WeaponSelect" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WeaponSelect"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WeaponSelect/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="WeaponSelect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Weapon Select"
+
+[node name="WeaponButtons" type="VBoxContainer" parent="WeaponSelect/MarginContainer/VBoxContainer"]
+layout_mode = 2

@@ -26,13 +26,13 @@ texture_filter = 0
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_77xce"]
 panorama = ExtResource("6_1r0mp")
 
-[sub_resource type="Sky" id="Sky_c1icp"]
+[sub_resource type="Sky" id="Sky_jd8ow"]
 sky_material = SubResource("PanoramaSkyMaterial_77xce")
 
 [sub_resource type="Environment" id="Environment_ydj32"]
 background_mode = 2
 background_energy_multiplier = 0.75
-sky = SubResource("Sky_c1icp")
+sky = SubResource("Sky_jd8ow")
 tonemap_mode = 2
 fog_enabled = true
 fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)

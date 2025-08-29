@@ -237,11 +237,11 @@ text = "Quit"
 layout_mode = 2
 current_tab = 0
 
-[node name="Play" type="Control" parent="MarginContainer/Content/Body"]
+[node name="Speedrun" type="Control" parent="MarginContainer/Content/Body"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="M" type="MarginContainer" parent="MarginContainer/Content/Body/Play"]
+[node name="M" type="MarginContainer" parent="MarginContainer/Content/Body/Speedrun"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -253,22 +253,22 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="V" type="VBoxContainer" parent="MarginContainer/Content/Body/Play/M"]
+[node name="V" type="VBoxContainer" parent="MarginContainer/Content/Body/Speedrun/M"]
 layout_mode = 2
 
-[node name="ModeSwitcher" type="TabContainer" parent="MarginContainer/Content/Body/Play/M/V"]
+[node name="ModeSwitcher" type="TabContainer" parent="MarginContainer/Content/Body/Speedrun/M/V"]
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="Target Practice" type="Control" parent="MarginContainer/Content/Body/Play/M/V/ModeSwitcher"]
+[node name="Target Practice" type="Control" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher"]
 layout_mode = 2
 script = ExtResource("5_0gscq")
 mode = "target"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 0
 
-[node name="Movement Only" type="Control" parent="MarginContainer/Content/Body/Play/M/V/ModeSwitcher"]
+[node name="Movement Only" type="Control" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher"]
 visible = false
 layout_mode = 2
 script = ExtResource("5_0gscq")
@@ -276,7 +276,7 @@ mode = "bhop"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 1
 
-[node name="Multiplayer" parent="MarginContainer/Content/Body" instance=ExtResource("6_og6j4")]
+[node name="Server Browser" parent="MarginContainer/Content/Body" instance=ExtResource("6_og6j4")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1

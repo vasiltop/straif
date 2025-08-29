@@ -1,6 +1,8 @@
 class_name DmUi extends CanvasLayer
 
-@export var killfeed: VBoxContainer
+@export var killfeed: Container
+@export var weapon_buttons_container: Container
+@export var weapon_select: Container
 
 const MAX_KILLFEED_LENGTH := 5
 const KILLFEED_FONT_SIZE := 15
@@ -8,7 +10,33 @@ const KILLFEED_TTL := 5.0
 
 var time_since_last_kill := 0.0
 
+func _ready() -> void:
+	weapon_select.visible = false
+	
+	for weapon in Global.game_manager.weapons:
+		if weapon == null: continue
+		
+		var btn := Button.new()
+		weapon_buttons_container.add_child(btn)
+		btn.text = weapon.name
+		btn.focus_mode = Control.FOCUS_NONE
+		
+		btn.pressed.connect(
+			func() -> void:
+				for player in get_parent().get_players():
+					var index := Global.game_manager.get_weapon_index(weapon)
+					get_parent().get_player(Global.id()).weapon_handler.set_weapon_to_index.rpc_id(player.pid, index, Global.id() != player.pid)
+		)
+
 func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("leaderboard"):
+		weapon_select.visible = true
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	if Input.is_action_just_released("leaderboard"):
+		weapon_select.visible = false
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
 	time_since_last_kill += delta
 	
 	if time_since_last_kill >= KILLFEED_TTL:

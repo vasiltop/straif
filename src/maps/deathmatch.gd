@@ -33,19 +33,22 @@ func _send_info(steam_name: String) -> void:
 	
 	for player: Player in players.get_children():
 		# we tell the new player where the current players are
-		_create_player.rpc_id(sender, player.pid, player.global_position, steam_name)
+		var weapon_index := Global.game_manager.get_weapon_index(player.weapon_handler.current_weapon)
+		_create_player.rpc_id(sender, player.pid, player.global_position, steam_name, weapon_index)
 		
-	_create_player.rpc(sender, get_rand_spawn(), steam_name)
+	_create_player.rpc(sender, get_rand_spawn(), steam_name, 2)
 
 @rpc("call_local", "authority", "reliable")
-func _create_player(id: int, spawn_point: Vector3, steam_name: String) -> void:
+func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_index: int) -> void:
 	var inst := PlayerScene.instantiate()
 	players.add_child(inst)
 	inst.global_position = spawn_point
 	inst.name = str(id)
 	inst.pid = id
 	inst.get_node("Name").text = steam_name
-	inst.weapon_handler.set_weapon(Ak47, id != Global.id())
+	
+	var weapon := Global.game_manager.get_weapon_from_index(weapon_index)
+	inst.weapon_handler.set_weapon(weapon, id != Global.id())
 	
 	if id == Global.id():
 		inst.setup()
@@ -59,6 +62,9 @@ func get_player(id: int) -> Player:
 			return player
 			
 	return null
+	
+func get_players() -> Array[Node]:
+	return players.get_children()
 
 func _on_player_death(sender: int, id: int) -> void:
 	Global.mp_print("Player %d has been killed." % id)

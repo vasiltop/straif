@@ -1,21 +1,10 @@
-[gd_scene load_steps=36 format=4 uid="uid://ys66q08e0pvt"]
+[gd_scene load_steps=37 format=4 uid="uid://ys66q08e0pvt"]
 
 [ext_resource type="Script" uid="uid://ceqjj76lfstkf" path="res://src/maps/deathmatch.gd" id="1_n71wf"]
 [ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="2_q43vt"]
 [ext_resource type="Texture2D" uid="uid://capci7pd6ph7k" path="res://src/textures/Metal_04-128x128.png" id="3_7if4t"]
 [ext_resource type="Texture2D" uid="uid://bewdp0bpffvr" path="res://src/textures/Brick_09-128x128.png" id="4_vxh6a"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i7b7e"]
-
-[sub_resource type="Sky" id="Sky_hhs6m"]
-sky_material = SubResource("ProceduralSkyMaterial_i7b7e")
-
-[sub_resource type="Environment" id="Environment_cxggk"]
-background_mode = 2
-background_energy_multiplier = 2.0
-sky = SubResource("Sky_hhs6m")
-fog_light_energy = 0.88
-fog_sky_affect = 0.0
+[ext_resource type="Texture2D" uid="uid://60ov88fgcpj7" path="res://src/textures/skyboxes/cold.png" id="5_q43vt"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ykcfn"]
 
@@ -149,13 +138,33 @@ points = PackedVector3Array(-6, 6, 10, -6, 1, 10, 6, 1, 10, 6, 6, 10, -6, 6, 28,
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7x6tq"]
 points = PackedVector3Array(-6, 7, 10, -6, 6, 10, 6, 6, 10, 6, 7, 10, -6, 7, 14, -6, 6, 14, 6, 6, 14, 6, 7, 14)
 
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7if4t"]
+panorama = ExtResource("5_q43vt")
+energy_multiplier = 10.0
+
+[sub_resource type="Sky" id="Sky_c1icp"]
+sky_material = SubResource("PanoramaSkyMaterial_7if4t")
+
+[sub_resource type="Environment" id="Environment_vxh6a"]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_c1icp")
+tonemap_mode = 2
+fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
+fog_light_energy = 1.34
+fog_sky_affect = 0.0
+fog_height = -22.35
+fog_height_density = 0.292
+volumetric_fog_density = 0.0813
+volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
+volumetric_fog_anisotropy = 0.0
+volumetric_fog_length = 80.09
+volumetric_fog_detail_spread = 6.0
+
 [node name="Map" type="Node3D" node_paths=PackedStringArray("spawns", "players")]
 script = ExtResource("1_n71wf")
 spawns = NodePath("Spawns")
 players = NodePath("Players")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_cxggk")
 
 [node name="entity_0_worldspawn" type="StaticBody3D" parent="."]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
@@ -250,3 +259,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 2.14072, 10)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 2.14072, 10)
 
 [node name="Players" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vxh6a")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.727773, -0.646481, -0.228931, 0, -0.333807, 0.942642, -0.685819, 0.686029, 0.242936, 0, 0, 0)
+light_energy = 1.5
+shadow_enabled = true

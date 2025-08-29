@@ -41,6 +41,7 @@ theme_override_constants/margin_bottom = 5
 
 [node name="V" type="VBoxContainer" parent="M/C/P/M"]
 layout_mode = 2
+theme_override_constants/separation = 5
 
 [node name="Name" type="Label" parent="M/C/P/M/V"]
 layout_mode = 2
