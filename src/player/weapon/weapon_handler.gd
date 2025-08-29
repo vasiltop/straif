@@ -25,6 +25,7 @@ const MAX_SWAY := 5
 const SWAY_LERP := 2
 const RAY_LENGTH := 1000
 const BulletHoleScene := preload("res://src/player/weapon/bullet_hole.tscn")
+const BloodScene := preload("res://src/player/weapon/blood.tscn")
 
 var hit_sound: AudioStreamPlayer = AudioStreamPlayer.new()
 var current_weapon: WeaponData
@@ -207,6 +208,12 @@ func _spawn_bullet_hole(pos: Vector3, normal: Vector3) -> void:
 
 	inst.rotate(normal, randf_range(0, 2*PI))
 
+@rpc("call_local", "any_peer", "unreliable")
+func _spawn_blood(hit_pos: Vector3) -> void:
+	var inst: Node3D = BloodScene.instantiate()
+	player.add_child(inst)
+	inst.global_position = hit_pos
+
 func _shoot_bullet(ghost_bullet := false) -> void:
 	var rad := deg_to_rad(current_weapon.recoil / 2)
 	player.camera._mouse_input.y += deg_to_rad(current_weapon.recoil)
@@ -247,11 +254,16 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 		if not ghost_bullet and collider is BodyPart:
 			var body_part: BodyPart = collider
 			body_part.apply_damage(hit_sound, current_weapon.damage)
-
-		if Global.mp():
-			_spawn_bullet_hole.rpc(hit_pos, result.normal)
-		else:
-			_spawn_bullet_hole(hit_pos, result.normal)
+			if Global.mp():
+				_spawn_blood.rpc(hit_pos)
+			else:
+				_spawn_blood(hit_pos)
+	
+		if collider is not BodyPart:	
+			if Global.mp():
+				_spawn_bullet_hole.rpc(hit_pos, result.normal)
+			else:
+				_spawn_bullet_hole(hit_pos, result.normal)
 	
 	if Global.mp():
 		_gun_visuals.rpc(hit_pos)

@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4hg1e8fx4c80"]
+
+[ext_resource type="Script" uid="uid://ch4tj3i63ba1p" path="res://src/player/weapon/blood.gd" id="1_nd82c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v4d07"]
+transparency = 1
+albedo_color = Color(0.584314, 0, 0, 0.682353)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nd82c"]
+material = SubResource("StandardMaterial3D_v4d07")
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="Blood" type="Node3D"]
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+emitting = false
+lifetime = 0.1
+mesh = SubResource("BoxMesh_nd82c")
+spread = 180.0
+flatness = 0.2
+initial_velocity_min = 3.0
+initial_velocity_max = 4.0
+script = ExtResource("1_nd82c")
