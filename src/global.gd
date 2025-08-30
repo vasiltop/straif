@@ -9,6 +9,7 @@ var game_manager: GameManager
 
 func _ready() -> void:
 	var args := OS.get_cmdline_args()
+	print(args)
 	var is_server := len(args) > 1
 	
 	if not is_server:
@@ -19,7 +20,7 @@ func _ready() -> void:
 	
 	map_manager = MapManager.new()
 	server_bridge = ServerBridge.new()
-	game_manager = GameManager.new()
+	game_manager = GameManager.new(is_server)
 	add_child(game_manager)
 	
 	multiplayer.peer_connected.connect(game_manager.on_peer_connected)
@@ -31,8 +32,6 @@ func _ready() -> void:
 	if is_server:
 		game_manager.init_server(args[1], int(args[2]), int(args[3]), args[4])
 		return
-
-	DisplayServer.window_set_title("Straif")
 
 	settings_manager = Settings.new()
 	

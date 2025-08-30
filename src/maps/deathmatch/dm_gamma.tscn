@@ -237,7 +237,7 @@ shape = SubResource("ConvexPolygonShape3D_7x6tq")
 [node name="Spawns" type="Node" parent="."]
 
 [node name="Spawn" type="Marker3D" parent="Spawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 223, -0.85928, 65)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 6.14072, 38)
 
 [node name="Spawn2" type="Marker3D" parent="Spawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.1435, 3.77955, 22.7042)
@@ -249,13 +249,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.74781, 5.60451, 2.57154)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.0526, 5.60451, 1.51873)
 
 [node name="Spawn4" type="Marker3D" parent="Spawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4514, 0.880542, 39.205)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.67064, 1.44523, 38.2671)
 
 [node name="Spawn5" type="Marker3D" parent="Spawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.35269, 0.952965, 6.86704)
+transform = Transform3D(0.999907, -0.0136481, 0, 0.0136481, 0.999907, 0, 0, 0, 1, 5.44453, 1.48948, 8.13801)
 
 [node name="Spawn6" type="Marker3D" parent="Spawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5777, 0.77609, 6.87104)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.8119, 0.946627, 7.14912)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vxh6a")

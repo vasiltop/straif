@@ -53,15 +53,23 @@ var pvp_mode_to_map := {
 	"deathmatch": "res://src/maps/deathmatch.tscn"
 }
 
-func _init() -> void:
-	Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
-	Steam.getAuthTicketForWebApi("munost")
+func _init(is_server: bool) -> void:
+	if not is_server:
+		print("calling web api")
+		Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
+		Steam.getAuthTicketForWebApi("munost")
 	
 	var path := "res://src/player/weapon/resources/"
 	var dir := DirAccess.open(path)
 	
 	for file in dir.get_files():
-		weapons.append(load(path + file))
+		# TODO: Add loading binary packed versions when exporting
+		if file.ends_with(".tres"):
+			weapons.append(load(path + file))
+	
+	print("dir files")
+	print(dir.get_files())
+	print(weapons)
 
 func get_weapon_index(weapon: WeaponData) -> int:
 	if weapon == null: return 0
@@ -105,8 +113,9 @@ func _server_ready() -> void:
 	get_tree().change_scene_to_file(pvp_mode_to_map[current_pvp_mode])
 
 func connect_to_server(ip: String, port: int) -> void:
+	print(port)
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(ip, port)
+	peer.create_client("209.38.2.30", port)
 	Global.multiplayer.multiplayer_peer = peer
 
 func on_peer_connected(id: int) -> void:

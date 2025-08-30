@@ -93,6 +93,7 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 		arms.visible = false
 		
 	init_ik(is_third_person)
+	Global.mp_print("Set players weapon to %s" % weapon.name)
 
 func _on_animation_started(anim_name: String) -> void:
 	if anim_name == "shoot" and player.is_me(): 

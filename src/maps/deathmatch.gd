@@ -26,8 +26,10 @@ func get_current_map_path() -> String:
 
 @rpc("call_local", "authority", "reliable")
 func change_map(path: String) -> void:
-	if loaded_map:
+	Global.mp_print("Changing map to %s" % path)
+	if loaded_map != null:
 		loaded_map.queue_free()
+		loaded_map = null
 
 	var inst = load(path).instantiate()
 	add_child(inst)
@@ -40,7 +42,9 @@ func _on_player_disconnected(id: int) -> void:
 
 func get_rand_spawn() -> Vector3:
 	var spawns := loaded_map.get_node("Spawns").get_children()
-	return spawns[randi_range(0, len(spawns) - 1)].global_position
+	var spawn: Vector3 = spawns[randi_range(0, len(spawns) - 1)].global_position
+	Global.mp_print("Generated random spawn pos: %s" % spawn)
+	return spawn
 
 @rpc("call_remote", "any_peer", "reliable")
 func _send_info(steam_name: String) -> void:
@@ -61,6 +65,7 @@ func _send_info(steam_name: String) -> void:
 
 @rpc("call_local", "authority", "reliable")
 func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_index: int) -> void:
+	Global.mp_print("Spawning player %s" % steam_name)
 	var inst := PlayerScene.instantiate()
 	players.add_child(inst)
 	inst.global_position = spawn_point

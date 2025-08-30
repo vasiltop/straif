@@ -45,8 +45,15 @@ func get_random_map(mode: String) -> String:
 	var dir_access := DirAccess.open(path)
 
 	var files := dir_access.get_files()
-	var index := randi_range(0, len(files) - 1)
-	var map_scene_name := files[index]
+	
+	var filtered: Array[String]
+	
+	for file in files:
+		if file.ends_with(".tscn"):
+			filtered.append(file)
+	
+	var index := randi_range(0, len(filtered) - 1)
+	var map_scene_name := filtered[index]
 
 	return map_scene_name
 
