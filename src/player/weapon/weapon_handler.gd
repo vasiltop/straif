@@ -93,7 +93,7 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 		arms.visible = false
 		
 	init_ik(is_third_person)
-	Global.mp_print("Set players weapon to %s" % weapon.name)
+	#Global.mp_print("Set players weapon to %s" % weapon.name)
 
 func _on_animation_started(anim_name: String) -> void:
 	if anim_name == "shoot" and player.is_me(): 
@@ -113,9 +113,9 @@ func _on_sword_hit(body: Node3D) -> void:
 		player.camera.shake(0.1, 0.03)
 
 func _process(delta: float) -> void:
-	if not player.is_me(): return
-	
 	time_since_last_shot += delta
+	
+	if not player.is_me(): return
 	_handle_inputs()
 	
 	if time_since_last_shot >= recoil_reset_time:
@@ -128,15 +128,18 @@ func _process(delta: float) -> void:
 		current_recoil.x -= dx * delta
 		current_recoil.y -= dy * delta
 
+func attack_input() -> bool:
+	if not current_weapon: return false
+	return Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
+
 func _handle_inputs() -> void:
 	if not player.is_me(): return
 	if not current_weapon: return
 	if not player.can_move: return
-	
-	var attack_input := Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
-	if attack_input:
+
+	if attack_input():
 		_try_shoot()
-	
+
 	if Input.is_action_just_pressed("inspect"):
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 
@@ -150,25 +153,28 @@ func _handle_inputs() -> void:
 		toggle_sniper_scope()
 		
 	if Input.is_action_just_pressed("reload") and not current_weapon.is_melee and not mag_ammo == max_mag_ammo and reserve_ammo > 0:
-		if Global.mp():
-			reload_anim.rpc()
-		else:
-			reload_anim()
-		
-		reserve_ammo += mag_ammo
-		var v := min(max_mag_ammo, reserve_ammo)
-		mag_ammo = v
-		reserve_ammo -= v
-		
-		shot.emit(mag_ammo, reserve_ammo)
-		
-		audio.stream = ReloadSound
-		audio.play()
+		reload()
+
+func reload() -> void:
+	if Global.mp():
+		reload_anim.rpc()
+	else:
+		reload_anim()
+	
+	reserve_ammo += mag_ammo
+	var v := min(max_mag_ammo, reserve_ammo)
+	mag_ammo = v
+	reserve_ammo -= v
+	
+	shot.emit(mag_ammo, reserve_ammo)
+	
+	audio_player.stream = ReloadSound
+	audio_player.play()
 
 @rpc("any_peer", "call_local", "unreliable")
 func reload_anim() -> void:
-	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
-	anim.play("equip")
+	var audio_player: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
+	audio_player.play("equip")
 	
 func toggle_sniper_scope() -> void:
 	player.sniper_overlay.visible = not player.sniper_overlay.visible
@@ -217,10 +223,16 @@ func _attack_visuals() -> void:
 	audio_player.pitch_scale = randf_range(0.95, 1.05)
 	audio_player.play()
 
+func can_shoot(ghost_bullet: bool) -> bool:
+	if current_weapon == null: return false
+	if mag_ammo <= 0 and not ghost_bullet: return false
+	if time_since_last_shot < current_weapon.weapon_shot_delay: return false
+	
+	return true
+
 func _try_shoot(ghost_bullet := false) -> void:
-	if current_weapon == null: return
-	if mag_ammo <= 0: return
-	if time_since_last_shot < current_weapon.weapon_shot_delay: return
+	if not can_shoot(ghost_bullet): return
+	
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 	if anim.current_animation == "equip": return
 	
@@ -272,17 +284,18 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 	var rec_y := deg_to_rad(current_weapon.recoil)
 	current_recoil.y += rec_y
 	player.camera._mouse_input.y += rec_y
-	
+
 	var rec_x := randf_range(-rad, rad)
 	current_recoil.x += rec_x
 	player.camera._mouse_input.x += rec_x
-	
+
 	var spread := current_weapon.spread if not player.sniper_overlay.visible else 0.0
-	if not player.grounded(): spread = current_weapon.moving_spread
-	
+	if not player.grounded() and player.hardcore:
+		spread = current_weapon.moving_spread
+
 	if current_weapon.is_sniper and player.sniper_overlay.visible:
 		toggle_sniper_scope()
-	
+
 	var origin := player.camera.global_transform.origin
 	var direction := -player.camera.global_transform.basis.z.normalized()
 	var distance := current_weapon.attack_range

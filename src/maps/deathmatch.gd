@@ -86,11 +86,11 @@ func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_in
 
 func new_map() -> void:
 	var map := Global.map_manager.get_random_map(Global.game_manager.current_pvp_mode)
-	
+
 	# TODO: Add a new map
 	#while map == Global.game_manager.current_pvp_map:
 	#	map = Global.map_manager.get_random_map(Global.game_manager.current_pvp_mode)
-	
+
 	Global.mp_print("Changing map from %s to %s" % [Global.game_manager.current_pvp_map, map])
 	Global.game_manager.current_pvp_map = map
 	
@@ -112,7 +112,7 @@ func get_players() -> Array[Node]:
 
 func _on_player_death(sender: int, id: int) -> void:
 	Global.mp_print("Player %d has been killed." % id)
-	dm_ui.log_kill.rpc(get_player(sender).player_name(), get_player(sender).player_name())
+	dm_ui.log_kill.rpc(get_player(sender).player_name(), get_player(id).player_name())
 	get_player(id).ragdoll.rpc()
 	await get_tree().create_timer(1.5).timeout
 	get_player(id).respawn.rpc()

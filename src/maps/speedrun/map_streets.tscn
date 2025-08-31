@@ -369,40 +369,16 @@ transform = Transform3D(0.265781, 0, -0.74209, 0, 1.3, 0, 0.139142, 0, 1.4175, 6
 [node name="Planks5" parent="Map" instance=ExtResource("5_384no")]
 transform = Transform3D(0.189024, 0, 1.24245, 0, 1.3, 0, -0.232959, 0, 1.00813, 69.475, 1.55937, -31.697)
 
-[node name="Planks6" parent="Map" instance=ExtResource("5_384no")]
-transform = Transform3D(-0.216709, 0, 1.10642, 0, 1.3, 0, -0.207454, 0, -1.15578, 61.6762, 1.55937, -31.4318)
-
 [node name="Planks11" parent="Map" instance=ExtResource("5_384no")]
 transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 8.99282, 1, 0)
 
 [node name="Planks12" parent="Map" instance=ExtResource("5_384no")]
 transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 49.9928, 1, -26.3125)
 
-[node name="Planks7" parent="Map" instance=ExtResource("5_384no")]
-transform = Transform3D(-0.153671, 0, -1.37415, 0, 1.3, 0, 0.257653, 0, -0.81958, 61.6754, 1.55937, -23.5807)
-
 [node name="Player" parent="." instance=ExtResource("3_x1xk8")]
 transform = Transform3D(-0.000540944, 0, -1, 0, 1, 0, 1, 0, -0.000540944, 0, 2, 0)
 
 [node name="Targets" type="Node" parent="."]
-
-[node name="EndZone" parent="." instance=ExtResource("4_l3vx2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 95, 1, -28.5)
-
-[node name="Collider" parent="EndZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
-[node name="Planks10" parent="EndZone" instance=ExtResource("5_384no")]
-transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="StartZone" parent="." instance=ExtResource("4_l3vx2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="Collider" parent="StartZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
-[node name="Planks10" parent="StartZone" instance=ExtResource("5_384no")]
-transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="Players" type="Node" parent="."]
 
@@ -419,12 +395,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.794, 1, 1.411)
 
 [node name="Node3D4" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.1203, 10.7998, -29.1169)
-
-[node name="Node3D5" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.862, 1, -32.77)
-
-[node name="Node3D6" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.8624, 1, -22.3533)
 
 [node name="Node3D7" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70.9897, 1, -22.3533)
@@ -451,5 +421,8 @@ debug_fill = false
 [node name="Vent" parent="." instance=ExtResource("11_dmnpj")]
 transform = Transform3D(3.92996, 0, 0, 0, 1.7851, 0, 0, 0, 1, 49.9759, 9.90616, -29)
 
-[editable path="EndZone"]
-[editable path="StartZone"]
+[node name="StartZone" parent="." instance=ExtResource("4_l3vx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="EndZone" parent="." instance=ExtResource("4_l3vx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94, 1, -28.5072)

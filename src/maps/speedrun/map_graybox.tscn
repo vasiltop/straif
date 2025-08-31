@@ -1066,18 +1066,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -1)
 
 [node name="Targets" type="Node" parent="."]
 
-[node name="EndZone" parent="." instance=ExtResource("8_m14mc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 10)
-
-[node name="Collider" parent="EndZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
-[node name="StartZone" parent="." instance=ExtResource("8_m14mc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-
-[node name="Collider" parent="StartZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
 [node name="Players" type="Node" parent="."]
 
 [node name="TargetSpawns" type="Node" parent="."]
@@ -1099,5 +1087,8 @@ transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.
 light_energy = 2.0
 shadow_enabled = true
 
-[editable path="EndZone"]
-[editable path="StartZone"]
+[node name="StartZone" parent="." instance=ExtResource("8_m14mc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="EndZone" parent="." instance=ExtResource("8_m14mc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 10)

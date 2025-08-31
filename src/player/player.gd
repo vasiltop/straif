@@ -19,13 +19,15 @@ signal damaged(health: float)
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
 const MAX_G_ACCEL := MAX_G_SPEED * 8
-const MAX_A_SPEED := 0.7
-const MAX_A_ACCEL: float = 200
+const MAX_A_SPEED := 0.8
+const MAX_A_ACCEL: float = 220
 const MAX_SLOPE: float = 1
 const JUMP_FORCE: float = 4
 const RUN_SOUND_DELAY := 0.4
 const MAX_HEALTH := 100.0
+const MAX_PRE := 7.5
 
+var _time_since_last_jump := 0.0
 var _time_since_last_run_sound := RUN_SOUND_DELAY
 var gravity: float = 12
 var pid: int
@@ -34,6 +36,8 @@ var can_move := true
 var can_turn := true
 var health := MAX_HEALTH
 var is_dead := false
+var is_pre_capped: bool
+var hardcore := true
 
 func player_name() -> String:
 	return get_node("Name").text
@@ -122,11 +126,16 @@ func _process(delta: float) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	_time_since_last_run_sound += delta
+	_time_since_last_jump += delta
 
 func _physics_process(delta: float) -> void:
 	if not is_me(): return
 	
-	var jump_input := Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump")
+	var jump_input := Input.is_action_just_pressed("jump")
+	
+	if not hardcore:
+		jump_input = Input.is_action_pressed("jump") or jump_input
+
 	_movement_process(delta, wish_dir(), jump_input)
 	
 	if Global.mp():
@@ -169,10 +178,10 @@ func _movement_process(delta: float, wish_dir: Vector2, jump_input: bool) -> voi
 
 	var vel_planar := Vector2(velocity.x, velocity.z)
 	var vel_vertical := _apply_gravity(velocity.y, delta)
-	vel_planar = _apply_friction(vel_planar, delta, wish_dir)
-	vel_planar = _update_velocity_ground(vel_planar, wish_dir, delta)
+	vel_planar = _apply_friction(vel_planar, delta, wish_dir, jump_input)
+	vel_planar = _update_velocity(vel_planar, wish_dir, delta, jump_input)
 	vel_vertical = _check_for_jump(vel_vertical, jump_input)
-
+	
 	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
 	
 	if velocity.length() > 0 and _time_since_last_run_sound >= RUN_SOUND_DELAY and grounded():
@@ -190,27 +199,33 @@ func _apply_gravity(velocity_y: float, delta: float) -> float:
 func grounded() -> bool:
 	return test_move(global_transform, Vector3(0, -0.01, 0))
 
-func _apply_friction(vel_planar: Vector2, delta: float, wish_dir: Vector2) -> Vector2:
-	if not grounded(): return vel_planar
-	if Input.is_action_pressed("jump"): return vel_planar
+func _apply_friction(vel_planar: Vector2, delta: float, wish_dir: Vector2, jump_input: bool) -> Vector2:
+	if not grounded() or jump_input: return vel_planar
 	
-	var v: Vector2 = vel_planar - vel_planar.normalized() * delta * MAX_G_ACCEL / 2
+	var v: Vector2 = vel_planar - vel_planar.normalized() * delta * MAX_G_ACCEL / 1.9
 
 	if v.length_squared() < 1.0 and wish_dir.length_squared() < 0.01:
 		return Vector2.ZERO
 	else:
 		return v
 
-func _update_velocity_ground(vel_planar: Vector2, wish_dir: Vector2, delta: float) -> Vector2:
+func _update_velocity(vel_planar: Vector2, wish_dir: Vector2, delta: float, jump_input: bool) -> Vector2:
 	var current_speed := vel_planar.dot(wish_dir)
 	var max_speed := MAX_G_SPEED if grounded() else MAX_A_SPEED
 	var max_accel := MAX_G_ACCEL if grounded() else MAX_A_ACCEL
 	var add_speed: float = clamp(max_speed - current_speed, 0.0, max_accel * delta)
-	return vel_planar + wish_dir * add_speed
+	
+	var new_vel := vel_planar + wish_dir * add_speed
+	
+	if grounded() and not jump_input and is_pre_capped:
+		new_vel = new_vel.limit_length(MAX_PRE)
+		
+	return new_vel
 
 func _check_for_jump(vel_vertical: float, jump_input: bool) -> float:
 	if jump_input and grounded():
 		jumped.emit()
+		_time_since_last_jump = 0.0
 		return JUMP_FORCE
 
 	return vel_vertical

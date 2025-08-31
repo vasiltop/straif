@@ -6,10 +6,10 @@ const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
 var client: BetterHTTPClient 
-#var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straifapi.pumped.software"
+var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straifapi.pumped.software"
 #var api_url := "https://straifapi.pumped.software"
 var version := "dev"
-var api_url := "https://straifapi-staging.pumped.software"
+#var api_url := "https://straifapi-staging.pumped.software"
 #var version := "dev" if OS.has_feature("editor") else "0.1.7"
 var heartbeat_timer: BetterTimer
 
@@ -274,6 +274,7 @@ func get_servers() -> Array[ServerResponse]:
 		).send()
 	var data := await data_or_print_error(response)
 	if data == null: return []
+	
 	var res: Array[ServerResponse]
 	print(data)
 	for s in data:

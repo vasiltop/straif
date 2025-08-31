@@ -2026,18 +2026,6 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -22, 1
 
 [node name="Targets" type="Node" parent="."]
 
-[node name="EndZone" parent="." instance=ExtResource("5_08xop")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.0885217, 55)
-
-[node name="Collider" parent="EndZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
-[node name="StartZone" parent="." instance=ExtResource("5_08xop")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0.355922, -2)
-
-[node name="Collider" parent="StartZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
 [node name="Players" type="Node" parent="."]
 
 [node name="TargetSpawns" type="Node" parent="."]
@@ -2096,6 +2084,12 @@ script = ExtResource("19_xlciw")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0.480621)
 shape = SubResource("BoxShape3D_pcvff")
 
+[node name="StartZone" parent="." instance=ExtResource("5_08xop")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, -1)
+
+[node name="EndZone" parent="." instance=ExtResource("5_08xop")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 57.5719)
+
 [editable path="Map/screen"]
 [editable path="Map/screen5"]
 [editable path="Map/screen2"]
@@ -2108,5 +2102,3 @@ shape = SubResource("BoxShape3D_pcvff")
 [editable path="Map/bench3"]
 [editable path="Map/bench5"]
 [editable path="Map/bench4"]
-[editable path="EndZone"]
-[editable path="StartZone"]

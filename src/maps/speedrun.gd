@@ -37,12 +37,21 @@ func _ready() -> void:
 	add_child(sound_player)
 	add_child(map_ui)
 	player.weapon_handler.shot.connect(map_ui.on_shot)
+
+	player.hardcore = false
+	
 	map_ui.return_control_to_player.connect(_on_return_control_to_player)
 	map_ui.set_replay_visible(false)
 	player.jumped.connect(_on_player_jump)
 	Global.game_manager.replay_requested.connect(_on_replay_requested)
 	target_killed.connect(_on_target_killed)
 	_on_target_killed()
+	
+	start_zone.body_exited.connect(
+		func(body):
+			if not running and not completed:
+				_start_run()
+	)
 
 	map_ui.slider.value_changed.connect(_on_replay_slider_changed)
 	map_ui.slider.drag_started.connect(
@@ -110,7 +119,8 @@ func _physics_process(_delta: float) -> void:
 
 func _recorder_process() -> void:
 	var interact_input := Input.is_action_just_pressed("interact")
-	var shoot_input := Input.is_action_just_pressed("attack") or Input.is_action_pressed("attack") 
+	var reload_input := Input.is_action_just_pressed("reload")
+	var shoot_input := player.weapon_handler.attack_input()
 	var rot_y := player.global_rotation.y
 	var rot_x := player.camera.global_rotation.x
 	var rot := Vector2(rot_x, rot_y)
@@ -121,6 +131,7 @@ func _recorder_process() -> void:
 	frame.position = player.global_position
 	frame.shoot_input = shoot_input
 	frame.interact_input = interact_input
+	frame.reload_input = reload_input
 	frame.weapon_index = Global.game_manager.get_weapon_index(player.weapon_handler.current_weapon)
 
 	recorder.add_frame(frame)
@@ -143,6 +154,9 @@ func _start_run() -> void:
 
 func _on_player_jump() -> void:
 	if not _has_jumped:
+		player.is_pre_capped = false
+		if not running and not completed:
+			_start_run()
 		_has_jumped = true
 		map_ui.first_jump_speed_label.visible = map_ui.alt_speed_label.visible
 		map_ui.first_jump_speed_label.text = map_ui.speed_label.text
@@ -152,14 +166,7 @@ func _process(delta: float) -> void:
 	
 	if not completed and player_in_end_zone and target_container.get_child_count() == 0:
 		await _win()
-	
-	if not running and not completed:
-		start_timer -= delta
-		map_ui.set_start_time(start_timer)
-		
-		if start_timer <= 0.0:
-			_start_run()
-	
+
 	if Input.is_action_just_pressed("restart"):
 		restart(player)
 
@@ -183,7 +190,7 @@ func spawn_target(pos: Vector3) -> void:
 func restart(player: Player) -> void:
 	recorder.pause_playback()
 	recorder.controller.visible = false
-	player.can_move = false
+	#player.can_move = false
 	
 	if player.sniper_overlay.visible:
 		player.weapon_handler.toggle_sniper_scope()
@@ -192,6 +199,7 @@ func restart(player: Player) -> void:
 	player.camera._input_rotation = start_rotation
 	player_in_end_zone = false
 	player.weapon_handler.shot.emit(0, 0)
+	player.is_pre_capped = true
 
 	player.velocity = Vector3.ZERO
 	player.weapon_handler.set_weapon(null)

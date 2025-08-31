@@ -55,7 +55,6 @@ var pvp_mode_to_map := {
 
 func _init(is_server: bool) -> void:
 	if not is_server:
-		print("calling web api")
 		Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
 		Steam.getAuthTicketForWebApi("munost")
 	
@@ -66,10 +65,6 @@ func _init(is_server: bool) -> void:
 		# TODO: Add loading binary packed versions when exporting
 		if file.ends_with(".tres"):
 			weapons.append(load(path + file))
-	
-	print("dir files")
-	print(dir.get_files())
-	print(weapons)
 
 func get_weapon_index(weapon: WeaponData) -> int:
 	if weapon == null: return 0
@@ -115,7 +110,7 @@ func _server_ready() -> void:
 func connect_to_server(ip: String, port: int) -> void:
 	print(port)
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client("209.38.2.30", port)
+	peer.create_client("127.0.0.1", port) #209.38.2.30
 	Global.multiplayer.multiplayer_peer = peer
 
 func on_peer_connected(id: int) -> void:

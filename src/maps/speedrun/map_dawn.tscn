@@ -172,7 +172,7 @@ environment = SubResource("Environment_l4w43")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 1.08873, 0.24421)
 
 [node name="StartZone" parent="." instance=ExtResource("6_y7vrs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
 
 [node name="EndZone" parent="." instance=ExtResource("6_y7vrs")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.8088, 7.21802, -9.86053)

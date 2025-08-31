@@ -261,12 +261,6 @@ surface_material_override/0 = SubResource("ShaderMaterial_y68ki")
 transform = Transform3D(0.998, 0, 0, 0, 1.02, 0, 0, 0, 0.998, 0, -0.00329193, 0)
 shape = SubResource("ConvexPolygonShape3D_o4jvy")
 
-[node name="Planks10" parent="Map" instance=ExtResource("16_3c63a")]
-transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 0, 2.14884, 3)
-
-[node name="Planks11" parent="Map" instance=ExtResource("16_3c63a")]
-transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, -11, 6.00621, 3)
-
 [node name="Building11" type="StaticBody3D" parent="Map"]
 transform = Transform3D(101.4, 0, 0, 0, 315, 0, 0, 0, 50, -60, -50.8286, -102)
 
@@ -683,18 +677,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.21587, 3)
 
 [node name="Targets" type="Node" parent="."]
 
-[node name="EndZone" parent="." instance=ExtResource("9_n0bts")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 5.64331, 3)
-
-[node name="Collider" parent="EndZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
-[node name="StartZone" parent="." instance=ExtResource("9_n0bts")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3)
-
-[node name="Collider" parent="StartZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
 [node name="Players" type="Node" parent="."]
 
 [node name="TargetSpawns" type="Node" parent="."]
@@ -733,5 +715,8 @@ script = ExtResource("18_3c63a")
 shape = SubResource("BoxShape3D_n0bts")
 debug_fill = false
 
-[editable path="EndZone"]
-[editable path="StartZone"]
+[node name="StartZone" parent="." instance=ExtResource("9_n0bts")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3)
+
+[node name="EndZone" parent="." instance=ExtResource("9_n0bts")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 6, 3)

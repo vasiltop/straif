@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cxsm27jxccaul"]
+[gd_scene load_steps=19 format=3 uid="uid://cxsm27jxccaul"]
 
 [ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/speedrun.gd" id="1_4x8du"]
 [ext_resource type="PackedScene" uid="uid://d0rpe3n6n6hgj" path="res://src/maps/tiles/structure.glb" id="2_0cwmr"]
@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="5_ydj32"]
 [ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/skyboxes/pink.png" id="6_1r0mp"]
 [ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="8_mn4bu"]
-[ext_resource type="PackedScene" uid="uid://s1gi6bk381wf" path="res://src/maps/tiles/planks.tscn" id="8_vakwt"]
 [ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="13_c1icp"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nlsro"]
@@ -100,25 +99,10 @@ visible = false
 mesh = SubResource("PlaneMesh_nlsro")
 surface_material_override/0 = SubResource("StandardMaterial3D_ydj32")
 
-[node name="Planks10" parent="Map" instance=ExtResource("8_vakwt")]
-transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 8.01783, 12.3409, -30.5391)
-
 [node name="Player" parent="." instance=ExtResource("4_nlsro")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.15, -2)
 
 [node name="Targets" type="Node" parent="."]
-
-[node name="EndZone" parent="." instance=ExtResource("5_ydj32")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 12, -30.5496)
-
-[node name="Collider" parent="EndZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
-[node name="StartZone" parent="." instance=ExtResource("5_ydj32")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -2)
-
-[node name="Collider" parent="StartZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
 
 [node name="Players" type="Node" parent="."]
 
@@ -133,14 +117,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 1.31134, -31)
 [node name="Target3" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 3.33609, -31)
 
-[node name="Target4" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.9416, 3.82637, -36.0495)
-
 [node name="Target5" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.1636, 4.79329, -51.7864)
-
-[node name="Target6" type="Node3D" parent="TargetSpawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.7772, 4.69544, -50.6595)
 
 [node name="Target7" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.32849, 12.3273, -30.3767)
@@ -164,6 +142,10 @@ script = ExtResource("13_c1icp")
 shape = SubResource("BoxShape3D_ttw3k")
 debug_fill = false
 
+[node name="StartZone" parent="." instance=ExtResource("5_ydj32")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -3)
+
+[node name="EndZone" parent="." instance=ExtResource("5_ydj32")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.58872, 12, -30.4062)
+
 [editable path="Map/structure"]
-[editable path="EndZone"]
-[editable path="StartZone"]

@@ -169,7 +169,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 0, 
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 0, -18)
 
 [node name="wall52" parent="Map" instance=ExtResource("2_ws7w4")]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 0.5, 0, 1.50996e-07, 0, -1, 0, 2.71743, -5)
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 0.5, 0, 1.50996e-07, 0, -1, 0, 3.23696, -8)
 
 [node name="Label3D" type="Label3D" parent="Map/wall52"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 2, 0, 8.74228e-08, 0, -1, -8.71654e-08, 1, 0.997056)
@@ -177,7 +177,7 @@ text = "To move, use WASD
 To jump, press SPACE"
 
 [node name="wall53" parent="Map" instance=ExtResource("2_ws7w4")]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 0.5, 0, 1.50996e-07, 0, -1, 0, 2.71743, -11)
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 0.5, 0, 1.50996e-07, 0, -1, 0, 3.23696, -14)
 
 [node name="Label3D" type="Label3D" parent="Map/wall53"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 2, 0, 8.74228e-08, 0, -1, -8.71654e-08, 1, 0.997056)
@@ -185,7 +185,7 @@ text = "To equip a weapon, press F"
 font_size = 22
 
 [node name="wall66" parent="Map" instance=ExtResource("2_ws7w4")]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 0.5, 0, 1.50996e-07, 0, -1, 0, 2.71743, -19)
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 0.5, 0, 1.50996e-07, 0, -1, 0, 3.23696, -22)
 
 [node name="Label3D" type="Label3D" parent="Map/wall66"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 2, 0, 8.74228e-08, 0, -1, -8.71654e-08, 1, 0.997056)
@@ -443,18 +443,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -1)
 
 [node name="Targets" type="Node" parent="."]
 
-[node name="EndZone" parent="." instance=ExtResource("7_156ry")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -27)
-
-[node name="Collider" parent="EndZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
-[node name="StartZone" parent="." instance=ExtResource("7_156ry")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-
-[node name="Collider" parent="StartZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.65125, 0.00308228)
-
 [node name="Players" type="Node" parent="."]
 
 [node name="TargetSpawns" type="Node" parent="."]
@@ -467,5 +455,8 @@ transform = Transform3D(0.85264, -0.245298, 0.461339, 0, 0.882948, 0.469472, -0.
 light_energy = 2.0
 shadow_enabled = true
 
-[editable path="EndZone"]
-[editable path="StartZone"]
+[node name="StartZone" parent="." instance=ExtResource("7_156ry")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="EndZone" parent="." instance=ExtResource("7_156ry")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26)

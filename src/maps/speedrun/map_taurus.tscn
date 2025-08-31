@@ -184,10 +184,10 @@ mesh = SubResource("BoxMesh_degwk")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 1.08873, 0.24421)
 
 [node name="StartZone" parent="." instance=ExtResource("13_zone")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.463968, 0.136555, 0.24421)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.115411, 0.136555, 0.24421)
 
 [node name="EndZone" parent="." instance=ExtResource("13_zone")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 36.7333, -39.7579, -27.4207)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 36.7333, -39.7579, -27.5791)
 
 [node name="Targets" type="Node" parent="."]
 

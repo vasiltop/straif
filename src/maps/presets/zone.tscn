@@ -39,10 +39,11 @@ size = Vector2(0.03, 0.03)
 collision_mask = 2
 
 [node name="Collider" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 1.40091, 0.00308228)
+transform = Transform3D(2.25, 0, 0, 0, 1, 0, 0, 0, 2.25, 0.00186157, 1.40091, 0.00308228)
 shape = SubResource("BoxShape3D_sconu")
 
 [node name="Particles" type="GPUParticles3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 0, 0)
 amount = 35
 lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_8u567")
@@ -54,8 +55,10 @@ material_override = ExtResource("1_ok2f4")
 script = ExtResource("2_ok2f4")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0)
 size = Vector3(2, 3, 2)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0)
 operation = 2
 size = Vector3(1.99, 3, 1.99)

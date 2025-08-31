@@ -19,6 +19,7 @@ class Frame:
 	var shoot_input: bool
 	var interact_input: bool
 	var weapon_index: int
+	var reload_input: bool
 
 func _init(player_cam: Camera3D, map: Map) -> void:
 	self.player_cam = player_cam
@@ -28,7 +29,7 @@ func _ready() -> void:
 	var inst := PlayerScene.instantiate()
 	add_child(inst)
 	inst.visible = false
-	
+	inst.hardcore = false
 	var mesh := inst.get_node("ThirdPerson/Model/FullArmature/Skeleton3D/character") as MeshInstance3D
 	mesh.set_surface_override_material(0, load("res://src/player/player_transparent.tres"))
 	controller = inst
@@ -57,8 +58,12 @@ func set_frame(value: int) -> void:
 	if is_ghost and controller.weapon_handler.weapon_scene:
 		controller.weapon_handler.weapon_scene.get_parent().rotation.x = frame.rot.x
 	
+	#print(frame.shoot_input)
 	if frame.shoot_input:
 		controller.weapon_handler._try_shoot(true)
+	
+	if frame.reload_input:
+		controller.weapon_handler.reload()
 
 	var prev_frame: Frame = currently_playing[current_frame]
 	#var last_frame: Frame = currently_playing[max(value - 1, 0)]
@@ -135,8 +140,10 @@ func to_bytes() -> PackedByteArray:
 			packed |= 1 << 0
 		if frame.interact_input:
 			packed |= 1 << 1
+		if frame.reload_input:
+			packed |= 1 << 2
 		
-		packed |= (frame.weapon_index & 0b00111111) << 2
+		packed |= (frame.weapon_index & 0b00011111) << 3
 
 		buffer.put_u8(packed)
 	
@@ -164,7 +171,8 @@ func frames_from_bytes(data: PackedByteArray) -> Array:
 				var frame := Frame.new()
 				frame.shoot_input = (packed & (1 << 0)) != 0
 				frame.interact_input = (packed & (1 << 1)) != 0
-				frame.weapon_index = (packed >> 2) & 0b00111111
+				frame.reload_input = (packed & (1 << 2)) != 0
+				frame.weapon_index = (packed >> 3) & 0b00011111
 				frame.position.x = x
 				frame.position.y = y
 				frame.position.z = z
