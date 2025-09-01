@@ -96,7 +96,8 @@ func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 	current_frame = 0
 	controller.visible = true
 	self.is_ghost = is_ghost
-	controller.weapon_handler.set_weapon(null)
+	
+	controller.weapon_handler.set_weapon(null, is_ghost)
 	
 	if not is_ghost:
 		controller.camera.make_current()

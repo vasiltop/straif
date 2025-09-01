@@ -106,7 +106,6 @@ func _on_animation_finished(anim_name: String) -> void:
 		hitbox.monitoring = false
 
 func _on_sword_hit(body: Node3D) -> void:
-	print(body)
 	if body is BodyPart:
 		if body.owned_by is Player and body.owned_by.is_me(): return
 		
@@ -355,6 +354,9 @@ func _input(event: InputEvent) -> void:
 func init_ik(is_third_person: bool) -> void:
 	var rik = r_hand_ik_tp if is_third_person else r_hand_ik
 	var lik = l_hand_ik_tp if is_third_person else l_hand_ik
+	
+	if not player.is_me():
+		print(current_weapon, is_third_person)
 	
 	if not current_weapon:
 		rik.stop()

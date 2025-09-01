@@ -251,5 +251,5 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_thuwb")
 draw_pass_1 = SubResource("QuadMesh_thuwb")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer3D" parent="."]
 volume_db = 10.0
