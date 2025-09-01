@@ -105,6 +105,7 @@ func setup() -> void:
 	
 	for child: PhysicalBone3D in bone_simulator.get_children():
 		child.collision_layer = 0
+		#child.process_mode = Node.PROCESS_MODE_DISABLED
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size

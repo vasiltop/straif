@@ -106,6 +106,7 @@ func _on_animation_finished(anim_name: String) -> void:
 		hitbox.monitoring = false
 
 func _on_sword_hit(body: Node3D) -> void:
+	print(body)
 	if body is BodyPart:
 		if body.owned_by is Player and body.owned_by.is_me(): return
 		
@@ -322,15 +323,18 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 	if result != {}:
 		hit_pos = result.position
 		var collider = result.collider
-		if not ghost_bullet and collider is BodyPart:
+		
+		if collider is BodyPart:
 			var body_part: BodyPart = collider
-			body_part.apply_damage(audio, current_weapon.damage)
+			
+			if not ghost_bullet:
+				body_part.apply_damage(audio, current_weapon.damage)
+				
 			if Global.mp():
 				_spawn_blood.rpc(hit_pos)
 			else:
 				_spawn_blood(hit_pos)
-	
-		if collider is not BodyPart:	
+		elif collider is not BodyPart:	
 			if Global.mp():
 				_spawn_bullet_hole.rpc(hit_pos, result.normal)
 			else:

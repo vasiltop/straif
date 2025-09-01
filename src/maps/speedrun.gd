@@ -37,7 +37,7 @@ func _ready() -> void:
 	add_child(sound_player)
 	add_child(map_ui)
 	player.weapon_handler.shot.connect(map_ui.on_shot)
-
+	#recorder.controller.weapon_handler.shot.connect(map_ui.on_shot)
 	player.hardcore = false
 	
 	map_ui.return_control_to_player.connect(_on_return_control_to_player)
@@ -120,7 +120,7 @@ func _physics_process(_delta: float) -> void:
 func _recorder_process() -> void:
 	var interact_input := Input.is_action_just_pressed("interact")
 	var reload_input := Input.is_action_just_pressed("reload")
-	var shoot_input := player.weapon_handler.attack_input()
+	var shoot_input := player.weapon_handler.attack_input() and player.weapon_handler.mag_ammo > 0
 	var rot_y := player.global_rotation.y
 	var rot_x := player.camera.global_rotation.x
 	var rot := Vector2(rot_x, rot_y)

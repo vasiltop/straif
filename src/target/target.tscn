@@ -16,10 +16,10 @@ script = ExtResource("1_i0tq7")
 
 [node name="Head" type="StaticBody3D" parent="." node_paths=PackedStringArray("owned_by")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09486, 0)
+collision_layer = 5
 script = ExtResource("2_5hcwb")
 owned_by = NodePath("..")
 multiplier = 3.0
-metadata/_custom_type_script = "uid://daiqu1ltgie0e"
 
 [node name="HeadCollider" type="CollisionShape3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000130487, 1.18437, -0.00242611)
@@ -27,6 +27,7 @@ shape = SubResource("SphereShape3D_s6ky1")
 
 [node name="Torso" type="StaticBody3D" parent="." node_paths=PackedStringArray("owned_by")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.994858, 0)
+collision_layer = 5
 script = ExtResource("2_5hcwb")
 owned_by = NodePath("..")
 

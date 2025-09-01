@@ -33,6 +33,9 @@ func _ready() -> void:
 	var mesh := inst.get_node("ThirdPerson/Model/FullArmature/Skeleton3D/character") as MeshInstance3D
 	mesh.set_surface_override_material(0, load("res://src/player/player_transparent.tres"))
 	controller = inst
+	
+	for child: PhysicalBone3D in inst.bone_simulator.get_children():
+		child.collision_layer = 0
 
 func add_frame(frame: Frame) -> void:
 	frames.append(frame)
