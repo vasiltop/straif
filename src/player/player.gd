@@ -43,7 +43,7 @@ func player_name() -> String:
 	return get_node("Name").text
 
 @rpc("call_remote", "any_peer", "reliable")
-func on_damage(value: float) -> void:
+func on_damage(value: float, weapon_name: String) -> void:
 	health -= value
 	damaged.emit(health)
 	
@@ -53,7 +53,7 @@ func on_damage(value: float) -> void:
 	var sender := multiplayer.get_remote_sender_id()
 	
 	if health <= 0:
-		dead.emit(sender, pid)
+		dead.emit(sender, pid, weapon_name)
 
 @rpc("call_local", "authority", "reliable")
 func ragdoll() -> void:
@@ -63,6 +63,9 @@ func ragdoll() -> void:
 	weapon_handler.weapon_scene.visible = false
 	
 	if is_me():
+		if sniper_overlay.visible:
+			weapon_handler.toggle_sniper_scope()
+
 		ragdoll_camera.current = true
 		weapon_handler.visible = false
 
@@ -76,6 +79,7 @@ func respawn() -> void:
 	damaged.emit(health)
 	
 	if is_me():
+		weapon_handler.reset_ammo()
 		camera.current = true
 		weapon_handler.visible = true
 
@@ -105,7 +109,6 @@ func setup() -> void:
 	
 	for child: PhysicalBone3D in bone_simulator.get_children():
 		child.collision_layer = 0
-		#child.process_mode = Node.PROCESS_MODE_DISABLED
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size
@@ -132,11 +135,7 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_me(): return
 	
-	var jump_input := Input.is_action_just_pressed("jump")
-	
-	if not hardcore:
-		jump_input = Input.is_action_pressed("jump") or jump_input
-
+	var jump_input := Input.is_action_just_pressed("jump") or Input.is_action_pressed("jump")
 	_movement_process(delta, wish_dir(), jump_input)
 	
 	if Global.mp():

@@ -37,8 +37,11 @@ func change_map(path: String) -> void:
 
 func _on_player_disconnected(id: int) -> void:
 	for player in players.get_children():
-		if player.pid == id: # TODO: Make the bullet holes not hit the player
+		if player.pid == id:
+			if Global.is_sv():
+				dm_ui.log_player_event.rpc(player.get_node("Name").text, false)
 			player.queue_free()
+			return
 
 func get_rand_spawn() -> Vector3:
 	var spawns := loaded_map.get_node("Spawns").get_children()
@@ -62,6 +65,7 @@ func _send_info(steam_name: String) -> void:
 		_create_player.rpc_id(sender, player.pid, player.global_position, steam_name, weapon_index)
 
 	_create_player.rpc(sender, get_rand_spawn(), steam_name, 1)
+	dm_ui.log_player_event.rpc(steam_name, true)
 
 @rpc("call_local", "authority", "reliable")
 func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_index: int) -> void:
@@ -110,9 +114,9 @@ func get_player(id: int) -> Player:
 func get_players() -> Array[Node]:
 	return players.get_children()
 
-func _on_player_death(sender: int, id: int) -> void:
+func _on_player_death(sender: int, id: int, weapon_name: String) -> void:
 	Global.mp_print("Player %d has been killed." % id)
-	dm_ui.log_kill.rpc(get_player(sender).player_name(), get_player(id).player_name())
+	dm_ui.log_kill.rpc(get_player(sender).player_name(), get_player(id).player_name(), weapon_name)
 	get_player(id).ragdoll.rpc()
 	await get_tree().create_timer(1.5).timeout
 	get_player(id).respawn.rpc()

@@ -46,6 +46,13 @@ func set_weapon_to_index(index: int, is_tp := false) -> void:
 	var weapon := Global.game_manager.get_weapon_from_index(index)
 	set_weapon(weapon, is_tp)
 
+func reset_ammo() -> void:
+	mag_ammo = current_weapon.mag_ammo
+	max_mag_ammo = mag_ammo
+	reserve_ammo = current_weapon.reserve_ammo
+	
+	shot.emit(mag_ammo, reserve_ammo)
+
 @rpc("any_peer", "call_local", "reliable")
 func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 	current_weapon = weapon
@@ -56,14 +63,11 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 	if current_weapon != null:
 		time_since_last_shot = current_weapon.weapon_shot_delay
 		weapon_scene = weapon.scene.instantiate()
-		mag_ammo = current_weapon.mag_ammo
-		max_mag_ammo = mag_ammo
-		reserve_ammo = current_weapon.reserve_ammo
-		shot.emit(mag_ammo, reserve_ammo)
-		
+		reset_ammo()
+
 		# move it out of the way so it doesnt flicker
 		weapon_scene.global_position = Vector3.ZERO
-		
+
 		var gun_parent := gun_container
 		if is_third_person: 
 			gun_parent = weapon_pos_tp
@@ -71,11 +75,11 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 			mesh.set_layer_mask_value(1, true)
 			mesh.set_layer_mask_value(2, false)
 			weapon_scene.scale *= 0.4
-			
+
 			var muzzle_flash := weapon_scene.get_node("MuzzleFlash") as GPUParticles3D
 			muzzle_flash.set_layer_mask_value(1, true)
 			muzzle_flash.set_layer_mask_value(2, false)
-			
+
 		gun_parent.add_child(weapon_scene)
 
 		arms.visible = true
@@ -93,7 +97,6 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 		arms.visible = false
 		
 	init_ik(is_third_person)
-	#Global.mp_print("Set players weapon to %s" % weapon.name)
 
 func _on_animation_started(anim_name: String) -> void:
 	if anim_name == "shoot" and player.is_me(): 
@@ -109,7 +112,7 @@ func _on_sword_hit(body: Node3D) -> void:
 	if body is BodyPart:
 		if body.owned_by is Player and body.owned_by.is_me(): return
 		
-		body.apply_damage(audio, current_weapon.damage)
+		body.apply_damage(audio, current_weapon.damage, "Sword")
 		player.camera.shake(0.1, 0.03)
 
 func _process(delta: float) -> void:
@@ -156,6 +159,8 @@ func _handle_inputs() -> void:
 		reload()
 
 func reload() -> void:
+	if not current_weapon: return
+	
 	if Global.mp():
 		reload_anim.rpc()
 	else:
@@ -327,7 +332,7 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 			var body_part: BodyPart = collider
 			
 			if not ghost_bullet:
-				body_part.apply_damage(audio, current_weapon.damage)
+				body_part.apply_damage(audio, current_weapon.damage, current_weapon.name)
 				
 			if Global.mp():
 				_spawn_blood.rpc(hit_pos)
@@ -354,10 +359,7 @@ func _input(event: InputEvent) -> void:
 func init_ik(is_third_person: bool) -> void:
 	var rik = r_hand_ik_tp if is_third_person else r_hand_ik
 	var lik = l_hand_ik_tp if is_third_person else l_hand_ik
-	
-	if not player.is_me():
-		print(current_weapon, is_third_person)
-	
+
 	if not current_weapon:
 		rik.stop()
 		lik.stop()
