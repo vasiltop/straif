@@ -6,6 +6,7 @@ var _remaining: float
 var _magnitude: float
 var _mouse_input: Vector2
 var _input_rotation: Vector3
+var can_rotate := true
 
 func shake(duration: float, magnitude: float) -> void:
 	_remaining = duration
@@ -38,6 +39,7 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if not player.can_move: return
 	if not player.can_turn: return
+	if not can_rotate: return
 	
 	var sens: float = Global.settings_manager.value("Controls", "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity")
 	sens = sens / 1000

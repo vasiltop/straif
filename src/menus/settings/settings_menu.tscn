@@ -2,20 +2,46 @@
 
 [ext_resource type="Script" uid="uid://c3q1cww6ok2ln" path="res://src/menus/settings/settings_menu.gd" id="1_orxww"]
 
-[node name="SettingsMenu" type="TabContainer"]
+[node name="Control" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer" node_paths=PackedStringArray("sens_label", "sens_slider", "window_mode_input", "max_fps_input", "volume_slider", "keybinds", "ads_sens_label", "ads_sens_slider", "vsync_input", "resolution_input", "speed_label_input", "save_settings_btn")]
+layout_mode = 2
+size_flags_vertical = 3
 current_tab = 0
 script = ExtResource("1_orxww")
+sens_label = NodePath("Controls/Margin/V/Sensitivity/SensLabel")
+sens_slider = NodePath("Controls/Margin/V/Sensitivity/SliderInput")
+window_mode_input = NodePath("Display/Margin/V/WindowMode/Input")
+max_fps_input = NodePath("Display/Margin/V/MaxFps/Input")
+volume_slider = NodePath("Audio/Margin/V/Volume/Input")
+keybinds = NodePath("Controls/Margin/V/Keybinds")
+ads_sens_label = NodePath("Controls/Margin/V/AdsSensitivity/SensLabel")
+ads_sens_slider = NodePath("Controls/Margin/V/AdsSensitivity/SliderInput")
+vsync_input = NodePath("Display/Margin/V/Vsync/Input")
+resolution_input = NodePath("Display/Margin/V/Resolution/Input")
+speed_label_input = NodePath("Display/Margin/V/SpeedLabel/Input")
+save_settings_btn = NodePath("../Save")
 
-[node name="Controls" type="ScrollContainer" parent="."]
+[node name="Controls" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Margin" type="MarginContainer" parent="Controls"]
+[node name="Margin" type="MarginContainer" parent="VBoxContainer/TabContainer/Controls"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -24,62 +50,62 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="V" type="VBoxContainer" parent="Controls/Margin"]
+[node name="V" type="VBoxContainer" parent="VBoxContainer/TabContainer/Controls/Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="Sensitivity" type="HBoxContainer" parent="Controls/Margin/V"]
+[node name="Sensitivity" type="HBoxContainer" parent="VBoxContainer/TabContainer/Controls/Margin/V"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Controls/Margin/V/Sensitivity"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Controls/Margin/V/Sensitivity"]
 layout_mode = 2
 text = "Sensitivity"
 
-[node name="SensLabel" type="Label" parent="Controls/Margin/V/Sensitivity"]
+[node name="SensLabel" type="Label" parent="VBoxContainer/TabContainer/Controls/Margin/V/Sensitivity"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "0.0"
 
-[node name="SliderInput" type="HSlider" parent="Controls/Margin/V/Sensitivity"]
+[node name="SliderInput" type="HSlider" parent="VBoxContainer/TabContainer/Controls/Margin/V/Sensitivity"]
 custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
 max_value = 5.0
 step = 0.01
 
-[node name="AdsSensitivity" type="HBoxContainer" parent="Controls/Margin/V"]
+[node name="AdsSensitivity" type="HBoxContainer" parent="VBoxContainer/TabContainer/Controls/Margin/V"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Controls/Margin/V/AdsSensitivity"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Controls/Margin/V/AdsSensitivity"]
 layout_mode = 2
 text = "ADS Sensitivity"
 
-[node name="SensLabel" type="Label" parent="Controls/Margin/V/AdsSensitivity"]
+[node name="SensLabel" type="Label" parent="VBoxContainer/TabContainer/Controls/Margin/V/AdsSensitivity"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "0.0"
 
-[node name="SliderInput" type="HSlider" parent="Controls/Margin/V/AdsSensitivity"]
+[node name="SliderInput" type="HSlider" parent="VBoxContainer/TabContainer/Controls/Margin/V/AdsSensitivity"]
 custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
 max_value = 3.0
 step = 0.01
 
-[node name="Keybinds" type="HFlowContainer" parent="Controls/Margin/V"]
+[node name="Keybinds" type="HFlowContainer" parent="VBoxContainer/TabContainer/Controls/Margin/V"]
 layout_mode = 2
 theme_override_constants/h_separation = 10
 
-[node name="Display" type="ScrollContainer" parent="."]
+[node name="Display" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Margin" type="MarginContainer" parent="Display"]
+[node name="Margin" type="MarginContainer" parent="VBoxContainer/TabContainer/Display"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -88,22 +114,22 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="V" type="VBoxContainer" parent="Display/Margin"]
+[node name="V" type="VBoxContainer" parent="VBoxContainer/TabContainer/Display/Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="WindowMode" type="HBoxContainer" parent="Display/Margin/V"]
+[node name="WindowMode" type="HBoxContainer" parent="VBoxContainer/TabContainer/Display/Margin/V"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Display/Margin/V/WindowMode"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Display/Margin/V/WindowMode"]
 layout_mode = 2
 text = "Window Mode"
 
-[node name="Input" type="OptionButton" parent="Display/Margin/V/WindowMode"]
+[node name="Input" type="OptionButton" parent="VBoxContainer/TabContainer/Display/Margin/V/WindowMode"]
 layout_mode = 2
 selected = 0
 item_count = 3
@@ -114,20 +140,20 @@ popup/item_1/id = 1
 popup/item_2/text = "Windowed"
 popup/item_2/id = 2
 
-[node name="Label2" type="Label" parent="Display/Margin/V/WindowMode"]
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Display/Margin/V/WindowMode"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.646029, 0.646029, 0.646029, 1)
 
-[node name="Resolution" type="HBoxContainer" parent="Display/Margin/V"]
+[node name="Resolution" type="HBoxContainer" parent="VBoxContainer/TabContainer/Display/Margin/V"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Display/Margin/V/Resolution"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Display/Margin/V/Resolution"]
 layout_mode = 2
 text = "Resolution"
 
-[node name="Input" type="OptionButton" parent="Display/Margin/V/Resolution"]
+[node name="Input" type="OptionButton" parent="VBoxContainer/TabContainer/Display/Margin/V/Resolution"]
 layout_mode = 2
 selected = 0
 item_count = 7
@@ -146,55 +172,55 @@ popup/item_5/id = 4
 popup/item_6/text = "1366x768"
 popup/item_6/id = 3
 
-[node name="MaxFps" type="HBoxContainer" parent="Display/Margin/V"]
+[node name="MaxFps" type="HBoxContainer" parent="VBoxContainer/TabContainer/Display/Margin/V"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Display/Margin/V/MaxFps"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Display/Margin/V/MaxFps"]
 layout_mode = 2
 text = "Max Fps"
 
-[node name="Input" type="SpinBox" parent="Display/Margin/V/MaxFps"]
+[node name="Input" type="SpinBox" parent="VBoxContainer/TabContainer/Display/Margin/V/MaxFps"]
 layout_mode = 2
 min_value = 30.0
 max_value = 540.0
 value = 240.0
 
-[node name="Label2" type="Label" parent="Display/Margin/V/MaxFps"]
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Display/Margin/V/MaxFps"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.646029, 0.646029, 0.646029, 1)
 
-[node name="Vsync" type="HBoxContainer" parent="Display/Margin/V"]
+[node name="Vsync" type="HBoxContainer" parent="VBoxContainer/TabContainer/Display/Margin/V"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Display/Margin/V/Vsync"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Display/Margin/V/Vsync"]
 layout_mode = 2
 text = "Vsync"
 
-[node name="Input" type="CheckBox" parent="Display/Margin/V/Vsync"]
+[node name="Input" type="CheckBox" parent="VBoxContainer/TabContainer/Display/Margin/V/Vsync"]
 layout_mode = 2
 
-[node name="SpeedLabel" type="HBoxContainer" parent="Display/Margin/V"]
+[node name="SpeedLabel" type="HBoxContainer" parent="VBoxContainer/TabContainer/Display/Margin/V"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Display/Margin/V/SpeedLabel"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Display/Margin/V/SpeedLabel"]
 layout_mode = 2
 text = "Show speed under crosshair"
 
-[node name="Input" type="CheckBox" parent="Display/Margin/V/SpeedLabel"]
+[node name="Input" type="CheckBox" parent="VBoxContainer/TabContainer/Display/Margin/V/SpeedLabel"]
 layout_mode = 2
 
-[node name="Audio" type="ScrollContainer" parent="."]
+[node name="Audio" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="Margin" type="MarginContainer" parent="Audio"]
+[node name="Margin" type="MarginContainer" parent="VBoxContainer/TabContainer/Audio"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -203,27 +229,33 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="V" type="VBoxContainer" parent="Audio/Margin"]
+[node name="V" type="VBoxContainer" parent="VBoxContainer/TabContainer/Audio/Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="Volume" type="HBoxContainer" parent="Audio/Margin/V"]
+[node name="Volume" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio/Margin/V"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Audio/Margin/V/Volume"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Audio/Margin/V/Volume"]
 layout_mode = 2
 text = "Master Volume"
 
-[node name="Input" type="HSlider" parent="Audio/Margin/V/Volume"]
+[node name="Input" type="HSlider" parent="VBoxContainer/TabContainer/Audio/Margin/V/Volume"]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 min_value = -50.0
 max_value = 10.0
 
-[node name="Label2" type="Label" parent="Audio/Margin/V/Volume"]
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Audio/Margin/V/Volume"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.646029, 0.646029, 0.646029, 1)
+
+[node name="Save" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Save Settings"

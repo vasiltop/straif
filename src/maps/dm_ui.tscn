@@ -20,6 +20,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("2_apyh6")
 
 [node name="Control" type="MarginContainer" parent="Control"]
@@ -29,6 +30,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("2_apyh6")
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15

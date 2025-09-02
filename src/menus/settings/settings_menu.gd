@@ -1,18 +1,20 @@
 class_name SettingsMenu extends TabContainer
 
-@onready var sens_label: Label = $Controls/Margin/V/Sensitivity/SensLabel
-@onready var sens_slider: Slider = $Controls/Margin/V/Sensitivity/SliderInput
-@onready var window_mode_input: OptionButton = $Display/Margin/V/WindowMode/Input
-@onready var max_fps_input: SpinBox = $Display/Margin/V/MaxFps/Input
-@onready var volume_slider: Slider = $Audio/Margin/V/Volume/Input
-@onready var keybinds: HFlowContainer = $Controls/Margin/V/Keybinds
-@onready var ads_sens_label: Label = $Controls/Margin/V/AdsSensitivity/SensLabel
-@onready var ads_sens_slider: HSlider = $Controls/Margin/V/AdsSensitivity/SliderInput
-@onready var vsync_input: CheckBox = $Display/Margin/V/Vsync/Input
-@onready var resolution_input: OptionButton = $Display/Margin/V/Resolution/Input
-@onready var speed_label_input: CheckBox = $Display/Margin/V/SpeedLabel/Input
+@export var sens_label: Label
+@export var sens_slider: Slider
+@export var window_mode_input: OptionButton
+@export var max_fps_input: SpinBox
+@export var volume_slider: Slider
+@export var keybinds: HFlowContainer
+@export var ads_sens_label: Label
+@export var ads_sens_slider: HSlider
+@export var vsync_input: CheckBox
+@export var resolution_input: OptionButton
+@export var speed_label_input: CheckBox
+@export var save_settings_btn: Button
 
 func _ready() -> void:
+	if Global.is_sv(): return
 	_set_init_values()
 
 	sens_slider.value_changed.connect(_on_sens_slider_changed)
@@ -23,6 +25,7 @@ func _ready() -> void:
 	max_fps_input.value_changed.connect(_on_max_fps_changed)
 	vsync_input.toggled.connect(_on_vsync_changed)
 	speed_label_input.toggled.connect(_on_speed_label_input_changed)
+	save_settings_btn.pressed.connect(Global.settings_manager.save)
 	
 	for action in Global.settings_manager.get_custom_actions():
 		var label := Label.new()

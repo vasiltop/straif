@@ -72,7 +72,7 @@ jump={
 "deadzone": 0.2,
 "events": []
 }
-main_menu={
+pause={
 "deadzone": 0.2,
 "events": []
 }

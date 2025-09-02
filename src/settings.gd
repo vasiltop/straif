@@ -1,7 +1,7 @@
 class_name Settings
 
 const PATH := "user://settings.cfg"
-const SETTINGS_VERSION := 9
+const SETTINGS_VERSION := 10
 
 var node: Node
 var config := ConfigFile.new()
@@ -12,7 +12,7 @@ var default_keybinds: Dictionary[String, Keybind] = {
 	"down" = Keybind.new(KEY_S),
 	"jump" = Keybind.new(KEY_SPACE),
 	"climb" = Keybind.new(KEY_SPACE),
-	"main_menu" = Keybind.new(KEY_ESCAPE),
+	"pause" = Keybind.new(KEY_ESCAPE),
 	"restart" = Keybind.new(KEY_T),
 	"reload" = Keybind.new(KEY_R),
 	"inspect" = Keybind.new(KEY_E),

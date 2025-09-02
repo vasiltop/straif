@@ -40,6 +40,7 @@ var mag_ammo := 0
 var reserve_ammo := 0
 var max_mag_ammo := 0
 var current_recoil: Vector2
+var shooting_enabled := true
 
 @rpc("any_peer", "call_local", "reliable")
 func set_weapon_to_index(index: int, is_tp := false) -> void:
@@ -233,7 +234,7 @@ func can_shoot(ghost_bullet: bool) -> bool:
 	if mag_ammo <= 0 and not ghost_bullet: return false
 	if time_since_last_shot < current_weapon.weapon_shot_delay: return false
 	
-	return true
+	return shooting_enabled
 
 func _try_shoot(ghost_bullet := false) -> void:
 	if not can_shoot(ghost_bullet): return

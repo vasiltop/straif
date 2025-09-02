@@ -10,9 +10,12 @@ signal damaged(health: float)
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var camera_anchor: Marker3D = $CameraAnchor
-@onready var sniper_overlay: TextureRect = $UI/SniperOverlay
 @onready var third_person: Node3D = $ThirdPerson
 
+@export var sniper_overlay: TextureRect
+@export var main_menu_btn: Button
+@export var quit_btn: Button
+@export var pause_menu: Control
 @export var bone_simulator: PhysicalBoneSimulator3D
 @export var ragdoll_camera: Camera3D
 
@@ -109,6 +112,16 @@ func setup() -> void:
 	
 	for child: PhysicalBone3D in bone_simulator.get_children():
 		child.collision_layer = 0
+		
+	main_menu_btn.pressed.connect(
+		func() -> void:
+			get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
+	)
+	
+	quit_btn.pressed.connect(
+		func() -> void:
+			get_tree().quit()
+	)
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size
@@ -118,16 +131,19 @@ func _ready() -> void:
 	camera.current = false
 	gun_camera.current = false
 	weapon_handler.visible = false
+	pause_menu.visible = false
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_on_viewport_resized()
 
 func _process(delta: float) -> void:
 	if not is_me(): return
 
-	if Input.is_action_just_pressed("main_menu"):
-		Global.multiplayer.multiplayer_peer = null
-		get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if Input.is_action_just_pressed("pause"):
+		pause_menu.visible = not pause_menu.visible
+		camera.can_rotate = not pause_menu.visible
+		weapon_handler.shooting_enabled = not pause_menu.visible
+		
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if pause_menu.visible else Input.MOUSE_MODE_CAPTURED
 	
 	_time_since_last_run_sound += delta
 	_time_since_last_jump += delta
@@ -172,12 +188,11 @@ func wish_dir() -> Vector2:
 	return wish_dir_from(left_input, right_input, up_input, down_input)
 
 func _movement_process(delta: float, wish_dir: Vector2, jump_input: bool) -> void:
-	if not can_move: return
-	
-	wish_dir = wish_dir.rotated(-rotation.y)
-
-	var vel_planar := Vector2(velocity.x, velocity.z)
 	var vel_vertical := _apply_gravity(velocity.y, delta)
+
+	wish_dir = wish_dir.rotated(-rotation.y)
+	var vel_planar := Vector2(velocity.x, velocity.z)
+	
 	vel_planar = _apply_friction(vel_planar, delta, wish_dir, jump_input)
 	vel_planar = _update_velocity(vel_planar, wish_dir, delta, jump_input)
 	vel_vertical = _check_for_jump(vel_vertical, jump_input)
