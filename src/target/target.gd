@@ -3,6 +3,7 @@ class_name Target extends Node3D
 @onready var map: Map = $"../.."
 
 var health: float = 100
+var identifier: int
 
 func _ready() -> void:
 	tree_exited.connect(map.target_killed.emit)
@@ -16,6 +17,7 @@ func _process(_delta: float) -> void:
 	look_at(target_position, Vector3.UP)
 
 func on_death() -> void:
+	print(identifier)
 	queue_free()
 
 func on_damage() -> void:

@@ -56,8 +56,8 @@ func _process(delta: float) -> void:
 		frame_picked_up = map.recorder.current_frame
 		previous_weapon = currently_touching.weapon_handler.current_weapon
 		currently_touching.weapon_handler.set_weapon(weapon)
-		audio_player.stream = EquipSound
-		audio_player.play()
+		#audio_player.stream = EquipSound
+		#audio_player.play()
 		deactivate()
 
 func deactivate() -> void:

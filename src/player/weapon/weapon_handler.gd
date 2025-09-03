@@ -31,7 +31,10 @@ const RAY_LENGTH := 1000
 const BulletHoleScene := preload("res://src/player/weapon/bullet_hole.tscn")
 const BloodScene := preload("res://src/player/weapon/blood.tscn")
 const ReloadSound = preload("res://src/sounds/reload.wav")
+const EquipSound = preload("res://src/sounds/equip.mp3")
+const SNIPER_SCOPE_SPAM_TIME := 0.05
 
+var time_since_last_scope := SNIPER_SCOPE_SPAM_TIME
 var audio: AudioStreamPlayer = AudioStreamPlayer.new()
 var current_weapon: WeaponData
 var mouse_mov := 0.0
@@ -50,7 +53,8 @@ func set_weapon_to_index(index: int, is_tp := false) -> void:
 func reset_ammo() -> void:
 	mag_ammo = current_weapon.mag_ammo
 	max_mag_ammo = mag_ammo
-	reserve_ammo = current_weapon.reserve_ammo
+	#reserve_ammo = current_weapon.reserve_ammo
+	reserve_ammo = INF
 	
 	shot.emit(mag_ammo, reserve_ammo)
 
@@ -62,6 +66,8 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 		weapon_scene.queue_free()
 		
 	if current_weapon != null:
+		audio_player.stream = EquipSound
+		audio_player.play()
 		time_since_last_shot = current_weapon.weapon_shot_delay
 		weapon_scene = weapon.scene.instantiate()
 		reset_ammo()
@@ -118,6 +124,7 @@ func _on_sword_hit(body: Node3D) -> void:
 
 func _process(delta: float) -> void:
 	time_since_last_shot += delta
+	time_since_last_scope += delta
 	
 	if not player.is_me(): return
 	_handle_inputs()
@@ -156,7 +163,7 @@ func _handle_inputs() -> void:
 	if Input.is_action_just_pressed("scope") and current_weapon.is_sniper:
 		toggle_sniper_scope()
 		
-	if Input.is_action_just_pressed("reload") and not current_weapon.is_melee and not mag_ammo == max_mag_ammo and reserve_ammo > 0:
+	if Input.is_action_just_pressed("reload") and not current_weapon.is_melee and not mag_ammo == max_mag_ammo:
 		reload()
 
 func reload() -> void:
@@ -167,10 +174,12 @@ func reload() -> void:
 	else:
 		reload_anim()
 	
-	reserve_ammo += mag_ammo
-	var v := min(max_mag_ammo, reserve_ammo)
-	mag_ammo = v
-	reserve_ammo -= v
+	#reserve_ammo += mag_ammo
+	#var v := min(max_mag_ammo, reserve_ammo)
+	#mag_ammo = v
+	#reserve_ammo -= v
+	
+	mag_ammo = max_mag_ammo
 	
 	shot.emit(mag_ammo, reserve_ammo)
 	
@@ -183,6 +192,11 @@ func reload_anim() -> void:
 	audio_player.play("equip")
 	
 func toggle_sniper_scope() -> void:
+	if not current_weapon.is_sniper: return
+	if time_since_last_scope < SNIPER_SCOPE_SPAM_TIME: return
+	
+	time_since_last_scope = 0
+	
 	player.sniper_overlay.visible = not player.sniper_overlay.visible
 	visible = not visible
 	const FOV_DIFF := 45

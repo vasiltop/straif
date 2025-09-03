@@ -21,6 +21,7 @@ signal toggled_pause(value: bool)
 @export var pause_menu: Control
 @export var bone_simulator: PhysicalBoneSimulator3D
 @export var ragdoll_camera: Camera3D
+@export var fps_label: Label
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
@@ -167,7 +168,9 @@ func _physics_process(delta: float) -> void:
 	
 	if Global.mp():
 		_update_state.rpc(global_position, global_rotation.y, camera.global_rotation.x, get_ups())
-
+	
+	fps_label.text = "%d fps" % Engine.get_frames_per_second()
+	
 @rpc("any_peer", "call_remote", "unreliable")
 func _update_state(pos: Vector3, rot_y: float, rot_x: float, speed: float) -> void:
 	global_position = pos

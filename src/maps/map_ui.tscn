@@ -17,8 +17,13 @@ default_font_size = 15
 [sub_resource type="Theme" id="Theme_nvgh5"]
 default_font = ExtResource("11_5vm7s")
 
-[node name="MapUi" type="CanvasLayer" node_paths=PackedStringArray("game_info", "ammo_label", "leaderboard")]
+[node name="MapUi" type="CanvasLayer" node_paths=PackedStringArray("done_replay_btn", "tick_label", "replay_slider", "replay_container", "replay_v", "game_info", "ammo_label", "leaderboard")]
 script = ExtResource("1_jnrmt")
+done_replay_btn = NodePath("ReplayContainer/V/Done")
+tick_label = NodePath("ReplayContainer/V/Label")
+replay_slider = NodePath("ReplayContainer/V/Slider")
+replay_container = NodePath("ReplayContainer")
+replay_v = NodePath("ReplayContainer/V")
 game_info = NodePath("UiContainer/GameInfo")
 ammo_label = NodePath("UiContainer/BottomLeft/V/Ammo")
 leaderboard = NodePath("UiContainer/GameInfo/Leaderboard")
@@ -78,32 +83,6 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_font_sizes/font_size = 15
 text = "59.98 u/s"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TopLeft" type="Panel" parent="UiContainer"]
-custom_minimum_size = Vector2(120, 30)
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -120.0
-offset_top = -30.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_styles/panel = ExtResource("3_rr83r")
-
-[node name="Fps" type="Label" parent="UiContainer/TopLeft"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 17
-text = "60 fps"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -332,38 +311,44 @@ text = "Admin - Click any player's name to view details."
 [node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Admin/M/V"]
 layout_mode = 2
 
-[node name="V" type="VBoxContainer" parent="UiContainer"]
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 1
+[node name="ReplayContainer" type="Control" parent="."]
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -150.0
-offset_top = -188.0
+offset_top = -147.0
 offset_right = 150.0
-offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="V" type="VBoxContainer" parent="ReplayContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+offset_right = 300.0
+offset_bottom = 147.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("2_uralg")
 alignment = 1
 
-[node name="Label" type="Label" parent="UiContainer/V"]
+[node name="Label" type="Label" parent="ReplayContainer/V"]
 layout_mode = 2
 text = "Frame: 0 / 999"
 horizontal_alignment = 1
 
-[node name="Info" type="Label" parent="UiContainer/V"]
+[node name="Info" type="Label" parent="ReplayContainer/V"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "Press Ctrl to toggle UI
 Press Restart to restart"
 horizontal_alignment = 1
 
-[node name="Slider" type="HSlider" parent="UiContainer/V"]
+[node name="Slider" type="HSlider" parent="ReplayContainer/V"]
 layout_mode = 2
 
-[node name="Done" type="Button" parent="UiContainer/V"]
+[node name="Done" type="Button" parent="ReplayContainer/V"]
 layout_mode = 2
 text = "Back"

@@ -17,7 +17,7 @@ class Frame:
 	var position: Vector3
 	var rot: Vector2
 	var shoot_input: bool
-	var interact_input: bool
+	var ads_input: bool
 	var weapon_index: int
 	var reload_input: bool
 	
@@ -25,6 +25,9 @@ class Frame:
 	var back_input: bool
 	var right_input: bool
 	var left_input: bool
+	
+	var ammo: int
+	var targets_state: Array[bool]
 
 func _init(player_cam: Camera3D, map: Map) -> void:
 	self.player_cam = player_cam
@@ -35,6 +38,7 @@ func _ready() -> void:
 	add_child(inst)
 	inst.visible = false
 	inst.hardcore = false
+	inst.fps_label.get_parent().visible = false
 	var mesh := inst.get_node("ThirdPerson/Model/FullArmature/Skeleton3D/character") as MeshInstance3D
 	mesh.set_surface_override_material(0, load("res://src/player/player_transparent.tres"))
 	controller = inst
@@ -68,6 +72,9 @@ func set_frame(value: int) -> void:
 	
 	if frame.shoot_input:
 		controller.weapon_handler._try_shoot(true)
+	print(frame.ads_input)
+	if frame.ads_input:
+		controller.weapon_handler.toggle_sniper_scope()
 	
 	if frame.reload_input:
 		controller.weapon_handler.reload()
@@ -96,14 +103,26 @@ func set_frame(value: int) -> void:
 		
 	if prev_frame.weapon_index != frame.weapon_index:
 		controller.weapon_handler.set_weapon(Global.game_manager.get_weapon_from_index(frame.weapon_index), is_ghost)
-
-	controller.weapon_handler.sway(dt, frame.left_input, frame.right_input, frame.forward_input, frame.back_input)
+	
+	map.map_ui.on_shot(frame.ammo)
+	
+	if current_frame > value:
+		map.reset_targets()
+	
+	for identifier in range(len(frame.targets_state)):
+		if not frame.targets_state[identifier]:
+			for target in map.target_container.get_children():
+				if target.identifier == identifier:
+					target.queue_free()
+	
+	controller.weapon_handler.sway(dt / 2, frame.left_input, frame.right_input, frame.forward_input, frame.back_input)
 	
 	current_frame = value
 
 func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 	current_frame = 0
 	controller.visible = true
+	controller.ui.visible = true
 	self.is_ghost = is_ghost
 	
 	controller.weapon_handler.set_weapon(null, is_ghost)
@@ -151,7 +170,7 @@ func to_bytes() -> PackedByteArray:
 
 		if frame.shoot_input:
 			packed |= 1 << 0
-		if frame.interact_input:
+		if frame.ads_input:
 			packed |= 1 << 1
 		if frame.reload_input:
 			packed |= 1 << 2
@@ -171,7 +190,18 @@ func to_bytes() -> PackedByteArray:
 		if frame.left_input:
 			packed |= 1 << 3
 		
-		buffer.put_8(packed)
+		buffer.put_u8(packed)
+		
+		buffer.put_u8(frame.ammo)
+		
+		var targets_state := 0
+		
+		for identifier in range(len(frame.targets_state)):
+			if frame.targets_state[identifier]:
+				targets_state |= 1 << identifier
+		
+		buffer.put_u16(targets_state)
+		
 	
 	return buffer.data_array
 		
@@ -193,11 +223,13 @@ func frames_from_bytes(data: PackedByteArray) -> Array:
 				var rot_y := buffer.get_float()
 				
 				var packed := buffer.get_u8()
-				var direction_packed := buffer.get_8()
+				var direction_packed := buffer.get_u8()
+				var ammo := buffer.get_u8()
+				var targets_state := buffer.get_16()
 				
 				var frame := Frame.new()
 				frame.shoot_input = (packed & (1 << 0)) != 0
-				frame.interact_input = (packed & (1 << 1)) != 0
+				frame.ads_input = (packed & (1 << 1)) != 0
 				frame.reload_input = (packed & (1 << 2)) != 0
 				frame.weapon_index = (packed >> 3) & 0b00011111
 				frame.position.x = x
@@ -210,7 +242,13 @@ func frames_from_bytes(data: PackedByteArray) -> Array:
 				frame.back_input = (direction_packed & (1 << 1)) != 0
 				frame.right_input = (direction_packed & (1 << 2)) != 0
 				frame.left_input = (direction_packed & (1 << 3)) != 0
-
+				
+				frame.ammo = ammo
+				
+				frame.targets_state = []
+				for identifier in range(16):
+					frame.targets_state.append((targets_state & (1 << identifier)) != 0)
+				
 				frames.append(frame)
 	
 	return frames

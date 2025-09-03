@@ -94,7 +94,7 @@ func feed_log(value: String) -> void:
 	label.add_theme_font_size_override("font_size", KILLFEED_FONT_SIZE)
 	
 func on_shot(mag_ammo: int, reserve_ammo: int) -> void:
-	ammo_label.text = "Ammo: %d / %d" % [mag_ammo, reserve_ammo]
+	ammo_label.text = "Ammo: %d / Inf" % [mag_ammo]
 
 func on_damaged(health: float) -> void:
 	health_label.text = "Health: %d" % [health]

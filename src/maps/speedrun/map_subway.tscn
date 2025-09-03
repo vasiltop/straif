@@ -2030,22 +2030,22 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -22, 1
 
 [node name="TargetSpawns" type="Node" parent="."]
 
-[node name="Node3D" type="Node3D" parent="TargetSpawns"]
+[node name="0" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.7144, 0.458508, -0.671127)
 
-[node name="Node3D2" type="Node3D" parent="TargetSpawns"]
+[node name="1" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.7144, 0.458508, 18.1976)
 
-[node name="Node3D3" type="Node3D" parent="TargetSpawns"]
+[node name="2" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.880852, 0.458508, 37.4363)
 
-[node name="Node3D5" type="Node3D" parent="TargetSpawns"]
+[node name="3" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.1236, 0.458508, 37.4363)
 
-[node name="Node3D6" type="Node3D" parent="TargetSpawns"]
+[node name="4" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.1022, 0.458508, 56.7128)
 
-[node name="Node3D4" type="Node3D" parent="TargetSpawns"]
+[node name="5" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.8809, 0.458508, 18.1976)
 
 [node name="Sun" type="DirectionalLight3D" parent="."]

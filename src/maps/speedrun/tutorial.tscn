@@ -447,7 +447,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -1)
 
 [node name="TargetSpawns" type="Node" parent="."]
 
-[node name="Spawn" type="Node3D" parent="TargetSpawns"]
+[node name="0" type="Node3D" parent="TargetSpawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0501601, -19)
 
 [node name="Sun" type="DirectionalLight3D" parent="."]

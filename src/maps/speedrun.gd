@@ -53,13 +53,13 @@ func _ready() -> void:
 				_start_run()
 	)
 
-	map_ui.slider.value_changed.connect(_on_replay_slider_changed)
-	map_ui.slider.drag_started.connect(
+	map_ui.replay_slider.value_changed.connect(_on_replay_slider_changed)
+	map_ui.replay_slider.drag_started.connect(
 		func() -> void:
 			recorder.pause_playback()
 			dragging_frame_slider = true
 			)
-	map_ui.slider.drag_ended.connect(
+	map_ui.replay_slider.drag_ended.connect(
 		func(changed: bool) -> void:
 			recorder.resume_playback()
 			dragging_frame_slider = false
@@ -96,6 +96,8 @@ func _on_return_control_to_player(should_restart := true) -> void:
 	player.gun_camera.current = true
 	recorder.controller.camera.current = false
 	recorder.controller.gun_camera.current = false
+	recorder.controller.ui.visible = false
+	player.ui.visible = true
 	player.can_move = true
 	player.weapon_handler.visible = true
 	recorder.pause_playback()
@@ -114,6 +116,7 @@ func _on_replay_requested(data: String) -> void:
 	player.gun_camera.current = false
 	player.can_move = false
 	player.weapon_handler.visible = false
+	player.ui.visible = false
 	recorder.play_bytes(Marshalls.base64_to_raw(data))
 	map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
 
@@ -132,7 +135,7 @@ func _physics_process(_delta: float) -> void:
 		map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
 
 func _recorder_process() -> void:
-	var interact_input := Input.is_action_just_pressed("interact")
+	var ads_input := Input.is_action_just_pressed("scope")
 	var reload_input := Input.is_action_just_pressed("reload")
 	var shoot_input := player.weapon_handler.attack_input() and player.weapon_handler.mag_ammo > 0
 	var rot_y := player.global_rotation.y
@@ -144,18 +147,26 @@ func _recorder_process() -> void:
 	var up_input := Input.is_action_pressed("up")
 	var down_input := Input.is_action_pressed("down")
 	
+	var targets := target_container.get_children()
+	var targets_state: Array[bool]
+	targets_state.resize(len(get_target_spawns()))
+	for target in targets:
+		targets_state[target.identifier] = true
+	
 	var frame: Recorder.Frame = Recorder.Frame.new()
 
 	frame.rot = rot
 	frame.position = player.global_position
 	frame.shoot_input = shoot_input
-	frame.interact_input = interact_input
+	frame.ads_input = ads_input
 	frame.reload_input = reload_input
 	frame.weapon_index = Global.game_manager.get_weapon_index(player.weapon_handler.current_weapon)
 	frame.back_input = down_input
 	frame.forward_input = up_input
 	frame.right_input = right_input
 	frame.left_input = left_input
+	frame.ammo = player.weapon_handler.mag_ammo
+	frame.targets_state = targets_state
 
 	recorder.add_frame(frame)
 
@@ -205,10 +216,11 @@ func _win() -> void:
 	var bytes := recorder.to_bytes()
 	await Global.server_bridge.publish_run(Global.game_manager.current_mode, bytes, Global.game_manager.current_map.name, int(timer * 1000))
 
-func spawn_target(pos: Vector3) -> void:
+func spawn_target(identifier: int, pos: Vector3) -> void:
 	var inst: Target = TargetScene.instantiate()
 	target_container.add_child(inst)
 	inst.global_position = pos
+	inst.identifier = identifier
 
 func restart(player: Player) -> void:
 	recorder.pause_playback()
@@ -262,7 +274,8 @@ func reset_targets() -> void:
 		node.queue_free()
 
 	if mode == "target":
-		for spawn in get_target_spawns():
-			spawn_target(spawn.global_position)
+		var target_spawns := get_target_spawns()
+		for i in range(len(target_spawns)):
+			spawn_target(int(target_spawns[i].name), target_spawns[i].global_position)
 	
 	_on_target_killed()
