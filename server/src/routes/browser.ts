@@ -40,6 +40,7 @@ const servers = new Map<string, Server>();
 
 app.post('/', zValidator('json', ServerInput), async (c) => {
   const body = c.req.valid('json');
+  const ip = c.req.header('CF-Connecting-IP') ?? '127.0.0.1';
 
   if (servers.has(body.name)) {
     const server = servers.get(body.name);
@@ -48,13 +49,12 @@ app.post('/', zValidator('json', ServerInput), async (c) => {
     server.port = body.port;
     server.mode = body.mode;
     server.map = body.map;
+    server.ip = ip;
     server.player_count = body.player_count;
     server.max_players = body.max_players;
 
     return c.body(null, 200);
   }
-
-  const ip = c.req.header('CF-Connecting-IP') ?? '127.0.0.1';
 
   const server: Server = {
     ...body,
