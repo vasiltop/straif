@@ -44,7 +44,7 @@ func _ready() -> void:
 				
 				send_weapon_update_to(index, 1)
 		)
-		
+
 func send_weapon_update_to(weapon_index: int, to: int) -> void:
 	get_parent().get_player(Global.id()).weapon_handler.set_weapon_to_index.rpc_id(to, weapon_index, Global.id() != to)
 
@@ -52,23 +52,23 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard"):
 		weapon_select.visible = true
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	
+
 	if Input.is_action_just_released("leaderboard"):
 		weapon_select.visible = false
 		
 		if not get_parent().get_player(Global.id()).is_paused():
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		
+
 	time_since_last_feed_update += delta
-	
+
 	if time_since_last_feed_update >= FEED_TTL:
 		killfeed.visible = false
 		for child in killfeed.get_children():
 			child.queue_free()
-	
+
 	if Global.is_sv():
 		game_time -= delta
-		
+
 		if game_time <= 0:
 			get_parent().new_map()
 			game_time = TIME_PER_MAP

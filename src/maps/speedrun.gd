@@ -38,7 +38,6 @@ func _ready() -> void:
 	add_child(map_ui)
 	player.weapon_handler.shot.connect(map_ui.on_shot)
 	player.toggled_pause.connect(_on_toggled_pause)
-	#recorder.controller.weapon_handler.shot.connect(map_ui.on_shot)
 	player.hardcore = false
 	
 	map_ui.return_control_to_player.connect(_on_return_control_to_player)
@@ -91,7 +90,7 @@ func _on_replay_slider_changed(value: float) -> void:
 func is_watching_replay() -> bool:
 	return map_ui.is_replay_visible()
 
-func _on_return_control_to_player() -> void:
+func _on_return_control_to_player(should_restart := true) -> void:
 	map_ui.set_replay_visible(false)
 	player.camera.current = true
 	player.gun_camera.current = true
@@ -100,7 +99,10 @@ func _on_return_control_to_player() -> void:
 	player.can_move = true
 	player.weapon_handler.visible = true
 	recorder.pause_playback()
-	restart(player)
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	if should_restart:
+		restart(player)
 
 func _on_target_killed() -> void:
 	map_ui.set_target_status(target_container.get_child_count(), target_spawns_container.get_child_count())
@@ -137,6 +139,11 @@ func _recorder_process() -> void:
 	var rot_x := player.camera.global_rotation.x
 	var rot := Vector2(rot_x, rot_y)
 	
+	var left_input := Input.is_action_pressed("left")
+	var right_input := Input.is_action_pressed("right")
+	var up_input := Input.is_action_pressed("up")
+	var down_input := Input.is_action_pressed("down")
+	
 	var frame: Recorder.Frame = Recorder.Frame.new()
 
 	frame.rot = rot
@@ -145,6 +152,10 @@ func _recorder_process() -> void:
 	frame.interact_input = interact_input
 	frame.reload_input = reload_input
 	frame.weapon_index = Global.game_manager.get_weapon_index(player.weapon_handler.current_weapon)
+	frame.back_input = down_input
+	frame.forward_input = up_input
+	frame.right_input = right_input
+	frame.left_input = left_input
 
 	recorder.add_frame(frame)
 

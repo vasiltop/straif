@@ -20,6 +20,11 @@ class Frame:
 	var interact_input: bool
 	var weapon_index: int
 	var reload_input: bool
+	
+	var forward_input: bool
+	var back_input: bool
+	var right_input: bool
+	var left_input: bool
 
 func _init(player_cam: Camera3D, map: Map) -> void:
 	self.player_cam = player_cam
@@ -61,7 +66,6 @@ func set_frame(value: int) -> void:
 	if is_ghost and controller.weapon_handler.weapon_scene:
 		controller.weapon_handler.weapon_scene.get_parent().rotation.x = frame.rot.x
 	
-	#print(frame.shoot_input)
 	if frame.shoot_input:
 		controller.weapon_handler._try_shoot(true)
 	
@@ -69,9 +73,9 @@ func set_frame(value: int) -> void:
 		controller.weapon_handler.reload()
 
 	var prev_frame: Frame = currently_playing[current_frame]
-	#var last_frame: Frame = currently_playing[max(value - 1, 0)]
+	var last_frame: Frame = currently_playing[max(value - 1, 0)]
 	
-	var prev_position: Vector3 = prev_frame.position
+	var prev_position: Vector3 = last_frame.position
 	var current_position: Vector3 = frame.position
 	
 	prev_position.y = 0
@@ -80,6 +84,9 @@ func set_frame(value: int) -> void:
 	var diff := current_position - prev_position
 	var dt := 1.0 / 60.0
 	var speed := diff.length() / dt
+	
+	if value == len(currently_playing) - 1:
+		speed = 0.0
 	
 	if is_ghost:
 		controller.set_animation_blend(1.0 if speed >= 3.0 else 0.0)
@@ -90,6 +97,8 @@ func set_frame(value: int) -> void:
 	if prev_frame.weapon_index != frame.weapon_index:
 		controller.weapon_handler.set_weapon(Global.game_manager.get_weapon_from_index(frame.weapon_index), is_ghost)
 
+	controller.weapon_handler.sway(dt, frame.left_input, frame.right_input, frame.forward_input, frame.back_input)
+	
 	current_frame = value
 
 func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
@@ -150,6 +159,19 @@ func to_bytes() -> PackedByteArray:
 		packed |= (frame.weapon_index & 0b00011111) << 3
 
 		buffer.put_u8(packed)
+		
+		packed = 0
+		
+		if frame.forward_input:
+			packed |= 1 << 0
+		if frame.back_input:
+			packed |= 1 << 1
+		if frame.right_input:
+			packed |= 1 << 2
+		if frame.left_input:
+			packed |= 1 << 3
+		
+		buffer.put_8(packed)
 	
 	return buffer.data_array
 		
@@ -171,7 +193,8 @@ func frames_from_bytes(data: PackedByteArray) -> Array:
 				var rot_y := buffer.get_float()
 				
 				var packed := buffer.get_u8()
-
+				var direction_packed := buffer.get_8()
+				
 				var frame := Frame.new()
 				frame.shoot_input = (packed & (1 << 0)) != 0
 				frame.interact_input = (packed & (1 << 1)) != 0
@@ -182,6 +205,11 @@ func frames_from_bytes(data: PackedByteArray) -> Array:
 				frame.position.z = z
 				frame.rot.x = rot_x
 				frame.rot.y = rot_y
+				
+				frame.forward_input = (direction_packed & (1 << 0)) != 0
+				frame.back_input = (direction_packed & (1 << 1)) != 0
+				frame.right_input = (direction_packed & (1 << 2)) != 0
+				frame.left_input = (direction_packed & (1 << 3)) != 0
 
 				frames.append(frame)
 	

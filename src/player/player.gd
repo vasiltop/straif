@@ -141,10 +141,8 @@ func _ready() -> void:
 func toggle_pause() -> void:
 	pause_menu.visible = not pause_menu.visible
 	toggled_pause.emit(pause_menu.visible)
-	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if pause_menu.visible else Input.MOUSE_MODE_CAPTURED
-
-	#crosshair.visible = not (requires_unlock() or game.requires_unlock())
+	can_turn = not pause_menu.visible
 
 func requires_unlock() -> bool:
 	return pause_menu.visible
@@ -154,7 +152,7 @@ func _process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("pause"):
 		toggle_pause()
-	
+
 	_time_since_last_run_sound += delta
 	_time_since_last_jump += delta
 

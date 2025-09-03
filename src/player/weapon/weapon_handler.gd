@@ -195,21 +195,27 @@ func toggle_sniper_scope() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not player.is_me(): return
-	_sway(delta)
+	
+	sway(delta, 
+		Input.is_action_pressed("left"), 
+		Input.is_action_pressed("right"), 
+		Input.is_action_pressed("up"), 
+		Input.is_action_pressed("down")
+	)
 
-func _sway(delta: float) -> void:
+func sway(delta: float, left: bool, right: bool, up: bool, down: bool) -> void:
 	var sway_rot := Vector3.ZERO
 	var sway_add := Vector3.ZERO
 
-	if mouse_mov > MAX_SWAY || Input.is_action_pressed("left"):
+	if mouse_mov > MAX_SWAY || left:
 		sway_add += sway_left
 		sway_rot += sway_left_rot
-	if mouse_mov < -MAX_SWAY || Input.is_action_pressed("right"):
+	if mouse_mov < -MAX_SWAY || right:
 		sway_add += sway_right
 		sway_rot += sway_right_rot
-	if Input.is_action_pressed("up"):
+	if up:
 		sway_add += sway_forward
-	if Input.is_action_pressed("down"):
+	if down:
 		sway_add += sway_backward
 	
 	sway_add += sway_vertical * sign(player.velocity.y)
@@ -233,6 +239,7 @@ func can_shoot(ghost_bullet: bool) -> bool:
 	if current_weapon == null: return false
 	if mag_ammo <= 0 and not ghost_bullet: return false
 	if time_since_last_shot < current_weapon.weapon_shot_delay: return false
+	if player.pause_menu.visible: return false
 	
 	return shooting_enabled
 
