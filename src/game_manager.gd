@@ -108,9 +108,8 @@ func _server_ready() -> void:
 	get_tree().change_scene_to_file(pvp_mode_to_map[current_pvp_mode])
 
 func connect_to_server(ip: String, port: int) -> void:
-	print(port)
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client("127.0.0.1", port) #209.38.2.30
+	peer.create_client(ip, port)
 	Global.multiplayer.multiplayer_peer = peer
 
 func on_peer_connected(id: int) -> void:

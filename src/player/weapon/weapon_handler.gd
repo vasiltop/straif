@@ -32,10 +32,11 @@ const BulletHoleScene := preload("res://src/player/weapon/bullet_hole.tscn")
 const BloodScene := preload("res://src/player/weapon/blood.tscn")
 const ReloadSound = preload("res://src/sounds/reload.wav")
 const EquipSound = preload("res://src/sounds/equip.mp3")
+const DamageSound := preload("res://src/sounds/hit.mp3")
 const SNIPER_SCOPE_SPAM_TIME := 0.05
 
 var time_since_last_scope := SNIPER_SCOPE_SPAM_TIME
-var audio: AudioStreamPlayer = AudioStreamPlayer.new()
+var audio: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
 var current_weapon: WeaponData
 var mouse_mov := 0.0
 var time_since_last_shot: float = 0
@@ -118,9 +119,13 @@ func _on_animation_finished(anim_name: String) -> void:
 func _on_sword_hit(body: Node3D) -> void:
 	if body is BodyPart:
 		if body.owned_by is Player and body.owned_by.is_me(): return
-		
+		audio.stream = DamageSound
+		audio.play()
 		body.apply_damage(audio, current_weapon.damage, "Sword")
 		player.camera.shake(0.1, 0.03)
+
+func _ready() -> void:
+	add_child(audio)
 
 func _process(delta: float) -> void:
 	time_since_last_shot += delta
@@ -192,6 +197,7 @@ func reload_anim() -> void:
 	audio_player.play("equip")
 	
 func toggle_sniper_scope() -> void:
+	if not current_weapon: return
 	if not current_weapon.is_sniper: return
 	if time_since_last_scope < SNIPER_SCOPE_SPAM_TIME: return
 	
@@ -352,6 +358,9 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 		
 		if collider is BodyPart:
 			var body_part: BodyPart = collider
+			
+			audio.stream = DamageSound
+			audio.play()
 			
 			if not ghost_bullet:
 				body_part.apply_damage(audio, current_weapon.damage, current_weapon.name)

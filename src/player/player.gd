@@ -22,6 +22,8 @@ signal toggled_pause(value: bool)
 @export var bone_simulator: PhysicalBoneSimulator3D
 @export var ragdoll_camera: Camera3D
 @export var fps_label: Label
+@export var hud_animator: AnimationPlayer
+@export var blood_overlay: TextureRect
 
 const RunSound := preload("res://src/sounds/run.mp3")
 const MAX_G_SPEED := 5.5
@@ -53,6 +55,8 @@ func player_name() -> String:
 func on_damage(value: float, weapon_name: String) -> void:
 	health -= value
 	damaged.emit(health)
+	
+	show_blood()
 
 	if not Global.is_sv(): return
 	if is_dead: return
@@ -61,6 +65,11 @@ func on_damage(value: float, weapon_name: String) -> void:
 
 	if health <= 0:
 		dead.emit(sender, pid, weapon_name)
+
+func show_blood() -> void:
+	hud_animator.play("bleed")
+	blood_overlay.flip_h = randi() % 2 == 0
+	blood_overlay.flip_v = randi() % 2 == 0
 
 @rpc("call_local", "authority", "reliable")
 func ragdoll() -> void:

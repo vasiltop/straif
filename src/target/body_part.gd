@@ -3,15 +3,10 @@ class_name BodyPart extends Node3D
 @export var owned_by: Node3D
 @export var multiplier: float = 1.0
 
-const DamageSound := preload("res://src/sounds/hit.mp3")
-
-func apply_damage(audio_player: AudioStreamPlayer, amount: float, weapon_name: String) -> void:
+func apply_damage(audio_player: AudioStreamPlayer3D, amount: float, weapon_name: String) -> void:
 	if not owned_by: return
 
 	owned_by.health -= amount * multiplier
-
-	audio_player.stream = DamageSound
-	audio_player.play()
 
 	if Global.mp():
 		Global.mp_print("Sending damage to %d" % owned_by.pid)

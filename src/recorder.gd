@@ -72,8 +72,8 @@ func set_frame(value: int) -> void:
 	
 	if frame.shoot_input:
 		controller.weapon_handler._try_shoot(true)
-	print(frame.ads_input)
-	if frame.ads_input:
+
+	if frame.ads_input and not is_ghost:
 		controller.weapon_handler.toggle_sniper_scope()
 	
 	if frame.reload_input:
@@ -106,14 +106,15 @@ func set_frame(value: int) -> void:
 	
 	map.map_ui.on_shot(frame.ammo)
 	
-	if current_frame > value:
-		map.reset_targets()
-	
-	for identifier in range(len(frame.targets_state)):
-		if not frame.targets_state[identifier]:
-			for target in map.target_container.get_children():
-				if target.identifier == identifier:
-					target.queue_free()
+	if not is_ghost:
+		if current_frame > value:
+			map.reset_targets()
+		
+		for identifier in range(len(frame.targets_state)):
+			if not frame.targets_state[identifier]:
+				for target in map.target_container.get_children():
+					if target.identifier == identifier:
+						target.queue_free()
 	
 	controller.weapon_handler.sway(dt / 2, frame.left_input, frame.right_input, frame.forward_input, frame.back_input)
 	
@@ -122,7 +123,6 @@ func set_frame(value: int) -> void:
 func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 	current_frame = 0
 	controller.visible = true
-	controller.ui.visible = true
 	self.is_ghost = is_ghost
 	
 	controller.weapon_handler.set_weapon(null, is_ghost)
@@ -132,6 +132,7 @@ func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 		controller.gun_camera.make_current()
 		controller.weapon_handler.visible = true
 		controller.third_person.visible = false
+		controller.ui.visible = true
 	else:
 		controller.third_person.visible = true
 		controller.weapon_handler.visible = false

@@ -7,13 +7,13 @@ var touching_player: bool
 func _ready() -> void:
 	body_entered.connect(
 		func(body: Node3D) -> void:
-			if body is Player:
+			if body is Player and body.is_me():
 				touching_player = true
 	)
 	
 	body_exited.connect(
 		func(body: Node3D) -> void:
-			if body is Player:
+			if body is Player and body.is_me():
 				touching_player = false
 	)
 	

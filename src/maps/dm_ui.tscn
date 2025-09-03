@@ -25,11 +25,12 @@ theme = ExtResource("2_apyh6")
 
 [node name="Control" type="MarginContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -30.0
+offset_bottom = 30.0
+grow_horizontal = 0
 mouse_filter = 2
 theme = ExtResource("2_apyh6")
 theme_override_constants/margin_left = 15

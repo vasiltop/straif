@@ -54,14 +54,7 @@ app.post('/', zValidator('json', ServerInput), async (c) => {
     return c.body(null, 200);
   }
 
-  const x_forwarded_for = c.req.header('x-forwarded-for');
-  let ip: string;
-
-  if (x_forwarded_for) {
-    ip = x_forwarded_for.split(',')[0].trim();
-  } else {
-    ip = '127.0.0.1';
-  }
+  const ip = c.req.header('CF-Connecting-IP') ?? '127.0.0.1';
 
   const server: Server = {
     ...body,

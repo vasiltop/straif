@@ -17,7 +17,6 @@ func _process(_delta: float) -> void:
 	look_at(target_position, Vector3.UP)
 
 func on_death() -> void:
-	print(identifier)
 	queue_free()
 
 func on_damage() -> void:
