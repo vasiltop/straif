@@ -3,6 +3,7 @@ class_name Player extends CharacterBody3D
 signal jumped
 signal dead(sender: int, id: int)
 signal damaged(health: float)
+signal toggled_pause(value: bool)
 
 @onready var camera: PlayerCamera = $Eye/Camera
 @onready var gun_camera: Camera3D = $Eye/Camera/GunVPContainer/GunVP/GunCam
@@ -12,9 +13,11 @@ signal damaged(health: float)
 @onready var camera_anchor: Marker3D = $CameraAnchor
 @onready var third_person: Node3D = $ThirdPerson
 
+@export var back_btn: Button
+@export var ui: CanvasLayer
+@export var crosshair: Control
 @export var sniper_overlay: TextureRect
 @export var main_menu_btn: Button
-@export var quit_btn: Button
 @export var pause_menu: Control
 @export var bone_simulator: PhysicalBoneSimulator3D
 @export var ragdoll_camera: Camera3D
@@ -49,12 +52,12 @@ func player_name() -> String:
 func on_damage(value: float, weapon_name: String) -> void:
 	health -= value
 	damaged.emit(health)
-	
+
 	if not Global.is_sv(): return
 	if is_dead: return
-	
+
 	var sender := multiplayer.get_remote_sender_id()
-	
+
 	if health <= 0:
 		dead.emit(sender, pid, weapon_name)
 
@@ -64,7 +67,7 @@ func ragdoll() -> void:
 	is_dead = true
 	can_move = false
 	weapon_handler.weapon_scene.visible = false
-	
+
 	if is_me():
 		if sniper_overlay.visible:
 			weapon_handler.toggle_sniper_scope()
@@ -80,7 +83,7 @@ func respawn() -> void:
 	weapon_handler.weapon_scene.visible = true
 	health = MAX_HEALTH
 	damaged.emit(health)
-	
+
 	if is_me():
 		weapon_handler.reset_ammo()
 		camera.current = true
@@ -92,7 +95,7 @@ func on_death() -> void:
 func is_me() -> bool:
 	if not Global.multiplayer.multiplayer_peer:
 		return pid == 1
-	
+
 	return multiplayer.get_unique_id() == pid
 
 func set_name_label(value: String) -> void:
@@ -109,19 +112,18 @@ func setup() -> void:
 	third_person.visible = false
 	name_label.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
+
 	for child: PhysicalBone3D in bone_simulator.get_children():
 		child.collision_layer = 0
-		
+
 	main_menu_btn.pressed.connect(
 		func() -> void:
 			get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
 	)
-	
-	quit_btn.pressed.connect(
-		func() -> void:
-			get_tree().quit()
-	)
+
+	back_btn.pressed.connect(toggle_pause)
+
+	ui.visible = true
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size
@@ -132,21 +134,32 @@ func _ready() -> void:
 	gun_camera.current = false
 	weapon_handler.visible = false
 	pause_menu.visible = false
+	ui.visible = false
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_on_viewport_resized()
+
+func toggle_pause() -> void:
+	pause_menu.visible = not pause_menu.visible
+	toggled_pause.emit(pause_menu.visible)
+	
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if pause_menu.visible else Input.MOUSE_MODE_CAPTURED
+
+	#crosshair.visible = not (requires_unlock() or game.requires_unlock())
+
+func requires_unlock() -> bool:
+	return pause_menu.visible
 
 func _process(delta: float) -> void:
 	if not is_me(): return
 
 	if Input.is_action_just_pressed("pause"):
-		pause_menu.visible = not pause_menu.visible
-		camera.can_rotate = not pause_menu.visible
-		weapon_handler.shooting_enabled = not pause_menu.visible
-		
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if pause_menu.visible else Input.MOUSE_MODE_CAPTURED
+		toggle_pause()
 	
 	_time_since_last_run_sound += delta
 	_time_since_last_jump += delta
+
+func is_paused() -> bool:
+	return pause_menu.visible
 
 func _physics_process(delta: float) -> void:
 	if not is_me(): return

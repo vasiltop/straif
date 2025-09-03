@@ -37,6 +37,7 @@ func _ready() -> void:
 	add_child(sound_player)
 	add_child(map_ui)
 	player.weapon_handler.shot.connect(map_ui.on_shot)
+	player.toggled_pause.connect(_on_toggled_pause)
 	#recorder.controller.weapon_handler.shot.connect(map_ui.on_shot)
 	player.hardcore = false
 	
@@ -79,6 +80,11 @@ func _ready() -> void:
 	
 	restart(player)
 
+func _on_toggled_pause(value: bool) -> void:
+	map_ui.set_replay_visible(false)
+	map_ui.leaderboard.middle.visible = false
+	_on_return_control_to_player()
+
 func _on_replay_slider_changed(value: float) -> void:
 	recorder.set_frame(value)
 
@@ -108,6 +114,12 @@ func _on_replay_requested(data: String) -> void:
 	player.weapon_handler.visible = false
 	recorder.play_bytes(Marshalls.base64_to_raw(data))
 	map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
+
+func requires_unlock() -> bool:
+	return map_ui.requires_unlock()
+
+func combined_requires_unlock() -> bool:
+	return requires_unlock() or player.requires_unlock()
 
 func _physics_process(_delta: float) -> void:
 	if running:

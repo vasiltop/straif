@@ -20,7 +20,7 @@ func _ready() -> void:
 	margin_container.add_child(map_container)
 	margin_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	map_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	map_container.theme
+
 	map_container.add_theme_constant_override("h_separation", 15)
 	map_container.add_theme_constant_override("v_separation", 15)
 

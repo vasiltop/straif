@@ -55,7 +55,9 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_released("leaderboard"):
 		weapon_select.visible = false
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
+		if not get_parent().get_player(Global.id()).is_paused():
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		
 	time_since_last_feed_update += delta
 	

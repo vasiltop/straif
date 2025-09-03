@@ -6,11 +6,12 @@ var server_bridge: ServerBridge
 var map_manager: MapManager
 var settings_manager: Settings
 var game_manager: GameManager
+var is_server: bool
 
 func _ready() -> void:
 	var args := OS.get_cmdline_args()
 	print(args)
-	var is_server := len(args) > 1
+	is_server = len(args) > 1
 	
 	if not is_server:
 		var init_res := Steam.steamInitEx(APP_ID, true)
@@ -50,4 +51,4 @@ func mp() -> bool:
 	return multiplayer.multiplayer_peer != null
 
 func is_sv() -> bool:
-	return multiplayer.is_server()
+	return is_server

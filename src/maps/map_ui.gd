@@ -13,7 +13,9 @@ signal return_control_to_player
 @onready var alt_speed_label: Label = $UiContainer/Middle/Speed
 @onready var first_jump_speed_label: Label = $UiContainer/Middle/PreStrafeSpeed
 
+@export var game_info: Container
 @export var ammo_label: Label
+@export var leaderboard: Container
 
 func on_shot(mag_ammo: int, reserve_ammo: int) -> void:
 	ammo_label.text = "Ammo: %d / %d" % [mag_ammo, reserve_ammo]
@@ -26,13 +28,12 @@ func _ready() -> void:
 	alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
 
 func set_frame(frame: int, total: int) -> void:
-	label.text = "Tick: %d / %d" % [frame, total]
+	label.text = "Tick: %d / %d" % [frame + 1, total]
 	slider.value = frame
-	slider.max_value = total
+	slider.max_value = total - 1
 
 func set_replay_visible(value: bool) -> void:
 	v.visible = value
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if not value else Input.MOUSE_MODE_VISIBLE
 	map.recorder.controller.visible = value
 
 func is_replay_visible() -> bool:
@@ -41,6 +42,9 @@ func is_replay_visible() -> bool:
 func set_speed(value: float) -> void:
 	speed_label.text = "%.2f u/s" % value
 	alt_speed_label.text = speed_label.text
+
+func requires_unlock() -> bool:
+	return is_replay_visible() or game_info.visible
 
 func _process(delta: float) -> void:
 	if not is_replay_visible():

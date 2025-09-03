@@ -51,19 +51,22 @@ func _ready() -> void:
 	)
 
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("leaderboard") and map_ui.visible:
+	if Input.is_action_just_pressed("leaderboard") and map_ui.visible and not map_ui.map.player.pause_menu.visible:
 		middle.visible = true
 		map_ui.map.player.can_turn = false
+
 		if Global.game_manager.admin and Input.is_action_pressed("ui_admin"):
 			admin_panel.visible = true
 
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		_setup()
-	elif Input.is_action_just_released("leaderboard"):
+		
+	elif Input.is_action_just_released("leaderboard") and not map_ui.map.player.pause_menu.visible:
 		middle.visible = false
 		admin_panel.visible = false
 		map_ui.map.player.can_turn = true
-		if not map_ui.map.is_watching_replay():
+		
+		if not map_ui.map.is_watching_replay() and not map_ui.map.player.is_paused():
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _load_runs() -> void:

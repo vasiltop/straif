@@ -1,8 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bl08qnvut26i8"]
+[gd_scene load_steps=5 format=3 uid="uid://bl08qnvut26i8"]
 
+[ext_resource type="FontFile" uid="uid://reim7hyo6sqy" path="res://src/fonts/OpenSans-Regular.ttf" id="1_kajn4"]
 [ext_resource type="Script" uid="uid://c3q1cww6ok2ln" path="res://src/menus/settings/settings_menu.gd" id="1_orxww"]
+[ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="2_wljha"]
+
+[sub_resource type="Theme" id="Theme_wljha"]
+default_font = ExtResource("1_kajn4")
+default_font_size = 20
 
 [node name="Control" type="Control"]
+z_index = 5
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,6 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+theme = SubResource("Theme_wljha")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -22,6 +30,7 @@ grow_vertical = 2
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer" node_paths=PackedStringArray("sens_label", "sens_slider", "window_mode_input", "max_fps_input", "volume_slider", "keybinds", "ads_sens_label", "ads_sens_slider", "vsync_input", "resolution_input", "speed_label_input", "save_settings_btn")]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("2_wljha")
 current_tab = 0
 script = ExtResource("1_orxww")
 sens_label = NodePath("Controls/Margin/V/Sensitivity/SensLabel")

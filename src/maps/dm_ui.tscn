@@ -39,6 +39,7 @@ theme_override_constants/margin_bottom = 15
 
 [node name="Killfeed" type="VBoxContainer" parent="Control/Control"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="WeaponSelect" type="PanelContainer" parent="Control"]

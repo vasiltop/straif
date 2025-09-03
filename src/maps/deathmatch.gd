@@ -81,12 +81,16 @@ func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_in
 		inst.setup()
 		inst.weapon_handler.shot.connect(dm_ui.on_shot)
 		inst.damaged.connect(dm_ui.on_damaged)
+		inst.toggled_pause.connect(_on_toggled_pause)
 		
 	var weapon := Global.game_manager.get_weapon_from_index(weapon_index)
 	inst.weapon_handler.set_weapon(weapon, id != Global.id())
 		
 	if Global.is_sv():
 		inst.dead.connect(_on_player_death)
+
+func _on_toggled_pause(value: bool) -> void:
+	dm_ui.weapon_select.visible = false
 
 func new_map() -> void:
 	var map := Global.map_manager.get_random_map(Global.game_manager.current_pvp_mode)

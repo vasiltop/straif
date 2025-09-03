@@ -17,9 +17,11 @@ default_font_size = 15
 [sub_resource type="Theme" id="Theme_nvgh5"]
 default_font = ExtResource("11_5vm7s")
 
-[node name="MapUi" type="CanvasLayer" node_paths=PackedStringArray("ammo_label")]
+[node name="MapUi" type="CanvasLayer" node_paths=PackedStringArray("game_info", "ammo_label", "leaderboard")]
 script = ExtResource("1_jnrmt")
+game_info = NodePath("UiContainer/GameInfo")
 ammo_label = NodePath("UiContainer/BottomLeft/V/Ammo")
+leaderboard = NodePath("UiContainer/GameInfo/Leaderboard")
 
 [node name="UiContainer" type="Control" parent="."]
 layout_mode = 3
@@ -41,6 +43,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Speed" type="Label" parent="UiContainer/Middle"]
+z_index = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
