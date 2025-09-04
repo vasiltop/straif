@@ -110,6 +110,9 @@ func _on_target_killed() -> void:
 	map_ui.set_target_status(target_container.get_child_count(), target_spawns_container.get_child_count())
 
 func _on_replay_requested(data: String) -> void:
+	race_recording_bytes.clear()
+	currently_racing_steam_id = 0
+	
 	restart(recorder.controller)
 	map_ui.set_replay_visible(true)
 	player.camera.current = false
@@ -117,6 +120,7 @@ func _on_replay_requested(data: String) -> void:
 	player.can_move = false
 	player.weapon_handler.visible = false
 	player.ui.visible = false
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	recorder.play_bytes(Marshalls.base64_to_raw(data))
 	map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
 

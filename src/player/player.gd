@@ -162,7 +162,7 @@ func _process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("pause"):
 		toggle_pause()
-
+	
 	_time_since_last_run_sound += delta
 	_time_since_last_jump += delta
 
@@ -211,6 +211,8 @@ func wish_dir() -> Vector2:
 	return wish_dir_from(left_input, right_input, up_input, down_input)
 
 func _movement_process(delta: float, wish_dir: Vector2, jump_input: bool) -> void:
+	if not can_move: return
+	
 	var vel_vertical := _apply_gravity(velocity.y, delta)
 
 	wish_dir = wish_dir.rotated(-rotation.y)

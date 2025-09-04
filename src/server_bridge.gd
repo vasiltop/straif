@@ -5,12 +5,15 @@ signal invalid_version
 const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
 
-var client: BetterHTTPClient 
-#var api_url := "http://localhost:3000" if OS.has_feature("editor") else "https://straifapi.pumped.software"
+var client: BetterHTTPClient
+
 #var api_url := "https://straifapi.pumped.software"
-var version := "dev"
+#var version := "0.2"
+
+
 var api_url := "https://straifapi-staging.pumped.software"
-#var version := "dev" if OS.has_feature("editor") else "0.1.7"
+var version := "dev"
+
 var heartbeat_timer: BetterTimer
 
 func get_leaderboard_base(mode: String) -> String:
@@ -104,7 +107,9 @@ class MapRunsResponse:
 func get_runs(mode: String, map_name: String, page: int) -> MapRunsResponse:
 	var url := get_leaderboard_base(mode) + "/maps/%s/runs?page=%d" % [map_name, page - 1]
 	var response := await client.http_get(url).send()
-	var data: Dictionary = await data_or_print_error(response)
+	var data := await data_or_print_error(response)
+	
+	if data == null: return null
 	
 	var runs: Array[MapRunsResponse.Run]
 	for run: Dictionary in data.runs:
@@ -147,6 +152,7 @@ func get_my_run_by_map(mode: String, map_name: String) -> PositionalRunResponse:
 	return PositionalRunResponse.new(data.time_ms as int, data.username as String, data.created_at as String, data.steam_id as String, data.position as int)
 
 func publish_run(mode: String, recording: PackedByteArray, map_name: String, time_ms: int) -> void:
+	print(len(recording))
 	if len(recording) > 356148:
 		# 356148 = 370s
 		Info.alert("Could not submit run, you went past the run size limit.")
@@ -256,6 +262,7 @@ func get_my_runs(mode: String) -> RunsRequestResponse:
 	var runs: Array[RunsRequestResponse.Run]
 	for run: Dictionary in data:
 		runs.append(RunsRequestResponse.Run.new(run.time_ms as int, run.map_name as String, run.created_at as String, run.position as int, run.total as int))
+	
 	return RunsRequestResponse.new(runs)
 
 class ServerResponse:
@@ -276,7 +283,7 @@ func get_servers() -> Array[ServerResponse]:
 	if data == null: return []
 	
 	var res: Array[ServerResponse]
-	print(data)
+
 	for s in data:
 		var sr := ServerResponse.new()
 		sr.port = s.port
