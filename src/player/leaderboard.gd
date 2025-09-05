@@ -13,6 +13,8 @@ signal ghost_enabled(steam_id: int)
 @onready var admin_actions_container: VBoxContainer = $"../Admin/M/V/V"
 @onready var replay_last_run: Button = $M/V/ReplayLastRun
 
+@export var set_start_pos_btn: Button
+
 @onready var medal_time_labels: Array[Label] = [
 	$M/V/MedalInfo/BronzeTime,
 	$M/V/MedalInfo/SilverTime,
@@ -21,7 +23,7 @@ signal ghost_enabled(steam_id: int)
 	$M/V/MedalInfo/AuthorTime
 ]
 
-const PAGE_SIZE := 10.0
+const PAGE_SIZE := 10
 const MAX_NAME_LENGTH := 15
 
 var current_page := 1
@@ -48,6 +50,13 @@ func _ready() -> void:
 				return
 			var replay := map_ui.map.recorder.to_hex()
 			Global.game_manager.replay_requested.emit(replay)
+	)
+	
+	set_start_pos_btn.pressed.connect(
+		func() -> void:
+			if not map_ui.map.running and not map_ui.map.completed:
+				map_ui.map.start_pos = map_ui.map.player.global_position
+				map_ui.map.start_rotation = map_ui.map.player.camera._input_rotation
 	)
 
 func _process(_delta: float) -> void:

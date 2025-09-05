@@ -8,7 +8,7 @@ func _ready() -> void:
 	var sm: StandardMaterial3D = ZoneMaterial
 	
 	match zone.name:
-		"EndZone": sm.albedo_color = Color("ff000004")
-		"StartZone": sm.albedo_color = Color("00ff0004")
+		"EndZone": sm.albedo_color = Color("ff000005")
+		"StartZone": sm.albedo_color = Color("00ff0005")
 	
 	material_override = sm

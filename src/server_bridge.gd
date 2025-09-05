@@ -10,8 +10,10 @@ var client: BetterHTTPClient
 #var api_url := "https://straifapi.pumped.software"
 #var version := "0.2"
 
+#var api_url := "https://straifapi-staging.pumped.software"
+#var version := "dev"
 
-var api_url := "https://straifapi-staging.pumped.software"
+var api_url := "http://localhost:3000"
 var version := "dev"
 
 var heartbeat_timer: BetterTimer

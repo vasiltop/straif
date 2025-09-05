@@ -31,6 +31,7 @@ sky_material = SubResource("ProceduralSkyMaterial_eiimb")
 
 [sub_resource type="Environment" id="Environment_eiimb"]
 background_mode = 2
+background_energy_multiplier = 0.8
 sky = SubResource("Sky_qbt4t")
 tonemap_mode = 2
 fog_enabled = true
@@ -404,7 +405,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70.9897, 1, -32.7699)
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.603208, -0.788407, 0.120643, 0, 0.151261, 0.988494, -0.797584, 0.596267, -0.0912417, -16, 14, 0)
-light_energy = 1.5
+light_energy = 0.2
 shadow_enabled = true
 
 [node name="KillZones" type="Node" parent="."]

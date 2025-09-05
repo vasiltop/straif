@@ -139,12 +139,13 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_of3v1")
 
-[node name="Leaderboard" type="PanelContainer" parent="UiContainer/GameInfo"]
+[node name="Leaderboard" type="PanelContainer" parent="UiContainer/GameInfo" node_paths=PackedStringArray("set_start_pos_btn")]
 z_index = 5
 custom_minimum_size = Vector2(900, 500)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("3_rr83r")
 script = ExtResource("5_xab72")
+set_start_pos_btn = NodePath("M/V/SetStartPos")
 
 [node name="M" type="MarginContainer" parent="UiContainer/GameInfo/Leaderboard"]
 layout_mode = 2
@@ -282,9 +283,15 @@ layout_mode = 2
 focus_mode = 0
 text = ">"
 
-[node name="ReplayLastRun" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+[node name="SetStartPos" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V"]
 layout_mode = 2
 size_flags_vertical = 10
+focus_mode = 0
+text = "Set Start Position"
+
+[node name="ReplayLastRun" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+layout_mode = 2
+size_flags_vertical = 8
 focus_mode = 0
 text = "Replay Last Run"
 

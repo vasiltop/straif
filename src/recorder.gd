@@ -60,6 +60,7 @@ func resume_playback() -> void:
 
 func set_frame(value: int) -> void:
 	if value >= currently_playing.size(): return
+	if not map.map_ui.is_replay_visible() and not is_ghost: return
 	
 	var frame: Frame = currently_playing[value]
 	
@@ -114,6 +115,7 @@ func set_frame(value: int) -> void:
 			if not frame.targets_state[identifier]:
 				for target in map.target_container.get_children():
 					if target.identifier == identifier:
+						print("Freeing")
 						target.queue_free()
 	
 	controller.weapon_handler.sway(dt / 2, frame.left_input, frame.right_input, frame.forward_input, frame.back_input)

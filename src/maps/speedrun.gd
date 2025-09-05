@@ -104,6 +104,7 @@ func _on_return_control_to_player(should_restart := true) -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
 	if should_restart:
+		print("restarting")
 		restart(player)
 
 func _on_target_killed() -> void:

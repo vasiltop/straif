@@ -720,3 +720,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3)
 
 [node name="EndZone" parent="." instance=ExtResource("9_n0bts")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 6, 3)
+
+[editable path="Map/Building"]
