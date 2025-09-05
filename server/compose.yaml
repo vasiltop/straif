@@ -2,5 +2,12 @@ services:
   db:
     image: "postgres:16-alpine"
     ports: ["2345:5432"]
+    container_name: straif-db
     environment:
       POSTGRES_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+      
