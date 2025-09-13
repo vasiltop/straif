@@ -17,8 +17,9 @@ The straif leaderboard can be viewed at [straif.pumped.software](https://straif.
 The straif [web api](https://straifapi.pumped.software) is public and [documentation](https://straifapi.pumped.software/docs) can be viewed as well.
 
 ## Screenshots
-![image 1](./images/screenshots/image7.png)
-![image 1](./images/screenshots/map_taurus.png)
+![streets](./images/screenshots/image7.png)
+![multiplayer](./images/screenshots/multiplayer.png)
+![taurus](./images/screenshots/map_taurus.png)
 
 ## Local Setup
 
