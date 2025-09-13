@@ -35,7 +35,10 @@ godot -e
 The game executable can be ran as a game server as well by providing the following arguments.
 
 ```bash
-./straif server <name> <port> <max_players> <mode: "deathmatch"> --headless
+./straif server <name> <port> <max_players> <mode> --headless
+
+# for example
+./straif server DM-1 3005 5 deathmatch --headless
 ```
 
 This will continously ping the server browser to let other players know your server is online.
