@@ -4,17 +4,11 @@ signal invalid_version
 
 const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
-
+const SETTINGS_FILE := "res://settings.json"
 var client: BetterHTTPClient
 
-var api_url := "https://straifapi.pumped.software"
-var version := "0.2"
-
-#var api_url := "https://straifapi-staging.pumped.software"
-#var version := "dev"
-
-#var api_url := "http://localhost:3000"
-#var version := "dev"
+var api_url: String
+var version: String
 
 var heartbeat_timer: BetterTimer
 
@@ -22,6 +16,12 @@ func get_leaderboard_base(mode: String) -> String:
 	return "/leaderboard/mode/" + mode
 
 func _init() -> void:
+	var file := FileAccess.open(SETTINGS_FILE, FileAccess.READ)
+	var json: Dictionary = JSON.parse_string(file.get_as_text())
+	
+	api_url = json["api_url"]
+	version = json["version"]
+	
 	client = BetterHTTPClient.new(Global, BetterHTTPURL.parse(api_url))
 	# We start this timer after we receive our auth ticket in the game_manager.gd
 	heartbeat_timer = BetterTimer.new(Global, 3.0, _on_heartbeat_timer)
