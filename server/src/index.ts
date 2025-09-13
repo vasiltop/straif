@@ -1,5 +1,6 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 import { swaggerUI } from '@hono/swagger-ui';
 import { openAPISpecs } from 'hono-openapi';
 import leaderboard from './routes/leaderboard';
@@ -13,6 +14,15 @@ export type Variables = {
 };
 
 const app = new Hono();
+
+app.use(
+  '*',
+  cors({
+    origin: '*',
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 app.route('/leaderboard', leaderboard);
 app.route('/admin', admin);

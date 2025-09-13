@@ -9,6 +9,7 @@ signal return_control_to_player
 @onready var alt_speed_label: Label = $UiContainer/Middle/Speed
 @onready var first_jump_speed_label: Label = $UiContainer/Middle/PreStrafeSpeed
 
+@export var keybind_info_label: Label
 @export var done_replay_btn: Button
 @export var tick_label: Label
 @export var replay_slider: HSlider
@@ -22,6 +23,8 @@ func on_shot(mag_ammo: int, reserve_ammo := 0) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % [mag_ammo]
 
 func _ready() -> void:
+	keybind_info_label.text = "Press Ctrl to toggle UI\nPress %s to restart" % Global.settings_manager.get_keybind_string("restart")
+	print(keybind_info_label.text)
 	done_replay_btn.pressed.connect(func() -> void:
 		return_control_to_player.emit()
 	)

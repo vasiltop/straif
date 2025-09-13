@@ -23,7 +23,7 @@ signal ghost_enabled(steam_id: int)
 	$M/V/MedalInfo/AuthorTime
 ]
 
-const PAGE_SIZE := 10
+const PAGE_SIZE: float = 10 # this needs to be a float to divide the total pages properly
 const MAX_NAME_LENGTH := 15
 
 var current_page := 1
@@ -81,7 +81,7 @@ func _process(_delta: float) -> void:
 func _load_runs() -> void:
 	var response := await Global.server_bridge.get_runs(Global.game_manager.current_mode, Global.game_manager.current_map.name, current_page)
 	var my_run := await Global.server_bridge.get_my_run_by_map(Global.game_manager.current_mode, Global.game_manager.current_map.name)
-	
+
 	total_pages = max(1, ceil(response.total / PAGE_SIZE))
 	page_label.text = "Page %d of %d" % [current_page, total_pages]
 	
