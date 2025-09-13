@@ -14,7 +14,7 @@ It is heavily inspired by source engine games such as Counter Strike: Source, le
 There is an online leaderboard hosted on [straif.pumped.software](https://straif.pumped.software/).
 
 ## Web Api
-The straif [web api](https://straifapi.pumped.software) is public and [documentation](https://straifapi.pumped.software) can be viewed as well.
+The straif [web api](https://straifapi.pumped.software) is public and [documentation](https://straifapi.pumped.software/docs) can be viewed as well.
 
 ## Screenshots
 ![image 1](./images/screenshots/image7.png)
