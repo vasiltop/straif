@@ -451,7 +451,7 @@ app.post(
               map_name,
               position,
               run_mode,
-              DISCORD_CHANNEL_ID
+              target_channel.id
             );
           }
         });
