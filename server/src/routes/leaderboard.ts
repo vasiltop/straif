@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator as zValidator } from 'hono-openapi/zod';
 import { discord_client, DISCORD_CHANNEL_ID } from '../index';
-import { ChannelType } from 'discord.js';
+import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';
 import { hide_route } from './common';
 
@@ -319,10 +319,11 @@ async function send_discord_update(
   player: string,
   mapName: string,
   position: number,
-  mode: RunMode
+  mode: RunMode,
+  channel_id: string
 ) {
   try {
-    const channel = await discord_client.channels.fetch(DISCORD_CHANNEL_ID);
+    const channel = await discord_client.channels.fetch(channel_id);
     if (!channel || !channel.isTextBased()) {
       throw new Error('Channel not configured');
     }
@@ -435,13 +436,25 @@ app.post(
       const discord_message_threshold = 1; // We only care about world record.
 
       if (position <= discord_message_threshold && is_pb) {
-        send_discord_update(
-          body.time_ms,
-          body.username,
-          map_name,
-          position,
-          run_mode
-        );
+        discord_client.guilds.cache.forEach(async (guild) => {
+          const channels = await guild.channels.fetch();
+          const target_channel = channels.find(
+            (ch) =>
+              ch?.type === ChannelType.GuildText &&
+              ch.name == 'wr-announcements'
+          ) as TextChannel | undefined;
+
+          if (target_channel) {
+            send_discord_update(
+              body.time_ms,
+              body.username,
+              map_name,
+              position,
+              run_mode,
+              DISCORD_CHANNEL_ID
+            );
+          }
+        });
       }
 
       const msg = `Run completed in ${body.time_ms / 1000}. ${is_pb ? 'New PB! Open the leaderboard to view your ranking.' : ''}`;
