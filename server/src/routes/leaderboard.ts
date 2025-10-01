@@ -2,11 +2,16 @@ import { Hono } from 'hono';
 import db from '../db/index';
 import { runs, run_mode } from '../db/schema';
 import { asc, eq, sql, and, lt } from 'drizzle-orm';
-import { version_compare, steam_auth, admin_auth } from '../middleware';
+import {
+  version_compare,
+  steam_auth,
+  admin_auth,
+  ban_auth,
+} from '../middleware';
 import { z } from 'zod';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator as zValidator } from 'hono-openapi/zod';
-import { discord_client, DISCORD_CHANNEL_ID } from '../index';
+import { discord_client } from '../index';
 import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';
 import { hide_route } from './common';
@@ -374,6 +379,7 @@ app.post(
   zValidator('json', RunInput),
   hide_route(),
   steam_auth,
+  ban_auth,
   version_compare,
   async (c) => {
     const body = c.req.valid('json');

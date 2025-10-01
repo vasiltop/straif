@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { createMiddleware } from 'hono/factory';
-import { is_admin } from './players';
+import { is_admin, value_banned } from './players';
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY!;
 
@@ -77,6 +77,26 @@ export const admin_auth = createMiddleware(async (c, next) => {
 
   if (!is_admin(sid)) {
     return c.json({ error: 'This user is not an admin.' }, 401);
+  }
+
+  return next();
+});
+
+export const ban_auth = createMiddleware(async (c, next) => {
+  const auth_ticket = c.req.header('auth-ticket');
+
+  if (!auth_ticket) {
+    return c.json({ error: 'Invalid auth ticket.' }, 401);
+  }
+
+  const sid = await get_steam_id_from_ticket(auth_ticket);
+
+  if (sid == '') {
+    return c.json({ error: 'Invalid auth ticket.' }, 401);
+  }
+
+  if (value_banned(sid)) {
+    return c.json({ error: 'You are banned from the leaderboard.' }, 401);
   }
 
   return next();

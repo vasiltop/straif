@@ -31,3 +31,7 @@ export const runs = pgTable(
 export const admins = pgTable('admins', {
   steam_id: text('steam_id').notNull().primaryKey(),
 });
+
+export const banned_values = pgTable('banned_values', {
+  value: text('value').unique().notNull(), // can either be steam_id or ip
+});

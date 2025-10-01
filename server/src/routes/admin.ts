@@ -5,9 +5,9 @@ import { server_state } from './game';
 import { admin_auth } from '../middleware';
 import { z } from 'zod';
 import { validator as zValidator } from 'hono-openapi/zod';
-import { admins } from '../db/schema';
+import { admins, banned_values } from '../db/schema';
 import { eq } from 'drizzle-orm';
-import { is_admin } from '../players';
+import { is_admin, value_banned } from '../players';
 import { hide_route } from './common';
 
 const MUNOST_STEAM_ID = '76561198377195635';
@@ -33,6 +33,39 @@ app.post(
 );
 
 app.post(
+  '/bans/:steam_id',
+  admin_auth,
+  hide_route(),
+  zValidator('json', BooleanInput),
+  async (c) => {
+    const steam_id = c.req.param('steam_id');
+    const new_value = c.req.valid('json').new_value;
+
+    const is_banned = await value_banned(steam_id);
+
+    if (is_banned && !new_value) {
+      await db.delete(banned_values).where(eq(banned_values.value, steam_id));
+    } else if (!is_banned && new_value) {
+      await db.insert(banned_values).values({
+        value: steam_id,
+      });
+    }
+
+    return c.json({
+      data: `Player's ban status was toggled, new value: ${new_value}`,
+    });
+  }
+);
+
+app.get('/bans/:steam_id', async (c) => {
+  const steam_id = c.req.param('steam_id');
+
+  return c.json({
+    data: await value_banned(steam_id),
+  });
+});
+
+app.post(
   '/:steam_id',
   admin_auth,
   hide_route(),
@@ -56,7 +89,7 @@ app.post(
     }
 
     return c.json({
-      data: `Player's admin was toggled, new value: ${!admin}`,
+      data: `Player's admin was toggled, new value: ${new_value}`,
     });
   }
 );
