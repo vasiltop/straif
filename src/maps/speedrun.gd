@@ -130,14 +130,25 @@ func requires_unlock() -> bool:
 func combined_requires_unlock() -> bool:
 	return requires_unlock() or player.requires_unlock()
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if running:
 		map_ui.set_timer(timer)
 		_recorder_process()
 
 	if recorder.is_playing():
 		map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
+		
+	if map_ui.is_replay_visible(): return
+	
+	if not completed and player_in_end_zone and target_container.get_child_count() == 0:
+		await _win()
 
+	if Input.is_action_just_pressed("restart"):
+		restart(player)
+
+	if running:
+		timer += delta
+		
 func _recorder_process() -> void:
 	var ads_input := Input.is_action_just_pressed("scope")
 	var reload_input := Input.is_action_just_pressed("reload")
@@ -198,18 +209,6 @@ func _on_player_jump() -> void:
 		_has_jumped = true
 		map_ui.first_jump_speed_label.visible = map_ui.alt_speed_label.visible
 		map_ui.first_jump_speed_label.text = map_ui.speed_label.text
-
-func _process(delta: float) -> void:
-	if map_ui.is_replay_visible(): return
-	
-	if not completed and player_in_end_zone and target_container.get_child_count() == 0:
-		await _win()
-
-	if Input.is_action_just_pressed("restart"):
-		restart(player)
-
-	if running:
-		timer += delta
 
 func _win() -> void:
 	completed = true
