@@ -2,14 +2,14 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8blbxxuvimsf"
+uid="uid://djddy6xnwyhp7"
 path.s3tc="res://.godot/imported/arms_suit.jpg-44ae169a8bcacc4f30b0012cdab1bd0a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "53383484d9f11078f5f2408b43aec943"
+"md5": "f92980f1d48a066080f7fea42ea36fd6"
 }
 
 [deps]

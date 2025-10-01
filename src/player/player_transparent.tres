@@ -1,6 +1,6 @@
 [gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://tvtxaboyrpxw"]
 
-[ext_resource type="Texture2D" uid="uid://c8blbxxuvimsf" path="res://src/player/arms_suit.jpg" id="1_qmfch"]
+[ext_resource type="Texture2D" uid="uid://baaktbyad4x2a" path="res://src/player/character_suit.jpg" id="1_qmfch"]
 
 [resource]
 transparency = 1

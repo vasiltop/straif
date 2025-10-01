@@ -4,8 +4,8 @@ signal shot(mag_ammo: int, reserve_ammo: int)
 
 @onready var player: Player = $"../../.."
 @onready var weapon_scene: Node3D = null
-@onready var r_hand_ik: SkeletonIK3D = $Arms/Armature/Skeleton3D/RHandIk
-@onready var l_hand_ik: SkeletonIK3D = $Arms/Armature/Skeleton3D/LHandIk
+@export var r_hand_ik: SkeletonIK3D
+@export var l_hand_ik: SkeletonIK3D
 @onready var r_hand_ik_tp: SkeletonIK3D = $"../../../ThirdPerson/Model/FullArmature/Skeleton3D/RHandIk"
 @onready var l_hand_ik_tp: SkeletonIK3D = $"../../../ThirdPerson/Model/FullArmature/Skeleton3D/LHandIk"
 
