@@ -95,7 +95,7 @@ export const ban_auth = createMiddleware(async (c, next) => {
     return c.json({ error: 'Invalid auth ticket.' }, 401);
   }
 
-  if (value_banned(sid)) {
+  if (await value_banned(sid)) {
     return c.json({ error: 'You are banned from the leaderboard.' }, 401);
   }
 

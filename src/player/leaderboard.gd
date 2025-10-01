@@ -258,3 +258,13 @@ func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
 		func() -> void:
 			Global.server_bridge.set_admin(steam_id, not is_admin)
 	)
+
+	var is_banned := await Global.server_bridge.is_banned(steam_id)
+	var ban_btn := Button.new()
+	admin_actions_container.add_child(ban_btn)
+	ban_btn.text = "Ban" if not is_banned else "Unban"
+	
+	ban_btn.pressed.connect(
+		func() -> void:
+			Global.server_bridge.set_ban(steam_id, not is_banned)
+	)

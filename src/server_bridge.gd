@@ -184,7 +184,7 @@ func publish_run(mode: String, recording: PackedByteArray, map_name: String, tim
 			mode_info.pb = time_s
 
 func is_admin(steam_id: int) -> bool:
-	var url := "/admin/player/%d" % steam_id 
+	var url := "/admin/player/%d" % steam_id
 	var response := await client.http_get(url).header(
 			"auth-ticket", Global.game_manager.auth_ticket_hex
 			).send()
@@ -254,6 +254,22 @@ class RunsRequestResponse:
 			
 	func _init(runs: Array[Run]) -> void:
 		self.runs = runs
+
+func is_banned(steam_id: int) -> bool:
+	var response := await client.http_get("/admin/bans/%s" % steam_id).send()
+	var data := await data_or_print_error(response)
+	return data
+
+func set_ban(steam_id: int, new_value: bool) -> void:
+	var response := await client.http_post("/admin/bans/%d" % steam_id).json({
+		"new_value": new_value
+		}).header(
+			"auth-ticket", Global.game_manager.auth_ticket_hex
+			).send()
+
+	var data := await data_or_print_error(response)
+	if data != null:
+		Info.alert(data as String)
 
 func get_my_runs(mode: String) -> RunsRequestResponse:
 	var url := get_leaderboard_base(mode) + "/players/%d/runs" % [Steam.getSteamID()]
