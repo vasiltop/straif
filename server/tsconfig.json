@@ -2,6 +2,7 @@
   "compileroptions": {
     "target": "esnext",
     "module": "nodenext",
+		"resolveJsonModule": true,
     "strict": true,
     "verbatimmodulesyntax": true,
 		"allowimportingtsextensions": true,

@@ -15,8 +15,7 @@ import { discord_client } from '../index';
 import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';
 import { hide_route } from './common';
-
-type RunMode = (typeof run_mode.enumValues)[number];
+import { get_maps_of_mode, RunMode } from '../maps';
 
 const app = new Hono<{ Variables: Variables }>();
 
@@ -68,6 +67,63 @@ function coerce_to_run_mode(unfiltered_name: string): RunMode {
     ? (unfiltered_name as RunMode)
     : 'target';
 }
+
+const PlayerPoints = z.object({
+  steam_id: z.string(),
+  username: z.string(),
+  points: z.number(),
+});
+
+const OverallLeaderboard = z.array(PlayerPoints);
+
+app.get(
+  '/mode/:mode_name/overall',
+  describe_leaderboard_route(
+    'Fetches the overall leaderboard for a specific mode.',
+    z.array(PlayerPoints)
+  ),
+  async (c) => {
+    const mode = coerce_to_run_mode(c.req.param('mode_name'));
+    const maps = get_maps_of_mode(mode);
+    const points_per_position = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    const points_map = new Map<string, z.infer<typeof PlayerPoints>>();
+
+    for (const map of maps) {
+      const top_runs = await db
+        .select({
+          steam_id: runs.steam_id,
+          username: runs.username,
+          time_ms: runs.time_ms,
+        })
+        .from(runs)
+        .where(and(eq(runs.mode, mode), eq(runs.map_name, map.name)))
+        .orderBy(asc(runs.time_ms))
+        .limit(10);
+
+      top_runs.forEach((run, index) => {
+        const points = points_per_position[index] ?? 0;
+        const existing = points_map.get(run.steam_id);
+
+        if (existing) {
+          existing.points += points;
+        } else {
+          points_map.set(run.steam_id, {
+            steam_id: run.steam_id,
+            username: run.username,
+            points,
+          });
+        }
+      });
+    }
+
+    const leaderboard = Array.from(points_map.values())
+      .sort((a, b) => b.points - a.points)
+      .slice(0, 10);
+
+    const data: z.infer<typeof OverallLeaderboard> = leaderboard;
+    return c.json({ data: data });
+  }
+);
 
 app.get(
   '/mode/:mode_name/maps/:map_name/players/:steam_id/recording',
