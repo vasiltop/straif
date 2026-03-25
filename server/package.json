@@ -1,0 +1,32 @@
+{
+  "name": "server",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "populate": "node scripts/populate.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.4",
+    "@hono/swagger-ui": "^0.5.2",
+    "@hono/zod-validator": "^0.7.2",
+    "discord.js": "^14.21.0",
+    "dotenv": "^16.6.0",
+    "drizzle-orm": "^0.44.2",
+    "hono": "^4.8.3",
+    "hono-openapi": "^0.4.8",
+    "pg": "^8.16.2",
+    "pnpm": "^10.15.0",
+    "zod": "^4.0.17",
+    "zod-openapi": "^5.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "@types/pg": "^8.15.4",
+    "drizzle-kit": "^0.31.3",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}

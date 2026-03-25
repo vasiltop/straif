@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cilm2oc02xr8e"]
+
+[sub_resource type="Gradient" id="Gradient_b5mmi"]
+colors = PackedColorArray(1, 1, 1, 1, 0.866647, 0.759085, 0.129857, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pl4ph"]
+gradient = SubResource("Gradient_b5mmi")
+fill_from = Vector2(1, 1)
+
+[resource]
+cull_mode = 2
+albedo_texture = SubResource("GradientTexture2D_pl4ph")
+emission_enabled = true
+emission_texture = SubResource("GradientTexture2D_pl4ph")

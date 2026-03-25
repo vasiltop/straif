@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://ejiq20awxkya"]
+
+[ext_resource type="Script" uid="uid://7vb62gq6kb1h" path="res://src/maps/presets/ladder.gd" id="1_svidb"]
+[ext_resource type="PackedScene" uid="uid://bd675lqn5b7ds" path="res://src/maps/tiles/tracks.glb" id="2_v6um2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_33gol"]
+size = Vector3(0.599548, 1.01465, 0.156543)
+
+[sub_resource type="BoxMesh" id="BoxMesh_33gol"]
+size = Vector3(1, 1, 0.1)
+
+[node name="Ladder" type="Area3D"]
+collision_mask = 2
+script = ExtResource("1_svidb")
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0186462, 0.00732422, 0.0782715)
+shape = SubResource("BoxShape3D_33gol")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("BoxMesh_33gol")
+
+[node name="tracks2" parent="." instance=ExtResource("2_v6um2")]
+transform = Transform3D(-9.17939e-09, -9.17939e-09, -0.21, -0.21, -9.17939e-09, 9.17939e-09, -9.17939e-09, 0.21, -9.17939e-09, 0, 0, 0)

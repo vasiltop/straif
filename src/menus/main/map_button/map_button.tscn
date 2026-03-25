@@ -1,0 +1,109 @@
+[gd_scene load_steps=7 format=3 uid="uid://c0qa4nk774v55"]
+
+[ext_resource type="Script" uid="uid://bsb0urrean8eg" path="res://src/menus/main/map_button/map_button.gd" id="1_b2nqr"]
+[ext_resource type="Texture2D" uid="uid://ddwv6d1j2fuuq" path="res://src/textures/bronze_medal.png" id="2_im2rw"]
+[ext_resource type="Texture2D" uid="uid://bbyo6tb1eqrns" path="res://src/textures/silver_medal.png" id="3_vbpg3"]
+[ext_resource type="Texture2D" uid="uid://bo4kloegfbey2" path="res://src/textures/gold_medal.png" id="4_wkydv"]
+[ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="5_ckjem"]
+[ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="6_qp2bi"]
+
+[node name="MapButton" type="Panel"]
+custom_minimum_size = Vector2(500, 300)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b2nqr")
+
+[node name="M" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="C" type="Control" parent="M"]
+layout_mode = 2
+
+[node name="P" type="PanelContainer" parent="M/C"]
+layout_mode = 1
+offset_right = 193.0
+offset_bottom = 81.0
+size_flags_horizontal = 0
+
+[node name="M" type="MarginContainer" parent="M/C/P"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="V" type="VBoxContainer" parent="M/C/P/M"]
+layout_mode = 2
+
+[node name="MapName" type="Label" parent="M/C/P/M/V"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Map Name"
+
+[node name="Timer" type="Label" parent="M/C/P/M/V"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 20
+text = "Personal Best: Loading....
+Position: 0 / 0"
+
+[node name="V" type="VBoxContainer" parent="M/C"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Medals" type="GridContainer" parent="M/C/V"]
+layout_mode = 2
+size_flags_horizontal = 0
+columns = 5
+
+[node name="Bronze" type="TextureRect" parent="M/C/V/Medals"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_im2rw")
+
+[node name="Silver" type="TextureRect" parent="M/C/V/Medals"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("3_vbpg3")
+
+[node name="Gold" type="TextureRect" parent="M/C/V/Medals"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("4_wkydv")
+
+[node name="Plat" type="TextureRect" parent="M/C/V/Medals"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("5_ckjem")
+
+[node name="Author" type="TextureRect" parent="M/C/V/Medals"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("6_qp2bi")
+
+[node name="Play" type="Button" parent="M/C/V"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Play"

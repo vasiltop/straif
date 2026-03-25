@@ -1,0 +1,18 @@
+{
+  "compileroptions": {
+    "target": "esnext",
+    "module": "nodenext",
+		"resolveJsonModule": true,
+    "strict": true,
+    "verbatimmodulesyntax": true,
+		"allowimportingtsextensions": true,
+    "skiplibcheck": true,
+    "types": [
+      "node"
+    ],
+    "jsx": "react-jsx",
+    "jsximportsource": "hono/jsx",
+    "outdir": "./dist"
+  },
+  "exclude": ["node_modules"]
+}

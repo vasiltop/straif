@@ -1,0 +1,270 @@
+class_name Recorder extends Node 
+
+const EYE_HEIGHT := 0.85
+const HEADER := -1
+const PlayerScene = preload("res://src/player/player.tscn")
+
+var player_cam: Camera3D
+var frames: Array[Frame]
+var currently_playing: Array
+var current_frame: int
+var paused: bool = true
+var controller: Player
+var map: Map
+var is_ghost: bool
+
+class Frame:
+	var position: Vector3
+	var rot: Vector2
+	var shoot_input: bool
+	var ads_input: bool
+	var weapon_index: int
+	var reload_input: bool
+	
+	var forward_input: bool
+	var back_input: bool
+	var right_input: bool
+	var left_input: bool
+	
+	var ammo: int
+	var targets_state: Array[bool]
+
+func _init(player_cam: Camera3D, map: Map) -> void:
+	self.player_cam = player_cam
+	self.map = map
+
+func _ready() -> void:
+	var inst := PlayerScene.instantiate()
+	add_child(inst)
+	inst.visible = false
+	inst.hardcore = false
+	inst.fps_label.get_parent().visible = false
+	var mesh := inst.get_node("ThirdPerson/Model/FullArmature/Skeleton3D/character") as MeshInstance3D
+	mesh.set_surface_override_material(0, load("res://src/player/player_transparent.tres"))
+	controller = inst
+	
+	for child: PhysicalBone3D in inst.bone_simulator.get_children():
+		child.collision_layer = 0
+
+func add_frame(frame: Frame) -> void:
+	frames.append(frame)
+
+func clear() -> void:
+	frames.clear()
+
+func pause_playback() -> void:
+	paused = true
+	
+func resume_playback() -> void:
+	paused = false
+
+func set_frame(value: int) -> void:
+	if value >= currently_playing.size(): return
+	if not map.map_ui.is_replay_visible() and not is_ghost: return
+	
+	var frame: Frame = currently_playing[value]
+	
+	controller.global_position = frame.position
+	controller.camera._input_rotation.y = frame.rot.y
+	controller.camera._input_rotation.x = frame.rot.x
+	
+	if is_ghost and controller.weapon_handler.weapon_scene:
+		controller.weapon_handler.weapon_scene.get_parent().rotation.x = frame.rot.x
+	
+	if frame.shoot_input:
+		controller.weapon_handler._try_shoot(true)
+
+	if frame.ads_input and not is_ghost:
+		controller.weapon_handler.toggle_sniper_scope()
+	
+	if frame.reload_input:
+		controller.weapon_handler.reload()
+
+	var prev_frame: Frame = currently_playing[current_frame]
+	var last_frame: Frame = currently_playing[max(value - 1, 0)]
+	
+	var prev_position: Vector3 = last_frame.position
+	var current_position: Vector3 = frame.position
+	
+	prev_position.y = 0
+	current_position.y = 0
+	
+	var diff := current_position - prev_position
+	var dt := 1.0 / 60.0
+	var speed := diff.length() / dt
+	
+	if value == len(currently_playing) - 1:
+		speed = 0.0
+	
+	if is_ghost:
+		controller.set_animation_blend(1.0 if speed >= 3.0 else 0.0)
+	else:
+		map.map_ui.set_speed(speed)
+		map.map_ui.set_timer(current_frame * dt)
+		
+	if prev_frame.weapon_index != frame.weapon_index:
+		controller.weapon_handler.set_weapon(Global.game_manager.get_weapon_from_index(frame.weapon_index), is_ghost)
+	
+	map.map_ui.on_shot(frame.ammo)
+	
+	if not is_ghost:
+		if current_frame > value:
+			map.reset_targets()
+		
+		for identifier in range(len(frame.targets_state)):
+			if not frame.targets_state[identifier]:
+				for target in map.target_container.get_children():
+					if target.identifier == identifier:
+						target.queue_free()
+	
+	controller.weapon_handler.sway(dt / 2, frame.left_input, frame.right_input, frame.forward_input, frame.back_input)
+	
+	current_frame = value
+
+func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
+	current_frame = 0
+	controller.visible = true
+	self.is_ghost = is_ghost
+	
+	controller.weapon_handler.set_weapon(null, is_ghost)
+	
+	if not is_ghost:
+		controller.camera.make_current()
+		controller.gun_camera.make_current()
+		controller.weapon_handler.visible = true
+		controller.third_person.visible = false
+		controller.ui.visible = true
+	else:
+		controller.third_person.visible = true
+		controller.weapon_handler.visible = false
+	
+	currently_playing = frames
+	resume_playback()
+
+func is_playing() -> bool:
+	return current_frame < len(currently_playing)
+
+func _physics_process(delta: float) -> void:
+	if not paused and not is_playing():
+		return
+	
+	if paused: return
+	
+	set_frame(current_frame + 1)
+
+func to_hex() -> String:
+	var bytes := to_bytes()
+	return Marshalls.raw_to_base64(bytes)
+
+func to_bytes() -> PackedByteArray:
+	var buffer := StreamPeerBuffer.new()
+	buffer.put_32(HEADER)
+	buffer.put_u32(frames.size())
+
+	for frame in frames:
+		buffer.put_float(frame.position.x)
+		buffer.put_float(frame.position.y)
+		buffer.put_float(frame.position.z)
+		buffer.put_float(frame.rot.x)
+		buffer.put_float(frame.rot.y)
+		
+		var packed := 0
+
+		if frame.shoot_input:
+			packed |= 1 << 0
+		if frame.ads_input:
+			packed |= 1 << 1
+		if frame.reload_input:
+			packed |= 1 << 2
+		
+		packed |= (frame.weapon_index & 0b00011111) << 3
+
+		buffer.put_u8(packed)
+		
+		packed = 0
+		
+		if frame.forward_input:
+			packed |= 1 << 0
+		if frame.back_input:
+			packed |= 1 << 1
+		if frame.right_input:
+			packed |= 1 << 2
+		if frame.left_input:
+			packed |= 1 << 3
+		
+		buffer.put_u8(packed)
+		
+		buffer.put_u8(frame.ammo)
+		
+		var targets_state := 0
+		
+		for identifier in range(len(frame.targets_state)):
+			if frame.targets_state[identifier]:
+				targets_state |= 1 << identifier
+		
+		buffer.put_u16(targets_state)
+		
+	
+	return buffer.data_array
+		
+func frames_from_bytes(data: PackedByteArray) -> Array:
+	var buffer := StreamPeerBuffer.new()
+	buffer.data_array = data
+	buffer.seek(0)
+	var header := buffer.get_32()
+	
+	var frames: Array
+	match header:
+		-1:
+			var size := buffer.get_u32()
+			for i in size:
+				var x := buffer.get_float()
+				var y := buffer.get_float()
+				var z := buffer.get_float()
+				var rot_x := buffer.get_float()
+				var rot_y := buffer.get_float()
+				
+				var packed := buffer.get_u8()
+				var direction_packed := buffer.get_u8()
+				var ammo := buffer.get_u8()
+				var targets_state := buffer.get_16()
+				
+				var frame := Frame.new()
+				frame.shoot_input = (packed & (1 << 0)) != 0
+				frame.ads_input = (packed & (1 << 1)) != 0
+				frame.reload_input = (packed & (1 << 2)) != 0
+				frame.weapon_index = (packed >> 3) & 0b00011111
+				frame.position.x = x
+				frame.position.y = y
+				frame.position.z = z
+				frame.rot.x = rot_x
+				frame.rot.y = rot_y
+				
+				frame.forward_input = (direction_packed & (1 << 0)) != 0
+				frame.back_input = (direction_packed & (1 << 1)) != 0
+				frame.right_input = (direction_packed & (1 << 2)) != 0
+				frame.left_input = (direction_packed & (1 << 3)) != 0
+				
+				frame.ammo = ammo
+				
+				frame.targets_state = []
+				for identifier in range(16):
+					frame.targets_state.append((targets_state & (1 << identifier)) != 0)
+				
+				frames.append(frame)
+	
+	return frames
+
+func get_version(data: PackedByteArray) -> int:
+	var buffer := StreamPeerBuffer.new()
+	
+	buffer.data_array = data
+	buffer.seek(0)
+	var header := buffer.get_32()
+	
+	return header
+
+func play_bytes(data: PackedByteArray, is_ghost := false) -> void:
+	var version := get_version(data)
+	var frames := frames_from_bytes(data)
+	play_frames(version, frames, is_ghost)
