@@ -27,7 +27,6 @@ The straif [web api](https://straifapi.pumped.software) is public and [documenta
 ```bash
 git clone https://github.com/vasiltop/straif
 cd straif
-cp settings.json.example settings.json
 godot -e
 ```
 

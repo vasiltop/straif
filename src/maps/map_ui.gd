@@ -24,7 +24,6 @@ func on_shot(mag_ammo: int, reserve_ammo := 0) -> void:
 
 func _ready() -> void:
 	keybind_info_label.text = "Press Ctrl to toggle UI\nPress %s to restart" % Global.settings_manager.get_keybind_string("restart")
-	print(keybind_info_label.text)
 	done_replay_btn.pressed.connect(func() -> void:
 		return_control_to_player.emit()
 	)

@@ -4,7 +4,6 @@ signal invalid_version
 
 const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
-const SETTINGS_FILE := "res://settings.json"
 var client: BetterHTTPClient
 
 var api_url: String
@@ -12,11 +11,17 @@ var version: String
 
 var heartbeat_timer: BetterTimer
 
+func _settings_file() -> String:
+	if OS.has_feature("editor_runtime"):
+		return "res://settings-dev.json"
+	return "res://settings-prod.json"
+
 func get_leaderboard_base(mode: String) -> String:
 	return "/leaderboard/mode/" + mode
 
 func _init() -> void:
-	var file := FileAccess.open(SETTINGS_FILE, FileAccess.READ)
+	print(_settings_file())
+	var file := FileAccess.open(_settings_file(), FileAccess.READ)
 	var json: Dictionary = JSON.parse_string(file.get_as_text())
 	
 	api_url = json["api_url"]
@@ -154,7 +159,6 @@ func get_my_run_by_map(mode: String, map_name: String) -> PositionalRunResponse:
 	return PositionalRunResponse.new(data.time_ms as int, data.username as String, data.created_at as String, data.steam_id as String, data.position as int)
 
 func publish_run(mode: String, recording: PackedByteArray, map_name: String, time_ms: int) -> void:
-	print(len(recording))
 	if len(recording) > 356148:
 		# 356148 = 370s
 		Info.alert("Could not submit run, you went past the run size limit.")
