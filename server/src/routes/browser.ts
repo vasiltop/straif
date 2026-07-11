@@ -42,16 +42,15 @@ app.post('/', zValidator('json', ServerInput), async (c) => {
   const body = c.req.valid('json');
   const ip = c.req.header('CF-Connecting-IP') ?? '127.0.0.1';
 
-  if (servers.has(body.name)) {
-    const server = servers.get(body.name);
-
-    server.last_ping = new Date();
-    server.port = body.port;
-    server.mode = body.mode;
-    server.map = body.map;
-    server.ip = ip;
-    server.player_count = body.player_count;
-    server.max_players = body.max_players;
+  const existing = servers.get(body.name);
+  if (existing) {
+    existing.last_ping = new Date();
+    existing.port = body.port;
+    existing.mode = body.mode;
+    existing.map = body.map;
+    existing.ip = ip;
+    existing.player_count = body.player_count;
+    existing.max_players = body.max_players;
 
     return c.body(null, 200);
   }

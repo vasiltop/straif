@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "tsc && tsup src/index.ts --format esm --outDir dist",
     "start": "node dist/index.js",
     "populate": "node scripts/populate.js",
     "db:generate": "drizzle-kit generate",
@@ -31,6 +31,7 @@
     "@types/pg": "^8.15.4",
     "drizzle-kit": "^0.31.3",
     "prettier": "^3.6.2",
+    "tsup": "^8.5.1",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }

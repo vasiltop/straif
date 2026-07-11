@@ -18,7 +18,7 @@ import { discord_client } from '../index';
 import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';
 import { hide_route } from './common';
-import { get_maps_of_mode, RunMode } from '../maps';
+import { get_maps_of_mode, type RunMode } from '../maps';
 
 const app = new Hono<{ Variables: Variables }>();
 

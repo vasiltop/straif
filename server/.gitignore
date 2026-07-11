@@ -27,3 +27,8 @@ lerna-debug.log*
 # misc
 .DS_Store
 package-lock.json
+
+# build output (tsup/tsc)
+dist/
+src/**/*.js
+drizzle.config.js
