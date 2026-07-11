@@ -2,7 +2,7 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { swaggerUI } from '@hono/swagger-ui';
-import { openAPISpecs } from 'hono-openapi';
+import { openAPIRouteHandler } from 'hono-openapi';
 import leaderboard from './routes/leaderboard';
 import admin from './routes/admin';
 import game from './routes/game';
@@ -43,7 +43,7 @@ const open_api_doc = {
   },
 };
 
-app.get('/openapi', openAPISpecs(app, open_api_doc));
+app.get('/openapi', openAPIRouteHandler(app, open_api_doc));
 app.get('/docs', swaggerUI({ url: '/openapi' }));
 
 serve(
@@ -59,8 +59,6 @@ serve(
 export const discord_client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
-
-export const DISCORD_CHANNEL_ID = process.env.CHANNEL_ID!;
 
 discord_client.on('ready', () => {
   console.log(`Logged in as ${discord_client.user?.tag}`);

@@ -5,21 +5,26 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "populate": "node scripts/populate.js"
+    "populate": "node scripts/populate.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.4",
+    "@hono/standard-validator": "^0.2.0",
     "@hono/swagger-ui": "^0.5.2",
-    "@hono/zod-validator": "^0.7.2",
+    "@standard-community/standard-json": "^0.3.5",
+    "@standard-community/standard-openapi": "^0.2.9",
     "discord.js": "^14.21.0",
     "dotenv": "^16.6.0",
     "drizzle-orm": "^0.44.2",
-    "hono": "^4.8.3",
-    "hono-openapi": "^0.4.8",
+    "hono": "^4.11.2",
+    "hono-openapi": "^1.3.1",
     "pg": "^8.16.2",
     "pnpm": "^10.15.0",
-    "zod": "^4.0.17",
-    "zod-openapi": "^5.3.1"
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

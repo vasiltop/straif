@@ -4,7 +4,7 @@ import db from '../db/index';
 import { server_state } from './game';
 import { admin_auth } from '../middleware';
 import { z } from 'zod';
-import { validator as zValidator } from 'hono-openapi/zod';
+import { validator as zValidator } from 'hono-openapi';
 import { admins, banned_values } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { is_admin, value_banned } from '../players';

@@ -11,7 +11,7 @@ var is_server: bool
 func _ready() -> void:
 	var args := OS.get_cmdline_args()
 	print(args)
-	is_server = len(args) > 1
+	is_server = len(args) > 2
 	
 	if not is_server:
 		var init_res := Steam.steamInitEx(APP_ID, true)

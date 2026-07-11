@@ -9,8 +9,11 @@ import {
   ban_auth,
 } from '../middleware';
 import { z } from 'zod';
-import { describeRoute } from 'hono-openapi';
-import { resolver, validator as zValidator } from 'hono-openapi/zod';
+import {
+  describeRoute,
+  resolver,
+  validator as zValidator,
+} from 'hono-openapi';
 import { discord_client } from '../index';
 import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';

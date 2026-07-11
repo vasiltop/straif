@@ -1,5 +1,10 @@
-import map_data from '../../maps.json';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { run_mode } from './db/schema';
+
+const map_data = JSON.parse(
+  readFileSync(join(process.cwd(), '../maps.json'), 'utf-8')
+);
 
 export type RunMode = (typeof run_mode.enumValues)[number];
 

@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
-import { resolver, validator as zValidator } from 'hono-openapi/zod';
+import { resolver, validator as zValidator } from 'hono-openapi';
 
 const app = new Hono();
 
