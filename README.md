@@ -9,6 +9,7 @@ It is heavily inspired by source engine games such as Counter Strike: Source, le
 - [Web Api](#Web-Api)
 - [Screenshots](#Screenshots)
 - [Local Setup](#Local-Setup)
+- [Steam Deployment](#Steam-Deployment)
 
 ## Website
 The straif leaderboard can be viewed at [straif.pumped.software](https://straif.pumped.software/).
@@ -51,4 +52,33 @@ docker compose up -d
 npm install
 npx drizzle-kit push
 npm run dev
+```
+
+## Steam Deployment
+
+### One-time setup
+
+Install SteamCMD:
+
+```bash
+mkdir -p ~/.local/steamcmd
+curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" \
+  | tar -xzf - -C ~/.local/steamcmd
+```
+
+```bash
+~/.local/steamcmd/steamcmd.sh +login YOUR_STEAM_USERNAME
+```
+
+Copy the env file and fill in your depot IDs from the [Steamworks depots page](https://partner.steamgames.com/apps/depots/3850480):
+
+```bash
+cp steam/steam.env.example steam/steam.env
+```
+
+### Upload a build
+
+```bash
+./scripts/export-all.sh                  # or ./scripts/upload-steam.sh --build
+./scripts/upload-steam.sh
 ```

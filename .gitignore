@@ -23,3 +23,5 @@ pnpm-debug.log*
 lerna-debug.log*
 .DS_Store
 build/
+steam/steam.env
+steam/output/

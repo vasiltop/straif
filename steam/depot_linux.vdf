@@ -1,0 +1,12 @@
+"DepotBuildConfig"
+{
+	"DepotID" "__STEAM_DEPOT_LINUX__"
+	"ContentRoot" "__BUILD_LINUX_DIR__"
+	"FileMapping"
+	{
+		"LocalPath" "*"
+		"DepotPath" "."
+		"recursive" "1"
+	}
+	"FileExclusion" "straif_symbols.txt"
+}

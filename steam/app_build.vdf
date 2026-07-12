@@ -1,0 +1,15 @@
+"AppBuild"
+{
+	"AppID" "3850480"
+	"Desc" "__BUILD_DESC__"
+	"Preview" "0"
+	"Local" ""
+	"SetLive" ""
+	"ContentRoot" ""
+	"BuildOutput" "__BUILD_OUTPUT_DIR__"
+	"Depots"
+	{
+		"__STEAM_DEPOT_LINUX__" "depot_linux.vdf"
+		"__STEAM_DEPOT_WINDOWS__" "depot_windows.vdf"
+	}
+}
