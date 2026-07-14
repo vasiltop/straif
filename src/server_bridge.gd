@@ -3,7 +3,7 @@ class_name ServerBridge
 signal invalid_version
 
 const FILE_CHUNK_SIZE := 1024
-const DISCORD_URL := "https://discord.gg/TEqDBNPQSs"
+const DISCORD_URL := "https://discord.gg/DScF2QqKzF"
 var client: BetterHTTPClient
 
 var api_url: String
