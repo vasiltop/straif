@@ -1,0 +1,82 @@
+[gd_scene load_steps=13 format=3 uid="uid://b8h3l1xmap03he"]
+
+[ext_resource type="Script" path="res://src/maps/procedural/procedural_map.gd" id="1_helix"]
+[ext_resource type="Shader" path="res://src/maps/tiles/building.gdshader" id="2_shader"]
+[ext_resource type="Texture2D" path="res://src/textures/greybox_texture/greybox_teal_solid.png" id="3_teal"]
+[ext_resource type="Texture2D" path="res://src/textures/greybox_texture/greybox_light_solid.png" id="4_light"]
+[ext_resource type="Texture2D" path="res://src/textures/skyboxes/cold.png" id="5_sky"]
+[ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="6_player"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_spawn"]
+render_priority = 0
+shader = ExtResource("2_shader")
+shader_parameter/texture_wall = ExtResource("3_teal")
+shader_parameter/texture_roof = ExtResource("4_light")
+shader_parameter/wall_texture_scale = 0.34
+shader_parameter/roof_texture_scale = 0.45
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_helix"]
+panorama = ExtResource("5_sky")
+energy_multiplier = 0.8
+
+[sub_resource type="Sky" id="Sky_helix"]
+sky_material = SubResource("PanoramaSkyMaterial_helix")
+
+[sub_resource type="Environment" id="Environment_helix"]
+background_mode = 2
+background_energy_multiplier = 0.85
+sky = SubResource("Sky_helix")
+ambient_light_source = 3
+ambient_light_color = Color(0.784314, 0.941176, 0.937255, 1)
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 0.8
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.647059, 0.917647, 0.909804, 1)
+fog_light_energy = 0.85
+fog_sun_scatter = 0.1
+fog_density = 0.006
+fog_sky_affect = 0.35
+fog_height = -18.0
+fog_height_density = 0.03
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.012
+volumetric_fog_albedo = Color(0.72, 0.93, 0.92, 1)
+volumetric_fog_emission = Color(0.36, 0.78, 0.76, 1)
+volumetric_fog_emission_energy = 0.35
+volumetric_fog_anisotropy = 0.2
+volumetric_fog_length = 160.0
+volumetric_fog_detail_spread = 6.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_spawn"]
+size = Vector3(10, 1, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_spawn"]
+size = Vector3(10, 1, 20)
+
+[node name="MapHelix" type="Node3D"]
+script = ExtResource("1_helix")
+pipeline = "helix"
+fallback_map_name = "map_helix"
+
+[node name="SpawnPlatform" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="SpawnPlatform"]
+mesh = SubResource("BoxMesh_spawn")
+surface_material_override/0 = SubResource("ShaderMaterial_spawn")
+
+[node name="Collider" type="CollisionShape3D" parent="SpawnPlatform"]
+shape = SubResource("BoxShape3D_spawn")
+
+[node name="Player" parent="." instance=ExtResource("6_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, 0.353553, -0.612372, 0, 0.866025, 0.5, 0.707107, -0.353553, 0.612372, 0, 0, 0)
+light_color = Color(0.85098, 0.960784, 0.956863, 1)
+light_energy = 0.9
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_helix")
