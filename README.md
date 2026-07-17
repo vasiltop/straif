@@ -44,11 +44,57 @@ The game executable can be ran as a game server as well by providing the followi
 
 This will continously ping the server browser to let other players know your server is online.
 
+#### Dockerized game servers
+
+Game servers run in Docker, but the Godot binary is **built on your dev machine** and only copied
+into a tiny image — so even a small (2 GB) droplet never has to run a memory-hungry export.
+
+Build the Linux binary once, then run one or many servers:
+
+```bash
+./scripts/export-linux.sh                       # produces build/linux/straif.x86_64
+
+# a single ad-hoc server
+./scripts/game-server-docker.sh DM-1 3005 8 deathmatch
+
+# a managed fleet (edit docker/game-servers.compose.yaml to add/remove servers)
+docker compose -f docker/game-servers.compose.yaml up -d --build
+```
+
+Ports are UDP (Godot ENet). Add a server by copying a service block in
+`docker/game-servers.compose.yaml` with a unique name and port.
+
+##### Deploying to a droplet
+
+`deploy-game-servers.sh` builds the binary locally, ships it over SSH, and rebuilds/restarts the
+servers on the droplet:
+
+```bash
+DROPLET_HOST=root@1.2.3.4 ./scripts/deploy-game-servers.sh
+```
+
 ### Server
+
+The database, server, and migrations are packaged into a single Docker Compose config.
+From the `server/` directory:
+
+```bash
+cd server
+cp .env.example .env   # fill in STEAM_API_KEY and DISCORD_TOKEN
+docker compose up -d --build
+```
+
+This builds the server image, waits for Postgres, applies the committed migrations, and starts
+the API on `http://localhost:3000`. Re-run the same command to deploy updates.
+
+#### Local development (without Docker)
+
+To run the server directly against the Dockerized database:
+
 ```bash
 cd server
 cp .env.example .env
-docker compose up -d
+docker compose up -d db
 npm install
 npx drizzle-kit push
 npm run dev

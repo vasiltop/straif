@@ -1,0 +1,6 @@
+# Patterns are relative to the build context (repository root).
+# Only the prebuilt Linux export is needed to build the game-server image.
+*
+!build
+build/*
+!build/linux

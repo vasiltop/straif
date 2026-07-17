@@ -1,0 +1,9 @@
+# Patterns are relative to the build context (repository root).
+*
+!server
+!maps.json
+server/node_modules
+server/dist
+server/.env
+server/.env.production
+**/*.log

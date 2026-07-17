@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc && tsup src/index.ts --format esm --outDir dist",
+    "build": "tsc && tsup src/index.ts src/migrate.ts --format esm --outDir dist",
     "start": "node dist/index.js",
     "populate": "node scripts/populate.js",
     "db:generate": "drizzle-kit generate",

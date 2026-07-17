@@ -3,11 +3,35 @@ services:
     image: "postgres:16-alpine"
     ports: ["2345:5432"]
     container_name: straif-db
+    restart: unless-stopped
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
+      POSTGRES_DB: straif
     volumes:
       - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d straif"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build:
+      context: ..
+      dockerfile: server/Dockerfile
+    container_name: straif-server
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: "postgresql://postgres:root@db:5432/straif"
+      PORT: "3000"
+    ports: ["3000:3000"]
 
 volumes:
   db-data:
-      

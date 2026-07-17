@@ -1,0 +1,42 @@
+# Straif dedicated game servers.
+#
+# Each server runs the same prebuilt image but with its own name, port and mode.
+# Godot's ENet transport is UDP, so ports are published as "<port>:<port>/udp".
+#
+# Build the Linux binary first (scripts/export-linux.sh) so build/linux/ exists,
+# then from the repo root:
+#
+#   docker compose -f docker/game-servers.compose.yaml up -d --build
+#
+# To add another server, copy a block, give it a unique service name, PORT and
+# published port. To change the count, add/remove service blocks.
+
+x-game-server: &game-server
+  build:
+    context: ..
+    dockerfile: docker/game-server.Dockerfile
+  image: straif-game-server
+  restart: unless-stopped
+
+services:
+  dm-1:
+    <<: *game-server
+    container_name: straif-gs-dm-1
+    environment:
+      SERVER_NAME: "DM-1"
+      PORT: "3005"
+      MAX_PLAYERS: "8"
+      MODE: "deathmatch"
+    ports:
+      - "3005:3005/udp"
+
+  bhop-1:
+    <<: *game-server
+    container_name: straif-gs-bhop-1
+    environment:
+      SERVER_NAME: "BHOP-1"
+      PORT: "3006"
+      MAX_PLAYERS: "12"
+      MODE: "bhop"
+    ports:
+      - "3006:3006/udp"
