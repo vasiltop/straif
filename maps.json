@@ -3,7 +3,10 @@
 		{
 			"name": "Tutorial",
 			"tier": 0.0,
-			"modes": ["target", "bhop"],
+			"modes": [
+				"target",
+				"bhop"
+			],
 			"medals_target": [
 				6.0,
 				4.5,
@@ -22,7 +25,10 @@
 		{
 			"name": "map_rooftops",
 			"tier": 0.0,
-			"modes": ["target", "bhop"],
+			"modes": [
+				"target",
+				"bhop"
+			],
 			"medals_target": [
 				25.0,
 				17.0,
@@ -41,7 +47,10 @@
 		{
 			"name": "map_streets",
 			"tier": 0.0,
-			"modes": ["target", "bhop"],
+			"modes": [
+				"target",
+				"bhop"
+			],
 			"medals_target": [
 				25.0,
 				20.0,
@@ -60,7 +69,10 @@
 		{
 			"name": "map_flow",
 			"tier": 0.0,
-			"modes": ["target", "bhop"],
+			"modes": [
+				"target",
+				"bhop"
+			],
 			"medals_target": [
 				23.0,
 				17.0,
@@ -79,7 +91,9 @@
 		{
 			"name": "map_line",
 			"tier": 0.0,
-			"modes": ["bhop"],
+			"modes": [
+				"bhop"
+			],
 			"medals_bhop": [
 				20.0,
 				16.0,
@@ -91,7 +105,9 @@
 		{
 			"name": "map_rookie",
 			"tier": 0.0,
-			"modes": ["bhop"],
+			"modes": [
+				"bhop"
+			],
 			"medals_bhop": [
 				5.0,
 				4.0,
@@ -103,7 +119,9 @@
 		{
 			"name": "map_dawn",
 			"tier": 0.0,
-			"modes": ["bhop"],
+			"modes": [
+				"bhop"
+			],
 			"medals_bhop": [
 				20.0,
 				17.5,
@@ -115,7 +133,10 @@
 		{
 			"name": "map_structure",
 			"tier": 1.0,
-			"modes": ["target", "bhop"],
+			"modes": [
+				"target",
+				"bhop"
+			],
 			"medals_target": [
 				22.5,
 				20.5,
@@ -134,7 +155,10 @@
 		{
 			"name": "map_graybox",
 			"tier": 0.0,
-			"modes": ["target", "bhop"],
+			"modes": [
+				"target",
+				"bhop"
+			],
 			"medals_target": [
 				13.0,
 				11.0,
@@ -153,7 +177,10 @@
 		{
 			"name": "map_graybox2",
 			"tier": 0.0,
-			"modes": ["target", "bhop"],
+			"modes": [
+				"target",
+				"bhop"
+			],
 			"medals_target": [
 				20.0,
 				16.0,
@@ -172,7 +199,10 @@
 		{
 			"name": "map_subway",
 			"tier": 1.0,
-			"modes": ["target", "bhop"],
+			"modes": [
+				"target",
+				"bhop"
+			],
 			"medals_target": [
 				25.0,
 				20.0,
@@ -191,7 +221,10 @@
 		{
 			"name": "map_rooftops2",
 			"tier": 2.0,
-			"modes": ["target", "bhop"],
+			"modes": [
+				"target",
+				"bhop"
+			],
 			"medals_target": [
 				55.0,
 				40.0,
@@ -210,7 +243,9 @@
 		{
 			"name": "map_slope",
 			"tier": 0.0,
-			"modes": ["bhop"],
+			"modes": [
+				"bhop"
+			],
 			"medals_bhop": [
 				27.0,
 				22.0,
@@ -222,13 +257,81 @@
 		{
 			"name": "map_taurus",
 			"tier": 0.0,
-			"modes": ["bhop"],
+			"modes": [
+				"bhop"
+			],
 			"medals_bhop": [
 				20.0,
 				17.5,
 				15.5,
 				14.0,
 				13.0
+			]
+		},
+		{
+			"name": "map_atrium",
+			"tier": 0,
+			"modes": [
+				"target",
+				"bhop"
+			],
+			"medals_target": [
+				12,
+				9,
+				7.5,
+				6.5,
+				5.5
+			],
+			"medals_bhop": [
+				10,
+				8,
+				6.5,
+				5.5,
+				4.8
+			]
+		},
+		{
+			"name": "map_causeway",
+			"tier": 1,
+			"modes": [
+				"target",
+				"bhop"
+			],
+			"medals_target": [
+				22,
+				18,
+				15,
+				13,
+				11
+			],
+			"medals_bhop": [
+				18,
+				14,
+				11,
+				9.5,
+				8.5
+			]
+		},
+		{
+			"name": "map_reactor",
+			"tier": 2,
+			"modes": [
+				"target",
+				"bhop"
+			],
+			"medals_target": [
+				40,
+				32,
+				26,
+				22,
+				19
+			],
+			"medals_bhop": [
+				30,
+				24,
+				20,
+				17,
+				15
 			]
 		}
 	]
