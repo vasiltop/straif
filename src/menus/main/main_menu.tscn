@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://taw7qljauqyg"]
+[gd_scene format=3 uid="uid://taw7qljauqyg"]
 
 [ext_resource type="Script" uid="uid://c3c48ot8m7wcr" path="res://src/menus/main/main_menu.gd" id="1_cput1"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="1_wwn1r"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="14_ynrsg"]
 [ext_resource type="PackedScene" uid="uid://dafd7bewek8ax" path="res://src/maps/tiles/vent_1.tscn" id="15_7pey8"]
 [ext_resource type="PackedScene" uid="uid://b01o82sp4jlmx" path="res://src/maps/tiles/vent_2.tscn" id="16_i5dmx"]
+[ext_resource type="PackedScene" path="res://src/menus/main/aim_menu.tscn" id="17_aim"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
 size = Vector2(64, 64)
@@ -29,8 +30,8 @@ default_font_size = 20
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3dplo"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iyvra"]
-seamless = true
 noise = SubResource("FastNoiseLite_3dplo")
+seamless = true
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lb6ej"]
 sky_horizon_color = Color(0.731576, 0.780598, 0.846291, 1)
@@ -149,7 +150,7 @@ shader_parameter/roof_texture_scale = 1.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sci1n"]
 
-[node name="MainMenu" type="Control" node_paths=PackedStringArray("target_practice_leaderboard", "movement_only_leaderboard")]
+[node name="MainMenu" type="Control" unique_id=1452345715 node_paths=PackedStringArray("target_practice_leaderboard", "movement_only_leaderboard")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -161,7 +162,7 @@ script = ExtResource("1_cput1")
 target_practice_leaderboard = NodePath("MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer/TargetPracticeLeaderboard")
 movement_only_leaderboard = NodePath("MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer2/MovementOnlyLeaderboard")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1955005440]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -173,17 +174,18 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
-[node name="Content" type="VSplitContainer" parent="MarginContainer"]
+[node name="Content" type="VSplitContainer" parent="MarginContainer" unique_id=584178741]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
-split_offset = 90
+split_offsets = PackedInt32Array(90)
 dragging_enabled = false
 dragger_visibility = 2
+split_offset = 90
 
-[node name="Header" type="Control" parent="MarginContainer/Content"]
+[node name="Header" type="Control" parent="MarginContainer/Content" unique_id=997704631]
 layout_mode = 2
 
-[node name="Left" type="HBoxContainer" parent="MarginContainer/Content/Header"]
+[node name="Left" type="HBoxContainer" parent="MarginContainer/Content/Header" unique_id=837697120]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -194,15 +196,15 @@ offset_bottom = 20.0
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="Avatar" type="TextureRect" parent="MarginContainer/Content/Header/Left"]
+[node name="Avatar" type="TextureRect" parent="MarginContainer/Content/Header/Left" unique_id=1933554925]
 layout_mode = 2
 texture = SubResource("PlaceholderTexture2D_yrkwj")
 
-[node name="Label" type="Label" parent="MarginContainer/Content/Header/Left"]
+[node name="Label" type="Label" parent="MarginContainer/Content/Header/Left" unique_id=740317584]
 layout_mode = 2
 text = "Username"
 
-[node name="Center" type="HBoxContainer" parent="MarginContainer/Content/Header"]
+[node name="Center" type="HBoxContainer" parent="MarginContainer/Content/Header" unique_id=27485344]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -216,7 +218,7 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Right" type="HBoxContainer" parent="MarginContainer/Content/Header"]
+[node name="Right" type="HBoxContainer" parent="MarginContainer/Content/Header" unique_id=1690811678]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -229,24 +231,24 @@ offset_bottom = 20.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="Discord" type="TextureButton" parent="MarginContainer/Content/Header/Right"]
+[node name="Discord" type="TextureButton" parent="MarginContainer/Content/Header/Right" unique_id=1960688893]
 layout_mode = 2
 texture_normal = ExtResource("3_og6j4")
 texture_pressed = ExtResource("3_0gscq")
 
-[node name="Quit" type="Button" parent="MarginContainer/Content/Header/Right"]
+[node name="Quit" type="Button" parent="MarginContainer/Content/Header/Right" unique_id=128311807]
 layout_mode = 2
 text = "Quit"
 
-[node name="Body" type="TabContainer" parent="MarginContainer/Content"]
+[node name="Body" type="TabContainer" parent="MarginContainer/Content" unique_id=879515857]
 layout_mode = 2
 current_tab = 0
 
-[node name="Speedrun" type="Control" parent="MarginContainer/Content/Body"]
+[node name="Speedrun" type="Control" parent="MarginContainer/Content/Body" unique_id=151761713]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="M" type="MarginContainer" parent="MarginContainer/Content/Body/Speedrun"]
+[node name="M" type="MarginContainer" parent="MarginContainer/Content/Body/Speedrun" unique_id=2134965356]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -258,22 +260,22 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="V" type="VBoxContainer" parent="MarginContainer/Content/Body/Speedrun/M"]
+[node name="V" type="VBoxContainer" parent="MarginContainer/Content/Body/Speedrun/M" unique_id=1561999538]
 layout_mode = 2
 
-[node name="ModeSwitcher" type="TabContainer" parent="MarginContainer/Content/Body/Speedrun/M/V"]
+[node name="ModeSwitcher" type="TabContainer" parent="MarginContainer/Content/Body/Speedrun/M/V" unique_id=1293180709]
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="Target Practice" type="Control" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher"]
+[node name="Target Practice" type="Control" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher" unique_id=1887852677]
 layout_mode = 2
 script = ExtResource("5_0gscq")
 mode = "target"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 0
 
-[node name="Movement Only" type="Control" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher"]
+[node name="Movement Only" type="Control" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher" unique_id=868796938]
 visible = false
 layout_mode = 2
 script = ExtResource("5_0gscq")
@@ -281,17 +283,22 @@ mode = "bhop"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 1
 
-[node name="Server Browser" parent="MarginContainer/Content/Body" instance=ExtResource("6_og6j4")]
+[node name="Aim Trainer" parent="MarginContainer/Content/Body" unique_id=792485455 instance=ExtResource("17_aim")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Leaderboard" type="Control" parent="MarginContainer/Content/Body"]
+[node name="Server Browser" parent="MarginContainer/Content/Body" unique_id=1793080607 instance=ExtResource("6_og6j4")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="Overall" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard"]
+[node name="Leaderboard" type="Control" parent="MarginContainer/Content/Body" unique_id=1078392968]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="Overall" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard" unique_id=1926363149]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -306,46 +313,46 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
-[node name="H" type="HBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall"]
+[node name="H" type="HBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall" unique_id=257135821]
 layout_mode = 2
 theme = SubResource("Theme_og6j4")
 theme_override_constants/separation = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H" unique_id=1128228830]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer" unique_id=637673176]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Target Practice"
 
-[node name="TargetPracticeLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer"]
+[node name="TargetPracticeLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer" unique_id=1291506203]
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H" unique_id=15554509]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer2" unique_id=2137644706]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Movement Only"
 
-[node name="MovementOnlyLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer2"]
+[node name="MovementOnlyLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer2" unique_id=257067248]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Content/Body/Leaderboard/Overall"]
+[node name="Label" type="Label" parent="MarginContainer/Content/Body/Leaderboard/Overall" unique_id=1815162472]
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
 text = "Points are given based on runs in the top 10.
 1st place is 10 points, 2nd place is 9 points, etc.."
 horizontal_alignment = 1
 
-[node name="Settings" type="Control" parent="MarginContainer/Content/Body"]
+[node name="Settings" type="Control" parent="MarginContainer/Content/Body" unique_id=1145642441]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 3
+metadata/_tab_index = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Content/Body/Settings"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Content/Body/Settings" unique_id=199957781]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -357,507 +364,507 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="SettingsMenu" parent="MarginContainer/Content/Body/Settings/MarginContainer" instance=ExtResource("2_juxiq")]
+[node name="SettingsMenu" parent="MarginContainer/Content/Body/Settings/MarginContainer" unique_id=1593858137 instance=ExtResource("2_juxiq")]
 layout_mode = 2
 
-[node name="Background" type="Node3D" parent="."]
+[node name="Background" type="Node3D" parent="." unique_id=502199811]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Background"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Background" unique_id=1773997963]
 environment = SubResource("Environment_r73g7")
 
-[node name="Map" type="Node3D" parent="Background"]
+[node name="Map" type="Node3D" parent="Background" unique_id=1345470837]
 
-[node name="Building" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building" parent="Background/Map" unique_id=164051540 instance=ExtResource("3_im8n7")]
 transform = Transform3D(16.128, 0, 0, 0, 50, 0, 0, 0, 80, 0, -22.8553, 12)
 
-[node name="Vent5" parent="Background/Map" instance=ExtResource("4_wwn1r")]
+[node name="Vent5" parent="Background/Map" unique_id=1602481290 instance=ExtResource("4_wwn1r")]
 transform = Transform3D(5, 0, 0, 0, 2.62389, 5.5544, 0, -0.70307, 20.7293, -41, 2.12249, -35.0156)
 
-[node name="Building5" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building5" parent="Background/Map" unique_id=550072665 instance=ExtResource("3_im8n7")]
 transform = Transform3D(16.128, 0, 0, 0, 50, 0, 0, 0, 24, 0, -22.8553, -43)
 
-[node name="Building6" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building6" parent="Background/Map" unique_id=1742991186 instance=ExtResource("3_im8n7")]
 transform = Transform3D(26.8351, 0, 0, 0, 50, 0, 0, 0, 7.2, -22.7079, -22.8553, -48.4195)
 
-[node name="Building7" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building7" parent="Background/Map" unique_id=469419961 instance=ExtResource("3_im8n7")]
 transform = Transform3D(-1.26896e-06, 0, 7.2, 0, 50, 0, -29.0304, 0, -3.14722e-07, -41, -22.855, -39)
 
-[node name="Building15" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building15" parent="Background/Map" unique_id=1927295909 instance=ExtResource("3_im8n7")]
 transform = Transform3D(-1.26896e-06, 0, 7.2, 0, 90, 0, -29.0304, 0, -3.14722e-07, -41, -73, -39)
 
-[node name="Building2" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building2" parent="Background/Map" unique_id=586762993 instance=ExtResource("3_im8n7")]
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, -32, -19, 0)
 
-[node name="Building16" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building16" parent="Background/Map" unique_id=1473531509 instance=ExtResource("3_im8n7")]
 transform = Transform3D(16.128, 0, 0, 0, 120, 0, 0, 0, 80, 0, -98.4, 12)
 
-[node name="Building17" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building17" parent="Background/Map" unique_id=1494807498 instance=ExtResource("3_im8n7")]
 transform = Transform3D(16.128, 0, 0, 0, 120, 0, 0, 0, 24, 0, -98.4, -43)
 
-[node name="Building18" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building18" parent="Background/Map" unique_id=1408725636 instance=ExtResource("3_im8n7")]
 transform = Transform3D(31.9334, 0, 0, 0, 120, 0, 0, 0, 7.2, -22.7079, -98.4, -48.4195)
 
-[node name="Building19" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building19" parent="Background/Map" unique_id=1272760252 instance=ExtResource("3_im8n7")]
 transform = Transform3D(50, 0, 0, 0, 120, 0, 0, 0, 50, -32, -88.8, 0)
 
-[node name="Building4" parent="Background/Map" instance=ExtResource("3_im8n7")]
+[node name="Building4" parent="Background/Map" unique_id=1039181283 instance=ExtResource("3_im8n7")]
 transform = Transform3D(50, 0, 0, 0, 110.25, 0, 0, 0, 35, 33, -47.9276, -8)
 
-[node name="Building3" type="StaticBody3D" parent="Background/Map"]
+[node name="Building3" type="StaticBody3D" parent="Background/Map" unique_id=513267596]
 transform = Transform3D(130, 0, 0, 0, 147, 0, 0, 0, 50, -15, -62.2277, 33)
 
-[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building3"]
+[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building3" unique_id=1781311883]
 transform = Transform3D(1, 0, 0, 0, 1.02702, 0, 0, 0, 1, 0, 0.0212902, 0)
 mesh = SubResource("BoxMesh_m0vnn")
 surface_material_override/0 = SubResource("ShaderMaterial_o1xsd")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/Building3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/Building3" unique_id=1910792336]
 transform = Transform3D(1, 0, 0, 0, 1.02702, 0, 0, 0, 1, 0, 0.0212902, 0)
 shape = SubResource("ConcavePolygonShape3D_jmnoi")
 
-[node name="Building8" type="StaticBody3D" parent="Background/Map"]
+[node name="Building8" type="StaticBody3D" parent="Background/Map" unique_id=1066342250]
 transform = Transform3D(78, 0, 0, 0, 147, 0, 0, 0, 50, 21, -81.1277, -118)
 
-[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building8"]
+[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building8" unique_id=354699300]
 transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463402, -0.00727886, 0.297337)
 mesh = SubResource("BoxMesh_m0vnn")
 surface_material_override/0 = SubResource("ShaderMaterial_6npg6")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/Building8"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/Building8" unique_id=1176495269]
 transform = Transform3D(1.16295, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463402, -0.00727886, 0.297337)
 shape = SubResource("ConvexPolygonShape3D_wospt")
 
-[node name="Building9" type="StaticBody3D" parent="Background/Map"]
+[node name="Building9" type="StaticBody3D" parent="Background/Map" unique_id=1661641179]
 transform = Transform3D(78, 0, 0, 0, 147, 0, 0, 0, 50, 61, -57.6077, -103)
 
-[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building9"]
+[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building9" unique_id=1315238736]
 transform = Transform3D(1, 0, 0, 0, 1.04966, 0, 0, 0, 1, -0.00835264, 0, 0.29739)
 mesh = SubResource("BoxMesh_g3hno")
 surface_material_override/0 = SubResource("ShaderMaterial_okh0q")
 
-[node name="Collider" type="CollisionShape3D" parent="Background/Map/Building9"]
+[node name="Collider" type="CollisionShape3D" parent="Background/Map/Building9" unique_id=1632958870]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00835264, 0, 0.29739)
 shape = SubResource("BoxShape3D_m67di")
 
-[node name="Building10" type="StaticBody3D" parent="Background/Map"]
+[node name="Building10" type="StaticBody3D" parent="Background/Map" unique_id=1256546316]
 transform = Transform3D(39, 0, 0, 0, 147, 0, 0, 0, 55, 40, -64.6077, -51)
 
-[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building10"]
+[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building10" unique_id=41810236]
 transform = Transform3D(0.998, 0, 0, 0, 1.02, 0, 0, 0, 0.998, 0, -0.00329193, 0)
 mesh = SubResource("BoxMesh_m0vnn")
 surface_material_override/0 = SubResource("ShaderMaterial_cwair")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/Building10"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/Building10" unique_id=1645953692]
 transform = Transform3D(0.998, 0, 0, 0, 1.02, 0, 0, 0, 0.998, 0, -0.00329193, 0)
 shape = SubResource("ConvexPolygonShape3D_l6dfm")
 
-[node name="Planks10" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks10" parent="Background/Map" unique_id=1138136653 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 0, 2.14884, 3)
 
-[node name="Planks11" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks11" parent="Background/Map" unique_id=1496843690 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, -11, 6.00621, 3)
 
-[node name="Building11" type="StaticBody3D" parent="Background/Map"]
+[node name="Building11" type="StaticBody3D" parent="Background/Map" unique_id=2039924768]
 transform = Transform3D(101.4, 0, 0, 0, 315, 0, 0, 0, 50, -60, -50.8286, -102)
 
-[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building11"]
+[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building11" unique_id=1108863671]
 transform = Transform3D(0.45, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.128205, -0.0215208, 0.023097)
 mesh = SubResource("BoxMesh_g3hno")
 surface_material_override/0 = SubResource("ShaderMaterial_op6x7")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/Building11"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/Building11" unique_id=206499107]
 transform = Transform3D(0.45, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.128205, -0.0215208, 0.023097)
 shape = SubResource("ConvexPolygonShape3D_ib11i")
 
-[node name="Mesh2" type="MeshInstance3D" parent="Background/Map/Building11"]
+[node name="Mesh2" type="MeshInstance3D" parent="Background/Map/Building11" unique_id=204388139]
 transform = Transform3D(0.45, 0, 0, 0, 0.7, 0, 0, 0, 1, -0.522682, -0.0215208, 2.9)
 mesh = SubResource("BoxMesh_g3hno")
 surface_material_override/0 = SubResource("ShaderMaterial_op6x7")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="Background/Map/Building11"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Background/Map/Building11" unique_id=1601433356]
 transform = Transform3D(0.45, 0, 0, 0, 0.7, 0, 0, 0, 1, -0.522682, -0.0215208, 2.9)
 shape = SubResource("ConvexPolygonShape3D_k1sid")
 
-[node name="Building12" type="StaticBody3D" parent="Background/Map"]
+[node name="Building12" type="StaticBody3D" parent="Background/Map" unique_id=1280797311]
 transform = Transform3D(78, 0, 0, 0, 264.6, 0, 0, 0, 150, -114, -124.808, -62)
 
-[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building12"]
+[node name="Mesh" type="MeshInstance3D" parent="Background/Map/Building12" unique_id=2081712307]
 mesh = SubResource("BoxMesh_g3hno")
 surface_material_override/0 = SubResource("ShaderMaterial_c3mci")
 
-[node name="Collider" type="CollisionShape3D" parent="Background/Map/Building12"]
+[node name="Collider" type="CollisionShape3D" parent="Background/Map/Building12" unique_id=746009396]
 shape = SubResource("BoxShape3D_m67di")
 
-[node name="road_straight" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight" parent="Background/Map" unique_id=77225147 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -97, -29)
 
-[node name="road_straight2" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight2" parent="Background/Map" unique_id=209173377 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -97, -37)
 
-[node name="road_straight3" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight3" parent="Background/Map" unique_id=1953991974 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -97, -45)
 
-[node name="road_straight4" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight4" parent="Background/Map" unique_id=2104303744 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -97, -53)
 
-[node name="road_straight5" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight5" parent="Background/Map" unique_id=1128288659 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -97, -61)
 
-[node name="road_straight6" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight6" parent="Background/Map" unique_id=345917686 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -97, -69)
 
-[node name="road_straight9" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight9" parent="Background/Map" unique_id=520702767 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6, -97, -69)
 
-[node name="road_straight10" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight10" parent="Background/Map" unique_id=1872366546 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2, -97, -69)
 
-[node name="road_straight11" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight11" parent="Background/Map" unique_id=500230409 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -10, -97, -69)
 
-[node name="road_straight12" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight12" parent="Background/Map" unique_id=1591278223 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -18, -97, -69)
 
-[node name="road_straight13" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight13" parent="Background/Map" unique_id=285125424 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -26, -97, -69)
 
-[node name="road_straight14" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight14" parent="Background/Map" unique_id=846880678 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -34, -97, -69)
 
-[node name="road_straight15" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight15" parent="Background/Map" unique_id=393470685 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -42, -97, -69)
 
-[node name="road_straight16" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight16" parent="Background/Map" unique_id=426263557 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -50, -97, -69)
 
-[node name="road_straight17" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight17" parent="Background/Map" unique_id=1652975744 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -58, -97, -69)
 
-[node name="road_straight18" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight18" parent="Background/Map" unique_id=556189546 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -66, -97, -69)
 
-[node name="road_straight19" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight19" parent="Background/Map" unique_id=465543213 instance=ExtResource("13_pds4v")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -74, -97, -69)
 
-[node name="road_straight7" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight7" parent="Background/Map" unique_id=454745899 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -97, -77)
 
-[node name="road_straight20" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight20" parent="Background/Map" unique_id=1928077862 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -21)
 
-[node name="road_straight21" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight21" parent="Background/Map" unique_id=582104633 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -29)
 
-[node name="road_straight22" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight22" parent="Background/Map" unique_id=968389471 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -37)
 
-[node name="road_straight23" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight23" parent="Background/Map" unique_id=243235541 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -45)
 
-[node name="road_straight24" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight24" parent="Background/Map" unique_id=201983970 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -53)
 
-[node name="road_straight25" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight25" parent="Background/Map" unique_id=1795243119 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -61)
 
-[node name="road_straight26" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight26" parent="Background/Map" unique_id=236531 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, 27)
 
-[node name="road_straight27" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight27" parent="Background/Map" unique_id=80111035 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, 19)
 
-[node name="road_straight28" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight28" parent="Background/Map" unique_id=1490116613 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, 11)
 
-[node name="road_straight29" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight29" parent="Background/Map" unique_id=493590203 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, 3)
 
-[node name="road_straight30" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight30" parent="Background/Map" unique_id=60709859 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -5)
 
-[node name="road_straight31" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight31" parent="Background/Map" unique_id=1973672370 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -97, -13)
 
-[node name="road_straight8" parent="Background/Map" instance=ExtResource("13_pds4v")]
+[node name="road_straight8" parent="Background/Map" unique_id=306865635 instance=ExtResource("13_pds4v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.3485, -97, -70.1305)
 
-[node name="Sidewalk" type="MeshInstance3D" parent="Background/Map"]
+[node name="Sidewalk" type="MeshInstance3D" parent="Background/Map" unique_id=281473795]
 transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -16, -97, -61)
 mesh = SubResource("PlaneMesh_a3ttj")
 surface_material_override/0 = SubResource("StandardMaterial3D_xmhr6")
 
-[node name="Vent" parent="Background/Map" instance=ExtResource("4_wwn1r")]
+[node name="Vent" parent="Background/Map" unique_id=1311853644 instance=ExtResource("4_wwn1r")]
 transform = Transform3D(1.28271, 0, 0, 0, 1, 0, 0, 0, 40.0761, 30.1463, 7.60523, -4.56704)
 
-[node name="roofthing" type="StaticBody3D" parent="Background/Map"]
+[node name="roofthing" type="StaticBody3D" parent="Background/Map" unique_id=2147371818]
 transform = Transform3D(11.4684, 0, 0, 0, 1, 0, 0, 0, 14.1242, -48.9982, 6.45153, -4.56704)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Map/roofthing"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Map/roofthing" unique_id=2092036701]
 transform = Transform3D(1.23945, 0, 0, 0, 4.31254, 0, 0, 0, 1, 0.19471, 1.72809, 0)
 mesh = SubResource("BoxMesh_qbd60")
 surface_material_override/0 = SubResource("ShaderMaterial_n3jhf")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/roofthing"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/roofthing" unique_id=29902690]
 shape = SubResource("BoxShape3D_sci1n")
 
-[node name="roofthing2" type="StaticBody3D" parent="Background/Map"]
+[node name="roofthing2" type="StaticBody3D" parent="Background/Map" unique_id=1319540606]
 transform = Transform3D(11.4684, 0, 0, 0, 1, 0, 0, 0, 14.1242, -19.0789, 6.45153, -16.336)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Map/roofthing2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Map/roofthing2" unique_id=1730301112]
 transform = Transform3D(1.23945, 0, 0, 0, 4.31254, 0, 0, 0, 1, 0.19471, 1.72809, 0)
 mesh = SubResource("BoxMesh_qbd60")
 surface_material_override/0 = SubResource("ShaderMaterial_n3jhf")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/roofthing2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Map/roofthing2" unique_id=1154401163]
 shape = SubResource("BoxShape3D_sci1n")
 
-[node name="Vent8" parent="Background/Map" instance=ExtResource("4_wwn1r")]
+[node name="Vent8" parent="Background/Map" unique_id=1998688466 instance=ExtResource("4_wwn1r")]
 transform = Transform3D(6.34873, 0, 0, 0, 1.70356, 0, 0, 0, 6.17075, -76.537, -53.819, -94.579)
 
-[node name="Vent9" parent="Background/Map" instance=ExtResource("4_wwn1r")]
+[node name="Vent9" parent="Background/Map" unique_id=79163390 instance=ExtResource("4_wwn1r")]
 transform = Transform3D(6.34873, 0, 0, 0, 5.94431, 0, 0, 0, 6.17075, -76.537, -23.4575, -62.5538)
 
-[node name="Vent2" parent="Background/Map" instance=ExtResource("4_wwn1r")]
+[node name="Vent2" parent="Background/Map" unique_id=919425194 instance=ExtResource("4_wwn1r")]
 transform = Transform3D(1.15412, 0, -17.4896, 0, 1, 0, 0.559789, 0, 36.0584, 18.616, 6.59232, -32.8577)
 
-[node name="Vent3" parent="Background/Map" instance=ExtResource("4_wwn1r")]
+[node name="Vent3" parent="Background/Map" unique_id=437694319 instance=ExtResource("4_wwn1r")]
 transform = Transform3D(-2.56495e-07, 0, -19.3939, 0, 2.46697, 0, 5.86792, 0, -8.47736e-07, 2.51385, -7.69715, -89.2555)
 
-[node name="vent1" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent1" parent="Background/Map" unique_id=1421852137 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 5.77624, 2.19651, -52.7068)
 
-[node name="vent57" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent57" parent="Background/Map" unique_id=1894870887 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 23.7762, 9.94177, -44.7068)
 
-[node name="vent58" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent58" parent="Background/Map" unique_id=1067788663 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 23.7762, 9.94177, -68.5132)
 
-[node name="vent59" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent59" parent="Background/Map" unique_id=1670350250 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 11.6735, 16.4551, 9.66911)
 
-[node name="vent4" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent4" parent="Background/Map" unique_id=82876559 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -21.31, -8.64227, -80.9462)
 
-[node name="vent5" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent5" parent="Background/Map" unique_id=1246546864 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -2.34951, -8.64227, -80.9462)
 
-[node name="vent6" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent6" parent="Background/Map" unique_id=1008676946 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 16.6505, -8.64227, -80.9462)
 
-[node name="vent7" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent7" parent="Background/Map" unique_id=1174362529 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -21.8904, -8.64227, -100.177)
 
-[node name="vent8" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent8" parent="Background/Map" unique_id=321727956 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -2.10052, -8.64227, -100.177)
 
-[node name="vent9" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent9" parent="Background/Map" unique_id=1839825541 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 15.8995, -8.64227, -100.177)
 
-[node name="vent10" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent10" parent="Background/Map" unique_id=1440298649 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 15.8995, -8.64227, -120.177)
 
-[node name="vent11" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent11" parent="Background/Map" unique_id=582116838 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -2.10052, -8.64227, -120.177)
 
-[node name="vent12" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent12" parent="Background/Map" unique_id=89004035 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -21.1005, -8.64227, -120.177)
 
-[node name="vent13" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent13" parent="Background/Map" unique_id=1074448408 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 25.8748, 19.5665, -66.5405)
 
-[node name="vent14" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent14" parent="Background/Map" unique_id=1849787976 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 44.8353, 19.5665, -66.5405)
 
-[node name="vent15" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent15" parent="Background/Map" unique_id=1009405989 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 63.8353, 19.5665, -66.5405)
 
-[node name="vent16" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent16" parent="Background/Map" unique_id=1344900054 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 25.2944, 19.5665, -85.7715)
 
-[node name="vent17" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent17" parent="Background/Map" unique_id=807253620 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 45.0843, 19.5665, -85.7715)
 
-[node name="vent18" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent18" parent="Background/Map" unique_id=872794018 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 63.0843, 19.5665, -85.7715)
 
-[node name="vent19" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent19" parent="Background/Map" unique_id=474312385 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 63.0843, 19.5665, -105.772)
 
-[node name="vent20" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent20" parent="Background/Map" unique_id=1312565416 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 45.0843, 19.5665, -105.772)
 
-[node name="vent21" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent21" parent="Background/Map" unique_id=787169657 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, 26.0843, 19.5665, -105.772)
 
-[node name="vent22" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent22" parent="Background/Map" unique_id=230841243 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -145.134, 7.56467, -91.8497)
 
-[node name="vent24" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent24" parent="Background/Map" unique_id=1669003525 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -79.8314, 7.56467, -91.8497)
 
-[node name="vent25" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent25" parent="Background/Map" unique_id=842428871 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -145.714, 7.56467, -111.08)
 
-[node name="vent26" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent26" parent="Background/Map" unique_id=65110458 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -116.688, 7.56467, -120.638)
 
-[node name="vent27" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent27" parent="Background/Map" unique_id=599689169 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -80.5824, 7.56467, -111.08)
 
-[node name="vent28" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent28" parent="Background/Map" unique_id=1596184646 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -80.5824, 7.56467, -131.08)
 
-[node name="vent30" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent30" parent="Background/Map" unique_id=362977713 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -144.924, 7.56467, -131.08)
 
-[node name="vent31" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent31" parent="Background/Map" unique_id=1433445349 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -145.134, 7.56467, -33.2461)
 
-[node name="vent32" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent32" parent="Background/Map" unique_id=1091378940 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -116.937, 7.56467, -42.8033)
 
-[node name="vent33" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent33" parent="Background/Map" unique_id=1973788844 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -79.8314, 7.56467, -33.2461)
 
-[node name="vent34" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent34" parent="Background/Map" unique_id=1499245510 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -145.714, 7.56467, -52.4768)
 
-[node name="vent36" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent36" parent="Background/Map" unique_id=903931902 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -80.5824, 7.56467, -52.4768)
 
-[node name="vent37" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent37" parent="Background/Map" unique_id=2014437254 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -80.5824, 7.56467, -72.4768)
 
-[node name="vent38" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent38" parent="Background/Map" unique_id=328222950 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -116.688, 7.56467, -82.034)
 
-[node name="vent39" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent39" parent="Background/Map" unique_id=872967758 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -144.924, 7.56467, -72.4768)
 
-[node name="vent40" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent40" parent="Background/Map" unique_id=604959276 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -145.134, 7.56467, 6.60449)
 
-[node name="vent41" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent41" parent="Background/Map" unique_id=1248644922 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -116.937, 7.56467, -2.95273)
 
-[node name="vent42" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent42" parent="Background/Map" unique_id=394684197 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -78.2345, 7.56467, 5.28578)
 
-[node name="vent43" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent43" parent="Background/Map" unique_id=1531150868 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -145.714, 7.56467, -12.6261)
 
-[node name="vent45" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent45" parent="Background/Map" unique_id=2029434770 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.47368, 0, 0, 0, 1, -80.5824, 7.56467, -12.6261)
 
-[node name="vent2" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent2" parent="Background/Map" unique_id=580647734 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 1.24883, 0, 0, 0, 1, -42.8212, 2.05835, -51.4757)
 
-[node name="vent64" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent64" parent="Background/Map" unique_id=1400203207 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 2.09455, 0, 0, 0, 1, -22.7044, 2.21166, -48.2351)
 
-[node name="vent3" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent3" parent="Background/Map" unique_id=831640986 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 2.04874, 0, 0, 0, 1, -54.7611, 6.17951, -22.7948)
 
-[node name="vent68" parent="Background/Map" instance=ExtResource("15_7pey8")]
+[node name="vent68" parent="Background/Map" unique_id=1730690527 instance=ExtResource("15_7pey8")]
 transform = Transform3D(1, 0, 0, 0, 2.04874, 0, 0, 0, 1, -50.4238, 10.4202, -8.58652)
 
-[node name="vent23" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent23" parent="Background/Map" unique_id=1179777245 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -3.90955, 3.14467, -38.546)
 
-[node name="vent46" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent46" parent="Background/Map" unique_id=598786746 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -3.90955, 3.14467, -6.54601)
 
-[node name="vent35" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent35" parent="Background/Map" unique_id=2127519872 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.06066, 0, -0.777817, 0, 1.7, 0, 1.06066, 0, 0.777818, 3.09045, 3.14467, -47.546)
 
-[node name="vent60" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent60" parent="Background/Map" unique_id=641933416 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.06066, 0, -0.777817, 0, 1.7, 0, 1.06066, 0, 0.777818, -10.856, -8.06524, -110.727)
 
-[node name="vent62" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent62" parent="Background/Map" unique_id=681686243 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.49966, 0, 0.0232863, 0, 1.7, 0, -0.031754, 0, 1.09975, 11.5929, -8.06524, -110.727)
 
-[node name="vent63" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent63" parent="Background/Map" unique_id=1045394959 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.26447, 0, -0.591742, 0, 1.7, 0, 0.80692, 0, 0.927276, 34.567, 20.0937, -76.7592)
 
-[node name="vent61" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent61" parent="Background/Map" unique_id=1370639548 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.38282, 0, 0.426214, 0, 1.7, 0, -0.581201, 0, 1.01407, -17.3388, -8.06524, -90.3655)
 
-[node name="vent47" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent47" parent="Background/Map" unique_id=214585121 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.06066, 0, -0.777817, 0, 1.7, 0, 1.06066, 0, 0.777818, 19.0905, 8.14467, -19.546)
 
-[node name="vent48" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent48" parent="Background/Map" unique_id=37131281 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.19209e-07, 0, -1.1, 0, 1.7, 0, 1.5, 0, 1.78814e-07, 19.0905, 8.14467, -0.546013)
 
-[node name="vent49" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent49" parent="Background/Map" unique_id=1751165681 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.66893e-07, 0, -4.18, 0, 1.7, 0, 2.1, 0, 6.79493e-07, 28.0905, 10.1447, -34.546)
 
-[node name="vent54" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent54" parent="Background/Map" unique_id=1535356179 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(-0.617064, 0, -3.99547, 0, 1.7, 0, 2.00729, 0, -1.22825, -44.6827, 17.1447, 14.5328)
 
-[node name="vent55" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent55" parent="Background/Map" unique_id=335682929 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(0.152141, 0, -4.11087, 0, 1.7, 0, 0.826107, 0, 0.757082, -14.9095, 17.1447, 11.8565)
 
-[node name="vent56" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent56" parent="Background/Map" unique_id=173753743 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(-0.593969, 0, -2.95571, 0, 1.7, 0, 0.59397, 0, -2.9557, 30.0905, 17.1447, 13.2109)
 
-[node name="vent50" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent50" parent="Background/Map" unique_id=622567951 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.66893e-07, 0, -4.18, 0, 1.7, 0, 2.1, 0, 6.79493e-07, 40.0905, 9.14467, -56.546)
 
-[node name="vent51" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent51" parent="Background/Map" unique_id=667704227 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(1.66893e-07, 0, -4.18, 0, 1.7, 0, 2.1, 0, 6.79493e-07, -91.9095, 8.14467, -59.546)
 
-[node name="vent52" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent52" parent="Background/Map" unique_id=841901169 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(-1.48492, 0, -1.18228, 0, 1.7, 0, 1.48492, 0, -1.18228, -92.9095, 8.14467, -104.546)
 
-[node name="vent53" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent53" parent="Background/Map" unique_id=541367989 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(-1.48492, 0, -1.18228, 0, 1.7, 0, 1.48492, 0, -1.18228, -96.9095, 8.14467, -13.546)
 
-[node name="vent29" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent29" parent="Background/Map" unique_id=1189831498 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(0.720212, 0, 0.693754, 0, 1, 0, -0.693754, 0, 0.720212, -29.9095, 6.96294, -14.546)
 
-[node name="vent65" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent65" parent="Background/Map" unique_id=1877000926 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(0.892224, 0, -0.451594, 0, 1, 0, 0.451594, 0, 0.892224, -29.9095, 6.96294, 1.58223)
 
-[node name="vent66" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent66" parent="Background/Map" unique_id=647652121 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(0.892224, 0, -0.451594, 0, 1, 0, 0.451594, 0, 0.892224, -19.5257, 6.96294, -3.43416)
 
-[node name="vent67" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent67" parent="Background/Map" unique_id=471756063 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(0.892224, 0, -0.451594, 0, 1, 0, 0.451594, 0, 0.892224, -19.5257, 10.1129, -14.2638)
 
-[node name="vent44" parent="Background/Map" instance=ExtResource("16_i5dmx")]
+[node name="vent44" parent="Background/Map" unique_id=958203037 instance=ExtResource("16_i5dmx")]
 transform = Transform3D(-5.24537e-08, 0, -2.1, 0, 2.55, 0, 1.2, 0, -9.17939e-08, 7.09045, 3.14467, -14.546)
 
-[node name="Planks" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks" parent="Background/Map" unique_id=1575291264 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(5.86964, 0, 0.0878891, 0, 0.042829, 0, -0.743277, 0, 0.694058, -8.62866, 2.15384, -48.8354)
 
-[node name="Planks2" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks2" parent="Background/Map" unique_id=1616904486 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(4.95433, 0, -0.0104261, 0, 0.042829, 0, 0.0608775, 0, 0.848503, -8.62866, 2.15384, -47.4034)
 
-[node name="Planks3" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks3" parent="Background/Map" unique_id=745219662 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(5.94498, 0, -0.00771581, 0, 0.042829, 0, 0.0810411, 0, 0.566014, -8.62866, 2.15384, -48.1757)
 
-[node name="Planks4" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks4" parent="Background/Map" unique_id=401486775 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(-3.35455, 0, -0.138588, 0, 0.042829, 0, 0.508346, 0, -0.914536, -36.8033, 2.15384, -47.1769)
 
-[node name="Planks5" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks5" parent="Background/Map" unique_id=924761675 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(-3.90547, 0, 0.208188, 0, 0.042829, 0, -1.27824, 0, -0.636088, -36.8576, 2.15384, -49.1672)
 
-[node name="Planks6" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks6" parent="Background/Map" unique_id=202515742 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(-3.64349, 0, -0.00921944, 0, 0.042829, 0, 0.0393647, 0, -0.853324, -36.8296, 2.15384, -48.142)
 
-[node name="Planks7" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks7" parent="Background/Map" unique_id=1520219897 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(-1.15464, 0, 0.932791, 0, 0.042829, 0, -5.17533, 0, -0.20811, -0.483846, 2.15384, -29.5257)
 
-[node name="Planks8" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks8" parent="Background/Map" unique_id=515261133 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(-0.374595, 0, 0.739696, 0, 0.042829, 0, -5.50183, 0, -0.0503627, 1.3629, 2.15384, -29.7351)
 
-[node name="Planks9" parent="Background/Map" instance=ExtResource("7_1yh6f")]
+[node name="Planks9" parent="Background/Map" unique_id=1969797033 instance=ExtResource("7_1yh6f")]
 transform = Transform3D(-0.448043, 0, 0.791245, 0, 0.042829, 0, -5.5943, 0, -0.0633703, 0.401264, 2.15384, -29.6272)
 
-[node name="Sun" type="DirectionalLight3D" parent="Background"]
+[node name="Sun" type="DirectionalLight3D" parent="Background" unique_id=1654770889]
 transform = Transform3D(-0.603208, -0.271481, 0.749959, 0, 0.940288, 0.34038, -0.797584, 0.20532, -0.567189, -16, 14, 0)
 light_energy = 1.5
 shadow_enabled = true
 
-[node name="Camera3D" type="Camera3D" parent="Background"]
+[node name="Camera3D" type="Camera3D" parent="Background" unique_id=800577372]
 transform = Transform3D(-0.829662, 0, 0.558266, 0, 1, 0, -0.558266, 0, -0.829662, 0, 5.67595, -47.5004)

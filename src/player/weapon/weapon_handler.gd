@@ -1,6 +1,7 @@
 class_name WeaponHandler extends Node3D
 
 signal shot(mag_ammo: int, reserve_ammo: int)
+signal bullet_fired(collider: Object, hit_position: Vector3)
 
 @onready var player: Player = $"../../.."
 @onready var weapon_scene: Node3D = null
@@ -44,6 +45,7 @@ var mag_ammo := 0
 var reserve_ammo := 0
 var max_mag_ammo := 0
 var current_recoil: Vector2
+var unlimited_ammo := false
 var shooting_enabled := true
 
 @rpc("any_peer", "call_local", "reliable")
@@ -77,7 +79,7 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 		reset_ammo()
 
 		# move it out of the way so it doesnt flicker
-		weapon_scene.global_position = Vector3.ZERO
+		weapon_scene.position = Vector3.ZERO
 
 		var gun_parent := gun_container
 		if is_third_person: 
@@ -298,7 +300,7 @@ func _attack_visuals() -> void:
 
 func can_shoot(ghost_bullet: bool) -> bool:
 	if current_weapon == null: return false
-	if mag_ammo <= 0 and not ghost_bullet: return false
+	if mag_ammo <= 0 and not ghost_bullet and not unlimited_ammo: return false
 	if time_since_last_shot < current_weapon.weapon_shot_delay: return false
 	if player.pause_menu.visible: return false
 	
@@ -319,7 +321,10 @@ func _try_shoot(ghost_bullet := false) -> void:
 	
 	if current_weapon.is_melee: return
 	
-	mag_ammo -= 1
+	if unlimited_ammo:
+		mag_ammo = max_mag_ammo
+	else:
+		mag_ammo -= 1
 	shot.emit(mag_ammo, reserve_ammo)
 	
 	for i in range(current_weapon.bullet_count):
@@ -392,10 +397,11 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 	query.collision_mask = 1 << 0 | 1 << 2
 	var result := space_state.intersect_ray(query)
 	var hit_pos := origin + direction * distance
+	var collider: Object = null
 	
 	if result != {}:
 		hit_pos = result.position
-		var collider = result.collider
+		collider = result.collider
 		
 		if collider is BodyPart:
 			var body_part: BodyPart = collider
@@ -416,6 +422,8 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 			else:
 				_spawn_bullet_hole(hit_pos, result.normal)
 	
+	bullet_fired.emit(collider, hit_pos)
+
 	if Global.mp():
 		_gun_visuals.rpc(hit_pos)
 	else:
