@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://kobodi1ald1m"
 path.s3tc="res://.godot/imported/subway_roof.jpeg-85229b9468d009409e9b891cfbfa990c.s3tc.ctex"
+path.etc2="res://.godot/imported/subway_roof.jpeg-85229b9468d009409e9b891cfbfa990c.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://src/textures/subway_roof.jpeg"
-dest_files=["res://.godot/imported/subway_roof.jpeg-85229b9468d009409e9b891cfbfa990c.s3tc.ctex"]
+dest_files=["res://.godot/imported/subway_roof.jpeg-85229b9468d009409e9b891cfbfa990c.s3tc.ctex", "res://.godot/imported/subway_roof.jpeg-85229b9468d009409e9b891cfbfa990c.etc2.ctex"]
 
 [params]
 

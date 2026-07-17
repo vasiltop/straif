@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://6mid0tvio06k"
 path.s3tc="res://.godot/imported/subway_wall_tiles.jpg-d019c40efbea6dfecdac85340559f9b0.s3tc.ctex"
+path.etc2="res://.godot/imported/subway_wall_tiles.jpg-d019c40efbea6dfecdac85340559f9b0.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://src/textures/subway_wall_tiles.jpg"
-dest_files=["res://.godot/imported/subway_wall_tiles.jpg-d019c40efbea6dfecdac85340559f9b0.s3tc.ctex"]
+dest_files=["res://.godot/imported/subway_wall_tiles.jpg-d019c40efbea6dfecdac85340559f9b0.s3tc.ctex", "res://.godot/imported/subway_wall_tiles.jpg-d019c40efbea6dfecdac85340559f9b0.etc2.ctex"]
 
 [params]
 

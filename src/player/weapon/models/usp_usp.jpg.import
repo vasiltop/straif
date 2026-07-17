@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ck6c3uynvhyci"
 path.s3tc="res://.godot/imported/usp_usp.jpg-c15b268d55d4db9b8013a5db6a585066.s3tc.ctex"
+path.etc2="res://.godot/imported/usp_usp.jpg-c15b268d55d4db9b8013a5db6a585066.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/player/weapon/models/usp_usp.jpg"
-dest_files=["res://.godot/imported/usp_usp.jpg-c15b268d55d4db9b8013a5db6a585066.s3tc.ctex"]
+dest_files=["res://.godot/imported/usp_usp.jpg-c15b268d55d4db9b8013a5db6a585066.s3tc.ctex", "res://.godot/imported/usp_usp.jpg-c15b268d55d4db9b8013a5db6a585066.etc2.ctex"]
 
 [params]
 

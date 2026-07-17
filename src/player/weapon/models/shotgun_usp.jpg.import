@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c5kim40u4pneu"
 path.s3tc="res://.godot/imported/shotgun_usp.jpg-37922c65f15e2d464b5f7da498cc0910.s3tc.ctex"
+path.etc2="res://.godot/imported/shotgun_usp.jpg-37922c65f15e2d464b5f7da498cc0910.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/player/weapon/models/shotgun_usp.jpg"
-dest_files=["res://.godot/imported/shotgun_usp.jpg-37922c65f15e2d464b5f7da498cc0910.s3tc.ctex"]
+dest_files=["res://.godot/imported/shotgun_usp.jpg-37922c65f15e2d464b5f7da498cc0910.s3tc.ctex", "res://.godot/imported/shotgun_usp.jpg-37922c65f15e2d464b5f7da498cc0910.etc2.ctex"]
 
 [params]
 

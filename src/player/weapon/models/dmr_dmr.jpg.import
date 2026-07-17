@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bnqh0ynfj32wa"
 path.s3tc="res://.godot/imported/dmr_dmr.jpg-ec27da7b2e2d471dc0804a8b9e36df57.s3tc.ctex"
+path.etc2="res://.godot/imported/dmr_dmr.jpg-ec27da7b2e2d471dc0804a8b9e36df57.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/player/weapon/models/dmr_dmr.jpg"
-dest_files=["res://.godot/imported/dmr_dmr.jpg-ec27da7b2e2d471dc0804a8b9e36df57.s3tc.ctex"]
+dest_files=["res://.godot/imported/dmr_dmr.jpg-ec27da7b2e2d471dc0804a8b9e36df57.s3tc.ctex", "res://.godot/imported/dmr_dmr.jpg-ec27da7b2e2d471dc0804a8b9e36df57.etc2.ctex"]
 
 [params]
 

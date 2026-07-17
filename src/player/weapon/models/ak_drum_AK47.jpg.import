@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cpp3wdw1he6eu"
 path.s3tc="res://.godot/imported/ak_drum_AK47.jpg-deb1045923e52f22fe1e2dc6bb32dcb0.s3tc.ctex"
+path.etc2="res://.godot/imported/ak_drum_AK47.jpg-deb1045923e52f22fe1e2dc6bb32dcb0.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/player/weapon/models/ak_drum_AK47.jpg"
-dest_files=["res://.godot/imported/ak_drum_AK47.jpg-deb1045923e52f22fe1e2dc6bb32dcb0.s3tc.ctex"]
+dest_files=["res://.godot/imported/ak_drum_AK47.jpg-deb1045923e52f22fe1e2dc6bb32dcb0.s3tc.ctex", "res://.godot/imported/ak_drum_AK47.jpg-deb1045923e52f22fe1e2dc6bb32dcb0.etc2.ctex"]
 
 [params]
 

@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bptdgfqp3nlsn"
 path.s3tc="res://.godot/imported/vent1_air_duct.jpg-51745622e37b62fd07bd4f5685f5d7fa.s3tc.ctex"
+path.etc2="res://.godot/imported/vent1_air_duct.jpg-51745622e37b62fd07bd4f5685f5d7fa.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/maps/tiles/vent1_air_duct.jpg"
-dest_files=["res://.godot/imported/vent1_air_duct.jpg-51745622e37b62fd07bd4f5685f5d7fa.s3tc.ctex"]
+dest_files=["res://.godot/imported/vent1_air_duct.jpg-51745622e37b62fd07bd4f5685f5d7fa.s3tc.ctex", "res://.godot/imported/vent1_air_duct.jpg-51745622e37b62fd07bd4f5685f5d7fa.etc2.ctex"]
 
 [params]
 

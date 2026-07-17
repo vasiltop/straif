@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c8l3ub7tf02vg"
 path.s3tc="res://.godot/imported/subway_floor_tiles.jpg-09146cf54cc3a3b10f960c46b809f08a.s3tc.ctex"
+path.etc2="res://.godot/imported/subway_floor_tiles.jpg-09146cf54cc3a3b10f960c46b809f08a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://src/textures/subway_floor_tiles.jpg"
-dest_files=["res://.godot/imported/subway_floor_tiles.jpg-09146cf54cc3a3b10f960c46b809f08a.s3tc.ctex"]
+dest_files=["res://.godot/imported/subway_floor_tiles.jpg-09146cf54cc3a3b10f960c46b809f08a.s3tc.ctex", "res://.godot/imported/subway_floor_tiles.jpg-09146cf54cc3a3b10f960c46b809f08a.etc2.ctex"]
 
 [params]
 

@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://csdg4kiv7krc2"
 path.s3tc="res://.godot/imported/train_tracks.jpg-12a676ca84c636d07ff4b100091a976e.s3tc.ctex"
+path.etc2="res://.godot/imported/train_tracks.jpg-12a676ca84c636d07ff4b100091a976e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://src/textures/train_tracks.jpg"
-dest_files=["res://.godot/imported/train_tracks.jpg-12a676ca84c636d07ff4b100091a976e.s3tc.ctex"]
+dest_files=["res://.godot/imported/train_tracks.jpg-12a676ca84c636d07ff4b100091a976e.s3tc.ctex", "res://.godot/imported/train_tracks.jpg-12a676ca84c636d07ff4b100091a976e.etc2.ctex"]
 
 [params]
 

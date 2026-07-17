@@ -1,0 +1,12 @@
+"DepotBuildConfig"
+{
+	"DepotID" "__STEAM_DEPOT_MACOS__"
+	"ContentRoot" "__BUILD_MACOS_DIR__"
+	"FileMapping"
+	{
+		"LocalPath" "*"
+		"DepotPath" "."
+		"recursive" "1"
+	}
+	"FileExclusion" "straif_symbols.txt"
+}

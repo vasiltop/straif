@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cpoenp0py37qp"
 path.s3tc="res://.godot/imported/wall_graybox.png-bf05aaa4e947e968e25398d70f9be1ad.s3tc.ctex"
+path.etc2="res://.godot/imported/wall_graybox.png-bf05aaa4e947e968e25398d70f9be1ad.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/maps/tiles/wall_graybox.png"
-dest_files=["res://.godot/imported/wall_graybox.png-bf05aaa4e947e968e25398d70f9be1ad.s3tc.ctex"]
+dest_files=["res://.godot/imported/wall_graybox.png-bf05aaa4e947e968e25398d70f9be1ad.s3tc.ctex", "res://.godot/imported/wall_graybox.png-bf05aaa4e947e968e25398d70f9be1ad.etc2.ctex"]
 
 [params]
 

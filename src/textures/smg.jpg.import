@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b3pnnfsmkbw4j"
 path.s3tc="res://.godot/imported/smg.jpg-43db92f10d4e708db7fd35f007b155f4.s3tc.ctex"
+path.etc2="res://.godot/imported/smg.jpg-43db92f10d4e708db7fd35f007b155f4.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://src/textures/smg.jpg"
-dest_files=["res://.godot/imported/smg.jpg-43db92f10d4e708db7fd35f007b155f4.s3tc.ctex"]
+dest_files=["res://.godot/imported/smg.jpg-43db92f10d4e708db7fd35f007b155f4.s3tc.ctex", "res://.godot/imported/smg.jpg-43db92f10d4e708db7fd35f007b155f4.etc2.ctex"]
 
 [params]
 

@@ -11,5 +11,6 @@
 	{
 		"__STEAM_DEPOT_LINUX__" "depot_linux.vdf"
 		"__STEAM_DEPOT_WINDOWS__" "depot_windows.vdf"
+		"__STEAM_DEPOT_MACOS__" "depot_macos.vdf"
 	}
 }

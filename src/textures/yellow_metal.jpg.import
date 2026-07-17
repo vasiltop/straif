@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b2h8tuy605w6c"
 path.s3tc="res://.godot/imported/yellow_metal.jpg-d7f9b467452f93796b58331ffab41238.s3tc.ctex"
+path.etc2="res://.godot/imported/yellow_metal.jpg-d7f9b467452f93796b58331ffab41238.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://src/textures/yellow_metal.jpg"
-dest_files=["res://.godot/imported/yellow_metal.jpg-d7f9b467452f93796b58331ffab41238.s3tc.ctex"]
+dest_files=["res://.godot/imported/yellow_metal.jpg-d7f9b467452f93796b58331ffab41238.s3tc.ctex", "res://.godot/imported/yellow_metal.jpg-d7f9b467452f93796b58331ffab41238.etc2.ctex"]
 
 [params]
 

@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://djddy6xnwyhp7"
 path.s3tc="res://.godot/imported/arms_suit.jpg-44ae169a8bcacc4f30b0012cdab1bd0a.s3tc.ctex"
+path.etc2="res://.godot/imported/arms_suit.jpg-44ae169a8bcacc4f30b0012cdab1bd0a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/player/arms_suit.jpg"
-dest_files=["res://.godot/imported/arms_suit.jpg-44ae169a8bcacc4f30b0012cdab1bd0a.s3tc.ctex"]
+dest_files=["res://.godot/imported/arms_suit.jpg-44ae169a8bcacc4f30b0012cdab1bd0a.s3tc.ctex", "res://.godot/imported/arms_suit.jpg-44ae169a8bcacc4f30b0012cdab1bd0a.etc2.ctex"]
 
 [params]
 

@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://4y1xtvep8seo"
 path.s3tc="res://.godot/imported/pad_graybox.png-d6c4c89a27af0b15543ed99165c1f978.s3tc.ctex"
+path.etc2="res://.godot/imported/pad_graybox.png-d6c4c89a27af0b15543ed99165c1f978.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/maps/tiles/pad_graybox.png"
-dest_files=["res://.godot/imported/pad_graybox.png-d6c4c89a27af0b15543ed99165c1f978.s3tc.ctex"]
+dest_files=["res://.godot/imported/pad_graybox.png-d6c4c89a27af0b15543ed99165c1f978.s3tc.ctex", "res://.godot/imported/pad_graybox.png-d6c4c89a27af0b15543ed99165c1f978.etc2.ctex"]
 
 [params]
 
