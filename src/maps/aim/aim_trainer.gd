@@ -16,26 +16,26 @@ const TRACKING_SAMPLE_INTERVAL := 0.05
 const TRACKING_REACQUIRE_DELAY := 0.2
 const TRACKING_SCORE_PER_SAMPLE := 8
 
-@onready var player_spawn: Marker3D = $PlayerSpawn
-@onready var aim_targets: Node3D = $AimTargets
-@onready var target_wall_anchor: Marker3D = $TargetWallAnchor
-@onready var primary_panel: Panel = $HUD/PrimaryPanel
-@onready var timer_label: Label = $HUD/PrimaryPanel/TimerLabel
-@onready var score_label: Label = $HUD/PrimaryPanel/ScoreLabel
-@onready var secondary_panel: Panel = $HUD/SecondaryPanel
-@onready var scenario_label: Label = $HUD/SecondaryPanel/ScenarioLabel
-@onready var hits_label: Label = $HUD/SecondaryPanel/HitsLabel
-@onready var misses_label: Label = $HUD/SecondaryPanel/MissesLabel
-@onready var accuracy_label: Label = $HUD/SecondaryPanel/AccuracyLabel
-@onready var reaction_label: Label = $HUD/SecondaryPanel/ReactionLabel
-@onready var status_label: Label = $HUD/StatusLabel
-@onready var results_panel: Panel = $HUD/ResultsPanel
-@onready var results_score_label: Label = $HUD/ResultsPanel/ResultsScoreLabel
-@onready var results_stats_label: Label = $HUD/ResultsPanel/ResultsStatsLabel
-@onready var leaderboard_status: Label = $HUD/ResultsPanel/LeaderboardStatus
-@onready var leaderboard_rows: VBoxContainer = $HUD/ResultsPanel/LeaderboardScroll/LeaderboardRows
-@onready var retry_button: Button = $HUD/ResultsPanel/RetryButton
-@onready var main_menu_button: Button = $HUD/ResultsPanel/MainMenuButton
+@export var player_spawn: Marker3D
+@export var aim_targets: Node3D
+@export var target_wall_anchor: Marker3D
+@export var primary_panel: PanelContainer
+@export var timer_label: Label
+@export var score_label: Label
+@export var secondary_panel: PanelContainer
+@export var scenario_label: Label
+@export var hits_label: Label
+@export var misses_label: Label
+@export var accuracy_label: Label
+@export var reaction_label: Label
+@export var status_label: Label
+@export var results_panel: Panel
+@export var results_score_label: Label
+@export var results_stats_label: Label
+@export var leaderboard_status: Label
+@export var leaderboard_rows: VBoxContainer
+@export var retry_button: Button
+@export var main_menu_button: Button
 
 var player = null
 var selected_scenario := "gridshot"
@@ -75,6 +75,7 @@ func _ready() -> void:
 
 	player.setup()
 	player.hardcore = false
+	player.weapon_handler.unlimited_ammo = true
 	player.weapon_handler.set_weapon_to_index(1)
 	player.weapon_handler.bullet_fired.connect(_on_bullet_fired)
 	player.toggled_pause.connect(_on_player_toggled_pause)
@@ -85,6 +86,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if player == null:
+		return
+	if Input.is_action_just_pressed("restart"):
+		retry_session()
 		return
 	if player.is_paused():
 		return
@@ -162,6 +166,7 @@ func retry_session() -> void:
 	player.camera_anchor.rotation = Vector3.ZERO
 	player.sniper_overlay.visible = false
 	player.weapon_handler.reset_ammo()
+	player.weapon_handler.unlimited_ammo = true
 	player.weapon_handler.shooting_enabled = false
 	player.weapon_handler.visible = true
 	player.ui.visible = true

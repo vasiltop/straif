@@ -10,29 +10,29 @@ const LEADERBOARD_TAB_SCENARIO := 0
 const LEADERBOARD_TAB_OVERALL := 1
 const SCENARIO_INFO := {
 	SCENARIO_GRIDSHOT: {
-		"label": "GRIDSHOT",
+		"label": "Gridshot",
 		"description": "Clear a 3x3 wall of targets for chaining speed and accuracy."
 	},
 	SCENARIO_FLICK: {
-		"label": "FLICK",
+		"label": "Flick",
 		"description": "Snap between distant targets and convert the first shot cleanly."
 	},
 	SCENARIO_TRACKING: {
-		"label": "TRACKING",
+		"label": "Tracking",
 		"description": "Stay glued to a moving target and stabilize every correction."
 	}
 }
 
-@onready var gridshot_button: Button = $Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack/GridshotButton
-@onready var flick_button: Button = $Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack/FlickButton
-@onready var tracking_button: Button = $Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack/TrackingButton
-@onready var selected_scenario_label: Label = $Margin/Content/SelectedScenarioLabel
-@onready var start_button: Button = $Margin/Content/StartButton
-@onready var leaderboard_tabs: TabContainer = $Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs
-@onready var scenario_status_label: Label = $Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings/ScenarioLeaderboardStatus
-@onready var scenario_rows: VBoxContainer = $Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings/ScenarioLeaderboardScroll/ScenarioLeaderboardRows
-@onready var overall_status_label: Label = $Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings/OverallLeaderboardStatus
-@onready var overall_rows: VBoxContainer = $Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings/OverallLeaderboardScroll/OverallLeaderboardRows
+@onready var gridshot_button: Button = $Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack/GridshotButton
+@onready var flick_button: Button = $Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack/FlickButton
+@onready var tracking_button: Button = $Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack/TrackingButton
+@onready var selected_scenario_label: Label = $Scroll/Margin/Content/SelectedScenarioLabel
+@onready var start_button: Button = $Scroll/Margin/Content/StartButton
+@onready var leaderboard_tabs: TabContainer = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs
+@onready var scenario_status_label: Label = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings/ScenarioLeaderboardStatus
+@onready var scenario_rows: VBoxContainer = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings/ScenarioLeaderboardScroll/ScenarioLeaderboardRows
+@onready var overall_status_label: Label = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings/OverallLeaderboardStatus
+@onready var overall_rows: VBoxContainer = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings/OverallLeaderboardScroll/OverallLeaderboardRows
 
 var selected_scenario := SCENARIO_GRIDSHOT
 var scenario_request_generation := 0

@@ -1,244 +1,200 @@
-[gd_scene load_steps=14 format=4]
+[gd_scene format=3 uid="uid://dmrls0cpm52pc"]
 
-[ext_resource type="Script" path="res://src/maps/aim/aim_trainer.gd" id="1_script"]
-[ext_resource type="Theme" path="res://src/main_theme.tres" id="3_theme"]
-[ext_resource type="StyleBox" path="res://src/panel_style.tres" id="4_panel"]
+[ext_resource type="Script" uid="uid://ck8d0ge2viqor" path="res://src/maps/aim/aim_trainer.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="3_theme"]
+[ext_resource type="Texture2D" uid="uid://60ov88fgcpj7" path="res://src/textures/skyboxes/cold.png" id="4_il6ro"]
+[ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="4_panel"]
 
-[sub_resource type="Environment" id="Environment_main"]
-background_mode = 1
-background_color = Color(0.0509804, 0.0588235, 0.0705882, 1)
-ambient_light_source = 2
-ambient_light_color = Color(0.560784, 0.607843, 0.678431, 1)
-ambient_light_energy = 0.7
-reflected_light_source = 1
-ssao_enabled = true
-ssao_radius = 0.8
-tonemap_mode = 2
-adjustment_enabled = true
-adjustment_brightness = 1.05
-adjustment_contrast = 1.05
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor_ceiling"]
+size = Vector3(17, 0.5, 28)
 
 [sub_resource type="BoxMesh" id="BoxMesh_unit"]
-size = Vector3(1, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.0862745, 0.101961, 0.12549, 1)
 roughness = 0.95
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_end_wall"]
+size = Vector3(17, 6.5, 0.5)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
 albedo_color = Color(0.109804, 0.12549, 0.14902, 1)
 roughness = 0.9
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_target_wall"]
-albedo_color = Color(0.866667, 0.85098, 0.803922, 1)
-roughness = 0.58
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cyan"]
-albedo_color = Color(0.360784, 0.85098, 0.921569, 1)
-roughness = 0.28
-emission_enabled = true
-emission = Color(0.227451, 0.831373, 0.960784, 1)
-emission_energy_multiplier = 1.35
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orange"]
-albedo_color = Color(0.941176, 0.541176, 0.235294, 1)
-roughness = 0.34
-emission_enabled = true
-emission = Color(0.690196, 0.266667, 0.0784314, 1)
-emission_energy_multiplier = 1.1
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_safe_pad"]
-albedo_color = Color(0.156863, 0.235294, 0.270588, 1)
-roughness = 0.85
-emission_enabled = true
-emission = Color(0.156863, 0.470588, 0.537255, 1)
-emission_energy_multiplier = 0.42
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_floor_ceiling"]
-size = Vector3(17, 0.5, 28)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_end_wall"]
-size = Vector3(17, 6.5, 0.5)
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_side_wall"]
 size = Vector3(0.5, 6.5, 28)
 
-[node name="AimTrainer" type="Node3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_target_wall"]
+albedo_color = Color(0, 0, 0, 1)
+roughness = 0.58
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_bsvg2"]
+panorama = ExtResource("4_il6ro")
+energy_multiplier = 3.0
+
+[sub_resource type="Sky" id="Sky_n71wf"]
+sky_material = SubResource("PanoramaSkyMaterial_bsvg2")
+
+[sub_resource type="Environment" id="Environment_xwdmk"]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_n71wf")
+tonemap_mode = 2
+fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
+fog_light_energy = 1.34
+fog_sky_affect = 0.0
+fog_height = -22.35
+fog_height_density = 0.292
+volumetric_fog_density = 0.0813
+volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
+volumetric_fog_anisotropy = 0.0
+volumetric_fog_length = 80.09
+volumetric_fog_detail_spread = 6.0
+
+[node name="AimTrainer" type="Node3D" unique_id=787204749 node_paths=PackedStringArray("player_spawn", "aim_targets", "target_wall_anchor", "primary_panel", "timer_label", "score_label", "secondary_panel", "scenario_label", "hits_label", "misses_label", "accuracy_label", "reaction_label", "status_label", "results_panel", "results_score_label", "results_stats_label", "leaderboard_status", "leaderboard_rows", "retry_button", "main_menu_button")]
 script = ExtResource("1_script")
+player_spawn = NodePath("PlayerSpawn")
+aim_targets = NodePath("AimTargets")
+target_wall_anchor = NodePath("TargetWallAnchor")
+primary_panel = NodePath("HUD/PrimaryPanel")
+timer_label = NodePath("HUD/PrimaryPanel/TimerLabel")
+score_label = NodePath("HUD/PrimaryPanel/ScoreLabel")
+secondary_panel = NodePath("HUD/SecondaryPanel")
+scenario_label = NodePath("HUD/SecondaryPanel/VBoxContainer/ScenarioLabel")
+hits_label = NodePath("HUD/SecondaryPanel/VBoxContainer/HitsLabel")
+misses_label = NodePath("HUD/SecondaryPanel/VBoxContainer/MissesLabel")
+accuracy_label = NodePath("HUD/SecondaryPanel/VBoxContainer/AccuracyLabel")
+reaction_label = NodePath("HUD/SecondaryPanel/VBoxContainer/ReactionLabel")
+status_label = NodePath("HUD/StatusLabel")
+results_panel = NodePath("HUD/ResultsPanel")
+results_score_label = NodePath("HUD/ResultsPanel/ResultsScoreLabel")
+results_stats_label = NodePath("HUD/ResultsPanel/ResultsStatsLabel")
+leaderboard_status = NodePath("HUD/ResultsPanel/LeaderboardStatus")
+leaderboard_rows = NodePath("HUD/ResultsPanel/LeaderboardScroll/LeaderboardRows")
+retry_button = NodePath("HUD/ResultsPanel/RetryButton")
+main_menu_button = NodePath("HUD/ResultsPanel/MainMenuButton")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_main")
-
-[node name="Sun" type="DirectionalLight3D" parent="."]
-rotation_degrees = Vector3(-54, -32, 0)
-light_color = Color(0.960784, 0.941176, 0.901961, 1)
-light_energy = 1.35
-shadow_enabled = true
-
-[node name="TargetFill" type="OmniLight3D" parent="."]
-position = Vector3(0, 4.1, -7.5)
+[node name="TargetFill" type="OmniLight3D" parent="." unique_id=1210988725]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.1, -7.5)
 light_color = Color(0.309804, 0.756863, 0.886275, 1)
 light_energy = 1.4
-omni_range = 18.0
 shadow_enabled = true
+omni_range = 18.0
 
-[node name="SpawnFill" type="OmniLight3D" parent="."]
-position = Vector3(0, 3.2, 8.5)
+[node name="SpawnFill" type="OmniLight3D" parent="." unique_id=1901121199]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 8.5)
 light_color = Color(0.960784, 0.615686, 0.313726, 1)
 light_energy = 0.8
 omni_range = 14.0
 
-[node name="Arena" type="Node3D" parent="."]
+[node name="Arena" type="Node3D" parent="." unique_id=594347612]
 
-[node name="Floor" type="StaticBody3D" parent="Arena"]
-position = Vector3(0, -0.25, 0)
+[node name="Floor" type="StaticBody3D" parent="Arena" unique_id=1841831249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Floor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Floor" unique_id=683474664]
 shape = SubResource("BoxShape3D_floor_ceiling")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Floor"]
-scale = Vector3(17, 0.5, 28)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Floor" unique_id=789649151]
+transform = Transform3D(17, 0, 0, 0, 0.5, 0, 0, 0, 28, 0, 0, 0)
 mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_floor")
 
-[node name="Ceiling" type="StaticBody3D" parent="Arena"]
-position = Vector3(0, 6.25, 0)
+[node name="Ceiling" type="StaticBody3D" parent="Arena" unique_id=1849371907]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.25, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Ceiling"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Ceiling" unique_id=193897445]
 shape = SubResource("BoxShape3D_floor_ceiling")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Ceiling"]
-scale = Vector3(17, 0.5, 28)
-mesh = SubResource("BoxMesh_unit")
-surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+[node name="BackWall" type="StaticBody3D" parent="Arena" unique_id=1027122776]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -14.25)
 
-[node name="BackWall" type="StaticBody3D" parent="Arena"]
-position = Vector3(0, 3, -14.25)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/BackWall"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/BackWall" unique_id=342088486]
 shape = SubResource("BoxShape3D_end_wall")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/BackWall"]
-scale = Vector3(17, 6.5, 0.5)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/BackWall" unique_id=1818867017]
+transform = Transform3D(17, 0, 0, 0, 6.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_wall")
 
-[node name="FrontWall" type="StaticBody3D" parent="Arena"]
-position = Vector3(0, 3, 14.25)
+[node name="FrontWall" type="StaticBody3D" parent="Arena" unique_id=994351564]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 5.25)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/FrontWall"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/FrontWall" unique_id=236962906]
 shape = SubResource("BoxShape3D_end_wall")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/FrontWall"]
-scale = Vector3(17, 6.5, 0.5)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/FrontWall" unique_id=363817570]
+transform = Transform3D(17, 0, 0, 0, 6.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_wall")
 
-[node name="LeftWall" type="StaticBody3D" parent="Arena"]
-position = Vector3(-8.75, 3, 0)
+[node name="LeftWall" type="StaticBody3D" parent="Arena" unique_id=4162374]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.75, 3, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/LeftWall"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/LeftWall" unique_id=699729920]
 shape = SubResource("BoxShape3D_side_wall")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/LeftWall"]
-scale = Vector3(0.5, 6.5, 28)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/LeftWall" unique_id=1884679888]
+transform = Transform3D(0.5, 0, 0, 0, 6.5, 0, 0, 0, 28, 0, 0, 0)
 mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_wall")
 
-[node name="RightWall" type="StaticBody3D" parent="Arena"]
-position = Vector3(8.75, 3, 0)
+[node name="RightWall" type="StaticBody3D" parent="Arena" unique_id=652186324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.75, 3, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/RightWall"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/RightWall" unique_id=1921890619]
 shape = SubResource("BoxShape3D_side_wall")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/RightWall"]
-scale = Vector3(0.5, 6.5, 28)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/RightWall" unique_id=1440657068]
+transform = Transform3D(0.5, 0, 0, 0, 6.5, 0, 0, 0, 28, 0, 0, 0)
 mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_wall")
 
-[node name="TargetWall" type="MeshInstance3D" parent="Arena"]
-position = Vector3(0, 3, -13.84)
-scale = Vector3(11.2, 4.9, 0.2)
+[node name="TargetWall" type="MeshInstance3D" parent="Arena" unique_id=69353030]
+transform = Transform3D(11.2, 0, 0, 0, 4.9, 0, 0, 0, 0.2, 0, 3, -13.84)
 mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_target_wall")
 
-[node name="SafePad" type="MeshInstance3D" parent="Arena"]
-position = Vector3(0, 0.01, 8)
-scale = Vector3(4.8, 0.02, 5.5)
-mesh = SubResource("BoxMesh_unit")
-surface_material_override/0 = SubResource("StandardMaterial3D_safe_pad")
+[node name="TargetWallAnchor" type="Marker3D" parent="." unique_id=1129711458]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -13.42)
 
-[node name="CyanStripLeft" type="MeshInstance3D" parent="Arena"]
-position = Vector3(-4.65, 3, -13.65)
-scale = Vector3(0.18, 4.6, 0.12)
-mesh = SubResource("BoxMesh_unit")
-surface_material_override/0 = SubResource("StandardMaterial3D_cyan")
+[node name="AimTargets" type="Node3D" parent="." unique_id=251096984]
 
-[node name="CyanStripRight" type="MeshInstance3D" parent="Arena"]
-position = Vector3(4.65, 3, -13.65)
-scale = Vector3(0.18, 4.6, 0.12)
-mesh = SubResource("BoxMesh_unit")
-surface_material_override/0 = SubResource("StandardMaterial3D_cyan")
+[node name="PlayerSpawn" type="Marker3D" parent="." unique_id=1339237618]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
-[node name="OrangeCeilingStrip" type="MeshInstance3D" parent="Arena"]
-position = Vector3(0, 5.78, -4.2)
-scale = Vector3(6.4, 0.05, 0.14)
-mesh = SubResource("BoxMesh_unit")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange")
-
-[node name="OrangeBaseStrip" type="MeshInstance3D" parent="Arena"]
-position = Vector3(0, 0.58, -13.62)
-scale = Vector3(5.4, 0.05, 0.12)
-mesh = SubResource("BoxMesh_unit")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange")
-
-[node name="TargetWallAnchor" type="Marker3D" parent="."]
-position = Vector3(0, 3, -13.42)
-
-[node name="AimTargets" type="Node3D" parent="."]
-
-[node name="PlayerSpawn" type="Marker3D" parent="."]
-position = Vector3(0, 0, 8)
-
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="." unique_id=951764116]
 layer = 3
 
-[node name="PrimaryPanel" type="Panel" parent="HUD"]
-theme = ExtResource("3_theme")
-anchors_preset = 10
+[node name="PrimaryPanel" type="PanelContainer" parent="HUD" unique_id=1131050753]
+anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -190.0
 offset_top = 24.0
 offset_right = 190.0
-offset_bottom = 110.0
+offset_bottom = 111.0
 grow_horizontal = 2
 mouse_filter = 2
+theme = ExtResource("3_theme")
 theme_override_styles/panel = ExtResource("4_panel")
 
-[node name="TimerLabel" type="Label" parent="HUD/PrimaryPanel"]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 14.0
-offset_right = 160.0
-offset_bottom = 88.0
+[node name="TimerLabel" type="Label" parent="HUD/PrimaryPanel" unique_id=681874969]
+layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "TIME\n60.0"
+text = "TIME
+60.0"
 vertical_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="HUD/PrimaryPanel"]
-layout_mode = 0
-offset_left = 188.0
-offset_top = 14.0
-offset_right = 356.0
-offset_bottom = 88.0
+[node name="ScoreLabel" type="Label" parent="HUD/PrimaryPanel" unique_id=632295292]
+layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "SCORE\n0"
+text = "SCORE
+0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="SecondaryPanel" type="Panel" parent="HUD"]
-theme = ExtResource("3_theme")
+[node name="SecondaryPanel" type="PanelContainer" parent="HUD" unique_id=1552323226]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -248,56 +204,44 @@ offset_right = -24.0
 offset_bottom = 244.0
 grow_horizontal = 0
 mouse_filter = 2
+theme = ExtResource("3_theme")
 theme_override_styles/panel = ExtResource("4_panel")
 
-[node name="ScenarioLabel" type="Label" parent="HUD/SecondaryPanel"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 12.0
-offset_right = 238.0
-offset_bottom = 54.0
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/SecondaryPanel" unique_id=374513758]
+layout_mode = 2
+
+[node name="ScenarioLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=1381549400]
+layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "SCENARIO\nGRIDSHOT"
+text = "SCENARIO
+GRIDSHOT"
 
-[node name="HitsLabel" type="Label" parent="HUD/SecondaryPanel"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 64.0
-offset_right = 108.0
-offset_bottom = 106.0
+[node name="HitsLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=1095772489]
+layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "HITS\n0"
+text = "HITS
+0"
 
-[node name="MissesLabel" type="Label" parent="HUD/SecondaryPanel"]
-layout_mode = 0
-offset_left = 128.0
-offset_top = 64.0
-offset_right = 238.0
-offset_bottom = 106.0
+[node name="MissesLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=1124188211]
+layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "MISSES\n0"
+text = "MISSES
+0"
 
-[node name="AccuracyLabel" type="Label" parent="HUD/SecondaryPanel"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 116.0
-offset_right = 238.0
-offset_bottom = 158.0
+[node name="AccuracyLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=438090514]
+layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "ACCURACY\n0.0%"
+text = "ACCURACY
+0.0%"
 
-[node name="ReactionLabel" type="Label" parent="HUD/SecondaryPanel"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 168.0
-offset_right = 238.0
-offset_bottom = 214.0
+[node name="ReactionLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=1104226591]
+layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "AVG REACTION\n--"
+text = "AVG REACTION
+--"
 
-[node name="StatusLabel" type="Label" parent="HUD"]
-theme = ExtResource("3_theme")
-anchors_preset = 10
+[node name="StatusLabel" type="Label" parent="HUD" unique_id=1199251276]
+anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -180.0
@@ -305,14 +249,13 @@ offset_top = 128.0
 offset_right = 180.0
 offset_bottom = 162.0
 grow_horizontal = 2
-mouse_filter = 2
+theme = ExtResource("3_theme")
 theme_override_font_sizes/font_size = 22
 text = "Starting in 3.0"
 horizontal_alignment = 1
 
-[node name="ResultsPanel" type="Panel" parent="HUD"]
+[node name="ResultsPanel" type="Panel" parent="HUD" unique_id=886779500]
 visible = false
-theme = ExtResource("3_theme")
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -324,9 +267,10 @@ offset_right = 310.0
 offset_bottom = 310.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("3_theme")
 theme_override_styles/panel = ExtResource("4_panel")
 
-[node name="ResultsTitle" type="Label" parent="HUD/ResultsPanel"]
+[node name="ResultsTitle" type="Label" parent="HUD/ResultsPanel" unique_id=512843115]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 24.0
@@ -336,7 +280,7 @@ theme_override_font_sizes/font_size = 28
 text = "Session Results"
 horizontal_alignment = 1
 
-[node name="ResultsScoreLabel" type="Label" parent="HUD/ResultsPanel"]
+[node name="ResultsScoreLabel" type="Label" parent="HUD/ResultsPanel" unique_id=382162687]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 70.0
@@ -346,18 +290,21 @@ theme_override_font_sizes/font_size = 26
 text = "Score 0"
 horizontal_alignment = 1
 
-[node name="ResultsStatsLabel" type="Label" parent="HUD/ResultsPanel"]
+[node name="ResultsStatsLabel" type="Label" parent="HUD/ResultsPanel" unique_id=878110220]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 118.0
 offset_right = 580.0
 offset_bottom = 220.0
 theme_override_font_sizes/font_size = 18
-text = "Hits 0\nMisses 0\nAccuracy 0.0%\nAverage Reaction --"
+text = "Hits 0
+Misses 0
+Accuracy 0.0%
+Average Reaction --"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LeaderboardHeading" type="Label" parent="HUD/ResultsPanel"]
+[node name="LeaderboardHeading" type="Label" parent="HUD/ResultsPanel" unique_id=1317175185]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 234.0
@@ -367,7 +314,7 @@ theme_override_font_sizes/font_size = 18
 text = "Scenario Leaderboard"
 horizontal_alignment = 1
 
-[node name="LeaderboardStatus" type="Label" parent="HUD/ResultsPanel"]
+[node name="LeaderboardStatus" type="Label" parent="HUD/ResultsPanel" unique_id=1129531963]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 270.0
@@ -379,7 +326,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LeaderboardScroll" type="ScrollContainer" parent="HUD/ResultsPanel"]
+[node name="LeaderboardScroll" type="ScrollContainer" parent="HUD/ResultsPanel" unique_id=800879042]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 322.0
@@ -387,13 +334,13 @@ offset_right = 580.0
 offset_bottom = 530.0
 horizontal_scroll_mode = 0
 
-[node name="LeaderboardRows" type="VBoxContainer" parent="HUD/ResultsPanel/LeaderboardScroll"]
+[node name="LeaderboardRows" type="VBoxContainer" parent="HUD/ResultsPanel/LeaderboardScroll" unique_id=1035233032]
 custom_minimum_size = Vector2(520, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="RetryButton" type="Button" parent="HUD/ResultsPanel"]
+[node name="RetryButton" type="Button" parent="HUD/ResultsPanel" unique_id=1789170599]
 layout_mode = 0
 offset_left = 132.0
 offset_top = 550.0
@@ -401,10 +348,18 @@ offset_right = 302.0
 offset_bottom = 594.0
 text = "Retry"
 
-[node name="MainMenuButton" type="Button" parent="HUD/ResultsPanel"]
+[node name="MainMenuButton" type="Button" parent="HUD/ResultsPanel" unique_id=1631570143]
 layout_mode = 0
 offset_left = 318.0
 offset_top = 550.0
 offset_right = 488.0
 offset_bottom = 594.0
 text = "Main Menu"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=663215520]
+environment = SubResource("Environment_xwdmk")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1366625208]
+transform = Transform3D(-0.727773, -0.646481, -0.228931, 0, -0.333807, 0.942642, -0.685819, 0.686029, 0.242936, 0, 0, 0)
+light_energy = 1.5
+shadow_enabled = true

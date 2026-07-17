@@ -45,6 +45,7 @@ var mag_ammo := 0
 var reserve_ammo := 0
 var max_mag_ammo := 0
 var current_recoil: Vector2
+var unlimited_ammo := false
 var shooting_enabled := true
 
 @rpc("any_peer", "call_local", "reliable")
@@ -258,7 +259,7 @@ func _attack_visuals() -> void:
 
 func can_shoot(ghost_bullet: bool) -> bool:
 	if current_weapon == null: return false
-	if mag_ammo <= 0 and not ghost_bullet: return false
+	if mag_ammo <= 0 and not ghost_bullet and not unlimited_ammo: return false
 	if time_since_last_shot < current_weapon.weapon_shot_delay: return false
 	if player.pause_menu.visible: return false
 	
@@ -279,7 +280,10 @@ func _try_shoot(ghost_bullet := false) -> void:
 	
 	if current_weapon.is_melee: return
 	
-	mag_ammo -= 1
+	if unlimited_ammo:
+		mag_ammo = max_mag_ammo
+	else:
+		mag_ammo -= 1
 	shot.emit(mag_ammo, reserve_ammo)
 	
 	for i in range(current_weapon.bullet_count):

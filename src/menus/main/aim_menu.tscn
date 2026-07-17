@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=4]
+[gd_scene format=3 uid="uid://bpp08d4e3usc8"]
 
-[ext_resource type="Script" path="res://src/menus/main/aim_menu.gd" id="1_script"]
-[ext_resource type="Theme" path="res://src/main_theme.tres" id="2_theme"]
-[ext_resource type="StyleBox" path="res://src/panel_style.tres" id="3_panel"]
+[ext_resource type="Script" uid="uid://i3xqw50q2bka" path="res://src/menus/main/aim_menu.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_theme"]
+[ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="3_panel"]
 
-[node name="AimMenu" type="Control"]
+[node name="AimMenu" type="Control" unique_id=449192479]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,197 +14,201 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_script")
 
-[node name="Margin" type="MarginContainer" parent="."]
+[node name="Scroll" type="ScrollContainer" parent="." unique_id=1043927663]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="Margin" type="MarginContainer" parent="Scroll" unique_id=1334126158]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="Content" type="VBoxContainer" parent="Margin"]
+[node name="Content" type="VBoxContainer" parent="Scroll/Margin" unique_id=527657549]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
 theme_override_constants/separation = 18
 
-[node name="Title" type="Label" parent="Margin/Content"]
+[node name="Title" type="Label" parent="Scroll/Margin/Content" unique_id=109730127]
 layout_mode = 2
 theme_override_font_sizes/font_size = 34
 text = "Aim Trainer"
 
-[node name="Subtitle" type="Label" parent="Margin/Content"]
+[node name="Subtitle" type="Label" parent="Scroll/Margin/Content" unique_id=1926154948]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.776471, 0.815686, 0.866667, 1)
 theme_override_font_sizes/font_size = 18
 text = "Choose a focused 60-second scenario, warm up your mechanics, and compare every run on the live leaderboard."
 autowrap_mode = 3
 
-[node name="ScenarioList" type="HFlowContainer" parent="Margin/Content"]
+[node name="ScenarioList" type="HFlowContainer" parent="Scroll/Margin/Content" unique_id=1176750593]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 
-[node name="GridshotOption" type="PanelContainer" parent="Margin/Content/ScenarioList"]
-custom_minimum_size = Vector2(220, 0)
+[node name="GridshotOption" type="PanelContainer" parent="Scroll/Margin/Content/ScenarioList" unique_id=473258523]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("3_panel")
 
-[node name="OptionContent" type="MarginContainer" parent="Margin/Content/ScenarioList/GridshotOption"]
+[node name="OptionContent" type="MarginContainer" parent="Scroll/Margin/Content/ScenarioList/GridshotOption" unique_id=1611685579]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="OptionStack" type="VBoxContainer" parent="Margin/Content/ScenarioList/GridshotOption/OptionContent"]
+[node name="OptionStack" type="VBoxContainer" parent="Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent" unique_id=67755598]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="GridshotButton" type="Button" parent="Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack"]
+[node name="GridshotButton" type="Button" parent="Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack" unique_id=272142700]
 layout_mode = 2
 toggle_mode = true
-text = "GRIDSHOT"
+text = "Gridshot"
 
-[node name="Description" type="Label" parent="Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack"]
+[node name="Description" type="Label" parent="Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack" unique_id=1288014168]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.662745, 0.701961, 0.756863, 1)
 theme_override_font_sizes/font_size = 16
 text = "Clear a 3x3 wall of targets for chaining speed and accuracy."
 autowrap_mode = 3
 
-[node name="FlickOption" type="PanelContainer" parent="Margin/Content/ScenarioList"]
-custom_minimum_size = Vector2(220, 0)
+[node name="FlickOption" type="PanelContainer" parent="Scroll/Margin/Content/ScenarioList" unique_id=1237486155]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("3_panel")
 
-[node name="OptionContent" type="MarginContainer" parent="Margin/Content/ScenarioList/FlickOption"]
+[node name="OptionContent" type="MarginContainer" parent="Scroll/Margin/Content/ScenarioList/FlickOption" unique_id=1793227316]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="OptionStack" type="VBoxContainer" parent="Margin/Content/ScenarioList/FlickOption/OptionContent"]
+[node name="OptionStack" type="VBoxContainer" parent="Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent" unique_id=2098220818]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="FlickButton" type="Button" parent="Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack"]
+[node name="FlickButton" type="Button" parent="Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack" unique_id=1894681012]
 layout_mode = 2
 toggle_mode = true
-text = "FLICK"
+text = "Flick"
 
-[node name="Description" type="Label" parent="Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack"]
+[node name="Description" type="Label" parent="Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack" unique_id=392375644]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.662745, 0.701961, 0.756863, 1)
 theme_override_font_sizes/font_size = 16
 text = "Snap between distant targets and convert the first shot cleanly."
 autowrap_mode = 3
 
-[node name="TrackingOption" type="PanelContainer" parent="Margin/Content/ScenarioList"]
-custom_minimum_size = Vector2(220, 0)
+[node name="TrackingOption" type="PanelContainer" parent="Scroll/Margin/Content/ScenarioList" unique_id=2006786585]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("3_panel")
 
-[node name="OptionContent" type="MarginContainer" parent="Margin/Content/ScenarioList/TrackingOption"]
+[node name="OptionContent" type="MarginContainer" parent="Scroll/Margin/Content/ScenarioList/TrackingOption" unique_id=967363142]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="OptionStack" type="VBoxContainer" parent="Margin/Content/ScenarioList/TrackingOption/OptionContent"]
+[node name="OptionStack" type="VBoxContainer" parent="Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent" unique_id=1717970606]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TrackingButton" type="Button" parent="Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack"]
+[node name="TrackingButton" type="Button" parent="Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack" unique_id=391937139]
 layout_mode = 2
 toggle_mode = true
-text = "TRACKING"
+text = "Tracking"
 
-[node name="Description" type="Label" parent="Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack"]
+[node name="Description" type="Label" parent="Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack" unique_id=2136396717]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.662745, 0.701961, 0.756863, 1)
 theme_override_font_sizes/font_size = 16
 text = "Stay glued to a moving target and stabilize every correction."
 autowrap_mode = 3
 
-[node name="SelectedScenarioLabel" type="Label" parent="Margin/Content"]
+[node name="SelectedScenarioLabel" type="Label" parent="Scroll/Margin/Content" unique_id=346974051]
 layout_mode = 2
 theme_override_font_sizes/font_size = 19
-text = "Selected Scenario: GRIDSHOT"
+text = "Selected Scenario: Gridshot"
 autowrap_mode = 3
 
-[node name="StartButton" type="Button" parent="Margin/Content"]
+[node name="StartButton" type="Button" parent="Scroll/Margin/Content" unique_id=210842098]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "START 60S SESSION"
+text = "Start 60s Session"
 
-[node name="LeaderboardPanel" type="PanelContainer" parent="Margin/Content"]
+[node name="LeaderboardPanel" type="PanelContainer" parent="Scroll/Margin/Content" unique_id=1716217605]
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("3_panel")
 
-[node name="PanelMargin" type="MarginContainer" parent="Margin/Content/LeaderboardPanel"]
+[node name="PanelMargin" type="MarginContainer" parent="Scroll/Margin/Content/LeaderboardPanel" unique_id=1497439273]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="PanelContent" type="VBoxContainer" parent="Margin/Content/LeaderboardPanel/PanelMargin"]
+[node name="PanelContent" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin" unique_id=86243203]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 14
 
-[node name="LeaderboardTitle" type="Label" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent"]
+[node name="LeaderboardTitle" type="Label" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent" unique_id=176279214]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Leaderboards"
 
-[node name="LeaderboardTabs" type="TabContainer" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent"]
+[node name="LeaderboardTabs" type="TabContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent" unique_id=369445330]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("3_panel")
 current_tab = 0
 
-[node name="ScenarioRankings" type="VBoxContainer" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs"]
+[node name="ScenarioRankings" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs" unique_id=1514770369]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 metadata/_tab_index = 0
 
-[node name="ScenarioLeaderboardStatus" type="Label" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings"]
+[node name="ScenarioLeaderboardStatus" type="Label" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings" unique_id=1646875608]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.776471, 0.815686, 0.866667, 1)
 theme_override_font_sizes/font_size = 16
 text = "Loading scenario leaderboard..."
 autowrap_mode = 3
 
-[node name="ScenarioLeaderboardScroll" type="ScrollContainer" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings"]
+[node name="ScenarioLeaderboardScroll" type="ScrollContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings" unique_id=1049786225]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScenarioLeaderboardRows" type="VBoxContainer" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings/ScenarioLeaderboardScroll"]
+[node name="ScenarioLeaderboardRows" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings/ScenarioLeaderboardScroll" unique_id=1180211722]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="OverallRankings" type="VBoxContainer" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs"]
+[node name="OverallRankings" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs" unique_id=1163190557]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -212,19 +216,19 @@ size_flags_vertical = 3
 theme_override_constants/separation = 10
 metadata/_tab_index = 1
 
-[node name="OverallLeaderboardStatus" type="Label" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings"]
+[node name="OverallLeaderboardStatus" type="Label" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings" unique_id=1090515789]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.776471, 0.815686, 0.866667, 1)
 theme_override_font_sizes/font_size = 16
 text = "Loading overall leaderboard..."
 autowrap_mode = 3
 
-[node name="OverallLeaderboardScroll" type="ScrollContainer" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings"]
+[node name="OverallLeaderboardScroll" type="ScrollContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings" unique_id=847888780]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="OverallLeaderboardRows" type="VBoxContainer" parent="Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings/OverallLeaderboardScroll"]
+[node name="OverallLeaderboardRows" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings/OverallLeaderboardScroll" unique_id=1756058708]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8

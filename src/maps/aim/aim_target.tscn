@@ -1,28 +1,9 @@
-[gd_scene load_steps=8 format=4]
+[gd_scene format=3 uid="uid://yk2rn367wlc8"]
 
-[ext_resource type="Script" path="res://src/maps/aim/aim_target.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://de8ydb7smik2e" path="res://src/maps/aim/aim_target.gd" id="1_script"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_body"]
 radius = 0.48
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_outer"]
-albedo_color = Color(0.905882, 0.901961, 0.858824, 1)
-metallic = 0.05
-roughness = 0.38
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mid"]
-albedo_color = Color(0.92549, 0.517647, 0.223529, 1)
-roughness = 0.32
-emission_enabled = true
-emission = Color(0.392157, 0.145098, 0.0352941, 1)
-emission_energy_multiplier = 0.4
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inner"]
-albedo_color = Color(0.368627, 0.854902, 0.913725, 1)
-roughness = 0.18
-emission_enabled = true
-emission = Color(0.266667, 0.898039, 1, 1)
-emission_energy_multiplier = 1.35
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_outer"]
 top_radius = 0.46
@@ -31,12 +12,24 @@ height = 0.08
 radial_segments = 48
 rings = 1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_outer"]
+albedo_color = Color(0.905882, 0.901961, 0.858824, 1)
+metallic = 0.05
+roughness = 0.38
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_mid"]
 top_radius = 0.31
 bottom_radius = 0.31
 height = 0.085
 radial_segments = 48
 rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mid"]
+albedo_color = Color(0.92549, 0.517647, 0.223529, 1)
+roughness = 0.32
+emission_enabled = true
+emission = Color(0.392157, 0.145098, 0.0352941, 1)
+emission_energy_multiplier = 0.4
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_inner"]
 top_radius = 0.14
@@ -45,32 +38,37 @@ height = 0.09
 radial_segments = 48
 rings = 1
 
-[node name="AimTarget" type="StaticBody3D" groups=["aim_target"]]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inner"]
+albedo_color = Color(0.3966994, 0.86808765, 0.92574316, 1)
+roughness = 0.18
+emission_enabled = true
+emission = Color(0.266667, 0.898039, 1, 1)
+emission_energy_multiplier = 1.35
+
+[node name="AimTarget" type="StaticBody3D" unique_id=1950067630 groups=["aim_target"]]
 visible = false
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_script")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2076097011]
 shape = SubResource("SphereShape3D_body")
 disabled = true
 
-[node name="Visual" type="Node3D" parent="."]
+[node name="Visual" type="Node3D" parent="." unique_id=1786449017]
 visible = false
 
-[node name="OuterRing" type="MeshInstance3D" parent="Visual"]
-rotation_degrees = Vector3(90, 0, 0)
+[node name="OuterRing" type="MeshInstance3D" parent="Visual" unique_id=1014655508]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 mesh = SubResource("CylinderMesh_outer")
 surface_material_override/0 = SubResource("StandardMaterial3D_outer")
 
-[node name="MidRing" type="MeshInstance3D" parent="Visual"]
-position = Vector3(0, 0, 0.015)
-rotation_degrees = Vector3(90, 0, 0)
+[node name="MidRing" type="MeshInstance3D" parent="Visual" unique_id=1001045082]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.015)
 mesh = SubResource("CylinderMesh_mid")
 surface_material_override/0 = SubResource("StandardMaterial3D_mid")
 
-[node name="Bullseye" type="MeshInstance3D" parent="Visual"]
-position = Vector3(0, 0, 0.03)
-rotation_degrees = Vector3(90, 0, 0)
+[node name="Bullseye" type="MeshInstance3D" parent="Visual" unique_id=1152184578]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.03)
 mesh = SubResource("CylinderMesh_inner")
 surface_material_override/0 = SubResource("StandardMaterial3D_inner")

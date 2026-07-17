@@ -40,8 +40,8 @@ func _run() -> void:
 		_check(is_equal_approx(aim_trainer.calculate_average_reaction_ms([0.2, 0.3]), 250.0), "Average reaction helper should convert seconds to milliseconds")
 		root.add_child(aim_trainer)
 		await process_frame
-		var accuracy_label := aim_trainer.get_node("HUD/SecondaryPanel/AccuracyLabel") as Label
-		var reaction_label := aim_trainer.get_node("HUD/SecondaryPanel/ReactionLabel") as Label
+		var accuracy_label := aim_trainer.get_node("HUD/SecondaryPanel/VBoxContainer/AccuracyLabel") as Label
+		var reaction_label := aim_trainer.get_node("HUD/SecondaryPanel/VBoxContainer/ReactionLabel") as Label
 		_check(accuracy_label.size.y >= 42.0, "Accuracy HUD label should fit two text lines")
 		_check(reaction_label.size.y >= 42.0, "Reaction HUD label should fit two text lines")
 		var leaderboard_status := aim_trainer.get_node("HUD/ResultsPanel/LeaderboardStatus") as Label
