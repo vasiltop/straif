@@ -4,12 +4,19 @@ signal invalid_version
 
 const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/DScF2QqKzF"
+const WORLD_RECORD_ALERT_DURATION := 3.0
+const WorldRecordAnnouncement = preload("res://src/world_record_announcement.gd")
 var client: BetterHTTPClient
 
 var api_url: String
 var version: String
 
 var heartbeat_timer: BetterTimer
+var world_record_cursor := -1
+var _world_record_messages: Array[String] = []
+var _showing_world_records := false
+var _world_record_settings_generation := 0
+var _world_record_catch_up_required := false
 
 func _settings_file() -> String:
 	if OS.has_feature("editor_runtime"):
@@ -32,7 +39,14 @@ func _init() -> void:
 	heartbeat_timer = BetterTimer.new(Global, 3.0, _on_heartbeat_timer)
 
 func _on_heartbeat_timer() -> void:
+	var is_bootstrap := world_record_cursor < 0
+	var settings_generation := _world_record_settings_generation
+	var catch_up_required := _world_record_catch_up_required
+	var announcements_enabled: bool = Global.settings_manager.value("Game", "world_record_announcements")
 	var url := "/game/heartbeat"
+	if world_record_cursor >= 0:
+		url += "?world_record_since=%d" % world_record_cursor
+
 	var response := await client.http_get(url).header(
 		"auth-ticket", Global.game_manager.auth_ticket_hex
 		).header(
@@ -48,6 +62,13 @@ func _on_heartbeat_timer() -> void:
 
 	Global.game_manager.admin = data.admin as bool
 	Global.game_manager.maintenance = data.maintenance as bool
+	if not is_bootstrap or WorldRecordAnnouncement.should_apply_bootstrap_response(world_record_cursor):
+		_handle_world_records(
+			data,
+			announcements_enabled,
+			settings_generation,
+			catch_up_required
+		)
 	
 	if not Global.game_manager.maintenance:
 		Global.game_manager.maintenance_changed.emit()
@@ -57,6 +78,56 @@ func _on_heartbeat_timer() -> void:
 			Info.alert("The game is currently under maintenance, allowing play due to admin status.")
 		else:
 			Global.get_tree().change_scene_to_file("res://src/maintenance.tscn")
+
+func _handle_world_records(
+	data: Dictionary,
+	announcements_enabled: bool,
+	settings_generation: int,
+	catch_up_required: bool
+) -> void:
+	if not data.has("world_records") or not data.has("world_record_cursor"):
+		return
+
+	var display_response := WorldRecordAnnouncement.should_display_response(
+		announcements_enabled,
+		settings_generation,
+		_world_record_settings_generation,
+		catch_up_required
+	)
+	var records: Array = data.world_records as Array
+	for record: Dictionary in records:
+		var record_id := record.id as int
+		if WorldRecordAnnouncement.should_enqueue(record_id, world_record_cursor, display_response):
+			_world_record_messages.append(WorldRecordAnnouncement.format_message(record))
+		world_record_cursor = max(world_record_cursor, record_id)
+
+	world_record_cursor = max(world_record_cursor, data.world_record_cursor as int)
+	if WorldRecordAnnouncement.completes_catch_up(
+		announcements_enabled,
+		settings_generation,
+		_world_record_settings_generation,
+		catch_up_required,
+		data.get("world_record_has_more", false) as bool
+	):
+		_world_record_catch_up_required = false
+	if not _showing_world_records and not _world_record_messages.is_empty():
+		_show_world_record_announcements()
+
+func set_world_record_announcements_enabled(enabled: bool) -> void:
+	_world_record_settings_generation += 1
+	_world_record_catch_up_required = true
+	WorldRecordAnnouncement.clear_if_disabled(_world_record_messages, enabled)
+
+func _show_world_record_announcements() -> void:
+	_showing_world_records = true
+	while not _world_record_messages.is_empty():
+		var announcements_enabled: bool = Global.settings_manager.value("Game", "world_record_announcements")
+		WorldRecordAnnouncement.clear_if_disabled(_world_record_messages, announcements_enabled)
+		if _world_record_messages.is_empty():
+			break
+		Info.alert(_world_record_messages.pop_front())
+		await Global.get_tree().create_timer(WORLD_RECORD_ALERT_DURATION).timeout
+	_showing_world_records = false
 
 func data_or_print_error(response: BetterHTTPResponse, silent := false) -> Variant:
 	# This works due to a convention of the web server to return either:

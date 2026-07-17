@@ -59,6 +59,10 @@ func load_settings() -> void:
 		save()
 		return
 
+	if not config.has_section_key("Game", "world_record_announcements"):
+		config.set_value("Game", "world_record_announcements", true)
+		save()
+
 func get_custom_actions() -> Array[String]:
 	var all_actions := InputMap.get_actions()
 
@@ -93,6 +97,7 @@ func reset_to_defaults() -> void:
 	config.set_value("Display", "vsync", false)
 	config.set_value("Display", "speed", false)
 	config.set_value("Audio", "master_volume", -10.0)
+	config.set_value("Game", "world_record_announcements", true)
 	config.set_value("Game", "version", SETTINGS_VERSION)
 	
 	for action in get_custom_actions():

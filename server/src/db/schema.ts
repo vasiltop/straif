@@ -6,6 +6,7 @@ import {
   integer,
   pgEnum,
   boolean,
+  serial,
 } from 'drizzle-orm/pg-core';
 
 export const run_mode = pgEnum('mode', ['bhop', 'target']);
@@ -27,6 +28,18 @@ export const runs = pgTable(
     primaryKey({ columns: [table.map_name, table.steam_id, table.mode] }),
   ]
 );
+
+export const world_records = pgTable('world_records', {
+  id: serial('id').primaryKey(),
+  map_name: text('map_name').notNull(),
+  mode: run_mode().notNull(),
+  steam_id: text('steam_id').notNull(),
+  username: text('username').notNull(),
+  time_ms: integer('time_ms').notNull(),
+  created_at: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
 
 export const admins = pgTable('admins', {
   steam_id: text('steam_id').notNull().primaryKey(),

@@ -11,6 +11,7 @@ class_name SettingsMenu extends TabContainer
 @export var vsync_input: CheckBox
 @export var resolution_input: OptionButton
 @export var speed_label_input: CheckBox
+@export var world_record_announcements_input: CheckBox
 @export var save_settings_btn: Button
 
 func _ready() -> void:
@@ -25,6 +26,7 @@ func _ready() -> void:
 	max_fps_input.value_changed.connect(_on_max_fps_changed)
 	vsync_input.toggled.connect(_on_vsync_changed)
 	speed_label_input.toggled.connect(_on_speed_label_input_changed)
+	world_record_announcements_input.toggled.connect(_on_world_record_announcements_changed)
 	save_settings_btn.pressed.connect(Global.settings_manager.save)
 	
 	for action in Global.settings_manager.get_custom_actions():
@@ -42,6 +44,10 @@ func _on_vsync_changed(toggled_on: bool) -> void:
 func _on_speed_label_input_changed(toggled_on: bool) -> void:
 	Global.settings_manager.update("Display", "speed", toggled_on)
 
+func _on_world_record_announcements_changed(toggled_on: bool) -> void:
+	Global.settings_manager.update("Game", "world_record_announcements", toggled_on)
+	Global.server_bridge.set_world_record_announcements_enabled(toggled_on)
+
 func _set_init_values() -> void:
 	var sens: float = Global.settings_manager.value("Controls", "sensitivity")
 	sens_slider.value = sens
@@ -56,6 +62,7 @@ func _set_init_values() -> void:
 	volume_slider.value = Global.settings_manager.value("Audio", "master_volume")
 	vsync_input.button_pressed = Global.settings_manager.value("Display", "vsync")
 	speed_label_input.button_pressed = Global.settings_manager.value("Display", "speed")
+	world_record_announcements_input.button_pressed = Global.settings_manager.value("Game", "world_record_announcements")
 
 	var res: String = Global.settings_manager.value("Display", "resolution")
 	for i in resolution_input.item_count:
