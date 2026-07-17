@@ -1,0 +1,342 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/maps/elimination_ui.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_hud"]
+bg_color = Color(0.075, 0.078, 0.09, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.29, 0.3, 0.33, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_team1"]
+bg_color = Color(0.075, 0.2, 0.34, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.24, 0.57, 0.86, 0.95)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_team2"]
+bg_color = Color(0.31, 0.2, 0.065, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9, 0.62, 0.19, 0.95)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_match_end"]
+bg_color = Color(0.16, 0.09, 0.055, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.91, 0.62, 0.2, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="EliminationUi" type="CanvasLayer" node_paths=PackedStringArray("scoreboard_panel", "team1_rows", "team2_rows", "phase_label", "timer_label", "team1_score_label", "team2_score_label", "scoreboard_score_label", "ammo_label", "health_label", "spectator_panel", "spectator_label", "match_end_panel", "match_end_label")]
+script = ExtResource("1_script")
+scoreboard_panel = NodePath("Control/Scoreboard")
+team1_rows = NodePath("Control/Scoreboard/Margin/Content/Columns/Team1Column/Rows")
+team2_rows = NodePath("Control/Scoreboard/Margin/Content/Columns/Team2Column/Rows")
+phase_label = NodePath("Control/TopHud/Margin/Strip/Center/Phase")
+timer_label = NodePath("Control/TopHud/Margin/Strip/Center/Timer")
+team1_score_label = NodePath("Control/TopHud/Margin/Strip/Team1/VBox/Score")
+team2_score_label = NodePath("Control/TopHud/Margin/Strip/Team2/VBox/Score")
+scoreboard_score_label = NodePath("Control/Scoreboard/Margin/Content/ScoreLine")
+ammo_label = NodePath("Control/BottomLeft/Margin/Stats/Ammo")
+health_label = NodePath("Control/BottomLeft/Margin/Stats/Health")
+spectator_panel = NodePath("Control/Spectator")
+spectator_label = NodePath("Control/Spectator/Margin/Label")
+match_end_panel = NodePath("Control/MatchEnd")
+match_end_label = NodePath("Control/MatchEnd/Margin/Label")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+
+[node name="TopHud" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -280.0
+offset_right = 280.0
+offset_bottom = 82.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
+[node name="Margin" type="MarginContainer" parent="Control/TopHud"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 7
+
+[node name="Strip" type="HBoxContainer" parent="Control/TopHud/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Team1" type="PanelContainer" parent="Control/TopHud/Margin/Strip"]
+custom_minimum_size = Vector2(145, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_team1")
+
+[node name="VBox" type="VBoxContainer" parent="Control/TopHud/Margin/Strip/Team1"]
+layout_mode = 2
+theme_override_constants/separation = -4
+
+[node name="Name" type="Label" parent="Control/TopHud/Margin/Strip/Team1/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "TEAM 1"
+horizontal_alignment = 1
+
+[node name="Score" type="Label" parent="Control/TopHud/Margin/Strip/Team1/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 31
+text = "0"
+horizontal_alignment = 1
+
+[node name="Center" type="VBoxContainer" parent="Control/TopHud/Margin/Strip"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Phase" type="Label" parent="Control/TopHud/Margin/Strip/Center"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "WAITING FOR PLAYERS"
+horizontal_alignment = 1
+
+[node name="Timer" type="Label" parent="Control/TopHud/Margin/Strip/Center"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "00:00"
+horizontal_alignment = 1
+
+[node name="Team2" type="PanelContainer" parent="Control/TopHud/Margin/Strip"]
+custom_minimum_size = Vector2(145, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_team2")
+
+[node name="VBox" type="VBoxContainer" parent="Control/TopHud/Margin/Strip/Team2"]
+layout_mode = 2
+theme_override_constants/separation = -4
+
+[node name="Name" type="Label" parent="Control/TopHud/Margin/Strip/Team2/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "TEAM 2"
+horizontal_alignment = 1
+
+[node name="Score" type="Label" parent="Control/TopHud/Margin/Strip/Team2/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 31
+text = "0"
+horizontal_alignment = 1
+
+[node name="Scoreboard" type="PanelContainer" parent="Control"]
+visible = false
+custom_minimum_size = Vector2(900, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -250.0
+offset_right = 450.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
+[node name="Margin" type="MarginContainer" parent="Control/Scoreboard"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 22
+
+[node name="Content" type="VBoxContainer" parent="Control/Scoreboard/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Control/Scoreboard/Margin/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "3v3 ELIMINATION"
+horizontal_alignment = 1
+
+[node name="ScoreLine" type="Label" parent="Control/Scoreboard/Margin/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "TEAM 1  0  -  0  TEAM 2"
+horizontal_alignment = 1
+
+[node name="Rule" type="HSeparator" parent="Control/Scoreboard/Margin/Content"]
+layout_mode = 2
+
+[node name="Columns" type="HBoxContainer" parent="Control/Scoreboard/Margin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 22
+
+[node name="Team1Column" type="VBoxContainer" parent="Control/Scoreboard/Margin/Content/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Header" type="PanelContainer" parent="Control/Scoreboard/Margin/Content/Columns/Team1Column"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_team1")
+
+[node name="Label" type="Label" parent="Control/Scoreboard/Margin/Content/Columns/Team1Column/Header"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "TEAM 1"
+horizontal_alignment = 1
+
+[node name="Rows" type="VBoxContainer" parent="Control/Scoreboard/Margin/Content/Columns/Team1Column"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Team2Column" type="VBoxContainer" parent="Control/Scoreboard/Margin/Content/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Header" type="PanelContainer" parent="Control/Scoreboard/Margin/Content/Columns/Team2Column"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_team2")
+
+[node name="Label" type="Label" parent="Control/Scoreboard/Margin/Content/Columns/Team2Column/Header"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "TEAM 2"
+horizontal_alignment = 1
+
+[node name="Rows" type="VBoxContainer" parent="Control/Scoreboard/Margin/Content/Columns/Team2Column"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="BottomLeft" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -78.0
+offset_right = 190.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
+[node name="Margin" type="MarginContainer" parent="Control/BottomLeft"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 8
+
+[node name="Stats" type="VBoxContainer" parent="Control/BottomLeft/Margin"]
+layout_mode = 2
+
+[node name="Ammo" type="Label" parent="Control/BottomLeft/Margin/Stats"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Ammo: 30 / Inf"
+horizontal_alignment = 1
+
+[node name="Health" type="Label" parent="Control/BottomLeft/Margin/Stats"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Health: 100"
+horizontal_alignment = 1
+
+[node name="Spectator" type="PanelContainer" parent="Control"]
+visible = false
+custom_minimum_size = Vector2(300, 58)
+layout_mode = 1
+anchors_preset = 12
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -145.0
+offset_right = 150.0
+offset_bottom = -87.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
+[node name="Margin" type="MarginContainer" parent="Control/Spectator"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="Label" type="Label" parent="Control/Spectator/Margin"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "SPECTATING PLAYER\nClick to switch"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MatchEnd" type="PanelContainer" parent="Control"]
+visible = false
+custom_minimum_size = Vector2(520, 116)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -58.0
+offset_right = 260.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_match_end")
+
+[node name="Margin" type="MarginContainer" parent="Control/MatchEnd"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 18
+
+[node name="Label" type="Label" parent="Control/MatchEnd/Margin"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "TEAM 1 WINS THE MATCH"
+horizontal_alignment = 1
+vertical_alignment = 1
