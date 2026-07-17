@@ -10,6 +10,7 @@ signal toggled_pause(value: bool)
 @onready var gun_vp: SubViewport = $Eye/Camera/GunVPContainer/GunVP
 @onready var gun_vp_container: SubViewportContainer = $Eye/Camera/GunVPContainer
 @onready var name_label: Label3D = $Name
+@onready var teammate_marker: Label3D = $TeammateMarker
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var camera_anchor: Marker3D = $CameraAnchor
 @onready var third_person: Node3D = $ThirdPerson
@@ -160,6 +161,10 @@ func set_viewmodel_viewport_visible(value: bool) -> void:
 func set_name_label(value: String) -> void:
 	name_label.text = value
 
+
+func set_teammate_indicator(visible: bool) -> void:
+	teammate_marker.visible = visible
+
 # This only gets called on the player we are controlling
 func setup() -> void:
 	camera.make_current()
@@ -170,6 +175,7 @@ func setup() -> void:
 	add_child(_run_audio_player)
 	third_person.visible = false
 	name_label.visible = false
+	teammate_marker.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 	for child: PhysicalBone3D in bone_simulator.get_children():

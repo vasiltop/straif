@@ -157,6 +157,24 @@ func _create_player(
 	if Global.is_sv():
 		inst.dead.connect(_on_player_death)
 
+	refresh_teammate_indicators()
+
+
+func refresh_teammate_indicators() -> void:
+	var local_team := get_team(Global.id())
+	for player: Player in get_players():
+		var show_indicator := (
+			player.pid != Global.id()
+			and get_team(player.pid) == local_team
+			and not player.is_dead
+		)
+		player.set_teammate_indicator(show_indicator)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _sync_teammate_indicators() -> void:
+	refresh_teammate_indicators()
+
 
 func get_player(id: int) -> Player:
 	for player: Player in get_players():
@@ -222,6 +240,8 @@ func _start_freeze() -> void:
 			player._update_state.rpc(spawn_point, player.global_rotation.y, 0.0, 0.0)
 			_set_player_frozen.rpc(player.pid, true)
 
+	_sync_teammate_indicators.rpc()
+
 
 func _start_live() -> void:
 	_set_phase(Phase.LIVE, ROUND_TIME)
@@ -240,10 +260,24 @@ func _reset_match() -> void:
 	team_scores[1] = 0
 	team_scores[2] = 0
 	match_winner = 0
+	_new_map()
 	if has_enough_players():
 		_start_freeze()
 	else:
 		_enter_waiting()
+
+
+func _new_map() -> void:
+	var mode := Global.game_manager.current_pvp_mode
+	var current := Global.game_manager.current_pvp_map
+	var map := Global.map_manager.get_random_map(mode)
+	var attempts := 0
+	while map == current and attempts < 8:
+		map = Global.map_manager.get_random_map(mode)
+		attempts += 1
+
+	Global.game_manager.current_pvp_map = map
+	change_map.rpc(get_current_map_path())
 
 
 func _enter_waiting(reset_scores := false) -> void:
@@ -327,6 +361,7 @@ func _on_player_death(sender: int, id: int, _weapon_name: String) -> void:
 	var player := get_player(id)
 	player.ragdoll.rpc()
 	_set_player_frozen.rpc(id, true)
+	_sync_teammate_indicators.rpc()
 	_broadcast_round_state()
 	_evaluate_live_round()
 
@@ -384,6 +419,7 @@ func _remove_player(id: int) -> void:
 		player.queue_free()
 	teams.erase(id)
 	player_names.erase(id)
+	refresh_teammate_indicators()
 
 
 func _on_player_disconnected(id: int) -> void:

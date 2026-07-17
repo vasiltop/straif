@@ -36,6 +36,7 @@ func _process(delta: float) -> void:
 	_mouse_input = Vector2.ZERO
 
 func _input(event: InputEvent) -> void:
+	if not player.is_me(): return
 	if not player.can_move: return
 	if not player.can_turn: return
 	
