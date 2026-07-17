@@ -76,6 +76,13 @@ Copy the env file and fill in your depot IDs from the [Steamworks depots page](h
 cp steam/steam.env.example steam/steam.env
 ```
 
+In Steamworks:
+
+1. Add both depots to every package that should grant the game, including the Developer Comp and testing packages.
+2. Set depot `3850481` to Windows and depot `3850482` to Linux 64-bit.
+3. Add a Linux launch option for `straif.x86_64`.
+4. After each upload, set the build live on the branch used by testers or customers.
+
 ### Upload a build
 
 ```bash
