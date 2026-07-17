@@ -1,5 +1,7 @@
 class_name EndlessGenerator extends ProceduralGenerator
 
+const PIPELINE_NAME := "endless"
+
 # Endless bhop pipeline: a pure, seed-deterministic ProceduralGenerator.
 #
 # The whole layout is a function of the seed only: every next block is placed
@@ -9,10 +11,7 @@ class_name EndlessGenerator extends ProceduralGenerator
 # shared by the runtime map (src/maps/procedural/procedural_map.gd) and the
 # headless determinism/solvability self-test so the test validates real code.
 #
-# Movement constants mirror src/player/player.gd. Do not change them without
-# re-checking that generated gaps stay clearable.
-const JUMP_FORCE := 4.0
-const GRAVITY := 12.0
+# Jump kinematics come from BhopPhysics (mirrored from src/player/player.gd).
 
 # Model speed floor and difficulty ramp. The ground cap is 5.5 u/s but bhop
 # air-strafing lets planar speed grow past it, so the floor sits slightly above.
@@ -28,7 +27,7 @@ const MIN_PLACE_FRAC := 0.55
 const MAX_PLACE_FRAC := 0.78
 
 # Vertical step limits (relative to the previous block top).
-# The jump peak rise is JUMP_FORCE^2 / (2 * GRAVITY) = 0.667u; up steps stay
+# The jump peak rise is BhopPhysics.JUMP_PEAK_RISE = 0.667u; up steps stay
 # well below that so the player clears them on the way down.
 const MAX_UP_STEP := 0.45
 const MIN_DOWN_STEP := -1.2
@@ -55,24 +54,8 @@ func reset() -> void:
 	_prev_radius = 0.0
 	_heading = Vector2(0.0, -1.0)
 
-# Jump airtime to land at a top that is delta_y above the launch top.
-# Solves 4t - 6t^2 = delta_y for the later positive root.
-static func hop_time(delta_y: float) -> float:
-	var disc := JUMP_FORCE * JUMP_FORCE - 2.0 * GRAVITY * delta_y
-	if disc < 0.0:
-		disc = 0.0
-	return (JUMP_FORCE + sqrt(disc)) / GRAVITY
-
-# Maximum horizontal reach at planar speed s for a step of delta_y.
-static func max_reach(s: float, delta_y: float) -> float:
-	return s * hop_time(delta_y)
-
-# Effective footprint radius of a block along the path. Blocks are near-square
-# and turns are small, so the average half-extent is a good approximation and,
-# crucially, is used identically by the runtime, the placement math, and the
-# self-test so the air gaps stay exact.
-static func block_radius(size: Vector2) -> float:
-	return (size.x + size.y) * 0.25
+# Jump kinematics (hop_time, max_reach) and block_radius live in BhopPhysics so
+# every pipeline shares the exact same makeable-gap math.
 
 static func model_speed(index: int) -> float:
 	return clampf(MIN_MODEL_SPEED + float(index) * SPEED_RAMP, MIN_MODEL_SPEED, MAX_MODEL_SPEED)
@@ -124,14 +107,14 @@ func _generate_next() -> void:
 
 	# The player flies across the AIR gap (empty span between block edges); place
 	# it at a fraction of the makeable reach so keeping speed up always clears it.
-	var reach := max_reach(s, delta_y)
+	var reach := BhopPhysics.max_reach(s, delta_y)
 	var place := rng.randf_range(MIN_PLACE_FRAC, MAX_PLACE_FRAC)
 	if max_turn > 0.0:
 		place *= lerpf(1.0, 0.9, clampf(absf(turn) / max_turn, 0.0, 1.0))
 	var air_gap := reach * place
 
 	var size := _pick_size(turn, delta_y)
-	var radius := block_radius(size)
+	var radius := BhopPhysics.block_radius(size)
 
 	# Center-to-center distance = previous half + air gap + this half so the
 	# empty span the player jumps is exactly `air_gap`.

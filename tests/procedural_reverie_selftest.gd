@@ -50,7 +50,7 @@ func _check_solvable(seed: int) -> void:
 		var air := dist - prev_radius - this_radius
 
 		var s := EndlessGenerator.model_speed(i)
-		var reach := EndlessGenerator.max_reach(s, dy)
+		var reach := BhopPhysics.max_reach(s, dy)
 
 		_check(
 			air <= reach * SAFETY,
