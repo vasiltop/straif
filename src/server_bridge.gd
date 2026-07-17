@@ -452,6 +452,63 @@ func get_overall_leaderboard(mode: String) -> Array:
 	
 	return data
 
+class EndlessEntry:
+	var steam_id: String
+	var username: String
+	var seed: int
+	var blocks_reached: int
+	var created_at: String
+	var position: int
+
+	func _init(
+		steam_id: String,
+		username: String,
+		seed: int,
+		blocks_reached: int,
+		created_at: String,
+		position: int
+	) -> void:
+		self.steam_id = steam_id
+		self.username = username
+		self.seed = seed
+		self.blocks_reached = blocks_reached
+		self.created_at = created_at
+		self.position = position
+
+func publish_endless_run(map_name: String, seed: int, blocks: int) -> void:
+	var response := await client.http_post("/leaderboard/endless/maps/%s/runs" % map_name).json({
+			"seed": str(seed),
+			"blocks_reached": blocks,
+			"username": Steam.getPersonaName(),
+		}).header(
+			"auth-ticket", Global.game_manager.auth_ticket_hex
+			).header(
+				"version", version
+				).send()
+
+	var data := await data_or_print_error(response)
+	if data != null:
+		Info.alert(data as String)
+
+func fetch_endless_leaderboard(map_name: String, page := 1) -> Array[EndlessEntry]:
+	var url := "/leaderboard/endless/maps/%s/runs?page=%d" % [map_name, page - 1]
+	var response := await client.http_get(url).send()
+	var data := await data_or_print_error(response, true)
+	if data == null: return []
+
+	var entries: Array[EndlessEntry]
+	for run: Dictionary in data.runs:
+		entries.append(EndlessEntry.new(
+			run.steam_id as String,
+			run.username as String,
+			int(str(run.seed)),
+			run.blocks_reached as int,
+			run.created_at as String,
+			run.position as int
+		))
+
+	return entries
+
 class ServerResponse:
 	var port: int
 	var name: String
