@@ -36,6 +36,7 @@ func _ready() -> void:
 	map_manager = MapManager.new()
 	server_bridge = ServerBridge.new()
 	game_manager = GameManager.new(is_server, not offline_playtest)
+	game_manager.name = "GameManager"
 	add_child(game_manager)
 	
 	multiplayer.peer_connected.connect(game_manager.on_peer_connected)
