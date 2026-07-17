@@ -162,24 +162,44 @@ func _make_block(spec: Dictionary) -> Node3D:
 	var center: Vector3 = spec.center
 	var size: Vector2 = spec.size
 	var idx: int = spec.index
+	# Optional per-block object variety (pipelines may omit these):
+	#   shape: "box" (default) or "cylinder"
+	#   yaw:   rotation around Y in radians (e.g. to align a beam to the path)
+	var shape_kind: String = spec.get("shape", "box")
+	var yaw: float = spec.get("yaw", 0.0)
 
 	var body := StaticBody3D.new()
-	var box_size := Vector3(size.x, BLOCK_THICKNESS, size.y)
+	var mat: Material = mat_accent if (idx % 4 == 0) else mat_main
 
 	var mesh := MeshInstance3D.new()
-	var box := BoxMesh.new()
-	box.size = box_size
-	mesh.mesh = box
-	mesh.material_override = mat_accent if (idx % 4 == 0) else mat_main
-	body.add_child(mesh)
-
 	var col := CollisionShape3D.new()
-	var shape := BoxShape3D.new()
-	shape.size = box_size
-	col.shape = shape
+
+	if shape_kind == "cylinder":
+		var radius: float = spec.get("radius", (size.x + size.y) * 0.25)
+		var cyl := CylinderMesh.new()
+		cyl.top_radius = radius
+		cyl.bottom_radius = radius
+		cyl.height = BLOCK_THICKNESS
+		mesh.mesh = cyl
+		var cshape := CylinderShape3D.new()
+		cshape.radius = radius
+		cshape.height = BLOCK_THICKNESS
+		col.shape = cshape
+	else:
+		var box_size := Vector3(size.x, BLOCK_THICKNESS, size.y)
+		var box := BoxMesh.new()
+		box.size = box_size
+		mesh.mesh = box
+		var bshape := BoxShape3D.new()
+		bshape.size = box_size
+		col.shape = bshape
+
+	mesh.material_override = mat
+	body.add_child(mesh)
 	body.add_child(col)
 
 	body.position = Vector3(center.x, center.y - BLOCK_THICKNESS * 0.5, center.z)
+	body.rotation.y = yaw
 	return body
 
 func _update_progress() -> void:
@@ -189,9 +209,15 @@ func _update_progress() -> void:
 		var spec := generator.get_block(idx)
 		var c: Vector3 = spec.center
 		var s: Vector2 = spec.size
-		var dx: float = absf(player.global_position.x - c.x)
-		var dz: float = absf(player.global_position.z - c.z)
-		if dx <= s.x * 0.5 + 0.5 and dz <= s.y * 0.5 + 0.5:
+		var rel := Vector2(player.global_position.x - c.x, player.global_position.z - c.z)
+		var on_top := false
+		if spec.get("shape", "box") == "cylinder":
+			var radius: float = spec.get("radius", (s.x + s.y) * 0.25)
+			on_top = rel.length() <= radius + 0.5
+		else:
+			rel = rel.rotated(-float(spec.get("yaw", 0.0)))
+			on_top = absf(rel.x) <= s.x * 0.5 + 0.5 and absf(rel.y) <= s.y * 0.5 + 0.5
+		if on_top:
 			var feet_y := player.global_position.y - FEET_OFFSET
 			if absf(feet_y - c.y) < 0.6:
 				best = maxi(best, idx)

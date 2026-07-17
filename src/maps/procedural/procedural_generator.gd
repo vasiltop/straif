@@ -12,8 +12,12 @@ class_name ProceduralGenerator extends RefCounted
 #   index: int          - 0-based position in the course
 #   center: Vector3     - center of the block TOP surface (world space)
 #   size: Vector2       - top footprint (x = width, y = depth)
-# Pipelines may attach extra fields (radius, delta_y, model_speed, ...) for
-# their own use and for tests.
+# Optional object-variety fields honored by ProceduralMap:
+#   shape: "box" (default) or "cylinder"
+#   yaw:   float rotation around Y (radians), e.g. to align a beam to the path
+#   radius: float       - footprint radius (used for cylinders / gap math)
+# Pipelines may attach further fields (delta_y, model_speed, ...) for their own
+# use and for tests.
 
 var seed_value: int
 var rng := RandomNumberGenerator.new()
