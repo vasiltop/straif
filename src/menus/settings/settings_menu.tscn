@@ -27,7 +27,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TabContainer" type="TabContainer" parent="VBoxContainer" node_paths=PackedStringArray("sens_label", "sens_slider", "window_mode_input", "max_fps_input", "volume_slider", "keybinds", "ads_sens_label", "ads_sens_slider", "vsync_input", "resolution_input", "speed_label_input", "save_settings_btn")]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer" node_paths=PackedStringArray("sens_label", "sens_slider", "window_mode_input", "max_fps_input", "volume_slider", "keybinds", "ads_sens_label", "ads_sens_slider", "vsync_input", "resolution_input", "speed_label_input", "world_record_announcements_input", "save_settings_btn")]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("2_wljha")
@@ -44,6 +44,7 @@ ads_sens_slider = NodePath("Controls/Margin/V/AdsSensitivity/SliderInput")
 vsync_input = NodePath("Display/Margin/V/Vsync/Input")
 resolution_input = NodePath("Display/Margin/V/Resolution/Input")
 speed_label_input = NodePath("Display/Margin/V/SpeedLabel/Input")
+world_record_announcements_input = NodePath("Display/Margin/V/WorldRecordAnnouncements/Input")
 save_settings_btn = NodePath("../Save")
 
 [node name="Controls" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
@@ -222,6 +223,18 @@ layout_mode = 2
 text = "Show speed under crosshair"
 
 [node name="Input" type="CheckBox" parent="VBoxContainer/TabContainer/Display/Margin/V/SpeedLabel"]
+layout_mode = 2
+
+[node name="WorldRecordAnnouncements" type="HBoxContainer" parent="VBoxContainer/TabContainer/Display/Margin/V"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Display/Margin/V/WorldRecordAnnouncements"]
+layout_mode = 2
+text = "World Record Announcements"
+
+[node name="Input" type="CheckBox" parent="VBoxContainer/TabContainer/Display/Margin/V/WorldRecordAnnouncements"]
 layout_mode = 2
 
 [node name="Audio" type="ScrollContainer" parent="VBoxContainer/TabContainer"]

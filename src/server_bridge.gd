@@ -4,6 +4,8 @@ signal invalid_version
 
 const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/DScF2QqKzF"
+const WORLD_RECORD_ALERT_DURATION := 3.0
+const WorldRecordAnnouncement = preload("res://src/world_record_announcement.gd")
 var client: BetterHTTPClient
 
 var api_url: String
@@ -11,6 +13,9 @@ var version: String
 var last_aim_overall_leaderboard_available := true
 
 var heartbeat_timer: BetterTimer
+var _seen_world_record_ids: Dictionary[String, bool] = {}
+var _world_record_messages: Array[String] = []
+var _showing_world_records := false
 
 func _settings_file() -> String:
 	if OS.has_feature("editor_runtime"):
@@ -34,6 +39,7 @@ func _init() -> void:
 
 func _on_heartbeat_timer() -> void:
 	var url := "/game/heartbeat"
+
 	var response := await client.http_get(url).header(
 		"auth-ticket", Global.game_manager.auth_ticket_hex
 		).header(
@@ -49,6 +55,7 @@ func _on_heartbeat_timer() -> void:
 
 	Global.game_manager.admin = data.admin as bool
 	Global.game_manager.maintenance = data.maintenance as bool
+	_handle_world_records(data)
 	
 	if not Global.game_manager.maintenance:
 		Global.game_manager.maintenance_changed.emit()
@@ -58,6 +65,33 @@ func _on_heartbeat_timer() -> void:
 			Info.alert("The game is currently under maintenance, allowing play due to admin status.")
 		else:
 			Global.get_tree().change_scene_to_file("res://src/maintenance.tscn")
+
+func _handle_world_records(data: Dictionary) -> void:
+	if not data.has("world_records"):
+		return
+
+	var announcements_enabled: bool = Global.settings_manager.value("Game", "world_record_announcements")
+	var records: Array = data.world_records as Array
+	for record: Dictionary in records:
+		var record_id := record.id as String
+		if WorldRecordAnnouncement.consume_unseen(record_id, _seen_world_record_ids, announcements_enabled):
+			_world_record_messages.append(WorldRecordAnnouncement.format_message(record))
+	if not _showing_world_records and not _world_record_messages.is_empty():
+		_show_world_record_announcements()
+
+func set_world_record_announcements_enabled(enabled: bool) -> void:
+	WorldRecordAnnouncement.clear_if_disabled(_world_record_messages, enabled)
+
+func _show_world_record_announcements() -> void:
+	_showing_world_records = true
+	while not _world_record_messages.is_empty():
+		var announcements_enabled: bool = Global.settings_manager.value("Game", "world_record_announcements")
+		WorldRecordAnnouncement.clear_if_disabled(_world_record_messages, announcements_enabled)
+		if _world_record_messages.is_empty():
+			break
+		Info.alert(_world_record_messages.pop_front())
+		await Global.get_tree().create_timer(WORLD_RECORD_ALERT_DURATION).timeout
+	_showing_world_records = false
 
 func data_or_print_error(response: BetterHTTPResponse, silent := false) -> Variant:
 	# This works due to a convention of the web server to return either:

@@ -15,6 +15,11 @@ import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';
 import { hide_route } from './common';
 import { get_maps_of_mode, type RunMode } from '../maps';
+import {
+  is_new_world_record,
+  recent_world_records,
+  world_record_lock_key,
+} from '../world_records';
 import aim_leaderboard from './aim_leaderboard';
 
 const app = new Hono<{ Variables: Variables }>();
@@ -410,15 +415,21 @@ app.delete(
     const run_mode = coerce_to_run_mode(c.req.param('mode_name'));
 
     try {
-      await db
-        .delete(runs)
-        .where(
-          and(
-            eq(runs.map_name, map_name),
-            eq(runs.steam_id, steam_id),
-            eq(runs.mode, run_mode)
-          )
+      await db.transaction(async (tx) => {
+        const leaderboard_lock = world_record_lock_key(run_mode, map_name);
+        await tx.execute(
+          sql`SELECT pg_advisory_xact_lock(hashtext(${leaderboard_lock}))`
         );
+        await tx
+          .delete(runs)
+          .where(
+            and(
+              eq(runs.map_name, map_name),
+              eq(runs.steam_id, steam_id),
+              eq(runs.mode, run_mode)
+            )
+          );
+      });
 
       return c.json({
         data: 'Run was succesfully deleted.',
@@ -451,53 +462,61 @@ app.post(
       );
     }
 
-    const pb_result = await db
-      .select({
-        time_ms: runs.time_ms,
-      })
-      .from(runs)
-      .where(
-        and(
-          eq(runs.map_name, map_name),
-          eq(runs.steam_id, steam_id),
-          eq(runs.mode, run_mode)
-        )
-      )
-      .limit(1);
-
-    const pb = pb_result[0] ? pb_result[0].time_ms : Infinity;
-
     try {
-      await db
-        .insert(runs)
-        .values({
-          steam_id,
-          map_name,
-          recording: body.recording,
-          time_ms: body.time_ms,
-          username: body.username,
-          mode: run_mode,
-        })
-        .onConflictDoUpdate({
-          target: [runs.steam_id, runs.map_name, runs.mode],
-          set: {
-            time_ms: body.time_ms,
+      const submission_result = await db.transaction(async (tx) => {
+        const leaderboard_lock = world_record_lock_key(run_mode, map_name);
+        await tx.execute(
+          sql`SELECT pg_advisory_xact_lock(hashtext(${leaderboard_lock}))`
+        );
+
+        const previous_best_result = await tx
+          .select({ time_ms: runs.time_ms })
+          .from(runs)
+          .where(and(eq(runs.map_name, map_name), eq(runs.mode, run_mode)))
+          .orderBy(asc(runs.time_ms))
+          .limit(1);
+
+        const updated_runs = await tx
+          .insert(runs)
+          .values({
+            steam_id,
+            map_name,
             recording: body.recording,
+            time_ms: body.time_ms,
             username: body.username,
-            created_at: new Date(),
-          },
-          setWhere: sql`${runs.time_ms} > ${body.time_ms}`,
+            mode: run_mode,
+          })
+          .onConflictDoUpdate({
+            target: [runs.steam_id, runs.map_name, runs.mode],
+            set: {
+              time_ms: body.time_ms,
+              recording: body.recording,
+              username: body.username,
+              created_at: new Date(),
+            },
+            setWhere: sql`${runs.time_ms} > ${body.time_ms}`,
+          })
+          .returning({ time_ms: runs.time_ms });
+
+        const is_pb = updated_runs.length > 0;
+        const previous_best_time_ms = previous_best_result[0]?.time_ms ?? null;
+        const is_world_record = is_new_world_record(
+          previous_best_time_ms,
+          body.time_ms,
+          is_pb
+        );
+
+        return { is_pb, is_world_record };
+      });
+
+      if (submission_result.is_world_record) {
+        recent_world_records.publish({
+          map_name,
+          mode: run_mode,
+          steam_id,
+          username: body.username,
+          time_ms: body.time_ms,
         });
-
-      const position = await get_player_position(
-        run_mode,
-        body.time_ms,
-        map_name
-      );
-      const is_pb = body.time_ms < pb;
-      const discord_message_threshold = 1; // We only care about world record.
-
-      if (position <= discord_message_threshold && is_pb) {
         discord_client.guilds.cache.forEach(async (guild) => {
           const channels = await guild.channels.fetch();
           const target_channel = channels.find(
@@ -511,7 +530,7 @@ app.post(
               body.time_ms,
               body.username,
               map_name,
-              position,
+              1,
               run_mode,
               target_channel.id
             );
@@ -519,7 +538,7 @@ app.post(
         });
       }
 
-      const msg = `Run completed in ${body.time_ms / 1000}. ${is_pb ? 'New PB! Open the leaderboard to view your ranking.' : ''}`;
+      const msg = `Run completed in ${body.time_ms / 1000}. ${submission_result.is_pb ? 'New PB! Open the leaderboard to view your ranking.' : ''}`;
       return c.json({ data: msg });
     } catch (e) {
       console.log(e);

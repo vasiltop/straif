@@ -3,6 +3,7 @@ import { type Variables } from '../index';
 import { version_compare, steam_auth } from '../middleware';
 import { is_admin } from '../players';
 import { hide_route } from './common';
+import { recent_world_records } from '../world_records';
 
 export const server_state = {
   maintenance: false,
@@ -18,6 +19,7 @@ app.get('/heartbeat', hide_route(), steam_auth, version_compare, async (c) => {
     data: {
       admin,
       maintenance: server_state.maintenance,
+      world_records: recent_world_records.list(),
     },
   });
 });
