@@ -455,7 +455,6 @@ func get_overall_leaderboard(mode: String) -> Array:
 class EndlessEntry:
 	var steam_id: String
 	var username: String
-	var seed: int
 	var blocks_reached: int
 	var created_at: String
 	var position: int
@@ -463,21 +462,18 @@ class EndlessEntry:
 	func _init(
 		steam_id: String,
 		username: String,
-		seed: int,
 		blocks_reached: int,
 		created_at: String,
 		position: int
 	) -> void:
 		self.steam_id = steam_id
 		self.username = username
-		self.seed = seed
 		self.blocks_reached = blocks_reached
 		self.created_at = created_at
 		self.position = position
 
-func publish_endless_run(map_name: String, seed: int, blocks: int) -> void:
+func publish_endless_run(map_name: String, blocks: int) -> void:
 	var response := await client.http_post("/leaderboard/endless/maps/%s/runs" % map_name).json({
-			"seed": str(seed),
 			"blocks_reached": blocks,
 			"username": Steam.getPersonaName(),
 		}).header(
@@ -501,7 +497,6 @@ func fetch_endless_leaderboard(map_name: String, page := 1) -> Array[EndlessEntr
 		entries.append(EndlessEntry.new(
 			run.steam_id as String,
 			run.username as String,
-			int(str(run.seed)),
 			run.blocks_reached as int,
 			run.created_at as String,
 			run.position as int

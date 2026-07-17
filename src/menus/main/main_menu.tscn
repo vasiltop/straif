@@ -283,6 +283,14 @@ mode = "bhop"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 1
 
+[node name="Endless" type="Control" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("5_0gscq")
+mode = "endless"
+metadata/_custom_type_script = "uid://be34vbfubnjti"
+metadata/_tab_index = 2
+
 [node name="Aim Trainer" parent="MarginContainer/Content/Body" unique_id=792485455 instance=ExtResource("17_aim")]
 visible = false
 layout_mode = 2

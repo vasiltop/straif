@@ -41,10 +41,15 @@ class PbInfo:
 			"position": 0,
 			"pb": INF
 		},
+		"endless": {
+			"total": 0,
+			"position": 0,
+			"pb": INF
+		},
 	}
 	
 	func _init(total := 0, position := 0, pb := INF) -> void:
-		for mode: String in ["target", "bhop"]:
+		for mode: String in ["target", "bhop", "endless"]:
 			self.mode_to_map_info[mode].total = total
 			self.mode_to_map_info[mode].position = position
 			self.mode_to_map_info[mode].pb = pb

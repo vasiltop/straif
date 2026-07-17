@@ -234,9 +234,9 @@
 		{
 			"name": "map_reverie",
 			"tier": 1.0,
-			"modes": ["bhop"],
+			"modes": ["endless"],
 			"scoring": "distance",
-			"medals_bhop": [
+			"medals_endless": [
 				30.0,
 				60.0,
 				100.0,

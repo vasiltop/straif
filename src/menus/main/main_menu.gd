@@ -75,6 +75,8 @@ func _instantiate_maps() -> void:
 				container.add_map(map, mode, mode_info.pb as float, mode_info.position as int, mode_info.total as int)
 
 	for mode in mode_to_container:
+		if mode == "endless":
+			continue
 		var response := await Global.server_bridge.get_my_runs(mode)
 		if response == null:
 			return
