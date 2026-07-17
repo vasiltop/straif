@@ -64,4 +64,10 @@ discord_client.on('ready', () => {
   console.log(`Logged in as ${discord_client.user?.tag}`);
 });
 
-discord_client.login(process.env.DISCORD_TOKEN);
+if (process.env.DISCORD_TOKEN) {
+  discord_client.login(process.env.DISCORD_TOKEN).catch((err) => {
+    console.error('Discord login failed; continuing without Discord:', err);
+  });
+} else {
+  console.warn('DISCORD_TOKEN not set; skipping Discord login.');
+}
