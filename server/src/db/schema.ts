@@ -8,7 +8,6 @@ import {
   pgEnum,
   index,
   real,
-  serial,
 } from 'drizzle-orm/pg-core';
 import { AIM_SCENARIOS } from '../aim_leaderboard';
 
@@ -58,18 +57,6 @@ export const aim_scores = pgTable(
     ),
   ]
 );
-
-export const world_records = pgTable('world_records', {
-  id: serial('id').primaryKey(),
-  map_name: text('map_name').notNull(),
-  mode: run_mode().notNull(),
-  steam_id: text('steam_id').notNull(),
-  username: text('username').notNull(),
-  time_ms: integer('time_ms').notNull(),
-  created_at: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-});
 
 export const admins = pgTable('admins', {
   steam_id: text('steam_id').notNull().primaryKey(),

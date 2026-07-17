@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import db from '../db/index';
-import { runs, run_mode, world_records } from '../db/schema';
+import { runs, run_mode } from '../db/schema';
 import { asc, eq, sql, and, lt } from 'drizzle-orm';
 import {
   version_compare,
@@ -15,7 +15,11 @@ import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';
 import { hide_route } from './common';
 import { get_maps_of_mode, type RunMode } from '../maps';
-import { is_new_world_record, world_record_lock_key } from '../world_records';
+import {
+  is_new_world_record,
+  recent_world_records,
+  world_record_lock_key,
+} from '../world_records';
 import aim_leaderboard from './aim_leaderboard';
 
 const app = new Hono<{ Variables: Variables }>();
@@ -502,23 +506,17 @@ app.post(
           is_pb
         );
 
-        if (is_world_record) {
-          await tx.execute(
-            sql`SELECT pg_advisory_xact_lock(hashtext('world-record-announcements'))`
-          );
-          await tx.insert(world_records).values({
-            map_name,
-            mode: run_mode,
-            steam_id,
-            username: body.username,
-            time_ms: body.time_ms,
-          });
-        }
-
         return { is_pb, is_world_record };
       });
 
       if (submission_result.is_world_record) {
+        recent_world_records.publish({
+          map_name,
+          mode: run_mode,
+          steam_id,
+          username: body.username,
+          time_ms: body.time_ms,
+        });
         discord_client.guilds.cache.forEach(async (guild) => {
           const channels = await guild.channels.fetch();
           const target_channel = channels.find(

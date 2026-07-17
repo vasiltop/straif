@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   is_new_world_record,
-  parse_world_record_cursor,
+  RecentWorldRecords,
   world_record_lock_key,
 } from './world_records';
 
@@ -26,31 +26,40 @@ test('rejects a run that did not update the player record', () => {
   assert.equal(is_new_world_record(null, 12_345, false), false);
 });
 
-test('treats an absent world-record cursor as bootstrap', () => {
-  assert.deepEqual(parse_world_record_cursor(undefined), {
-    success: true,
-    cursor: null,
-  });
-});
-
-test('accepts a non-negative integer world-record cursor', () => {
-  assert.deepEqual(parse_world_record_cursor('42'), {
-    success: true,
-    cursor: 42,
-  });
-});
-
-for (const invalid_cursor of ['-1', '1.5', 'record-1', '']) {
-  test(`rejects malformed world-record cursor "${invalid_cursor}"`, () => {
-    assert.deepEqual(parse_world_record_cursor(invalid_cursor), {
-      success: false,
-    });
-  });
-}
-
 test('uses one stable lock key for a map and mode', () => {
   assert.equal(
     world_record_lock_key('target', 'Taurus'),
     'world-record:target:Taurus'
   );
+});
+
+const world_record_input = {
+  map_name: 'Taurus',
+  mode: 'target',
+  steam_id: '123',
+  username: 'Alice',
+  time_ms: 12_345,
+};
+
+test('publishes a world record to the recent cache', () => {
+  const cache = new RecentWorldRecords(60_000);
+  const record = cache.publish(world_record_input, 1_000);
+
+  assert.deepEqual(cache.list(1_000), [record]);
+});
+
+test('assigns each cached world record a unique id', () => {
+  const cache = new RecentWorldRecords(60_000);
+  const first = cache.publish(world_record_input, 1_000);
+  const second = cache.publish(world_record_input, 1_001);
+
+  assert.notEqual(first.id, second.id);
+});
+
+test('expires cached world records after the ttl', () => {
+  const cache = new RecentWorldRecords(60_000);
+  cache.publish(world_record_input, 1_000);
+
+  assert.equal(cache.list(60_999).length, 1);
+  assert.equal(cache.list(61_000).length, 0);
 });

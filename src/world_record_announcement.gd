@@ -1,36 +1,10 @@
 extends RefCounted
 
-static func should_enqueue(record_id: int, last_seen_id: int, enabled: bool) -> bool:
-	return enabled and record_id > last_seen_id
-
-static func should_display_response(
-	enabled_at_request: bool,
-	request_generation: int,
-	current_generation: int,
-	catch_up_at_request: bool
-) -> bool:
-	return (
-		enabled_at_request
-		and request_generation == current_generation
-		and not catch_up_at_request
-	)
-
-static func completes_catch_up(
-	enabled_at_request: bool,
-	request_generation: int,
-	current_generation: int,
-	catch_up_at_request: bool,
-	has_more: bool
-) -> bool:
-	return (
-		enabled_at_request
-		and request_generation == current_generation
-		and catch_up_at_request
-		and not has_more
-	)
-
-static func should_apply_bootstrap_response(last_seen_id: int) -> bool:
-	return last_seen_id < 0
+static func consume_unseen(record_id: String, seen_ids: Dictionary, enabled: bool) -> bool:
+	if seen_ids.has(record_id):
+		return false
+	seen_ids[record_id] = true
+	return enabled
 
 static func clear_if_disabled(messages: Array[String], enabled: bool) -> void:
 	if not enabled:
