@@ -26,11 +26,16 @@ config/icon="uid://jxrxw06a0qoq"
 config/windows_native_icon="res://images/icon.ico"
 boot_splash/minimum_display_time=300
 
+[audio]
+
+buses/default_bus_layout=""
+
 [autoload]
 
 Info="*res://src/info.gd"
 ShotVfxPrewarmer="*res://src/player/weapon/shot_vfx_prewarmer.gd"
 Global="*res://src/global.gd"
+ShotVfxPrewarmer="*res://src/player/weapon/shot_vfx_prewarmer.gd"
 
 [debug]
 
