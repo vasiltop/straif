@@ -16,6 +16,7 @@ import { type Variables } from '../index';
 import { hide_route } from './common';
 import { get_maps_of_mode, type RunMode } from '../maps';
 import aim_leaderboard from './aim_leaderboard';
+import endless_leaderboard from './endless_leaderboard';
 
 const app = new Hono<{ Variables: Variables }>();
 
@@ -529,5 +530,6 @@ app.post(
 );
 
 app.route('/aim', aim_leaderboard);
+app.route('/endless', endless_leaderboard);
 
 export default app;

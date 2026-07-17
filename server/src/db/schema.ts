@@ -62,6 +62,27 @@ export const admins = pgTable('admins', {
   steam_id: text('steam_id').notNull().primaryKey(),
 });
 
+export const endless_runs = pgTable(
+  'endless_runs',
+  {
+    map_name: text('map_name').notNull(),
+    steam_id: text('steam_id').notNull(),
+    username: text('username').notNull(),
+    seed: text('seed').notNull(),
+    blocks_reached: integer('blocks_reached').notNull(),
+    created_at: timestamp('created_at', { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.map_name, table.steam_id] }),
+    index('endless_runs_map_blocks_idx').on(
+      table.map_name,
+      table.blocks_reached
+    ),
+  ]
+);
+
 export const banned_values = pgTable('banned_values', {
   value: text('value').unique().notNull(), // can either be steam_id or ip
 });
