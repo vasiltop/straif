@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://ys66q08e0pvt"]
+[gd_scene load_steps=36 format=4 uid="uid://c7m4f2d9a8k1p"]
 
 [ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="2_q43vt"]
 [ext_resource type="Texture2D" uid="uid://capci7pd6ph7k" path="res://src/textures/Metal_04-128x128.png" id="3_7if4t"]
