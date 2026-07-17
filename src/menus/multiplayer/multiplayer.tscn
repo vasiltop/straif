@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdpgbrehy0o7b"]
+[gd_scene format=3 uid="uid://bdpgbrehy0o7b"]
 
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="1_c5rfe"]
 [ext_resource type="Script" uid="uid://baftybw27iasg" path="res://src/menus/multiplayer/multiplayer.gd" id="2_tfc8f"]
 
-[node name="Multiplayer" type="Control"]
+[node name="Multiplayer" type="Control" unique_id=1297871162]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +13,7 @@ grow_vertical = 2
 theme = ExtResource("1_c5rfe")
 script = ExtResource("2_tfc8f")
 
-[node name="M" type="MarginContainer" parent="."]
+[node name="M" type="MarginContainer" parent="." unique_id=1891716089]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,38 +25,38 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="P" type="PanelContainer" parent="M"]
+[node name="P" type="PanelContainer" parent="M" unique_id=644607146]
 layout_mode = 2
 
-[node name="M" type="MarginContainer" parent="M/P"]
+[node name="M" type="MarginContainer" parent="M/P" unique_id=1050822829]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="V" type="VBoxContainer" parent="M/P/M"]
+[node name="V" type="VBoxContainer" parent="M/P/M" unique_id=1394768766]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="M/P/M/V"]
+[node name="Label" type="Label" parent="M/P/M/V" unique_id=1902644272]
 layout_mode = 2
 text = "Multiplayer"
 
-[node name="Subtitle" type="Label" parent="M/P/M/V"]
+[node name="Subtitle" type="Label" parent="M/P/M/V" unique_id=362901133]
 layout_mode = 2
 text = "Choose a mode, then join a server."
 
-[node name="ModeTabs" type="TabBar" parent="M/P/M/V"]
+[node name="ModeTabs" type="TabBar" parent="M/P/M/V" unique_id=1755774607]
 layout_mode = 2
 
-[node name="Refresh" type="Button" parent="M/P/M/V"]
+[node name="Refresh" type="Button" parent="M/P/M/V" unique_id=218052640]
 layout_mode = 2
 text = "Refresh Servers"
 
-[node name="ServerContainer" type="HFlowContainer" parent="M/P/M/V"]
+[node name="ServerContainer" type="HFlowContainer" parent="M/P/M/V" unique_id=495822002]
 layout_mode = 2
 
-[node name="EmptyState" type="Label" parent="M/P/M/V"]
+[node name="EmptyState" type="Label" parent="M/P/M/V" unique_id=887549474]
 visible = false
 layout_mode = 2
 text = "No servers online."
