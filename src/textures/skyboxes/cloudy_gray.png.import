@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://doxcfhjaq03yn"
 path.s3tc="res://.godot/imported/cloudy_gray.png-835b16536ed3d9c289bf30571233b882.s3tc.ctex"
+path.etc2="res://.godot/imported/cloudy_gray.png-835b16536ed3d9c289bf30571233b882.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://src/textures/skyboxes/cloudy_gray.png"
-dest_files=["res://.godot/imported/cloudy_gray.png-835b16536ed3d9c289bf30571233b882.s3tc.ctex"]
+dest_files=["res://.godot/imported/cloudy_gray.png-835b16536ed3d9c289bf30571233b882.s3tc.ctex", "res://.godot/imported/cloudy_gray.png-835b16536ed3d9c289bf30571233b882.etc2.ctex"]
 
 [params]
 

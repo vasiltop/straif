@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://fc1s342stmin"
 path.s3tc="res://.godot/imported/smg_smg.jpg-d148432f9769fd342eda8c76bd1de4ae.s3tc.ctex"
+path.etc2="res://.godot/imported/smg_smg.jpg-d148432f9769fd342eda8c76bd1de4ae.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/player/weapon/models/smg_smg.jpg"
-dest_files=["res://.godot/imported/smg_smg.jpg-d148432f9769fd342eda8c76bd1de4ae.s3tc.ctex"]
+dest_files=["res://.godot/imported/smg_smg.jpg-d148432f9769fd342eda8c76bd1de4ae.s3tc.ctex", "res://.godot/imported/smg_smg.jpg-d148432f9769fd342eda8c76bd1de4ae.etc2.ctex"]
 
 [params]
 

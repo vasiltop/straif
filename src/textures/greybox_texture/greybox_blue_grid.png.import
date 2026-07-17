@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cg5perpq8dpcb"
 path.s3tc="res://.godot/imported/greybox_blue_grid.png-604f8fd2c77d590f03c550516025bc31.s3tc.ctex"
+path.etc2="res://.godot/imported/greybox_blue_grid.png-604f8fd2c77d590f03c550516025bc31.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://src/textures/greybox_texture/greybox_blue_grid.png"
-dest_files=["res://.godot/imported/greybox_blue_grid.png-604f8fd2c77d590f03c550516025bc31.s3tc.ctex"]
+dest_files=["res://.godot/imported/greybox_blue_grid.png-604f8fd2c77d590f03c550516025bc31.s3tc.ctex", "res://.godot/imported/greybox_blue_grid.png-604f8fd2c77d590f03c550516025bc31.etc2.ctex"]
 
 [params]
 

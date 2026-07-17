@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bl70k6fspu2tw"
 path.s3tc="res://.godot/imported/shotgun_smg.jpg-813d7359db99bdd99ff73a0ddd63f472.s3tc.ctex"
+path.etc2="res://.godot/imported/shotgun_smg.jpg-813d7359db99bdd99ff73a0ddd63f472.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://src/player/weapon/models/shotgun_smg.jpg"
-dest_files=["res://.godot/imported/shotgun_smg.jpg-813d7359db99bdd99ff73a0ddd63f472.s3tc.ctex"]
+dest_files=["res://.godot/imported/shotgun_smg.jpg-813d7359db99bdd99ff73a0ddd63f472.s3tc.ctex", "res://.godot/imported/shotgun_smg.jpg-813d7359db99bdd99ff73a0ddd63f472.etc2.ctex"]
 
 [params]
 

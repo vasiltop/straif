@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://54851jlk0amh"
 path.s3tc="res://.godot/imported/sniper_overlay.jpg-d531a70fece6a95712f54a362180f515.s3tc.ctex"
+path.etc2="res://.godot/imported/sniper_overlay.jpg-d531a70fece6a95712f54a362180f515.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://src/textures/sniper_overlay.jpg"
-dest_files=["res://.godot/imported/sniper_overlay.jpg-d531a70fece6a95712f54a362180f515.s3tc.ctex"]
+dest_files=["res://.godot/imported/sniper_overlay.jpg-d531a70fece6a95712f54a362180f515.s3tc.ctex", "res://.godot/imported/sniper_overlay.jpg-d531a70fece6a95712f54a362180f515.etc2.ctex"]
 
 [params]
 

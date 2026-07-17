@@ -76,9 +76,17 @@ Copy the env file and fill in your depot IDs from the [Steamworks depots page](h
 cp steam/steam.env.example steam/steam.env
 ```
 
+Set `STEAM_DEPOT_WINDOWS`, `STEAM_DEPOT_LINUX`, and `STEAM_DEPOT_MACOS`
+to the matching depot IDs from Steamworks.
+
 ### Upload a build
 
 ```bash
-./scripts/export-all.sh                  # or ./scripts/upload-steam.sh --build
+./scripts/export-macos.sh                # macOS only
+./scripts/export-all.sh                  # Linux, Windows, and macOS
 ./scripts/upload-steam.sh
 ```
+
+To export all platforms and upload them in one command, run
+`./scripts/upload-steam.sh --build`. Steam uploads the platform build
+directories, including the runnable `build/macos/Straif.app` bundle.

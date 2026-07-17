@@ -6,5 +6,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 "$SCRIPT_DIR/export-linux.sh"
 "$SCRIPT_DIR/export-windows.sh"
+"$SCRIPT_DIR/export-macos.sh"
 
 echo "All exports complete."
