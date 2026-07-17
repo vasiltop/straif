@@ -30,6 +30,8 @@ func _ready() -> void:
 
 		if init_res.status != Steam.SteamAPIInitResult.STEAM_API_INIT_RESULT_OK:
 			Info.alert("Failed to initialize Steam\n Make sure it is running.")
+
+		await ShotVfxPrewarmer.warm_up()
 	
 	map_manager = MapManager.new()
 	server_bridge = ServerBridge.new()

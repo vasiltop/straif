@@ -29,6 +29,7 @@ boot_splash/minimum_display_time=300
 [autoload]
 
 Info="*res://src/info.gd"
+ShotVfxPrewarmer="*res://src/player/weapon/shot_vfx_prewarmer.gd"
 Global="*res://src/global.gd"
 
 [debug]
