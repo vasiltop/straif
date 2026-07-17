@@ -1,0 +1,448 @@
+[gd_scene load_steps=21 format=3 uid="uid://b3r3v3ri3map01"]
+
+[ext_resource type="Script" uid="uid://ul3vabe77wan" path="res://src/maps/speedrun.gd" id="1_reverie"]
+[ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="2_shader"]
+[ext_resource type="Texture2D" uid="uid://bx7profqqbp7b" path="res://src/textures/greybox_texture/greybox_purple_solid.png" id="3_purple"]
+[ext_resource type="Texture2D" uid="uid://oxnan0s1yrac" path="res://src/textures/greybox_texture/greybox_light_solid.png" id="4_light"]
+[ext_resource type="Texture2D" uid="uid://c3wkdaus58eyj" path="res://src/textures/greybox_texture/greybox_blue_solid.png" id="5_blue"]
+[ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/skyboxes/pink.png" id="6_sky"]
+[ext_resource type="PackedScene" uid="uid://j1px6ey07p2f" path="res://src/player/player.tscn" id="7_player"]
+[ext_resource type="PackedScene" uid="uid://c70q15bb5j4yo" path="res://src/maps/presets/zone.tscn" id="8_zone"]
+[ext_resource type="PackedScene" uid="uid://vodocwrquswx" path="res://src/maps/presets/weapon_pickup.tscn" id="9_pickup"]
+[ext_resource type="Resource" uid="uid://clmmcf5lrbppq" path="res://src/player/weapon/resources/ak47.tres" id="10_ak47"]
+[ext_resource type="Script" uid="uid://bi2byvw4au7uq" path="res://src/maps/killzone.gd" id="11_killzone"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_main"]
+render_priority = 0
+shader = ExtResource("2_shader")
+shader_parameter/texture_wall = ExtResource("3_purple")
+shader_parameter/texture_roof = ExtResource("4_light")
+shader_parameter/wall_texture_scale = 0.34
+shader_parameter/roof_texture_scale = 0.45
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_accent"]
+render_priority = 0
+shader = ExtResource("2_shader")
+shader_parameter/texture_wall = ExtResource("5_blue")
+shader_parameter/texture_roof = ExtResource("4_light")
+shader_parameter/wall_texture_scale = 0.34
+shader_parameter/roof_texture_scale = 0.45
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_reverie"]
+panorama = ExtResource("6_sky")
+energy_multiplier = 0.8
+
+[sub_resource type="Sky" id="Sky_reverie"]
+sky_material = SubResource("PanoramaSkyMaterial_reverie")
+
+[sub_resource type="Environment" id="Environment_reverie"]
+background_mode = 2
+background_energy_multiplier = 0.85
+sky = SubResource("Sky_reverie")
+ambient_light_source = 3
+ambient_light_color = Color(0.964706, 0.831373, 0.87451, 1)
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 0.8
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.980392, 0.756863, 0.847059, 1)
+fog_light_energy = 0.85
+fog_sun_scatter = 0.1
+fog_density = 0.006
+fog_sky_affect = 0.35
+fog_height = -18.0
+fog_height_density = 0.03
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.012
+volumetric_fog_albedo = Color(0.97, 0.85, 0.9, 1)
+volumetric_fog_emission = Color(0.92, 0.63, 0.76, 1)
+volumetric_fog_emission_energy = 0.35
+volumetric_fog_anisotropy = 0.2
+volumetric_fog_length = 160.0
+volumetric_fog_detail_spread = 6.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kill"]
+size = Vector3(140, 4, 220)
+
+[sub_resource type="StandardMaterial3D" id="Mat_pole"]
+albedo_color = Color(0.16, 0.14, 0.2, 1)
+metallic = 0.5
+metallic_specular = 0.4
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_lamp_warm"]
+albedo_color = Color(1, 0.85, 0.88, 1)
+emission_enabled = true
+emission = Color(1, 0.564706, 0.72549, 1)
+emission_energy_multiplier = 6.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_lamp_cool"]
+albedo_color = Color(0.85, 0.9, 1, 1)
+emission_enabled = true
+emission = Color(0.611765, 0.756863, 1, 1)
+emission_energy_multiplier = 6.0
+
+[sub_resource type="CylinderMesh" id="Mesh_pole"]
+material = SubResource("Mat_pole")
+top_radius = 0.07
+bottom_radius = 0.11
+height = 3.0
+
+[sub_resource type="SphereMesh" id="Mesh_lamp"]
+radius = 0.32
+height = 0.64
+
+[sub_resource type="ParticleProcessMaterial" id="Proc_petals"]
+lifetime_randomness = 0.4
+emission_shape = 3
+emission_box_extents = Vector3(70, 2, 80)
+direction = Vector3(0, -1, 0)
+spread = 25.0
+initial_velocity_min = 0.4
+initial_velocity_max = 1.2
+angular_velocity_min = -40.0
+angular_velocity_max = 40.0
+gravity = Vector3(0.3, -1.1, 0)
+scale_min = 0.5
+scale_max = 1.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_petal"]
+transparency = 1
+albedo_color = Color(1, 0.68, 0.82, 0.65)
+emission_enabled = true
+emission = Color(1, 0.643137, 0.803922, 1)
+emission_energy_multiplier = 1.4
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="Mesh_petal"]
+material = SubResource("Mat_petal")
+size = Vector2(0.14, 0.14)
+
+[node name="map_reverie" type="Node3D"]
+script = ExtResource("1_reverie")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_reverie")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.85264, -0.374585, 0.364268, 0, 0.697165, 0.716911, -0.522499, -0.611267, 0.594432, 0, 40, -60)
+light_color = Color(1, 0.862745, 0.788235, 1)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Level" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="P0" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+size = Vector3(10, 1, 10)
+material = SubResource("ShaderMaterial_accent")
+
+[node name="P0Pillar" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6, 0)
+size = Vector3(2, 12, 2)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P1" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -14)
+size = Vector3(6, 1, 6)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P2" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.5, -24)
+size = Vector3(5, 1, 5)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P3" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 4, -34)
+size = Vector3(5, 1, 5)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P4" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 5.5, -42)
+size = Vector3(5, 1, 5)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P5" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 7, -54)
+size = Vector3(6, 1, 6)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P6" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 8.5, -66)
+size = Vector3(9, 1, 9)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P6Pillar" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.5, -66)
+size = Vector3(2, 12, 2)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P7" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 10, -76)
+size = Vector3(5, 1, 5)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P8" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 11.5, -88)
+size = Vector3(5, 1, 5)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P9" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13, -96)
+size = Vector3(5, 1, 5)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P10" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 14.5, -104)
+size = Vector3(5, 1, 5)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P11" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 16, -116)
+size = Vector3(6, 1, 6)
+material = SubResource("ShaderMaterial_main")
+
+[node name="P12" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 13.5, -128)
+size = Vector3(10, 1, 10)
+material = SubResource("ShaderMaterial_accent")
+
+[node name="P12Pillar" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 7.5, -128)
+size = Vector3(2, 12, 2)
+material = SubResource("ShaderMaterial_main")
+
+[node name="HubLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, -66)
+light_color = Color(1, 0.611765, 0.784314, 1)
+light_energy = 4.0
+omni_range = 22.0
+
+[node name="StartLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+light_color = Color(0.658824, 0.788235, 1, 1)
+light_energy = 3.0
+omni_range = 16.0
+
+[node name="FinishLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 17, -128)
+light_color = Color(0.658824, 0.788235, 1, 1)
+light_energy = 4.5
+omni_range = 22.0
+
+[node name="Decor" type="Node3D" parent="."]
+
+[node name="Pole1" type="Node3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -4)
+
+[node name="Post" type="MeshInstance3D" parent="Decor/Pole1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Mesh_pole")
+
+[node name="Lamp" type="MeshInstance3D" parent="Decor/Pole1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_warm")
+
+[node name="Glow" type="OmniLight3D" parent="Decor/Pole1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+light_color = Color(1, 0.564706, 0.72549, 1)
+light_energy = 3.0
+omni_range = 9.0
+
+[node name="Pole2" type="Node3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 4.5, -35.5)
+
+[node name="Post" type="MeshInstance3D" parent="Decor/Pole2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Mesh_pole")
+
+[node name="Lamp" type="MeshInstance3D" parent="Decor/Pole2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_cool")
+
+[node name="Glow" type="OmniLight3D" parent="Decor/Pole2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+light_color = Color(0.611765, 0.756863, 1, 1)
+light_energy = 3.0
+omni_range = 9.0
+
+[node name="Pole3" type="Node3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 9, -62.5)
+
+[node name="Post" type="MeshInstance3D" parent="Decor/Pole3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Mesh_pole")
+
+[node name="Lamp" type="MeshInstance3D" parent="Decor/Pole3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_warm")
+
+[node name="Glow" type="OmniLight3D" parent="Decor/Pole3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+light_color = Color(1, 0.564706, 0.72549, 1)
+light_energy = 3.2
+omni_range = 10.0
+
+[node name="Pole4" type="Node3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 9, -69)
+
+[node name="Post" type="MeshInstance3D" parent="Decor/Pole4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Mesh_pole")
+
+[node name="Lamp" type="MeshInstance3D" parent="Decor/Pole4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_cool")
+
+[node name="Glow" type="OmniLight3D" parent="Decor/Pole4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+light_color = Color(0.611765, 0.756863, 1, 1)
+light_energy = 3.2
+omni_range = 10.0
+
+[node name="Pole5" type="Node3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 15, -104)
+
+[node name="Post" type="MeshInstance3D" parent="Decor/Pole5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Mesh_pole")
+
+[node name="Lamp" type="MeshInstance3D" parent="Decor/Pole5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_warm")
+
+[node name="Glow" type="OmniLight3D" parent="Decor/Pole5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+light_color = Color(1, 0.564706, 0.72549, 1)
+light_energy = 3.0
+omni_range = 9.0
+
+[node name="Pole6" type="Node3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 14, -131)
+
+[node name="Post" type="MeshInstance3D" parent="Decor/Pole6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Mesh_pole")
+
+[node name="Lamp" type="MeshInstance3D" parent="Decor/Pole6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_cool")
+
+[node name="Glow" type="OmniLight3D" parent="Decor/Pole6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+light_color = Color(0.611765, 0.756863, 1, 1)
+light_energy = 3.2
+omni_range = 10.0
+
+[node name="Orb1" type="MeshInstance3D" parent="Decor"]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 12, 6, -20)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_cool")
+
+[node name="Orb1Glow" type="OmniLight3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 6, -20)
+light_color = Color(0.611765, 0.756863, 1, 1)
+light_energy = 2.0
+omni_range = 8.0
+
+[node name="Orb2" type="MeshInstance3D" parent="Decor"]
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, -14, 9, -46)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_warm")
+
+[node name="Orb2Glow" type="OmniLight3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 9, -46)
+light_color = Color(1, 0.564706, 0.72549, 1)
+light_energy = 2.0
+omni_range = 8.0
+
+[node name="Orb3" type="MeshInstance3D" parent="Decor"]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 18, 12, -70)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_cool")
+
+[node name="Orb3Glow" type="OmniLight3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 12, -70)
+light_color = Color(0.611765, 0.756863, 1, 1)
+light_energy = 2.2
+omni_range = 9.0
+
+[node name="Orb4" type="MeshInstance3D" parent="Decor"]
+transform = Transform3D(1.9, 0, 0, 0, 1.9, 0, 0, 0, 1.9, -4, 17.5, -100)
+mesh = SubResource("Mesh_lamp")
+material_override = SubResource("Mat_lamp_warm")
+
+[node name="Orb4Glow" type="OmniLight3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 17.5, -100)
+light_color = Color(1, 0.564706, 0.72549, 1)
+light_energy = 2.2
+omni_range = 9.0
+
+[node name="Petals" type="GPUParticles3D" parent="Decor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24, -64)
+amount = 260
+lifetime = 14.0
+visibility_aabb = AABB(-80, -44, -90, 160, 64, 180)
+process_material = SubResource("Proc_petals")
+draw_pass_1 = SubResource("Mesh_petal")
+
+[node name="Player" parent="." instance=ExtResource("7_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 3)
+
+[node name="StartZone" parent="." instance=ExtResource("8_zone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 3)
+
+[node name="EndZone" parent="." instance=ExtResource("8_zone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 14, -128)
+
+[node name="WeaponPickup" parent="." instance=ExtResource("9_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, -1)
+weapon = ExtResource("10_ak47")
+
+[node name="Targets" type="Node" parent="."]
+
+[node name="Players" type="Node" parent="."]
+
+[node name="TargetSpawns" type="Node" parent="."]
+
+[node name="0" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, -14)
+
+[node name="1" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 4.6, -24)
+
+[node name="2" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6.1, -34)
+
+[node name="3" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9.1, -54)
+
+[node name="4" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 10.6, -63)
+
+[node name="5" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 10.6, -68)
+
+[node name="6" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 13.6, -88)
+
+[node name="7" type="Node3D" parent="TargetSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 16.6, -104)
+
+[node name="Killzones" type="Node" parent="."]
+
+[node name="Area3D" type="Area3D" parent="Killzones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -18, -60)
+collision_mask = 2
+script = ExtResource("11_killzone")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Killzones/Area3D"]
+shape = SubResource("BoxShape3D_kill")
