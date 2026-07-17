@@ -269,6 +269,19 @@
 				130.0,
 				210.0
 			]
+		},
+		{
+			"name": "map_cascade",
+			"tier": 2.0,
+			"modes": ["endless"],
+			"scoring": "distance",
+			"medals_endless": [
+				25.0,
+				55.0,
+				95.0,
+				150.0,
+				240.0
+			]
 		}
 	]
 }
