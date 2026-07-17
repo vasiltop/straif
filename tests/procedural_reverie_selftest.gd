@@ -35,6 +35,7 @@ func _check_solvable(seed: int) -> void:
 	_check(gen.blocks.size() == BLOCK_COUNT, "seed %d should generate %d blocks" % [seed, BLOCK_COUNT])
 
 	var prev := Vector3(0.0, 0.0, EndlessGenerator.START_Z)
+	var prev_radius := 0.0
 	for i in range(BLOCK_COUNT):
 		var spec: Dictionary = gen.blocks[i]
 		var cur: Vector3 = spec.center
@@ -44,23 +45,28 @@ func _check_solvable(seed: int) -> void:
 		var dz := cur.z - prev.z
 		var dist := sqrt(dx * dx + dz * dz)
 
+		var this_radius: float = spec.radius
+		# Edge-to-edge empty span the player actually flies over.
+		var air := dist - prev_radius - this_radius
+
 		var s := EndlessGenerator.model_speed(i)
 		var reach := EndlessGenerator.max_reach(s, dy)
 
 		_check(
-			dist <= reach * SAFETY,
-			"seed %d block %d gap %.3f exceeds clearable reach %.3f (dy=%.3f, s=%.2f)" % [seed, i, dist, reach * SAFETY, dy, s]
+			air <= reach * SAFETY,
+			"seed %d block %d air gap %.3f exceeds clearable reach %.3f (dy=%.3f, s=%.2f)" % [seed, i, air, reach * SAFETY, dy, s]
+		)
+		_check(
+			air > 0.1,
+			"seed %d block %d should leave real air between edges (air=%.3f)" % [seed, i, air]
 		)
 		_check(
 			dy <= EndlessGenerator.MAX_UP_STEP + 0.001,
 			"seed %d block %d up-step %.3f exceeds max %.3f" % [seed, i, dy, EndlessGenerator.MAX_UP_STEP]
 		)
-		_check(
-			dist > 0.1,
-			"seed %d block %d should advance forward (dist=%.3f)" % [seed, i, dist]
-		)
 
 		prev = cur
+		prev_radius = this_radius
 
 func _check_determinism() -> void:
 	var seed := 20260717
