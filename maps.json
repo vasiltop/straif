@@ -230,6 +230,19 @@
 				14.0,
 				13.0
 			]
+		},
+		{
+			"name": "map_reverie",
+			"tier": 1.0,
+			"modes": ["bhop"],
+			"scoring": "distance",
+			"medals_bhop": [
+				30.0,
+				60.0,
+				100.0,
+				150.0,
+				250.0
+			]
 		}
 	]
 }
