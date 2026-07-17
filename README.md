@@ -64,14 +64,28 @@ docker compose -f docker/game-servers.compose.yaml up -d --build
 Ports are UDP (Godot ENet). Add a server by copying a service block in
 `docker/game-servers.compose.yaml` with a unique name and port.
 
-##### Deploying to a droplet
+##### Deploying the whole stack to a droplet
 
-`deploy-game-servers.sh` builds the binary locally, ships it over SSH, and rebuilds/restarts the
-servers on the droplet:
+The repo root has a `compose.yaml` that runs everything (Postgres, API + migrations, and the game
+servers) with one command:
 
 ```bash
-DROPLET_HOST=root@1.2.3.4 ./scripts/deploy-game-servers.sh
+docker compose up -d --build
 ```
+
+`scripts/deploy.sh` does this on a remote host for you: it builds the Linux binary locally, ships the
+source + binary over SSH, and runs `docker compose up -d --build` there. The backend image is small
+enough to build on the droplet; only the Godot binary is prebuilt and shipped. Your remote
+`server/.env` (secrets) is never overwritten.
+
+```bash
+DROPLET_HOST=root@1.2.3.4 ./scripts/deploy.sh
+# reuse an existing build/linux/ without re-exporting:
+DROPLET_HOST=root@1.2.3.4 ./scripts/deploy.sh --skip-build
+```
+
+One-time remote setup: create `server/.env` on the droplet (`cp server/.env.example server/.env` and
+fill in `STEAM_API_KEY` / `DISCORD_TOKEN`).
 
 ### Server
 

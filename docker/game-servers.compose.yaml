@@ -15,7 +15,6 @@ x-game-server: &game-server
   build:
     context: ..
     dockerfile: docker/game-server.Dockerfile
-  image: straif-game-server
   restart: unless-stopped
 
 services:

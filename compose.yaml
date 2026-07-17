@@ -1,0 +1,13 @@
+# Full Straif stack: backend (Postgres + API) and dedicated game servers.
+#
+# From the repo root, one command brings everything up:
+#
+#   docker compose up -d --build
+#
+# This is what the deploy script (scripts/deploy.sh) runs on the remote host.
+# Each included file keeps working on its own too (e.g. `docker compose -f
+# server/compose.yaml up -d` for just the backend).
+
+include:
+  - server/compose.yaml
+  - docker/game-servers.compose.yaml
