@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dhn8r5p2wak7c"]
 
-[ext_resource type="Texture2D" uid="uid://60ov88fgcpj7" path="res://src/textures/skyboxes/cold.png" id="1_ocf4d"]
+[ext_resource type="Texture2D" uid="uid://doxcfhjaq03yn" path="res://src/textures/skyboxes/cloudy_gray.png" id="1_ocf4d"]
 
 [sub_resource type="StandardMaterial3D" id="WarmStone"]
 albedo_color = Color(0.487, 0.298, 0.168, 1)
@@ -30,19 +30,35 @@ sky_material = SubResource("PanoramaSkyMaterial_dywee")
 
 [sub_resource type="Environment" id="Environment_o8rh7"]
 background_mode = 2
-background_energy_multiplier = 0.75
+background_energy_multiplier = 1.0
 sky = SubResource("Sky_n71wf")
-tonemap_mode = 2
-fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
-fog_light_energy = 1.34
+tonemap_mode = 4
+tonemap_exposure = 1.1
+tonemap_white = 1.2
+ssao_enabled = true
+ssao_radius = 2.5
+ssao_intensity = 2.0
+ssao_light_affect = 0.2
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.05
+glow_blend_mode = 1
+fog_light_color = Color(1, 0.86, 0.66, 1)
+fog_light_energy = 1.2
 fog_sky_affect = 0.0
-fog_height = -22.35
-fog_height_density = 0.292
-volumetric_fog_density = 0.0813
-volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
-volumetric_fog_anisotropy = 0.0
+fog_height = 6.0
+fog_height_density = 0.12
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.006
+volumetric_fog_albedo = Color(0.98, 0.9, 0.78, 1)
+volumetric_fog_emission = Color(0.12, 0.09, 0.05, 1)
+volumetric_fog_anisotropy = 0.2
 volumetric_fog_length = 80.09
 volumetric_fog_detail_spread = 6.0
+adjustment_enabled = true
+adjustment_brightness = 1.03
+adjustment_contrast = 1.0
+adjustment_saturation = 1.1
 
 [node name="Courtyard" type="Node3D" unique_id=1641421048]
 
@@ -281,6 +297,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2, 1.3, 17.2)
 environment = SubResource("Environment_o8rh7")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=1536442211]
-transform = Transform3D(-0.727773, -0.646481, -0.228931, 0, -0.333807, 0.942642, -0.685819, 0.686029, 0.242936, 0, 0, 0)
-light_energy = 1.5
+transform = Transform3D(0.333898, 0, 0.942609, 0.832274, 0.469472, -0.294815, -0.442528, 0.882948, 0.156756, 0, 0, 0)
+light_color = Color(1, 0.93, 0.78, 1)
+light_energy = 1.7
 shadow_enabled = true

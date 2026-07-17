@@ -146,19 +146,35 @@ sky_material = SubResource("PanoramaSkyMaterial_7if4t")
 
 [sub_resource type="Environment" id="Environment_vxh6a"]
 background_mode = 2
-background_energy_multiplier = 0.75
+background_energy_multiplier = 0.9
 sky = SubResource("Sky_wv18o")
-tonemap_mode = 2
-fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
-fog_light_energy = 1.34
+tonemap_mode = 4
+tonemap_exposure = 1.0
+tonemap_white = 1.0
+ssao_enabled = true
+ssao_radius = 2.5
+ssao_intensity = 2.0
+ssao_light_affect = 0.2
+glow_enabled = true
+glow_intensity = 0.4
+glow_bloom = 0.05
+glow_blend_mode = 1
+fog_light_color = Color(0.7, 0.76, 0.85, 1)
+fog_light_energy = 1.0
 fog_sky_affect = 0.0
 fog_height = -22.35
 fog_height_density = 0.292
-volumetric_fog_density = 0.0813
-volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.005
+volumetric_fog_albedo = Color(0.72, 0.78, 0.86, 1)
+volumetric_fog_emission = Color(0.05, 0.06, 0.08, 1)
 volumetric_fog_anisotropy = 0.0
 volumetric_fog_length = 80.09
 volumetric_fog_detail_spread = 6.0
+adjustment_enabled = true
+adjustment_brightness = 1.0
+adjustment_contrast = 1.03
+adjustment_saturation = 1.0
 
 [node name="Map" type="Node3D" unique_id=1989646219]
 
@@ -263,5 +279,6 @@ environment = SubResource("Environment_vxh6a")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=1346747008]
 transform = Transform3D(-0.727773, -0.646481, -0.228931, 0, -0.333807, 0.942642, -0.685819, 0.686029, 0.242936, 0, 0, 0)
-light_energy = 1.5
+light_color = Color(0.9, 0.93, 1, 1)
+light_energy = 1.6
 shadow_enabled = true
