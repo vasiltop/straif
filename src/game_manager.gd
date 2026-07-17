@@ -55,8 +55,8 @@ var pvp_mode_to_map := {
 	"deathmatch": "res://src/maps/deathmatch.tscn"
 }
 
-func _init(is_server: bool) -> void:
-	if not is_server:
+func _init(is_server: bool, request_auth_ticket: bool = true) -> void:
+	if not is_server and request_auth_ticket:
 		Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
 		Steam.getAuthTicketForWebApi("munost")
 	

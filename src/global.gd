@@ -7,12 +7,17 @@ var map_manager: MapManager
 var settings_manager: Settings
 var game_manager: GameManager
 var is_server: bool
+var offline_playtest: bool
 
 func _ready() -> void:
 	var args := OS.get_cmdline_args()
 	print(args)
 	is_server = len(args) > 2
-	
+	offline_playtest = is_offline_playtest_mode(OS.get_cmdline_user_args())
+
+	if offline_playtest and not is_server:
+		print("Offline playtest mode active: skipping Steam Web API auth ticket request.")
+
 	if not is_server:
 		var init_res := Steam.steamInitEx(APP_ID, true)
 
@@ -21,7 +26,7 @@ func _ready() -> void:
 	
 	map_manager = MapManager.new()
 	server_bridge = ServerBridge.new()
-	game_manager = GameManager.new(is_server)
+	game_manager = GameManager.new(is_server, not offline_playtest)
 	add_child(game_manager)
 	
 	multiplayer.peer_connected.connect(game_manager.on_peer_connected)
@@ -52,3 +57,6 @@ func mp() -> bool:
 
 func is_sv() -> bool:
 	return is_server
+
+func is_offline_playtest_mode(user_args: PackedStringArray) -> bool:
+	return user_args.has("--offline-playtest")
