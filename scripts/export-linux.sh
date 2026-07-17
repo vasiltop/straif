@@ -10,6 +10,7 @@ BUILD_DIR="$PROJECT_DIR/build/linux"
 ZIP_PATH="$PROJECT_DIR/build/straif-linux.zip"
 
 export_preset "Linux" "$BUILD_DIR"
+validate_linux_build "$BUILD_DIR"
 zip_build "$BUILD_DIR" "$ZIP_PATH"
 
 echo "Linux export complete: $BUILD_DIR"

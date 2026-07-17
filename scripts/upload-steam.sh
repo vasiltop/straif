@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+# shellcheck source=export-common.sh
+source "$SCRIPT_DIR/export-common.sh"
 STEAM_DIR="$PROJECT_DIR/steam"
 OUTPUT_DIR="$STEAM_DIR/output"
 
@@ -44,7 +46,7 @@ check_build_dir() {
 	fi
 }
 
-check_build_dir "$BUILD_LINUX" "Linux"
+validate_linux_build "$BUILD_LINUX"
 check_build_dir "$BUILD_WINDOWS" "Windows"
 
 if [[ ! -f "$STEAMCMD" ]]; then

@@ -28,6 +28,32 @@ export_preset() {
 	"$GODOT" --headless --path "$PROJECT_DIR" --export-release "$preset"
 }
 
+require_nonempty_artifact() {
+	local artifact="$1"
+
+	if [[ ! -f "$artifact" ]]; then
+		echo "error: missing required artifact: ${artifact}" >&2
+		return 1
+	fi
+	if [[ ! -s "$artifact" ]]; then
+		echo "error: empty required artifact: ${artifact}" >&2
+		return 1
+	fi
+}
+
+validate_linux_build() {
+	local build_dir="$1"
+	local binary="$build_dir/straif.x86_64"
+
+	require_nonempty_artifact "$binary"
+	if [[ ! -x "$binary" ]]; then
+		echo "error: Linux executable is not executable: ${binary}" >&2
+		return 1
+	fi
+	require_nonempty_artifact "$build_dir/libgodotsteam.linux.template_release.x86_64.so"
+	require_nonempty_artifact "$build_dir/libsteam_api.so"
+}
+
 zip_build() {
 	local build_dir="$1"
 	local zip_path="$2"
