@@ -1,0 +1,384 @@
+[gd_scene load_steps=8 format=3 uid="uid://dtrqg9n6vr4qg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_concrete"]
+albedo_color = Color(0.19, 0.27, 0.34, 1)
+metallic = 0.28
+roughness = 0.74
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.075, 0.09, 0.11, 1)
+metallic = 0.16
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cargo"]
+albedo_color = Color(0.29, 0.34, 0.34, 1)
+metallic = 0.38
+roughness = 0.54
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hazard"]
+albedo_color = Color(0.92, 0.42, 0.075, 1)
+metallic = 0.2
+roughness = 0.42
+emission_enabled = true
+emission = Color(0.2, 0.06, 0.008, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_switchyard"]
+sky_top_color = Color(0.07, 0.12, 0.18, 1)
+sky_horizon_color = Color(0.38, 0.46, 0.53, 1)
+ground_bottom_color = Color(0.035, 0.045, 0.06, 1)
+ground_horizon_color = Color(0.21, 0.27, 0.32, 1)
+sun_angle_max = 8.0
+sun_curve = 0.08
+
+[sub_resource type="Sky" id="Sky_switchyard"]
+sky_material = SubResource("ProceduralSkyMaterial_switchyard")
+
+[sub_resource type="Environment" id="Environment_switchyard"]
+background_mode = 2
+background_energy_multiplier = 0.55
+sky = SubResource("Sky_switchyard")
+ambient_light_source = 3
+ambient_light_color = Color(0.4, 0.5, 0.62, 1)
+ambient_light_energy = 0.75
+reflected_light_source = 2
+fog_enabled = true
+fog_light_color = Color(0.34, 0.42, 0.5, 1)
+fog_light_energy = 0.45
+fog_density = 0.006
+tonemap_mode = 2
+tonemap_exposure = 0.9
+
+[node name="Switchyard" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_switchyard")
+
+[node name="OvercastSun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-52, -28, 0)
+light_color = Color(0.72, 0.82, 0.94, 1)
+light_energy = 1.35
+shadow_enabled = true
+directional_shadow_max_distance = 90.0
+
+[node name="Geometry" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_floor")
+size = Vector3(60, 1, 36)
+position = Vector3(0, -0.5, 0)
+
+[node name="WestBoundary" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(1, 4, 36)
+position = Vector3(-30.5, 2, 0)
+
+[node name="EastBoundary" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(1, 4, 36)
+position = Vector3(30.5, 2, 0)
+
+[node name="NorthBoundary" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(60, 4, 1)
+position = Vector3(0, 2, 18.5)
+
+[node name="SouthBoundary" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(60, 4, 1)
+position = Vector3(0, 2, -18.5)
+
+[node name="NorthDividerWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(13, 1.5, 0.55)
+position = Vector3(-20, 0.75, 5.8)
+
+[node name="NorthDividerCenter" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(13, 1.5, 0.55)
+position = Vector3(0, 0.75, 5.8)
+
+[node name="NorthDividerEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(13, 1.5, 0.55)
+position = Vector3(20, 0.75, 5.8)
+
+[node name="SouthDividerWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(13, 1.5, 0.55)
+position = Vector3(-20, 0.75, -5.8)
+
+[node name="SouthDividerCenter" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(13, 1.5, 0.55)
+position = Vector3(0, 0.75, -5.8)
+
+[node name="SouthDividerEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(13, 1.5, 0.55)
+position = Vector3(20, 0.75, -5.8)
+
+[node name="NorthCanopy" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(52, 0.3, 8.5)
+position = Vector3(0, 5.65, 11.75)
+
+[node name="SouthCanopy" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(52, 0.3, 8.5)
+position = Vector3(0, 5.65, -11.75)
+
+[node name="NorthSupportWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.7, 5.4, 0.7)
+position = Vector3(-25, 2.7, 15.4)
+
+[node name="NorthSupportInnerWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.7, 5.4, 0.7)
+position = Vector3(-8, 2.7, 15.4)
+
+[node name="NorthSupportInnerEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.7, 5.4, 0.7)
+position = Vector3(8, 2.7, 15.4)
+
+[node name="NorthSupportEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.7, 5.4, 0.7)
+position = Vector3(25, 2.7, 15.4)
+
+[node name="SouthSupportWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.7, 5.4, 0.7)
+position = Vector3(-25, 2.7, -15.4)
+
+[node name="SouthSupportInnerWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.7, 5.4, 0.7)
+position = Vector3(-8, 2.7, -15.4)
+
+[node name="SouthSupportInnerEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.7, 5.4, 0.7)
+position = Vector3(8, 2.7, -15.4)
+
+[node name="SouthSupportEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.7, 5.4, 0.7)
+position = Vector3(25, 2.7, -15.4)
+
+[node name="NorthBarrierWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(3, 3, 3.5)
+position = Vector3(-16, 1.5, 9.25)
+
+[node name="NorthBarrierCenterWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(3, 3, 3.5)
+position = Vector3(-5, 1.5, 14.25)
+
+[node name="NorthBarrierCenterEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(3, 3, 3.5)
+position = Vector3(6, 1.5, 9.25)
+
+[node name="NorthBarrierEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(3, 3, 3.5)
+position = Vector3(17, 1.5, 14.25)
+
+[node name="SouthBarrierWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(3, 3, 3.5)
+position = Vector3(-16, 1.5, -9.25)
+
+[node name="SouthBarrierCenterWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(3, 3, 3.5)
+position = Vector3(-5, 1.5, -14.25)
+
+[node name="SouthBarrierCenterEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(3, 3, 3.5)
+position = Vector3(6, 1.5, -9.25)
+
+[node name="SouthBarrierEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(3, 3, 3.5)
+position = Vector3(17, 1.5, -14.25)
+
+[node name="CentralCargoWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(4, 3, 2.6)
+position = Vector3(-20, 1.5, -1.7)
+
+[node name="CentralCargoWestStack" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(2.8, 1.4, 2.6)
+position = Vector3(-20, 3.7, -1.7)
+
+[node name="CentralCargoEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(4, 3, 2.6)
+position = Vector3(20, 1.5, 1.7)
+
+[node name="CentralCargoEastStack" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(2.8, 1.4, 2.6)
+position = Vector3(20, 3.7, 1.7)
+
+[node name="GantryDeck" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(14, 0.5, 7)
+position = Vector3(0, 3.75, 0)
+
+[node name="GantrySupportNorthWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.8, 4, 0.8)
+position = Vector3(-5.8, 2, 2.8)
+
+[node name="GantrySupportSouthWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.8, 4, 0.8)
+position = Vector3(-5.8, 2, -2.8)
+
+[node name="GantrySupportNorthEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.8, 4, 0.8)
+position = Vector3(5.8, 2, 2.8)
+
+[node name="GantrySupportSouthEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(0.8, 4, 0.8)
+position = Vector3(5.8, 2, -2.8)
+
+[node name="GantryCenterCargo" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_cargo")
+size = Vector3(3, 2.4, 3)
+position = Vector3(0, 1.2, 0)
+
+[node name="GantryBeam" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_hazard")
+size = Vector3(14, 0.45, 0.55)
+position = Vector3(0, 5.1, 0)
+
+[node name="GantryRailNorth" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_hazard")
+size = Vector3(14, 0.75, 0.16)
+position = Vector3(0, 4.6, 3.35)
+
+[node name="GantryRailSouth" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_hazard")
+size = Vector3(14, 0.75, 0.16)
+position = Vector3(0, 4.6, -3.35)
+
+[node name="WestGantryRamp" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(12.65, 0.5, 5.5)
+position = Vector3(-13, 1.775, 0)
+rotation_degrees = Vector3(0, 0, 18.435)
+
+[node name="EastGantryRamp" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(12.65, 0.5, 5.5)
+position = Vector3(13, 1.775, 0)
+rotation_degrees = Vector3(0, 0, -18.435)
+
+[node name="WestRampEdgeNorth" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_hazard")
+size = Vector3(12.65, 0.18, 0.18)
+position = Vector3(-13, 2.13, 2.7)
+rotation_degrees = Vector3(0, 0, 18.435)
+
+[node name="WestRampEdgeSouth" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_hazard")
+size = Vector3(12.65, 0.18, 0.18)
+position = Vector3(-13, 2.13, -2.7)
+rotation_degrees = Vector3(0, 0, 18.435)
+
+[node name="EastRampEdgeNorth" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_hazard")
+size = Vector3(12.65, 0.18, 0.18)
+position = Vector3(13, 2.13, 2.7)
+rotation_degrees = Vector3(0, 0, -18.435)
+
+[node name="EastRampEdgeSouth" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_hazard")
+size = Vector3(12.65, 0.18, 0.18)
+position = Vector3(13, 2.13, -2.7)
+rotation_degrees = Vector3(0, 0, -18.435)
+
+[node name="Spawns" type="Node3D" parent="."]
+
+[node name="Team1" type="Node3D" parent="Spawns"]
+
+[node name="Spawn1" type="Marker3D" parent="Spawns/Team1"]
+position = Vector3(-26, 1.2, -10)
+
+[node name="Spawn2" type="Marker3D" parent="Spawns/Team1"]
+position = Vector3(-26, 1.2, 0)
+
+[node name="Spawn3" type="Marker3D" parent="Spawns/Team1"]
+position = Vector3(-26, 1.2, 10)
+
+[node name="Team2" type="Node3D" parent="Spawns"]
+
+[node name="Spawn1" type="Marker3D" parent="Spawns/Team2"]
+position = Vector3(26, 1.2, -10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Spawn2" type="Marker3D" parent="Spawns/Team2"]
+position = Vector3(26, 1.2, 0)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Spawn3" type="Marker3D" parent="Spawns/Team2"]
+position = Vector3(26, 1.2, 10)
+rotation_degrees = Vector3(0, 180, 0)
