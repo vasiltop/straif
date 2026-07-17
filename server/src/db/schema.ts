@@ -68,7 +68,6 @@ export const endless_runs = pgTable(
     map_name: text('map_name').notNull(),
     steam_id: text('steam_id').notNull(),
     username: text('username').notNull(),
-    seed: text('seed').notNull(),
     blocks_reached: integer('blocks_reached').notNull(),
     created_at: timestamp('created_at', { withTimezone: true })
       .defaultNow()

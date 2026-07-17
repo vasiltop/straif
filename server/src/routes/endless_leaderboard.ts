@@ -7,12 +7,10 @@ import { z } from 'zod';
 import { describeRoute, resolver, validator as zValidator } from 'hono-openapi';
 import { type Variables } from '../index';
 import { hide_route } from './common';
-import { parseSeed } from '../endless_leaderboard';
 
 const app = new Hono<{ Variables: Variables }>();
 
 const EndlessRunInput = z.object({
-  seed: z.string().min(1).max(32),
   blocks_reached: z.number().int().min(0),
   username: z.string().trim().min(1).max(64),
 });
@@ -54,7 +52,6 @@ function describe_endless_route<T extends z.ZodTypeAny>(
 const EndlessRun = z.object({
   steam_id: z.string(),
   username: z.string(),
-  seed: z.string(),
   blocks_reached: z.number(),
   created_at: z.string(),
   position: z.number().int().min(1),
@@ -115,7 +112,6 @@ app.get(
           .select({
             steam_id: endless_runs.steam_id,
             username: endless_runs.username,
-            seed: endless_runs.seed,
             blocks_reached: endless_runs.blocks_reached,
             created_at: endless_runs.created_at,
           })
@@ -160,11 +156,6 @@ app.post(
     const body = c.req.valid('json');
     const steam_id = c.get('steam_id');
 
-    const seed = parseSeed(body.seed);
-    if (seed === null) {
-      return c.json({ error: 'Invalid seed.' }, 400);
-    }
-
     try {
       await db
         .insert(endless_runs)
@@ -172,14 +163,12 @@ app.post(
           steam_id,
           map_name,
           username: body.username,
-          seed,
           blocks_reached: body.blocks_reached,
         })
         .onConflictDoUpdate({
           target: [endless_runs.map_name, endless_runs.steam_id],
           set: {
             username: body.username,
-            seed,
             blocks_reached: body.blocks_reached,
             created_at: new Date(),
           },

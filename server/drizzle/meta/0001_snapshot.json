@@ -1,5 +1,5 @@
 {
-  "id": "ec59e0fe-f522-44ec-b14a-d4358f8db4de",
+  "id": "077ed301-663f-4f1c-a3ff-d250d7425060",
   "prevId": "df03055e-a9d3-4463-bd4f-4657ffeed096",
   "version": "7",
   "dialect": "postgresql",
@@ -179,12 +179,6 @@
         },
         "username": {
           "name": "username",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "seed": {
-          "name": "seed",
           "type": "text",
           "primaryKey": false,
           "notNull": true
