@@ -1,0 +1,380 @@
+[gd_scene load_steps=7 format=3 uid="uid://vszhbxojduzow"]
+
+[sub_resource type="Environment" id="Environment_foundry"]
+background_mode = 1
+background_color = Color(0.05, 0.06, 0.07, 1)
+background_energy_multiplier = 0.8
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.48, 0.42, 1)
+ambient_light_energy = 1.2
+tonemap_mode = 2
+tonemap_exposure = 1.2
+fog_enabled = true
+fog_light_color = Color(0.16, 0.12, 0.09, 1)
+fog_light_energy = 0.7
+fog_density = 0.004
+fog_sky_affect = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_steel"]
+albedo_color = Color(0.2, 0.23, 0.26, 1)
+metallic = 0.82
+roughness = 0.38
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_worn_floor"]
+albedo_color = Color(0.28, 0.285, 0.29, 1)
+metallic = 0.58
+roughness = 0.78
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_oxide"]
+albedo_color = Color(0.47, 0.14, 0.085, 1)
+metallic = 0.5
+roughness = 0.66
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ember"]
+albedo_color = Color(0.92, 0.205, 0.035, 1)
+metallic = 0.32
+roughness = 0.3
+emission_enabled = true
+emission = Color(1, 0.105, 0.012, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cool_team"]
+albedo_color = Color(0.075, 0.31, 0.52, 1)
+metallic = 0.64
+roughness = 0.4
+emission_enabled = true
+emission = Color(0.015, 0.17, 0.32, 1)
+emission_energy_multiplier = 1.15
+
+[node name="Foundry" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_foundry")
+
+[node name="FoundrySun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-58, -32, 0)
+light_color = Color(1, 0.61, 0.37, 1)
+light_energy = 1.8
+shadow_enabled = true
+
+[node name="FurnaceGlow" type="OmniLight3D" parent="."]
+position = Vector3(0, 6.5, 0)
+light_color = Color(1, 0.2, 0.035, 1)
+light_energy = 6.0
+omni_range = 17.0
+omni_attenuation = 1.45
+
+[node name="WestBayLamp" type="OmniLight3D" parent="."]
+position = Vector3(-22, 5.5, 0)
+light_color = Color(0.12, 0.5, 1, 1)
+light_energy = 4.2
+omni_range = 12.0
+omni_attenuation = 1.8
+shadow_enabled = true
+
+[node name="EastBayLamp" type="OmniLight3D" parent="."]
+position = Vector3(22, 5.5, 0)
+light_color = Color(1, 0.39, 0.1, 1)
+light_energy = 4.2
+omni_range = 12.0
+omni_attenuation = 1.8
+shadow_enabled = true
+
+[node name="Floor" type="CSGBox3D" parent="."]
+position = Vector3(0, -0.2, 0)
+size = Vector3(56, 0.4, 42)
+material = SubResource("StandardMaterial3D_worn_floor")
+use_collision = true
+
+[node name="NorthRotationDeck" type="CSGBox3D" parent="."]
+position = Vector3(0, 0.06, -15)
+size = Vector3(40, 0.12, 8)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="SouthRotationDeck" type="CSGBox3D" parent="."]
+position = Vector3(0, 0.06, 15)
+size = Vector3(40, 0.12, 8)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="WestRotationDeck" type="CSGBox3D" parent="."]
+position = Vector3(-22, 0.06, 0)
+size = Vector3(10, 0.12, 26)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="EastRotationDeck" type="CSGBox3D" parent="."]
+position = Vector3(22, 0.06, 0)
+size = Vector3(10, 0.12, 26)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="NorthBoundary" type="CSGBox3D" parent="."]
+position = Vector3(0, 2, -21)
+size = Vector3(40, 4, 1)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="SouthBoundary" type="CSGBox3D" parent="."]
+position = Vector3(0, 2, 21)
+size = Vector3(40, 4, 1)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="WestBoundary" type="CSGBox3D" parent="."]
+position = Vector3(-28, 2, 0)
+size = Vector3(1, 4, 26)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="EastBoundary" type="CSGBox3D" parent="."]
+position = Vector3(28, 2, 0)
+size = Vector3(1, 4, 26)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="NorthWestBoundary" type="CSGBox3D" parent="."]
+position = Vector3(-24, 2, -17)
+rotation_degrees = Vector3(0, -45, 0)
+size = Vector3(1, 4, 11.5)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="NorthEastBoundary" type="CSGBox3D" parent="."]
+position = Vector3(24, 2, -17)
+rotation_degrees = Vector3(0, 45, 0)
+size = Vector3(1, 4, 11.5)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="SouthWestBoundary" type="CSGBox3D" parent="."]
+position = Vector3(-24, 2, 17)
+rotation_degrees = Vector3(0, -135, 0)
+size = Vector3(1, 4, 11.5)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="SouthEastBoundary" type="CSGBox3D" parent="."]
+position = Vector3(24, 2, 17)
+rotation_degrees = Vector3(0, 135, 0)
+size = Vector3(1, 4, 11.5)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="FurnaceBase" type="CSGCylinder3D" parent="."]
+position = Vector3(0, 0.3, 0)
+radius = 5.0
+height = 0.6
+sides = 16
+material = SubResource("StandardMaterial3D_ember")
+use_collision = true
+
+[node name="FurnaceCore" type="CSGCylinder3D" parent="."]
+position = Vector3(0, 4.6, 0)
+radius = 4.25
+height = 9.2
+sides = 16
+material = SubResource("StandardMaterial3D_red_oxide")
+use_collision = true
+
+[node name="FurnaceCrown" type="CSGCylinder3D" parent="."]
+position = Vector3(0, 9.25, 0)
+radius = 4.9
+height = 0.45
+sides = 16
+material = SubResource("StandardMaterial3D_ember")
+use_collision = true
+
+[node name="FurnaceNorthBrace" type="CSGBox3D" parent="."]
+position = Vector3(0, 4.3, -4.32)
+size = Vector3(2.4, 7.8, 0.3)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="FurnaceSouthBrace" type="CSGBox3D" parent="."]
+position = Vector3(0, 4.3, 4.32)
+size = Vector3(2.4, 7.8, 0.3)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="FurnaceWestBrace" type="CSGBox3D" parent="."]
+position = Vector3(-4.32, 4.3, 0)
+size = Vector3(0.3, 7.8, 2.4)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="FurnaceEastBrace" type="CSGBox3D" parent="."]
+position = Vector3(4.32, 4.3, 0)
+size = Vector3(0.3, 7.8, 2.4)
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="NorthSpokeBarrier" type="CSGBox3D" parent="."]
+position = Vector3(-2.4, 1.5, -9)
+rotation_degrees = Vector3(0, 165, 0)
+size = Vector3(0.85, 3, 7)
+material = SubResource("StandardMaterial3D_red_oxide")
+use_collision = true
+
+[node name="SouthSpokeBarrier" type="CSGBox3D" parent="."]
+position = Vector3(2.4, 1.5, 9)
+rotation_degrees = Vector3(0, -15, 0)
+size = Vector3(0.85, 3, 7)
+material = SubResource("StandardMaterial3D_red_oxide")
+use_collision = true
+
+[node name="NorthWestSpokeBarrier" type="CSGBox3D" parent="."]
+position = Vector3(-8, 1.5, -5)
+rotation_degrees = Vector3(0, -125, 0)
+size = Vector3(0.85, 3, 7)
+material = SubResource("StandardMaterial3D_red_oxide")
+use_collision = true
+
+[node name="SouthEastSpokeBarrier" type="CSGBox3D" parent="."]
+position = Vector3(8, 1.5, 5)
+rotation_degrees = Vector3(0, 55, 0)
+size = Vector3(0.85, 3, 7)
+material = SubResource("StandardMaterial3D_red_oxide")
+use_collision = true
+
+[node name="WestBayNorthWall" type="CSGBox3D" parent="."]
+position = Vector3(-22, 1.6, -6.5)
+size = Vector3(11, 3.2, 0.7)
+material = SubResource("StandardMaterial3D_cool_team")
+use_collision = true
+
+[node name="WestBaySouthWall" type="CSGBox3D" parent="."]
+position = Vector3(-22, 1.6, 6.5)
+size = Vector3(11, 3.2, 0.7)
+material = SubResource("StandardMaterial3D_cool_team")
+use_collision = true
+
+[node name="WestBayBaffle" type="CSGBox3D" parent="."]
+position = Vector3(-17, 1.6, 0)
+size = Vector3(0.7, 3.2, 4.2)
+material = SubResource("StandardMaterial3D_cool_team")
+use_collision = true
+
+[node name="EastBayNorthWall" type="CSGBox3D" parent="."]
+position = Vector3(22, 1.6, -6.5)
+size = Vector3(11, 3.2, 0.7)
+material = SubResource("StandardMaterial3D_red_oxide")
+use_collision = true
+
+[node name="EastBaySouthWall" type="CSGBox3D" parent="."]
+position = Vector3(22, 1.6, 6.5)
+size = Vector3(11, 3.2, 0.7)
+material = SubResource("StandardMaterial3D_red_oxide")
+use_collision = true
+
+[node name="EastBayBaffle" type="CSGBox3D" parent="."]
+position = Vector3(17, 1.6, 0)
+size = Vector3(0.7, 3.2, 4.2)
+material = SubResource("StandardMaterial3D_ember")
+use_collision = true
+
+[node name="WestCoolantTank" type="CSGCylinder3D" parent="."]
+position = Vector3(-14, 1.85, -10)
+radius = 1.35
+height = 3.7
+sides = 12
+material = SubResource("StandardMaterial3D_cool_team")
+use_collision = true
+
+[node name="EastSlagTank" type="CSGCylinder3D" parent="."]
+position = Vector3(14, 1.85, 10)
+radius = 1.35
+height = 3.7
+sides = 12
+material = SubResource("StandardMaterial3D_red_oxide")
+use_collision = true
+
+[node name="WestLowPipe" type="CSGCylinder3D" parent="."]
+position = Vector3(-13, 1.25, 10)
+rotation_degrees = Vector3(0, 0, 90)
+radius = 0.65
+height = 6
+sides = 12
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="EastLowPipe" type="CSGCylinder3D" parent="."]
+position = Vector3(13, 1.25, -10)
+rotation_degrees = Vector3(0, 0, 90)
+radius = 0.65
+height = 6
+sides = 12
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="NorthWestCrate" type="CSGBox3D" parent="."]
+position = Vector3(-9.5, 1, -15)
+rotation_degrees = Vector3(0, -14, 0)
+size = Vector3(2.7, 2, 2.7)
+material = SubResource("StandardMaterial3D_worn_floor")
+use_collision = true
+
+[node name="SouthEastCrate" type="CSGBox3D" parent="."]
+position = Vector3(9.5, 1, 15)
+rotation_degrees = Vector3(0, 14, 0)
+size = Vector3(2.7, 2, 2.7)
+material = SubResource("StandardMaterial3D_worn_floor")
+use_collision = true
+
+[node name="NorthEastCrateStack" type="CSGBox3D" parent="."]
+position = Vector3(11.5, 1.45, -14)
+rotation_degrees = Vector3(0, 21, 0)
+size = Vector3(2.1, 2.9, 3.3)
+material = SubResource("StandardMaterial3D_red_oxide")
+use_collision = true
+
+[node name="SouthWestCrateStack" type="CSGBox3D" parent="."]
+position = Vector3(-11.5, 1.45, 14)
+rotation_degrees = Vector3(0, -21, 0)
+size = Vector3(2.1, 2.9, 3.3)
+material = SubResource("StandardMaterial3D_cool_team")
+use_collision = true
+
+[node name="WestPipeJunction" type="CSGCylinder3D" parent="."]
+position = Vector3(-18.5, 1.3, 10.5)
+radius = 0.8
+height = 2.6
+sides = 12
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="EastPipeJunction" type="CSGCylinder3D" parent="."]
+position = Vector3(18.5, 1.3, -10.5)
+radius = 0.8
+height = 2.6
+sides = 12
+material = SubResource("StandardMaterial3D_dark_steel")
+use_collision = true
+
+[node name="Spawns" type="Node3D" parent="."]
+
+[node name="Team1" type="Node3D" parent="Spawns"]
+
+[node name="Spawn1" type="Marker3D" parent="Spawns/Team1"]
+position = Vector3(-23, 1.1, -3.6)
+
+[node name="Spawn2" type="Marker3D" parent="Spawns/Team1"]
+position = Vector3(-23.8, 1.1, 0)
+
+[node name="Spawn3" type="Marker3D" parent="Spawns/Team1"]
+position = Vector3(-23, 1.1, 3.6)
+
+[node name="Team2" type="Node3D" parent="Spawns"]
+
+[node name="Spawn1" type="Marker3D" parent="Spawns/Team2"]
+position = Vector3(23, 1.1, 3.6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Spawn2" type="Marker3D" parent="Spawns/Team2"]
+position = Vector3(23.8, 1.1, 0)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Spawn3" type="Marker3D" parent="Spawns/Team2"]
+position = Vector3(23, 1.1, -3.6)
+rotation_degrees = Vector3(0, 180, 0)

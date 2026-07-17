@@ -50,7 +50,8 @@ class PbInfo:
 var weapons: Array[WeaponData] = [null]
 
 var pvp_mode_to_map := {
-	"deathmatch": "res://src/maps/deathmatch.tscn"
+	"deathmatch": "res://src/maps/deathmatch.tscn",
+	"elimination": "res://src/maps/elimination.tscn"
 }
 
 func _init(is_server: bool) -> void:
@@ -95,9 +96,8 @@ func init_server(server_name: String, port: int, max_players: int, mode: String)
 	self.server_name = server_name
 	self.current_pvp_map = Global.map_manager.get_random_map(mode)
 	
-	get_tree().change_scene_to_file(pvp_mode_to_map[mode])
+	get_tree().call_deferred("change_scene_to_file", pvp_mode_to_map[mode])
 	
-	_server_browser_ping_timer = BetterTimer.new(self, SERVER_BROWSER_PING_INTERVAL, Global.server_bridge.ping_server_browser)
 	_server_browser_ping_timer = BetterTimer.new(self, SERVER_BROWSER_PING_INTERVAL, Global.server_bridge.ping_server_browser)
 	_server_browser_ping_timer.start()
 	

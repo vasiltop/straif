@@ -9,7 +9,9 @@ var game_manager: GameManager
 var is_server: bool
 
 func _ready() -> void:
-	var args := OS.get_cmdline_args()
+	var args := OS.get_cmdline_user_args()
+	if args.is_empty():
+		args = OS.get_cmdline_args()
 	print(args)
 	is_server = len(args) > 2
 	
@@ -37,7 +39,7 @@ func _ready() -> void:
 	settings_manager = Settings.new()
 	
 	map_manager.load_maps()
-	get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://src/menus/main/main_menu.tscn")
 
 func mp_print(message: String) -> void:
 	print("[%d]: %s" % [id(), message])
