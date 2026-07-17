@@ -243,6 +243,19 @@
 				150.0,
 				250.0
 			]
+		},
+		{
+			"name": "map_helix",
+			"tier": 1.0,
+			"modes": ["endless"],
+			"scoring": "distance",
+			"medals_endless": [
+				25.0,
+				50.0,
+				90.0,
+				140.0,
+				220.0
+			]
 		}
 	]
 }
