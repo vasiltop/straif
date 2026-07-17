@@ -33,7 +33,7 @@ const TRACKING_SCORE_PER_SAMPLE := 8
 @onready var results_score_label: Label = $HUD/ResultsPanel/ResultsScoreLabel
 @onready var results_stats_label: Label = $HUD/ResultsPanel/ResultsStatsLabel
 @onready var leaderboard_status: Label = $HUD/ResultsPanel/LeaderboardStatus
-@onready var leaderboard_rows: VBoxContainer = $HUD/ResultsPanel/LeaderboardRows
+@onready var leaderboard_rows: VBoxContainer = $HUD/ResultsPanel/LeaderboardScroll/LeaderboardRows
 @onready var retry_button: Button = $HUD/ResultsPanel/RetryButton
 @onready var main_menu_button: Button = $HUD/ResultsPanel/MainMenuButton
 

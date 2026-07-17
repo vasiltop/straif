@@ -245,7 +245,7 @@ anchor_right = 1.0
 offset_left = -286.0
 offset_top = 24.0
 offset_right = -24.0
-offset_bottom = 184.0
+offset_bottom = 244.0
 grow_horizontal = 0
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("4_panel")
@@ -255,43 +255,43 @@ layout_mode = 0
 offset_left = 18.0
 offset_top = 12.0
 offset_right = 238.0
-offset_bottom = 42.0
+offset_bottom = 54.0
 theme_override_font_sizes/font_size = 18
 text = "SCENARIO\nGRIDSHOT"
 
 [node name="HitsLabel" type="Label" parent="HUD/SecondaryPanel"]
 layout_mode = 0
 offset_left = 18.0
-offset_top = 50.0
+offset_top = 64.0
 offset_right = 108.0
-offset_bottom = 100.0
+offset_bottom = 106.0
 theme_override_font_sizes/font_size = 17
 text = "HITS\n0"
 
 [node name="MissesLabel" type="Label" parent="HUD/SecondaryPanel"]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 50.0
+offset_top = 64.0
 offset_right = 238.0
-offset_bottom = 100.0
+offset_bottom = 106.0
 theme_override_font_sizes/font_size = 17
 text = "MISSES\n0"
 
 [node name="AccuracyLabel" type="Label" parent="HUD/SecondaryPanel"]
 layout_mode = 0
 offset_left = 18.0
-offset_top = 106.0
+offset_top = 116.0
 offset_right = 238.0
-offset_bottom = 136.0
+offset_bottom = 158.0
 theme_override_font_sizes/font_size = 17
 text = "ACCURACY\n0.0%"
 
 [node name="ReactionLabel" type="Label" parent="HUD/SecondaryPanel"]
 layout_mode = 0
 offset_left = 18.0
-offset_top = 146.0
+offset_top = 168.0
 offset_right = 238.0
-offset_bottom = 176.0
+offset_bottom = 214.0
 theme_override_font_sizes/font_size = 17
 text = "AVG REACTION\n--"
 
@@ -318,10 +318,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -208.0
-offset_right = 250.0
-offset_bottom = 208.0
+offset_left = -310.0
+offset_top = -310.0
+offset_right = 310.0
+offset_bottom = 310.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("4_panel")
@@ -330,8 +330,8 @@ theme_override_styles/panel = ExtResource("4_panel")
 layout_mode = 0
 offset_left = 30.0
 offset_top = 24.0
-offset_right = 470.0
-offset_bottom = 54.0
+offset_right = 590.0
+offset_bottom = 58.0
 theme_override_font_sizes/font_size = 28
 text = "Session Results"
 horizontal_alignment = 1
@@ -339,8 +339,8 @@ horizontal_alignment = 1
 [node name="ResultsScoreLabel" type="Label" parent="HUD/ResultsPanel"]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 72.0
-offset_right = 470.0
+offset_top = 70.0
+offset_right = 590.0
 offset_bottom = 108.0
 theme_override_font_sizes/font_size = 26
 text = "Score 0"
@@ -349,8 +349,8 @@ horizontal_alignment = 1
 [node name="ResultsStatsLabel" type="Label" parent="HUD/ResultsPanel"]
 layout_mode = 0
 offset_left = 40.0
-offset_top = 122.0
-offset_right = 460.0
+offset_top = 118.0
+offset_right = 580.0
 offset_bottom = 220.0
 theme_override_font_sizes/font_size = 18
 text = "Hits 0\nMisses 0\nAccuracy 0.0%\nAverage Reaction --"
@@ -360,8 +360,8 @@ vertical_alignment = 1
 [node name="LeaderboardHeading" type="Label" parent="HUD/ResultsPanel"]
 layout_mode = 0
 offset_left = 40.0
-offset_top = 236.0
-offset_right = 460.0
+offset_top = 234.0
+offset_right = 580.0
 offset_bottom = 262.0
 theme_override_font_sizes/font_size = 18
 text = "Scenario Leaderboard"
@@ -370,39 +370,41 @@ horizontal_alignment = 1
 [node name="LeaderboardStatus" type="Label" parent="HUD/ResultsPanel"]
 layout_mode = 0
 offset_left = 40.0
-offset_top = 268.0
-offset_right = 460.0
-offset_bottom = 294.0
+offset_top = 270.0
+offset_right = 580.0
+offset_bottom = 312.0
 theme_override_font_sizes/font_size = 16
 text = "Leaderboard ready for integration"
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="LeaderboardRows" type="VBoxContainer" parent="HUD/ResultsPanel"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -190.0
-offset_top = -2.0
-offset_right = 190.0
-offset_bottom = 112.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="LeaderboardScroll" type="ScrollContainer" parent="HUD/ResultsPanel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 322.0
+offset_right = 580.0
+offset_bottom = 530.0
+horizontal_scroll_mode = 0
+
+[node name="LeaderboardRows" type="VBoxContainer" parent="HUD/ResultsPanel/LeaderboardScroll"]
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="RetryButton" type="Button" parent="HUD/ResultsPanel"]
 layout_mode = 0
-offset_left = 84.0
-offset_top = 342.0
-offset_right = 240.0
-offset_bottom = 382.0
+offset_left = 132.0
+offset_top = 550.0
+offset_right = 302.0
+offset_bottom = 594.0
 text = "Retry"
 
 [node name="MainMenuButton" type="Button" parent="HUD/ResultsPanel"]
 layout_mode = 0
-offset_left = 260.0
-offset_top = 342.0
-offset_right = 416.0
-offset_bottom = 382.0
+offset_left = 318.0
+offset_top = 550.0
+offset_right = 488.0
+offset_bottom = 594.0
 text = "Main Menu"
