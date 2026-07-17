@@ -208,26 +208,26 @@ material = SubResource("PaleConcrete")
 use_collision = true
 
 [node name="Team1PocketScreen" type="CSGBox3D" parent="Geometry"]
-position = Vector3(-12.1, 1.55, -16)
-size = Vector3(0.8, 3.1, 7)
+position = Vector3(-12.1, 1.55, -18)
+size = Vector3(0.8, 3.1, 4)
 material = SubResource("CoolBlue")
 use_collision = true
 
 [node name="Team1CornerCover" type="CSGBox3D" parent="Geometry"]
-position = Vector3(-16, 1.55, -12.1)
-size = Vector3(7, 3.1, 0.8)
+position = Vector3(-18, 1.55, -12.1)
+size = Vector3(4, 3.1, 0.8)
 material = SubResource("CoolBlue")
 use_collision = true
 
 [node name="Team2PocketScreen" type="CSGBox3D" parent="Geometry"]
-position = Vector3(12.1, 1.55, 16)
-size = Vector3(0.8, 3.1, 7)
+position = Vector3(12.1, 1.55, 18)
+size = Vector3(0.8, 3.1, 4)
 material = SubResource("Terracotta")
 use_collision = true
 
 [node name="Team2CornerCover" type="CSGBox3D" parent="Geometry"]
-position = Vector3(16, 1.55, 12.1)
-size = Vector3(7, 3.1, 0.8)
+position = Vector3(18, 1.55, 12.1)
+size = Vector3(4, 3.1, 0.8)
 material = SubResource("Terracotta")
 use_collision = true
 

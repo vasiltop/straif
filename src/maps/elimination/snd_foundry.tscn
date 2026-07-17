@@ -2,31 +2,31 @@
 
 [sub_resource type="Environment" id="Environment_foundry"]
 background_mode = 1
-background_color = Color(0.018, 0.027, 0.035, 1)
-background_energy_multiplier = 0.45
-ambient_light_source = 3
-ambient_light_color = Color(0.18, 0.205, 0.23, 1)
-ambient_light_energy = 0.7
+background_color = Color(0.05, 0.06, 0.07, 1)
+background_energy_multiplier = 0.8
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.48, 0.42, 1)
+ambient_light_energy = 1.2
 tonemap_mode = 2
-tonemap_exposure = 1.15
+tonemap_exposure = 1.2
 fog_enabled = true
-fog_light_color = Color(0.115, 0.09, 0.075, 1)
-fog_light_energy = 0.55
-fog_density = 0.012
+fog_light_color = Color(0.16, 0.12, 0.09, 1)
+fog_light_energy = 0.7
+fog_density = 0.004
 fog_sky_affect = 0.15
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_steel"]
-albedo_color = Color(0.075, 0.095, 0.11, 1)
+albedo_color = Color(0.2, 0.23, 0.26, 1)
 metallic = 0.82
 roughness = 0.38
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_worn_floor"]
-albedo_color = Color(0.16, 0.17, 0.175, 1)
+albedo_color = Color(0.28, 0.285, 0.29, 1)
 metallic = 0.58
 roughness = 0.78
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_oxide"]
-albedo_color = Color(0.36, 0.105, 0.07, 1)
+albedo_color = Color(0.47, 0.14, 0.085, 1)
 metallic = 0.5
 roughness = 0.66
 
@@ -39,7 +39,7 @@ emission = Color(1, 0.105, 0.012, 1)
 emission_energy_multiplier = 3.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cool_team"]
-albedo_color = Color(0.055, 0.255, 0.42, 1)
+albedo_color = Color(0.075, 0.31, 0.52, 1)
 metallic = 0.64
 roughness = 0.4
 emission_enabled = true
@@ -54,13 +54,13 @@ environment = SubResource("Environment_foundry")
 [node name="FoundrySun" type="DirectionalLight3D" parent="."]
 rotation_degrees = Vector3(-58, -32, 0)
 light_color = Color(1, 0.61, 0.37, 1)
-light_energy = 0.82
+light_energy = 1.8
 shadow_enabled = true
 
 [node name="FurnaceGlow" type="OmniLight3D" parent="."]
 position = Vector3(0, 6.5, 0)
 light_color = Color(1, 0.2, 0.035, 1)
-light_energy = 8.0
+light_energy = 6.0
 omni_range = 17.0
 omni_attenuation = 1.45
 

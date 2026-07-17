@@ -1,17 +1,17 @@
 [gd_scene load_steps=8 format=3 uid="uid://dtrqg9n6vr4qg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_concrete"]
-albedo_color = Color(0.19, 0.27, 0.34, 1)
+albedo_color = Color(0.24, 0.34, 0.43, 1)
 metallic = 0.28
 roughness = 0.74
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
-albedo_color = Color(0.075, 0.09, 0.11, 1)
+albedo_color = Color(0.11, 0.135, 0.16, 1)
 metallic = 0.16
 roughness = 0.88
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cargo"]
-albedo_color = Color(0.29, 0.34, 0.34, 1)
+albedo_color = Color(0.35, 0.4, 0.4, 1)
 metallic = 0.38
 roughness = 0.54
 
@@ -35,18 +35,18 @@ sky_material = SubResource("ProceduralSkyMaterial_switchyard")
 
 [sub_resource type="Environment" id="Environment_switchyard"]
 background_mode = 2
-background_energy_multiplier = 0.55
+background_energy_multiplier = 0.8
 sky = SubResource("Sky_switchyard")
 ambient_light_source = 3
 ambient_light_color = Color(0.4, 0.5, 0.62, 1)
-ambient_light_energy = 0.75
+ambient_light_energy = 1.05
 reflected_light_source = 2
 fog_enabled = true
 fog_light_color = Color(0.34, 0.42, 0.5, 1)
 fog_light_energy = 0.45
-fog_density = 0.006
+fog_density = 0.003
 tonemap_mode = 2
-tonemap_exposure = 0.9
+tonemap_exposure = 1.0
 
 [node name="Switchyard" type="Node3D"]
 
@@ -56,7 +56,7 @@ environment = SubResource("Environment_switchyard")
 [node name="OvercastSun" type="DirectionalLight3D" parent="."]
 rotation_degrees = Vector3(-52, -28, 0)
 light_color = Color(0.72, 0.82, 0.94, 1)
-light_energy = 1.35
+light_energy = 1.7
 shadow_enabled = true
 directional_shadow_max_distance = 90.0
 
@@ -128,17 +128,41 @@ material = SubResource("StandardMaterial3D_concrete")
 size = Vector3(13, 1.5, 0.55)
 position = Vector3(20, 0.75, -5.8)
 
-[node name="NorthCanopy" type="CSGBox3D" parent="Geometry"]
+[node name="NorthCanopyWest" type="CSGBox3D" parent="Geometry"]
 use_collision = true
 material = SubResource("StandardMaterial3D_concrete")
-size = Vector3(52, 0.3, 8.5)
+size = Vector3(16, 0.3, 8.5)
+position = Vector3(-18, 5.65, 11.75)
+
+[node name="NorthCanopyCenter" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(16, 0.3, 8.5)
 position = Vector3(0, 5.65, 11.75)
 
-[node name="SouthCanopy" type="CSGBox3D" parent="Geometry"]
+[node name="NorthCanopyEast" type="CSGBox3D" parent="Geometry"]
 use_collision = true
 material = SubResource("StandardMaterial3D_concrete")
-size = Vector3(52, 0.3, 8.5)
+size = Vector3(16, 0.3, 8.5)
+position = Vector3(18, 5.65, 11.75)
+
+[node name="SouthCanopyWest" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(16, 0.3, 8.5)
+position = Vector3(-18, 5.65, -11.75)
+
+[node name="SouthCanopyCenter" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(16, 0.3, 8.5)
 position = Vector3(0, 5.65, -11.75)
+
+[node name="SouthCanopyEast" type="CSGBox3D" parent="Geometry"]
+use_collision = true
+material = SubResource("StandardMaterial3D_concrete")
+size = Vector3(16, 0.3, 8.5)
+position = Vector3(18, 5.65, -11.75)
 
 [node name="NorthSupportWest" type="CSGBox3D" parent="Geometry"]
 use_collision = true
