@@ -24,6 +24,7 @@ var spectator_target_id := 0
 var spectator_index := -1
 var was_locally_dead := false
 var scoreboard_signature := ""
+var spectated_player: Player = null
 
 
 func _ready() -> void:
@@ -160,6 +161,7 @@ func _update_spectator() -> void:
 	if not local_player.is_dead:
 		if was_locally_dead:
 			local_player.camera.make_current()
+			local_player.gun_camera.make_current()
 		was_locally_dead = false
 		_reset_spectator()
 		return
@@ -188,12 +190,41 @@ func _spectate(teammates: Array[Player], next_index: int) -> void:
 	spectator_index = posmod(next_index, teammates.size())
 	var target := teammates[spectator_index]
 	spectator_target_id = target.pid
-	target.camera.make_current()
+	_begin_spectate(target)
+
+
+func _begin_spectate(target: Player) -> void:
+	_end_spectate()
+	spectated_player = target
+	_hide_local_dead_view(_get_player(Global.id()))
+	target.begin_local_spectate_view()
 	spectator_label.text = "Spectating %s\nClick to switch" % target.player_name()
 	spectator_panel.visible = true
 
 
+func _hide_local_dead_view(local_player: Player) -> void:
+	if local_player == null or not local_player.is_dead:
+		return
+	local_player.third_person.visible = false
+	local_player.set_viewmodel_viewport_visible(false)
+
+
+func _restore_local_dead_view(local_player: Player) -> void:
+	if local_player == null or not local_player.is_dead:
+		return
+	local_player.third_person.visible = true
+	local_player.set_viewmodel_viewport_visible(false)
+
+
+func _end_spectate() -> void:
+	if spectated_player != null and is_instance_valid(spectated_player):
+		spectated_player.end_local_spectate_view()
+	spectated_player = null
+	_restore_local_dead_view(_get_player(Global.id()))
+
+
 func _show_no_teammates(local_player: Player) -> void:
+	_end_spectate()
 	spectator_target_id = 0
 	spectator_index = -1
 	if local_player.ragdoll_camera != null:
@@ -203,6 +234,7 @@ func _show_no_teammates(local_player: Player) -> void:
 
 
 func _reset_spectator() -> void:
+	_end_spectate()
 	spectator_target_id = 0
 	spectator_index = -1
 	spectator_panel.visible = false

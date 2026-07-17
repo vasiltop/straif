@@ -3,7 +3,7 @@ class_name Elimination extends Node3D
 const PlayerScene := preload("res://src/player/player.tscn")
 const EliminationUiScene := preload("res://src/maps/elimination_ui.tscn")
 
-const FREEZE_TIME := 10.0
+const FREEZE_TIME := 4.0
 const ROUND_TIME := 60.0
 const MATCH_END_TIME := 8.0
 const WIN_SCORE := 5

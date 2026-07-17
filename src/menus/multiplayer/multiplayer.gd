@@ -11,9 +11,9 @@ var _refreshing := false
 
 func _ready() -> void:
 	mode_tabs.clear_tabs()
-	mode_tabs.add_tab("ALL SERVERS")
-	mode_tabs.add_tab("DEATHMATCH")
-	mode_tabs.add_tab("ELIMINATION")
+	mode_tabs.add_tab("All")
+	mode_tabs.add_tab("Deathmatch")
+	mode_tabs.add_tab("Elimination")
 	refresh_servers_btn.pressed.connect(_refresh_servers)
 	mode_tabs.tab_selected.connect(_on_mode_selected)
 	_refresh_servers()

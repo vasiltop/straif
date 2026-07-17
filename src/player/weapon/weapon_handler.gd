@@ -61,6 +61,9 @@ func reset_ammo() -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
+	if player.is_local_spectate_view():
+		is_third_person = false
+
 	current_weapon = weapon
 
 	if weapon_scene:
@@ -79,18 +82,16 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 		var gun_parent := gun_container
 		if is_third_person: 
 			gun_parent = weapon_pos_tp
-			var mesh := weapon_scene.get_node("Mesh") as MeshInstance3D
-			mesh.set_layer_mask_value(1, true)
-			mesh.set_layer_mask_value(2, false)
+			_set_third_person_weapon_layers(weapon_scene)
 			weapon_scene.scale *= 0.4
-
-			var muzzle_flash := weapon_scene.get_node("MuzzleFlash") as GPUParticles3D
-			muzzle_flash.set_layer_mask_value(1, true)
-			muzzle_flash.set_layer_mask_value(2, false)
+		else:
+			_set_first_person_weapon_layers(weapon_scene)
 
 		gun_parent.add_child(weapon_scene)
 
 		arms.visible = true
+		if not is_third_person:
+			apply_first_person_layers()
 
 		var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 		anim.play("equip")
@@ -105,6 +106,46 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 		arms.visible = false
 		
 	init_ik(is_third_person)
+
+
+func apply_first_person_layers() -> void:
+	var arms_mesh := arms.get_node("Armature/Skeleton3D/arms") as MeshInstance3D
+	arms_mesh.set_layer_mask_value(1, false)
+	arms_mesh.set_layer_mask_value(2, true)
+	if weapon_scene != null:
+		_set_first_person_weapon_layers(weapon_scene)
+
+
+func reset_viewmodel_pitch() -> void:
+	gun_container.rotation.x = 0.0
+
+
+func sync_remote_pitch(rot_x: float) -> void:
+	if player.is_local_spectate_view():
+		gun_container.rotation.x = 0.0
+	elif weapon_scene != null:
+		gun_container.rotation.x = rot_x
+
+
+func _set_first_person_weapon_layers(weapon: Node3D) -> void:
+	var mesh := weapon.get_node("Mesh") as MeshInstance3D
+	mesh.set_layer_mask_value(1, false)
+	mesh.set_layer_mask_value(2, true)
+
+	var muzzle_flash := weapon.get_node("MuzzleFlash") as GPUParticles3D
+	muzzle_flash.set_layer_mask_value(1, false)
+	muzzle_flash.set_layer_mask_value(2, true)
+
+
+func _set_third_person_weapon_layers(weapon: Node3D) -> void:
+	var mesh := weapon.get_node("Mesh") as MeshInstance3D
+	mesh.set_layer_mask_value(1, true)
+	mesh.set_layer_mask_value(2, false)
+
+	var muzzle_flash := weapon.get_node("MuzzleFlash") as GPUParticles3D
+	muzzle_flash.set_layer_mask_value(1, true)
+	muzzle_flash.set_layer_mask_value(2, false)
+
 
 func _on_animation_started(anim_name: String) -> void:
 	if anim_name == "shoot" and player.is_me(): 

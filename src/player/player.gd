@@ -8,6 +8,7 @@ signal toggled_pause(value: bool)
 @onready var camera: PlayerCamera = $Eye/Camera
 @onready var gun_camera: Camera3D = $Eye/Camera/GunVPContainer/GunVP/GunCam
 @onready var gun_vp: SubViewport = $Eye/Camera/GunVPContainer/GunVP
+@onready var gun_vp_container: SubViewportContainer = $Eye/Camera/GunVPContainer
 @onready var name_label: Label3D = $Name
 @onready var weapon_handler: WeaponHandler = $Eye/Camera/WeaponHandler
 @onready var camera_anchor: Marker3D = $CameraAnchor
@@ -47,6 +48,7 @@ var health := MAX_HEALTH
 var is_dead := false
 var is_pre_capped: bool
 var hardcore := true
+var _local_spectate_view := false
 
 func player_name() -> String:
 	return get_node("Name").text
@@ -84,6 +86,7 @@ func ragdoll() -> void:
 
 		ragdoll_camera.current = true
 		weapon_handler.visible = false
+		set_viewmodel_viewport_visible(false)
 
 @rpc("call_local", "authority", "reliable")
 func respawn() -> void:
@@ -97,7 +100,9 @@ func respawn() -> void:
 	if is_me():
 		weapon_handler.reset_ammo()
 		camera.current = true
+		gun_camera.current = true
 		weapon_handler.visible = true
+		set_viewmodel_viewport_visible(true)
 
 func on_death() -> void:
 	pass
@@ -107,6 +112,50 @@ func is_me() -> bool:
 		return pid == 1
 
 	return multiplayer.get_unique_id() == pid
+
+
+func is_local_spectate_view() -> bool:
+	return _local_spectate_view
+
+
+func begin_local_spectate_view() -> void:
+	_local_spectate_view = true
+	third_person.visible = false
+	weapon_handler.visible = true
+	if weapon_handler.current_weapon != null:
+		weapon_handler.set_weapon(weapon_handler.current_weapon, false)
+	else:
+		weapon_handler.apply_first_person_layers()
+	weapon_handler.reset_viewmodel_pitch()
+	set_viewmodel_viewport_visible(true)
+	camera.make_current()
+	gun_camera.make_current()
+	_on_viewport_resized()
+
+
+func end_local_spectate_view() -> void:
+	if not _local_spectate_view:
+		return
+
+	_local_spectate_view = false
+	camera.current = false
+	gun_camera.current = false
+
+	if is_me():
+		third_person.visible = false
+		weapon_handler.visible = true
+		set_viewmodel_viewport_visible(true)
+	else:
+		third_person.visible = true
+		weapon_handler.visible = false
+		set_viewmodel_viewport_visible(false)
+		if weapon_handler.current_weapon != null:
+			weapon_handler.set_weapon(weapon_handler.current_weapon, true)
+
+
+func set_viewmodel_viewport_visible(value: bool) -> void:
+	gun_vp_container.visible = value
+
 
 func set_name_label(value: String) -> void:
 	name_label.text = value
@@ -134,6 +183,7 @@ func setup() -> void:
 	back_btn.pressed.connect(toggle_pause)
 
 	ui.visible = true
+	set_viewmodel_viewport_visible(true)
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size
@@ -145,6 +195,7 @@ func _ready() -> void:
 	weapon_handler.visible = false
 	pause_menu.visible = false
 	ui.visible = false
+	set_viewmodel_viewport_visible(false)
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_on_viewport_resized()
 
@@ -185,7 +236,7 @@ func _update_state(pos: Vector3, rot_y: float, rot_x: float, speed: float) -> vo
 	global_position = pos
 	camera._input_rotation.y = rot_y
 	camera._input_rotation.x = rot_x
-	weapon_handler.weapon_scene.get_parent().rotation.x = rot_x
+	weapon_handler.sync_remote_pitch(rot_x)
 	set_animation_blend(1.0 if speed >= 3.0 else 0.0)
 
 func set_animation_blend(value: float) -> void:
