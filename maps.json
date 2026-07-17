@@ -256,6 +256,19 @@
 				140.0,
 				220.0
 			]
+		},
+		{
+			"name": "map_gridlock",
+			"tier": 1.0,
+			"modes": ["endless"],
+			"scoring": "distance",
+			"medals_endless": [
+				20.0,
+				45.0,
+				80.0,
+				130.0,
+				210.0
+			]
 		}
 	]
 }
