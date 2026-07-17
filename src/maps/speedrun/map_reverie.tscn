@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://b3r3v3ri3map02"]
 
-[ext_resource type="Script" path="res://src/maps/endless_bhop.gd" id="1_reverie"]
+[ext_resource type="Script" path="res://src/maps/procedural/procedural_map.gd" id="1_reverie"]
 [ext_resource type="Shader" path="res://src/maps/tiles/building.gdshader" id="2_shader"]
 [ext_resource type="Texture2D" path="res://src/textures/greybox_texture/greybox_purple_solid.png" id="3_purple"]
 [ext_resource type="Texture2D" path="res://src/textures/greybox_texture/greybox_light_solid.png" id="4_light"]

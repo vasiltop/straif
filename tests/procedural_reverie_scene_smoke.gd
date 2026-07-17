@@ -21,7 +21,7 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 
-	_check(map.get("generator") != null, "runtime should build an EndlessGenerator")
+	_check(map.get("generator") != null, "runtime should build a ProceduralGenerator")
 	_check(map.get("run_seed") != 0, "runtime should pick a run seed")
 	var nodes: Dictionary = map.get("block_nodes")
 	_check(nodes.size() > 0, "runtime should stream in block nodes around spawn")

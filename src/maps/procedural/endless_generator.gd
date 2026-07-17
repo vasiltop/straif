@@ -1,13 +1,13 @@
-class_name EndlessGenerator extends RefCounted
+class_name EndlessGenerator extends ProceduralGenerator
 
-# Pure, seed-deterministic generator for the endless bhop map (map_reverie).
+# Endless bhop pipeline: a pure, seed-deterministic ProceduralGenerator.
 #
 # The whole layout is a function of the seed only: every next block is placed
 # using an assumed MODEL SPEED (built up from a min-speed floor and ramped with
 # the block index), NOT the player's live velocity. Blocks are always makeable
-# IF the player keeps their speed at or above the model speed. This class is
-# shared by the runtime map (src/maps/endless_bhop.gd) and the headless
-# determinism/solvability self-test so the test validates the real code.
+# IF the player keeps their speed at or above the model speed. This pipeline is
+# shared by the runtime map (src/maps/procedural/procedural_map.gd) and the
+# headless determinism/solvability self-test so the test validates real code.
 #
 # Movement constants mirror src/player/player.gd. Do not change them without
 # re-checking that generated gaps stay clearable.
@@ -43,22 +43,13 @@ const MAX_TURN_HIGH := 0.15
 # (centered at origin, 20 deep, so its leading -Z edge sits at z = -10).
 const START_Z := -10.0
 
-var seed_value: int
-var rng := RandomNumberGenerator.new()
-var blocks: Array[Dictionary] = []
-
 var _prev_xz: Vector2
 var _prev_top_y: float
 var _prev_radius: float
 var _heading: Vector2
 
-func _init(run_seed: int) -> void:
-	seed_value = run_seed
-	reset()
-
 func reset() -> void:
-	rng.seed = seed_value
-	blocks.clear()
+	super.reset()
 	_prev_xz = Vector2(0.0, START_Z)
 	_prev_top_y = 0.0
 	_prev_radius = 0.0
@@ -90,15 +81,8 @@ static func _max_turn(s: float) -> float:
 	var f := clampf(inverse_lerp(MIN_MODEL_SPEED, MAX_MODEL_SPEED, s), 0.0, 1.0)
 	return lerpf(MAX_TURN_LOW, MAX_TURN_HIGH, f)
 
-# Ensure at least `count` blocks have been generated. Sequential and
-# deterministic: never regenerate an existing block.
-func ensure(count: int) -> void:
-	while blocks.size() < count:
-		_generate_next()
-
-func get_block(index: int) -> Dictionary:
-	ensure(index + 1)
-	return blocks[index]
+# Ensure at least `count` blocks have been generated and get_block() are
+# inherited from ProceduralGenerator; only _generate_next() is pipeline-specific.
 
 func _pick_size(turn: float, delta_y: float) -> Vector2:
 	# Landing pads are kept modest so there is always visible air between blocks,
