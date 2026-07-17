@@ -16,6 +16,7 @@ import { type Variables } from '../index';
 import { hide_route } from './common';
 import { get_maps_of_mode, type RunMode } from '../maps';
 import { is_new_world_record, world_record_lock_key } from '../world_records';
+import aim_leaderboard from './aim_leaderboard';
 
 const app = new Hono<{ Variables: Variables }>();
 
@@ -547,5 +548,7 @@ app.post(
     }
   }
 );
+
+app.route('/aim', aim_leaderboard);
 
 export default app;

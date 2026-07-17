@@ -40,7 +40,14 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="M/P/M/V"]
 layout_mode = 2
-text = "Server List"
+text = "Multiplayer"
+
+[node name="Subtitle" type="Label" parent="M/P/M/V"]
+layout_mode = 2
+text = "Choose a mode, then join a server."
+
+[node name="ModeTabs" type="TabBar" parent="M/P/M/V"]
+layout_mode = 2
 
 [node name="Refresh" type="Button" parent="M/P/M/V"]
 layout_mode = 2
@@ -48,3 +55,9 @@ text = "Refresh Servers"
 
 [node name="ServerContainer" type="HFlowContainer" parent="M/P/M/V"]
 layout_mode = 2
+
+[node name="EmptyState" type="Label" parent="M/P/M/V"]
+visible = false
+layout_mode = 2
+text = "No servers online."
+horizontal_alignment = 1

@@ -9,9 +9,11 @@ signal maintenance_changed
 enum NETWORK_TYPE { ENET, STEAM }
 
 const SERVER_BROWSER_PING_INTERVAL := 5
+const VALID_AIM_SCENARIOS := ["gridshot", "flick", "tracking"]
 
 var current_map: MapData
 var current_mode := "target"
+var current_aim_scenario := "gridshot"
 var auth_ticket_hex: String
 var admin: bool
 var maintenance: bool
@@ -50,11 +52,12 @@ class PbInfo:
 var weapons: Array[WeaponData] = [null]
 
 var pvp_mode_to_map := {
-	"deathmatch": "res://src/maps/deathmatch.tscn"
+	"deathmatch": "res://src/maps/deathmatch.tscn",
+	"elimination": "res://src/maps/elimination.tscn"
 }
 
-func _init(is_server: bool) -> void:
-	if not is_server:
+func _init(is_server: bool, request_auth_ticket: bool = true) -> void:
+	if not is_server and request_auth_ticket:
 		Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
 		Steam.getAuthTicketForWebApi("munost")
 	
@@ -79,6 +82,11 @@ func get_weapon_index(weapon: WeaponData) -> int:
 func get_weapon_from_index(index: int) -> WeaponData:
 	return weapons[index]
 
+func get_current_aim_scenario() -> String:
+	if current_aim_scenario in VALID_AIM_SCENARIOS:
+		return current_aim_scenario
+	return VALID_AIM_SCENARIOS[0]
+
 func _on_get_ticket_for_web_api(_auth_ticket: int, _result: int, _ticket_size: int, ticket_buffer: Array) -> void:
 	auth_ticket_hex = PackedByteArray(ticket_buffer).hex_encode()
 	Global.server_bridge.heartbeat_timer.start()
@@ -95,9 +103,8 @@ func init_server(server_name: String, port: int, max_players: int, mode: String)
 	self.server_name = server_name
 	self.current_pvp_map = Global.map_manager.get_random_map(mode)
 	
-	get_tree().change_scene_to_file(pvp_mode_to_map[mode])
+	get_tree().call_deferred("change_scene_to_file", pvp_mode_to_map[mode])
 	
-	_server_browser_ping_timer = BetterTimer.new(self, SERVER_BROWSER_PING_INTERVAL, Global.server_bridge.ping_server_browser)
 	_server_browser_ping_timer = BetterTimer.new(self, SERVER_BROWSER_PING_INTERVAL, Global.server_bridge.ping_server_browser)
 	_server_browser_ping_timer.start()
 	

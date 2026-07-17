@@ -10,6 +10,7 @@ var client: BetterHTTPClient
 
 var api_url: String
 var version: String
+var last_aim_overall_leaderboard_available := true
 
 var heartbeat_timer: BetterTimer
 var world_record_cursor := -1
@@ -181,6 +182,104 @@ class MapRunsResponse:
 	func _init(runs: Array[Run], total: int) -> void:
 		self.runs = runs
 		self.total = total
+
+class AimScoreEntry:
+	var steam_id: String
+	var username: String
+	var score: int
+	var hits: int
+	var misses: int
+	var accuracy: float
+	var avg_reaction_ms: float
+	var created_at: String
+	var position: int
+
+	func _init(
+		steam_id: String,
+		username: String,
+		score: int,
+		hits: int,
+		misses: int,
+		accuracy: float,
+		avg_reaction_ms: float,
+		created_at: String,
+		position: int
+	) -> void:
+		self.steam_id = steam_id
+		self.username = username
+		self.score = score
+		self.hits = hits
+		self.misses = misses
+		self.accuracy = accuracy
+		self.avg_reaction_ms = avg_reaction_ms
+		self.created_at = created_at
+		self.position = position
+
+class AimScoresResponse:
+	var scores: Array[AimScoreEntry]
+	var total: int
+
+	func _init(scores: Array[AimScoreEntry], total: int) -> void:
+		self.scores = scores
+		self.total = total
+
+class AimOverallEntry:
+	var steam_id: String
+	var username: String
+	var total_score: int
+	var scenarios_completed: int
+	var accuracy: float
+	var avg_reaction_ms: float
+
+	func _init(
+		steam_id: String,
+		username: String,
+		total_score: int,
+		scenarios_completed: int,
+		accuracy: float,
+		avg_reaction_ms: float
+	) -> void:
+		self.steam_id = steam_id
+		self.username = username
+		self.total_score = total_score
+		self.scenarios_completed = scenarios_completed
+		self.accuracy = accuracy
+		self.avg_reaction_ms = avg_reaction_ms
+
+class AimScoreSubmissionResult:
+	var message: String
+	var personal_best: bool
+	var score: int
+	var position: int
+
+	func _init(message: String, personal_best: bool, score: int, position: int) -> void:
+		self.message = message
+		self.personal_best = personal_best
+		self.score = score
+		self.position = position
+
+func _parse_aim_score_entry(entry: Dictionary) -> AimScoreEntry:
+	return AimScoreEntry.new(
+		entry.steam_id as String,
+		entry.username as String,
+		entry.score as int,
+		entry.hits as int,
+		entry.misses as int,
+		float(entry.accuracy),
+		float(entry.avg_reaction_ms),
+		entry.created_at as String,
+		entry.position as int
+	)
+
+func _parse_aim_overall_entry(entry: Dictionary) -> AimOverallEntry:
+	return AimOverallEntry.new(
+		entry.steam_id as String,
+		entry.username as String,
+		entry.total_score as int,
+		entry.scenarios_completed as int,
+		float(entry.accuracy),
+		float(entry.avg_reaction_ms)
+	)
 
 func get_runs(mode: String, map_name: String, page: int) -> MapRunsResponse:
 	var url := get_leaderboard_base(mode) + "/maps/%s/runs?page=%d" % [map_name, page - 1]
@@ -362,6 +461,60 @@ class PlayerPoints:
 	var steam_id: int
 	var username: String
 	var points: int
+
+func submit_aim_score(
+	scenario: String,
+	score: int,
+	hits: int,
+	misses: int,
+	accuracy: float,
+	avg_reaction_ms: int
+) -> AimScoreSubmissionResult:
+	var response := await client.http_post("/leaderboard/aim/scenarios/%s/scores" % scenario).json({
+		"score": score,
+		"hits": hits,
+		"misses": misses,
+		"accuracy": accuracy,
+		"avg_reaction_ms": avg_reaction_ms,
+		"username": Steam.getPersonaName(),
+		}).header(
+			"auth-ticket", Global.game_manager.auth_ticket_hex
+			).header(
+				"version", version
+				).send()
+	var data := await data_or_print_error(response)
+	if data == null: return null
+
+	return AimScoreSubmissionResult.new(
+		data.message as String,
+		data.personal_best as bool,
+		data.score as int,
+		data.position as int
+	)
+
+func get_aim_scores(scenario: String, page := 1) -> AimScoresResponse:
+	var response := await client.http_get("/leaderboard/aim/scenarios/%s/scores?page=%d" % [scenario, page - 1]).send()
+	var data := await data_or_print_error(response, true)
+	if data == null: return null
+
+	var scores: Array[AimScoreEntry]
+	for entry: Dictionary in data.scores:
+		scores.append(_parse_aim_score_entry(entry))
+
+	return AimScoresResponse.new(scores, data.total as int)
+
+func get_aim_overall_leaderboard() -> Array[AimOverallEntry]:
+	var response := await client.http_get("/leaderboard/aim/overall").send()
+	var data := await data_or_print_error(response, true)
+	if data == null:
+		last_aim_overall_leaderboard_available = false
+		return []
+
+	last_aim_overall_leaderboard_available = true
+	var scores: Array[AimOverallEntry]
+	for entry: Dictionary in data.scores:
+		scores.append(_parse_aim_overall_entry(entry))
+	return scores
 
 func get_overall_leaderboard(mode: String) -> Array:
 	var res = await client.http_get(get_leaderboard_base(mode) + "/overall").send()
