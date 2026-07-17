@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://c7m4f2d9a8k1p"]
+[gd_scene format=4 uid="uid://c7m4f2eaa8k1p"]
 
 [ext_resource type="Shader" uid="uid://8ec8r7i87ldu" path="res://src/maps/tiles/building.gdshader" id="2_q43vt"]
 [ext_resource type="Texture2D" uid="uid://capci7pd6ph7k" path="res://src/textures/Metal_04-128x128.png" id="3_7if4t"]
@@ -141,13 +141,13 @@ points = PackedVector3Array(-6, 7, 10, -6, 6, 10, 6, 6, 10, 6, 7, 10, -6, 7, 14,
 panorama = ExtResource("5_q43vt")
 energy_multiplier = 3.0
 
-[sub_resource type="Sky" id="Sky_n71wf"]
+[sub_resource type="Sky" id="Sky_wv18o"]
 sky_material = SubResource("PanoramaSkyMaterial_7if4t")
 
 [sub_resource type="Environment" id="Environment_vxh6a"]
 background_mode = 2
 background_energy_multiplier = 0.75
-sky = SubResource("Sky_n71wf")
+sky = SubResource("Sky_wv18o")
 tonemap_mode = 2
 fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
 fog_light_energy = 1.34
@@ -160,108 +160,108 @@ volumetric_fog_anisotropy = 0.0
 volumetric_fog_length = 80.09
 volumetric_fog_detail_spread = 6.0
 
-[node name="Map" type="Node3D"]
+[node name="Map" type="Node3D" unique_id=1989646219]
 
-[node name="entity_0_worldspawn" type="StaticBody3D" parent="."]
+[node name="entity_0_worldspawn" type="StaticBody3D" parent="." unique_id=2108417175]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
 
-[node name="entity_0_mesh_instance" type="MeshInstance3D" parent="entity_0_worldspawn"]
+[node name="entity_0_mesh_instance" type="MeshInstance3D" parent="entity_0_worldspawn" unique_id=567004613]
 mesh = SubResource("ArrayMesh_hxg8k")
 surface_material_override/0 = SubResource("ShaderMaterial_dt8qw")
 surface_material_override/1 = SubResource("ShaderMaterial_m2ueg")
 surface_material_override/2 = SubResource("ShaderMaterial_dw441")
 
-[node name="entity_0_occluder_instance" type="OccluderInstance3D" parent="entity_0_worldspawn"]
+[node name="entity_0_occluder_instance" type="OccluderInstance3D" parent="entity_0_worldspawn" unique_id=1432775925]
 occluder = SubResource("ArrayOccluder3D_0ixom")
 
-[node name="entity_0_brush_0_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_0_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=873805167]
 shape = SubResource("ConvexPolygonShape3D_onvjs")
 
-[node name="entity_0_brush_1_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_1_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=490160950]
 shape = SubResource("ConvexPolygonShape3D_dj148")
 
-[node name="entity_0_brush_2_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_2_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=1514373049]
 shape = SubResource("ConvexPolygonShape3D_gtu68")
 
-[node name="entity_0_brush_3_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_3_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=592893439]
 shape = SubResource("ConvexPolygonShape3D_u84t2")
 
-[node name="entity_0_brush_4_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_4_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=1824745730]
 shape = SubResource("ConvexPolygonShape3D_k3d5a")
 
-[node name="entity_0_brush_5_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_5_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=36952244]
 shape = SubResource("ConvexPolygonShape3D_4o0k5")
 
-[node name="entity_0_brush_6_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_6_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=530446479]
 shape = SubResource("ConvexPolygonShape3D_ihsg2")
 
-[node name="entity_0_brush_7_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_7_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=873483264]
 shape = SubResource("ConvexPolygonShape3D_oc1cy")
 
-[node name="entity_0_brush_8_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_8_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=582455725]
 shape = SubResource("ConvexPolygonShape3D_pgwcj")
 
-[node name="entity_0_brush_9_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_9_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=30280750]
 shape = SubResource("ConvexPolygonShape3D_64hnh")
 
-[node name="entity_0_brush_10_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_10_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=1310972797]
 shape = SubResource("ConvexPolygonShape3D_75mh5")
 
-[node name="entity_0_brush_11_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_11_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=191326329]
 shape = SubResource("ConvexPolygonShape3D_4wv6t")
 
-[node name="entity_0_brush_12_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_12_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=1771409354]
 shape = SubResource("ConvexPolygonShape3D_3rcgi")
 
-[node name="entity_0_brush_13_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_13_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=79742341]
 shape = SubResource("ConvexPolygonShape3D_mb5g8")
 
-[node name="entity_0_brush_14_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_14_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=1312189999]
 shape = SubResource("ConvexPolygonShape3D_tlwf1")
 
-[node name="entity_0_brush_15_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_15_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=130578911]
 shape = SubResource("ConvexPolygonShape3D_wg70c")
 
-[node name="entity_0_brush_16_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_16_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=1870014468]
 shape = SubResource("ConvexPolygonShape3D_104kc")
 
-[node name="entity_0_brush_17_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_17_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=592342216]
 shape = SubResource("ConvexPolygonShape3D_e311n")
 
-[node name="entity_0_brush_18_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_18_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=1599957313]
 shape = SubResource("ConvexPolygonShape3D_ibeec")
 
-[node name="entity_0_brush_19_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn"]
+[node name="entity_0_brush_19_collision_shape" type="CollisionShape3D" parent="entity_0_worldspawn" unique_id=779071509]
 shape = SubResource("ConvexPolygonShape3D_7x6tq")
 
-[node name="Spawns" type="Node" parent="."]
+[node name="Spawns" type="Node" parent="." unique_id=286452923]
 
-[node name="Team1" type="Node" parent="Spawns"]
+[node name="Team1" type="Node" parent="Spawns" unique_id=190499649]
 
-[node name="Spawn1" type="Marker3D" parent="Spawns/Team1"]
+[node name="Spawn1" type="Marker3D" parent="Spawns/Team1" unique_id=1295016882]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 6.14072, 38)
 
-[node name="Spawn2" type="Marker3D" parent="Spawns/Team1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.74781, 5.60451, 2.57154)
+[node name="Spawn2" type="Marker3D" parent="Spawns/Team1" unique_id=567811031]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4179163, 0.9523666, 39.18477)
 
-[node name="Spawn3" type="Marker3D" parent="Spawns/Team1"]
+[node name="Spawn3" type="Marker3D" parent="Spawns/Team1" unique_id=396925206]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.67064, 1.44523, 38.2671)
 
-[node name="Team2" type="Node" parent="Spawns"]
+[node name="Team2" type="Node" parent="Spawns" unique_id=846302852]
 
-[node name="Spawn1" type="Marker3D" parent="Spawns/Team2"]
+[node name="Spawn1" type="Marker3D" parent="Spawns/Team2" unique_id=206302835]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.1435, 3.77955, 22.7042)
 
-[node name="Spawn2" type="Marker3D" parent="Spawns/Team2"]
+[node name="Spawn2" type="Marker3D" parent="Spawns/Team2" unique_id=805530265]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.0526, 5.60451, 1.51873)
 
-[node name="Spawn3" type="Marker3D" parent="Spawns/Team2"]
+[node name="Spawn3" type="Marker3D" parent="Spawns/Team2" unique_id=1701979246]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.8119, 0.946627, 7.14912)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1425256430]
 environment = SubResource("Environment_vxh6a")
 
-[node name="Sun" type="DirectionalLight3D" parent="."]
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1346747008]
 transform = Transform3D(-0.727773, -0.646481, -0.228931, 0, -0.333807, 0.942642, -0.685819, 0.686029, 0.242936, 0, 0, 0)
 light_energy = 1.5
 shadow_enabled = true

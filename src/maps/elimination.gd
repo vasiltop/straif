@@ -6,7 +6,7 @@ const EliminationUiScene := preload("res://src/maps/elimination_ui.tscn")
 const FREEZE_TIME := 10.0
 const ROUND_TIME := 60.0
 const MATCH_END_TIME := 8.0
-const WIN_SCORE := 13
+const WIN_SCORE := 5
 
 enum Phase { WAITING, FREEZE, LIVE, MATCH_END }
 
