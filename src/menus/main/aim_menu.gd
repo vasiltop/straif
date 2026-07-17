@@ -11,7 +11,7 @@ const LEADERBOARD_TAB_OVERALL := 1
 const SCENARIO_INFO := {
 	SCENARIO_GRIDSHOT: {
 		"label": "Gridshot",
-		"description": "Clear a 3x3 wall of targets for chaining speed and accuracy."
+		"description": "Keep three targets up, refilling the wall as fast as you clear them."
 	},
 	SCENARIO_FLICK: {
 		"label": "Flick",
@@ -126,57 +126,60 @@ func _can_apply_overall_request(generation: int) -> bool:
 	return is_inside_tree() and generation == overall_request_generation
 
 func _populate_scenario_rows(scores: Array) -> void:
-	_clear_rows(scenario_rows)
-	scenario_rows.add_child(_create_header_row(["#", "Player", "Score", "Accuracy", "Reaction"]))
+	var data_rows: Array = []
 	for entry in scores:
-		scenario_rows.add_child(_create_data_row([
+		data_rows.append([
 			"#%d" % entry.position,
 			entry.username,
 			str(entry.score),
 			"%.1f%%" % entry.accuracy,
 			_format_reaction(entry.avg_reaction_ms),
-		]))
+		])
+	_build_leaderboard_grid(scenario_rows, ["#", "Player", "Score", "Accuracy", "Reaction"], data_rows, 1)
 
 func _populate_overall_rows(scores: Array) -> void:
-	_clear_rows(overall_rows)
-	overall_rows.add_child(_create_header_row(["#", "Player", "Total", "Scenarios", "Accuracy", "Reaction"]))
+	var data_rows: Array = []
 	var rank := 1
 	for entry in scores:
-		overall_rows.add_child(_create_data_row([
+		data_rows.append([
 			"#%d" % rank,
 			entry.username,
 			str(entry.total_score),
 			str(entry.scenarios_completed),
 			"%.1f%%" % entry.accuracy,
 			_format_reaction(entry.avg_reaction_ms),
-		]))
+		])
 		rank += 1
+	_build_leaderboard_grid(overall_rows, ["#", "Player", "Total", "Scenarios", "Accuracy", "Reaction"], data_rows, 1)
 
-func _create_header_row(columns: Array[String]) -> HBoxContainer:
-	return _create_row(columns, true)
-
-func _create_data_row(columns: Array[String]) -> HBoxContainer:
-	return _create_row(columns, false)
-
-func _create_row(columns: Array[String], is_header: bool) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_theme_constant_override("separation", 12)
+func _build_leaderboard_grid(container: VBoxContainer, columns: Array, data_rows: Array, expand_index: int) -> void:
+	_clear_rows(container)
+	var grid := GridContainer.new()
+	grid.columns = columns.size()
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation", 18)
+	grid.add_theme_constant_override("v_separation", 8)
 
 	for index in range(columns.size()):
-		var label := Label.new()
-		label.text = columns[index]
-		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL if index == 1 else Control.SIZE_FILL
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if index <= 1 else HORIZONTAL_ALIGNMENT_RIGHT
-		if index == 1:
-			label.size_flags_stretch_ratio = 1.5
-		if is_header:
-			label.add_theme_font_size_override("font_size", 15)
-			label.modulate = Color(0.72, 0.78, 0.84, 1.0)
-		else:
-			label.add_theme_font_size_override("font_size", 17)
-		row.add_child(label)
-	return row
+		grid.add_child(_create_cell(str(columns[index]), index, expand_index, true))
+
+	for row in data_rows:
+		for index in range(row.size()):
+			grid.add_child(_create_cell(str(row[index]), index, expand_index, false))
+
+	container.add_child(grid)
+
+func _create_cell(text: String, index: int, expand_index: int, is_header: bool) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL if index == expand_index else Control.SIZE_FILL
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if index <= expand_index else HORIZONTAL_ALIGNMENT_RIGHT
+	if is_header:
+		label.add_theme_font_size_override("font_size", 15)
+		label.modulate = Color(0.72, 0.78, 0.84, 1.0)
+	else:
+		label.add_theme_font_size_override("font_size", 17)
+	return label
 
 func _format_reaction(avg_reaction_ms: float) -> String:
 	if is_zero_approx(avg_reaction_ms):

@@ -10,7 +10,7 @@ const PLAYER_RESET_HEALTH := 100.0
 const GRIDSHOT_COLUMNS := 3
 const GRIDSHOT_ROWS := 3
 const GRIDSHOT_SPACING := Vector2(2.4, 1.55)
-const GRIDSHOT_WAVE_BONUS := 250
+const GRIDSHOT_ACTIVE_TARGETS := 3
 const FLICK_MIN_REPOSITION_DISTANCE := 1.35
 const TRACKING_SAMPLE_INTERVAL := 0.05
 const TRACKING_REACQUIRE_DELAY := 0.2
@@ -48,7 +48,7 @@ var hits := 0
 var misses := 0
 var reaction_samples: Array[float] = []
 var active_targets: Array = []
-var grid_wave_started_at := 0.0
+var gridshot_slots := {}
 var last_flick_position := Vector3.ZERO
 var tracking_target = null
 var tracking_sample_accumulator := 0.0
@@ -137,12 +137,12 @@ func retry_session() -> void:
 	misses = 0
 	reaction_samples.clear()
 	active_targets.clear()
+	gridshot_slots.clear()
 	tracking_target = null
 	tracking_sample_accumulator = 0.0
 	tracking_has_contact = false
 	tracking_pending_reaction_started_at = 0.0
 	tracking_loss_started_at = -1.0
-	grid_wave_started_at = 0.0
 	last_flick_position = target_wall_anchor.global_position
 
 	_clear_targets()
@@ -291,10 +291,28 @@ func _end_session() -> void:
 func _spawn_gridshot_wave() -> void:
 	_clear_targets()
 	active_targets.clear()
-	grid_wave_started_at = _session_elapsed()
-	for target_position in _grid_positions():
-		var target = _create_target(target_position)
-		active_targets.append(target)
+	gridshot_slots.clear()
+	for _i in GRIDSHOT_ACTIVE_TARGETS:
+		_spawn_gridshot_target()
+
+func _spawn_gridshot_target() -> void:
+	var index := _random_free_grid_index()
+	if index < 0:
+		return
+	var positions := _grid_positions()
+	var target = _create_target(positions[index])
+	target.set_meta("grid_index", index)
+	gridshot_slots[index] = target
+	active_targets.append(target)
+
+func _random_free_grid_index() -> int:
+	var free_indices: Array[int] = []
+	for index in GRIDSHOT_COLUMNS * GRIDSHOT_ROWS:
+		if not gridshot_slots.has(index):
+			free_indices.append(index)
+	if free_indices.is_empty():
+		return -1
+	return free_indices[rng.randi_range(0, free_indices.size() - 1)]
 
 func _spawn_flick_target() -> void:
 	active_targets.clear()
@@ -304,7 +322,7 @@ func _spawn_flick_target() -> void:
 func _spawn_tracking_target() -> void:
 	active_targets.clear()
 	tracking_target = _create_target(target_wall_anchor.global_position)
-	tracking_target.configure_tracking_motion(target_wall_anchor.global_position, Vector2(3.4, 1.55), 1.15, Vector2(rng.randf_range(0.0, PI), rng.randf_range(0.0, PI)))
+	tracking_target.configure_tracking_motion(target_wall_anchor.global_position, Vector2(3.6, 1.7), Vector2(4.0, 7.5), Vector2(0.3, 0.75))
 	active_targets.append(tracking_target)
 	tracking_pending_reaction_started_at = 0.0
 
@@ -375,26 +393,19 @@ func _handle_target_hit(target, hit_position: Vector3) -> bool:
 	match selected_scenario:
 		"gridshot":
 			score += _gridshot_hit_score(reaction_time)
-			if _all_grid_targets_cleared():
-				score += _gridshot_wave_bonus(current_time - grid_wave_started_at)
-				_spawn_gridshot_wave()
+			if target.has_meta("grid_index"):
+				gridshot_slots.erase(target.get_meta("grid_index"))
+			active_targets.erase(target)
+			target.queue_free()
+			_spawn_gridshot_target()
 		"flick":
 			score += _flick_hit_score(reaction_time)
 			target.activate(_next_flick_position(), current_time)
 
 	return true
 
-func _all_grid_targets_cleared() -> bool:
-	for target in active_targets:
-		if target.active:
-			return false
-	return true
-
 func _gridshot_hit_score(reaction_time: float) -> int:
 	return 100 + int(clampf((1.15 - reaction_time) * 160.0, 0.0, 240.0))
-
-func _gridshot_wave_bonus(clear_time: float) -> int:
-	return GRIDSHOT_WAVE_BONUS + int(clampf((4.0 - clear_time) * 120.0, 0.0, 420.0))
 
 func _flick_hit_score(reaction_time: float) -> int:
 	return 160 + int(clampf((1.0 - reaction_time) * 220.0, 0.0, 320.0))
