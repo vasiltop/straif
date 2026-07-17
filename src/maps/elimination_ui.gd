@@ -20,11 +20,6 @@ const PHASE_FREEZE := 1
 const PHASE_LIVE := 2
 const PHASE_MATCH_END := 3
 
-const ALIVE_COLOR := Color(0.82, 0.84, 0.87, 1.0)
-const DEAD_NAME_COLOR := Color(0.58, 0.57, 0.60, 1.0)
-const DEAD_STATE_COLOR := Color(0.72, 0.39, 0.39, 1.0)
-const EMPTY_TEAM_COLOR := Color(0.53, 0.54, 0.58, 1.0)
-
 var spectator_target_id := 0
 var spectator_index := -1
 var was_locally_dead := false
@@ -58,12 +53,12 @@ func update_round(phase: int, seconds: int, score1: int, score2: int, winner: in
 	timer_label.text = "%02d:%02d" % [int(seconds / 60), seconds % 60]
 	team1_score_label.text = str(score1)
 	team2_score_label.text = str(score2)
-	scoreboard_score_label.text = "TEAM 1  %d  -  %d  TEAM 2" % [score1, score2]
+	scoreboard_score_label.text = "Team 1: %d - Team 2: %d" % [score1, score2]
 
 	var match_over := phase == PHASE_MATCH_END
 	match_end_panel.visible = match_over
 	if match_over:
-		match_end_label.text = "TEAM %d WINS THE MATCH" % winner
+		match_end_label.text = "Team %d wins the match" % winner
 
 
 func refresh_scoreboard() -> void:
@@ -101,14 +96,14 @@ func on_damaged(health: float) -> void:
 func _phase_text(phase: int) -> String:
 	match phase:
 		PHASE_WAITING:
-			return "WAITING FOR PLAYERS"
+			return "Waiting for players"
 		PHASE_FREEZE:
-			return "FREEZE TIME"
+			return "Freeze time"
 		PHASE_LIVE:
-			return "ROUND LIVE"
+			return "Round live"
 		PHASE_MATCH_END:
-			return "MATCH OVER"
-	return "WAITING FOR PLAYERS"
+			return "Match over"
+	return "Waiting for players"
 
 
 func _clear_rows(container: VBoxContainer) -> void:
@@ -120,7 +115,6 @@ func _clear_rows(container: VBoxContainer) -> void:
 func _add_waiting_row(container: VBoxContainer) -> void:
 	var waiting := Label.new()
 	waiting.text = "Waiting for player..."
-	waiting.add_theme_color_override("font_color", EMPTY_TEAM_COLOR)
 	waiting.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	container.add_child(waiting)
 
@@ -140,13 +134,9 @@ func _add_player_row(container: VBoxContainer, player: Player) -> void:
 	state.custom_minimum_size = Vector2(52.0, 0.0)
 
 	if player.is_dead:
-		player_name.add_theme_color_override("font_color", DEAD_NAME_COLOR)
-		state.text = "DEAD"
-		state.add_theme_color_override("font_color", DEAD_STATE_COLOR)
+		state.text = "Dead"
 	else:
-		player_name.add_theme_color_override("font_color", ALIVE_COLOR)
-		state.text = "ALIVE"
-		state.add_theme_color_override("font_color", ALIVE_COLOR)
+		state.text = "Alive"
 
 	row.add_child(player_name)
 	row.add_child(state)
@@ -199,7 +189,7 @@ func _spectate(teammates: Array[Player], next_index: int) -> void:
 	var target := teammates[spectator_index]
 	spectator_target_id = target.pid
 	target.camera.make_current()
-	spectator_label.text = "SPECTATING %s\nClick to switch" % target.player_name()
+	spectator_label.text = "Spectating %s\nClick to switch" % target.player_name()
 	spectator_panel.visible = true
 
 
@@ -208,7 +198,7 @@ func _show_no_teammates(local_player: Player) -> void:
 	spectator_index = -1
 	if local_player.ragdoll_camera != null:
 		local_player.ragdoll_camera.make_current()
-	spectator_label.text = "NO TEAMMATES ALIVE"
+	spectator_label.text = "No teammates alive"
 	spectator_panel.visible = true
 
 

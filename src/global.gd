@@ -12,7 +12,12 @@ func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
 	if args.is_empty():
 		args = OS.get_cmdline_args()
+
+	if OS.has_feature("editor_runtime"):
+		args = args.slice(2)
+
 	print(args)
+
 	is_server = len(args) > 2
 	
 	if not is_server:
