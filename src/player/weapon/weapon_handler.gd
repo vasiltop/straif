@@ -1,6 +1,7 @@
 class_name WeaponHandler extends Node3D
 
 signal shot(mag_ammo: int, reserve_ammo: int)
+signal bullet_fired(collider: Object, hit_position: Vector3)
 
 @onready var player: Player = $"../../.."
 @onready var weapon_scene: Node3D = null
@@ -74,7 +75,7 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 		reset_ammo()
 
 		# move it out of the way so it doesnt flicker
-		weapon_scene.global_position = Vector3.ZERO
+		weapon_scene.position = Vector3.ZERO
 
 		var gun_parent := gun_container
 		if is_third_person: 
@@ -351,10 +352,11 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 	query.collision_mask = 1 << 0 | 1 << 2
 	var result := space_state.intersect_ray(query)
 	var hit_pos := origin + direction * distance
+	var collider: Object = null
 	
 	if result != {}:
 		hit_pos = result.position
-		var collider = result.collider
+		collider = result.collider
 		
 		if collider is BodyPart:
 			var body_part: BodyPart = collider
@@ -375,6 +377,8 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 			else:
 				_spawn_bullet_hole(hit_pos, result.normal)
 	
+	bullet_fired.emit(collider, hit_pos)
+
 	if Global.mp():
 		_gun_visuals.rpc(hit_pos)
 	else:

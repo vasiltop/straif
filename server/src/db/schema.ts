@@ -1,14 +1,18 @@
 import {
+  boolean,
   pgTable,
   primaryKey,
   text,
   timestamp,
   integer,
   pgEnum,
-  boolean,
+  index,
+  real,
 } from 'drizzle-orm/pg-core';
+import { AIM_SCENARIOS } from '../aim_leaderboard';
 
 export const run_mode = pgEnum('mode', ['bhop', 'target']);
+export const aim_scenario = pgEnum('aim_scenario', AIM_SCENARIOS);
 
 export const runs = pgTable(
   'runs',
@@ -25,6 +29,32 @@ export const runs = pgTable(
   },
   (table) => [
     primaryKey({ columns: [table.map_name, table.steam_id, table.mode] }),
+  ]
+);
+
+export const aim_scores = pgTable(
+  'aim_scores',
+  {
+    steam_id: text('steam_id').notNull(),
+    username: text('username').notNull(),
+    scenario: aim_scenario('scenario').notNull(),
+    score: integer('score').notNull(),
+    hits: integer('hits').notNull(),
+    misses: integer('misses').notNull(),
+    accuracy: real('accuracy').notNull(),
+    avg_reaction_ms: integer('avg_reaction_ms').notNull(),
+    created_at: timestamp('created_at', { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.steam_id, table.scenario] }),
+    index('aim_scores_scenario_score_idx').on(
+      table.scenario,
+      table.score,
+      table.accuracy,
+      table.avg_reaction_ms
+    ),
   ]
 );
 

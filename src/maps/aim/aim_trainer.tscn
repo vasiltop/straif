@@ -1,0 +1,408 @@
+[gd_scene load_steps=14 format=4]
+
+[ext_resource type="Script" path="res://src/maps/aim/aim_trainer.gd" id="1_script"]
+[ext_resource type="Theme" path="res://src/main_theme.tres" id="3_theme"]
+[ext_resource type="StyleBox" path="res://src/panel_style.tres" id="4_panel"]
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 1
+background_color = Color(0.0509804, 0.0588235, 0.0705882, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.560784, 0.607843, 0.678431, 1)
+ambient_light_energy = 0.7
+reflected_light_source = 1
+ssao_enabled = true
+ssao_radius = 0.8
+tonemap_mode = 2
+adjustment_enabled = true
+adjustment_brightness = 1.05
+adjustment_contrast = 1.05
+
+[sub_resource type="BoxMesh" id="BoxMesh_unit"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.0862745, 0.101961, 0.12549, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.109804, 0.12549, 0.14902, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_target_wall"]
+albedo_color = Color(0.866667, 0.85098, 0.803922, 1)
+roughness = 0.58
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cyan"]
+albedo_color = Color(0.360784, 0.85098, 0.921569, 1)
+roughness = 0.28
+emission_enabled = true
+emission = Color(0.227451, 0.831373, 0.960784, 1)
+emission_energy_multiplier = 1.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orange"]
+albedo_color = Color(0.941176, 0.541176, 0.235294, 1)
+roughness = 0.34
+emission_enabled = true
+emission = Color(0.690196, 0.266667, 0.0784314, 1)
+emission_energy_multiplier = 1.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_safe_pad"]
+albedo_color = Color(0.156863, 0.235294, 0.270588, 1)
+roughness = 0.85
+emission_enabled = true
+emission = Color(0.156863, 0.470588, 0.537255, 1)
+emission_energy_multiplier = 0.42
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor_ceiling"]
+size = Vector3(17, 0.5, 28)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_end_wall"]
+size = Vector3(17, 6.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_side_wall"]
+size = Vector3(0.5, 6.5, 28)
+
+[node name="AimTrainer" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-54, -32, 0)
+light_color = Color(0.960784, 0.941176, 0.901961, 1)
+light_energy = 1.35
+shadow_enabled = true
+
+[node name="TargetFill" type="OmniLight3D" parent="."]
+position = Vector3(0, 4.1, -7.5)
+light_color = Color(0.309804, 0.756863, 0.886275, 1)
+light_energy = 1.4
+omni_range = 18.0
+shadow_enabled = true
+
+[node name="SpawnFill" type="OmniLight3D" parent="."]
+position = Vector3(0, 3.2, 8.5)
+light_color = Color(0.960784, 0.615686, 0.313726, 1)
+light_energy = 0.8
+omni_range = 14.0
+
+[node name="Arena" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Arena"]
+position = Vector3(0, -0.25, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Floor"]
+shape = SubResource("BoxShape3D_floor_ceiling")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Floor"]
+scale = Vector3(17, 0.5, 28)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor")
+
+[node name="Ceiling" type="StaticBody3D" parent="Arena"]
+position = Vector3(0, 6.25, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Ceiling"]
+shape = SubResource("BoxShape3D_floor_ceiling")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Ceiling"]
+scale = Vector3(17, 0.5, 28)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+
+[node name="BackWall" type="StaticBody3D" parent="Arena"]
+position = Vector3(0, 3, -14.25)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/BackWall"]
+shape = SubResource("BoxShape3D_end_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/BackWall"]
+scale = Vector3(17, 6.5, 0.5)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+
+[node name="FrontWall" type="StaticBody3D" parent="Arena"]
+position = Vector3(0, 3, 14.25)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/FrontWall"]
+shape = SubResource("BoxShape3D_end_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/FrontWall"]
+scale = Vector3(17, 6.5, 0.5)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+
+[node name="LeftWall" type="StaticBody3D" parent="Arena"]
+position = Vector3(-8.75, 3, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/LeftWall"]
+shape = SubResource("BoxShape3D_side_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/LeftWall"]
+scale = Vector3(0.5, 6.5, 28)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+
+[node name="RightWall" type="StaticBody3D" parent="Arena"]
+position = Vector3(8.75, 3, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/RightWall"]
+shape = SubResource("BoxShape3D_side_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/RightWall"]
+scale = Vector3(0.5, 6.5, 28)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+
+[node name="TargetWall" type="MeshInstance3D" parent="Arena"]
+position = Vector3(0, 3, -13.84)
+scale = Vector3(11.2, 4.9, 0.2)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_target_wall")
+
+[node name="SafePad" type="MeshInstance3D" parent="Arena"]
+position = Vector3(0, 0.01, 8)
+scale = Vector3(4.8, 0.02, 5.5)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_safe_pad")
+
+[node name="CyanStripLeft" type="MeshInstance3D" parent="Arena"]
+position = Vector3(-4.65, 3, -13.65)
+scale = Vector3(0.18, 4.6, 0.12)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan")
+
+[node name="CyanStripRight" type="MeshInstance3D" parent="Arena"]
+position = Vector3(4.65, 3, -13.65)
+scale = Vector3(0.18, 4.6, 0.12)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan")
+
+[node name="OrangeCeilingStrip" type="MeshInstance3D" parent="Arena"]
+position = Vector3(0, 5.78, -4.2)
+scale = Vector3(6.4, 0.05, 0.14)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_orange")
+
+[node name="OrangeBaseStrip" type="MeshInstance3D" parent="Arena"]
+position = Vector3(0, 0.58, -13.62)
+scale = Vector3(5.4, 0.05, 0.12)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_orange")
+
+[node name="TargetWallAnchor" type="Marker3D" parent="."]
+position = Vector3(0, 3, -13.42)
+
+[node name="AimTargets" type="Node3D" parent="."]
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+position = Vector3(0, 0, 8)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="PrimaryPanel" type="Panel" parent="HUD"]
+theme = ExtResource("3_theme")
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -190.0
+offset_top = 24.0
+offset_right = 190.0
+offset_bottom = 110.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("4_panel")
+
+[node name="TimerLabel" type="Label" parent="HUD/PrimaryPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 14.0
+offset_right = 160.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 30
+text = "TIME\n60.0"
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="HUD/PrimaryPanel"]
+layout_mode = 0
+offset_left = 188.0
+offset_top = 14.0
+offset_right = 356.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 30
+text = "SCORE\n0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SecondaryPanel" type="Panel" parent="HUD"]
+theme = ExtResource("3_theme")
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -286.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 184.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("4_panel")
+
+[node name="ScenarioLabel" type="Label" parent="HUD/SecondaryPanel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 12.0
+offset_right = 238.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 18
+text = "SCENARIO\nGRIDSHOT"
+
+[node name="HitsLabel" type="Label" parent="HUD/SecondaryPanel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 50.0
+offset_right = 108.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 17
+text = "HITS\n0"
+
+[node name="MissesLabel" type="Label" parent="HUD/SecondaryPanel"]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 50.0
+offset_right = 238.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 17
+text = "MISSES\n0"
+
+[node name="AccuracyLabel" type="Label" parent="HUD/SecondaryPanel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 106.0
+offset_right = 238.0
+offset_bottom = 136.0
+theme_override_font_sizes/font_size = 17
+text = "ACCURACY\n0.0%"
+
+[node name="ReactionLabel" type="Label" parent="HUD/SecondaryPanel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 146.0
+offset_right = 238.0
+offset_bottom = 176.0
+theme_override_font_sizes/font_size = 17
+text = "AVG REACTION\n--"
+
+[node name="StatusLabel" type="Label" parent="HUD"]
+theme = ExtResource("3_theme")
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_top = 128.0
+offset_right = 180.0
+offset_bottom = 162.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Starting in 3.0"
+horizontal_alignment = 1
+
+[node name="ResultsPanel" type="Panel" parent="HUD"]
+visible = false
+theme = ExtResource("3_theme")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -208.0
+offset_right = 250.0
+offset_bottom = 208.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("4_panel")
+
+[node name="ResultsTitle" type="Label" parent="HUD/ResultsPanel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 24.0
+offset_right = 470.0
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 28
+text = "Session Results"
+horizontal_alignment = 1
+
+[node name="ResultsScoreLabel" type="Label" parent="HUD/ResultsPanel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 72.0
+offset_right = 470.0
+offset_bottom = 108.0
+theme_override_font_sizes/font_size = 26
+text = "Score 0"
+horizontal_alignment = 1
+
+[node name="ResultsStatsLabel" type="Label" parent="HUD/ResultsPanel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 122.0
+offset_right = 460.0
+offset_bottom = 220.0
+theme_override_font_sizes/font_size = 18
+text = "Hits 0\nMisses 0\nAccuracy 0.0%\nAverage Reaction --"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LeaderboardHeading" type="Label" parent="HUD/ResultsPanel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 236.0
+offset_right = 460.0
+offset_bottom = 262.0
+theme_override_font_sizes/font_size = 18
+text = "Scenario Leaderboard"
+horizontal_alignment = 1
+
+[node name="LeaderboardStatus" type="Label" parent="HUD/ResultsPanel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 268.0
+offset_right = 460.0
+offset_bottom = 294.0
+theme_override_font_sizes/font_size = 16
+text = "Leaderboard ready for integration"
+horizontal_alignment = 1
+
+[node name="LeaderboardRows" type="VBoxContainer" parent="HUD/ResultsPanel"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -2.0
+offset_right = 190.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="RetryButton" type="Button" parent="HUD/ResultsPanel"]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 342.0
+offset_right = 240.0
+offset_bottom = 382.0
+text = "Retry"
+
+[node name="MainMenuButton" type="Button" parent="HUD/ResultsPanel"]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 342.0
+offset_right = 416.0
+offset_bottom = 382.0
+text = "Main Menu"

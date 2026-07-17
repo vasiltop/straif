@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="14_ynrsg"]
 [ext_resource type="PackedScene" uid="uid://dafd7bewek8ax" path="res://src/maps/tiles/vent_1.tscn" id="15_7pey8"]
 [ext_resource type="PackedScene" uid="uid://b01o82sp4jlmx" path="res://src/maps/tiles/vent_2.tscn" id="16_i5dmx"]
+[ext_resource type="PackedScene" path="res://src/menus/main/aim_menu.tscn" id="17_aim"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
 size = Vector2(64, 64)
@@ -281,15 +282,20 @@ mode = "bhop"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 1
 
-[node name="Server Browser" parent="MarginContainer/Content/Body" instance=ExtResource("6_og6j4")]
+[node name="Aim Trainer" parent="MarginContainer/Content/Body" instance=ExtResource("17_aim")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Leaderboard" type="Control" parent="MarginContainer/Content/Body"]
+[node name="Server Browser" parent="MarginContainer/Content/Body" instance=ExtResource("6_og6j4")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
+
+[node name="Leaderboard" type="Control" parent="MarginContainer/Content/Body"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
 
 [node name="Overall" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard"]
 layout_mode = 1

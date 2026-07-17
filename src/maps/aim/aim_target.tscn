@@ -1,0 +1,76 @@
+[gd_scene load_steps=8 format=4]
+
+[ext_resource type="Script" path="res://src/maps/aim/aim_target.gd" id="1_script"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_body"]
+radius = 0.48
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_outer"]
+albedo_color = Color(0.905882, 0.901961, 0.858824, 1)
+metallic = 0.05
+roughness = 0.38
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mid"]
+albedo_color = Color(0.92549, 0.517647, 0.223529, 1)
+roughness = 0.32
+emission_enabled = true
+emission = Color(0.392157, 0.145098, 0.0352941, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inner"]
+albedo_color = Color(0.368627, 0.854902, 0.913725, 1)
+roughness = 0.18
+emission_enabled = true
+emission = Color(0.266667, 0.898039, 1, 1)
+emission_energy_multiplier = 1.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_outer"]
+top_radius = 0.46
+bottom_radius = 0.46
+height = 0.08
+radial_segments = 48
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mid"]
+top_radius = 0.31
+bottom_radius = 0.31
+height = 0.085
+radial_segments = 48
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_inner"]
+top_radius = 0.14
+bottom_radius = 0.14
+height = 0.09
+radial_segments = 48
+rings = 1
+
+[node name="AimTarget" type="StaticBody3D" groups=["aim_target"]]
+visible = false
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_body")
+disabled = true
+
+[node name="Visual" type="Node3D" parent="."]
+visible = false
+
+[node name="OuterRing" type="MeshInstance3D" parent="Visual"]
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("CylinderMesh_outer")
+surface_material_override/0 = SubResource("StandardMaterial3D_outer")
+
+[node name="MidRing" type="MeshInstance3D" parent="Visual"]
+position = Vector3(0, 0, 0.015)
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("CylinderMesh_mid")
+surface_material_override/0 = SubResource("StandardMaterial3D_mid")
+
+[node name="Bullseye" type="MeshInstance3D" parent="Visual"]
+position = Vector3(0, 0, 0.03)
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("CylinderMesh_inner")
+surface_material_override/0 = SubResource("StandardMaterial3D_inner")

@@ -9,16 +9,13 @@ import {
   ban_auth,
 } from '../middleware';
 import { z } from 'zod';
-import {
-  describeRoute,
-  resolver,
-  validator as zValidator,
-} from 'hono-openapi';
+import { describeRoute, resolver, validator as zValidator } from 'hono-openapi';
 import { discord_client } from '../index';
 import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';
 import { hide_route } from './common';
 import { get_maps_of_mode, type RunMode } from '../maps';
+import aim_leaderboard from './aim_leaderboard';
 
 const app = new Hono<{ Variables: Variables }>();
 
@@ -530,5 +527,7 @@ app.post(
     }
   }
 );
+
+app.route('/aim', aim_leaderboard);
 
 export default app;
