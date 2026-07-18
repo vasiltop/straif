@@ -6,21 +6,21 @@ import {
   paginate_leaderboard,
 } from './leaderboard_pagination';
 
-test('leaderboard pagination preserves the compatibility defaults', () => {
+void test('leaderboard pagination preserves the compatibility defaults', () => {
   assert.deepEqual(LeaderboardPaginationQuery.parse({}), {
     page: 0,
     limit: 10,
   });
 });
 
-test('leaderboard pagination coerces valid query strings', () => {
+void test('leaderboard pagination coerces valid query strings', () => {
   assert.deepEqual(
     LeaderboardPaginationQuery.parse({ page: '2', limit: '25' }),
     { page: 2, limit: 25 }
   );
 });
 
-test('leaderboard pagination rejects invalid and excessive values', () => {
+void test('leaderboard pagination rejects invalid and excessive values', () => {
   assert.equal(
     LeaderboardPaginationQuery.safeParse({ page: '-1', limit: '25' }).success,
     false
@@ -35,11 +35,11 @@ test('leaderboard pagination rejects invalid and excessive values', () => {
   );
 });
 
-test('get_leaderboard_offset uses zero-based pages', () => {
+void test('get_leaderboard_offset uses zero-based pages', () => {
   assert.equal(get_leaderboard_offset({ page: 3, limit: 25 }), 75);
 });
 
-test('leaderboard pagination accepts the website page size', () => {
+void test('leaderboard pagination accepts the website page size', () => {
   const parsed = LeaderboardPaginationQuery.parse({
     page: '1',
     limit: '25',
@@ -49,7 +49,7 @@ test('leaderboard pagination accepts the website page size', () => {
   assert.equal(get_leaderboard_offset(parsed), 25);
 });
 
-test('paginate_leaderboard preserves order and reports the unsliced total', () => {
+void test('paginate_leaderboard preserves order and reports the unsliced total', () => {
   const result = paginate_leaderboard(
     ['first', 'second', 'third', 'fourth', 'fifth'],
     { page: 1, limit: 2 }
@@ -61,7 +61,7 @@ test('paginate_leaderboard preserves order and reports the unsliced total', () =
   });
 });
 
-test('paginate_leaderboard can expose every overall entry across pages', () => {
+void test('paginate_leaderboard can expose every overall entry across pages', () => {
   const entries = Array.from({ length: 53 }, (_, index) => ({
     rank: index + 1,
   }));

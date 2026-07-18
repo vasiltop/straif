@@ -1,7 +1,4 @@
-import {
-  createRouter,
-  createWebHistory,
-} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
@@ -24,27 +21,27 @@ const routes = [
         'Browse Straif movement, target, aim, and overall leaderboards.',
     },
   },
-]
+];
 
 function getDescriptionMetaTag() {
-  let metaDescription = document.querySelector('meta[name="description"]')
+  let metaDescription = document.querySelector('meta[name="description"]');
 
   if (!metaDescription) {
-    metaDescription = document.createElement('meta')
-    metaDescription.setAttribute('name', 'description')
-    document.head.appendChild(metaDescription)
+    metaDescription = document.createElement('meta');
+    metaDescription.setAttribute('name', 'description');
+    document.head.appendChild(metaDescription);
   }
 
-  return metaDescription
+  return metaDescription;
 }
 
 export function createStraifRouter(history = createWebHistory()) {
-  const router = createRouter({ history, routes })
+  const router = createRouter({ history, routes });
 
   router.afterEach((to) => {
-    document.title = to.meta.title
-    getDescriptionMetaTag().setAttribute('content', to.meta.description)
-  })
+    document.title = to.meta.title;
+    getDescriptionMetaTag().setAttribute('content', to.meta.description);
+  });
 
-  return router
+  return router;
 }

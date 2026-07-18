@@ -5,11 +5,11 @@ Straif is a fast-paced 3D platforming shooter where you race through a variety o
 It is heavily inspired by source engine games such as Counter Strike: Source, leaving a high skill ceiling for players to compete.
 
 ## Quick Links
-- [Website](#Website)
-- [Web Api](#Web-Api)
-- [Screenshots](#Screenshots)
-- [Local Setup](#Local-Setup)
-- [Steam Deployment](#Steam-Deployment)
+- [Website](#website)
+- [Web Api](#web-api)
+- [Screenshots](#screenshots)
+- [Local Setup](#local-setup)
+- [Steam Deployment](#steam-deployment)
 
 ## Website
 
@@ -41,6 +41,10 @@ git clone https://github.com/vasiltop/straif
 cd straif
 godot -e
 ```
+
+Requires Godot 4.6.1. Run `./scripts/setup-dev.sh` to install development
+dependencies and Git hooks. Run `./scripts/test-godot.sh` for the Godot test
+suite and `./scripts/test-e2e.sh` for the multi-process ENet test.
 
 ### Hosting a game server
 
@@ -106,9 +110,10 @@ To run the server directly against the Dockerized database:
 cd server
 cp .env.example .env
 docker compose up -d db
-npm install
-npx drizzle-kit push
-npm run dev
+corepack enable
+pnpm install --frozen-lockfile
+pnpm db:push
+pnpm dev
 ```
 
 ## Steam Deployment

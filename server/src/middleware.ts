@@ -62,24 +62,38 @@ export const steam_auth = createMiddleware(async (c, next) => {
   return next();
 });
 
-export const admin_auth = createMiddleware(async (c, next) => {
-  const auth_ticket = c.req.header('auth-ticket');
+export type AdminAuthDependencies = {
+  authenticateTicket(ticket: string): Promise<string>;
+  isAdmin(steamId: string): Promise<boolean>;
+};
 
-  if (!auth_ticket) {
-    return c.json({ error: 'You are not an administrator' }, 401);
-  }
+export function createAdminAuth(deps: AdminAuthDependencies) {
+  return createMiddleware(async (c, next) => {
+    const auth_ticket = c.req.header('auth-ticket');
 
-  const sid = await get_steam_id_from_ticket(auth_ticket);
+    if (!auth_ticket) {
+      return c.json({ error: 'You are not an administrator' }, 401);
+    }
 
-  if (sid == '') {
-    return c.json({ error: 'Invalid Steam Auth Ticket' }, 401);
-  }
+    const sid = await deps.authenticateTicket(auth_ticket);
 
-  if (!is_admin(sid)) {
-    return c.json({ error: 'This user is not an admin.' }, 401);
-  }
+    if (sid == '') {
+      return c.json({ error: 'Invalid Steam Auth Ticket' }, 401);
+    }
 
-  return next();
+    if (!(await deps.isAdmin(sid))) {
+      return c.json({ error: 'This user is not an admin.' }, 401);
+    }
+
+    c.set('steam_id', sid);
+
+    return next();
+  });
+}
+
+export const admin_auth = createAdminAuth({
+  authenticateTicket: get_steam_id_from_ticket,
+  isAdmin: is_admin,
 });
 
 export const ban_auth = createMiddleware(async (c, next) => {

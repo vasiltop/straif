@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
-import LeaderboardTable from './LeaderboardTable.vue'
+import { mount } from '@vue/test-utils';
+import { describe, expect, it } from 'vitest';
+import LeaderboardTable from './LeaderboardTable.vue';
 
 describe('LeaderboardTable', () => {
   it('renders a caption, scoped headers, and formatted cells', () => {
@@ -14,11 +14,11 @@ describe('LeaderboardTable', () => {
         ],
         rows: [{ id: '1', rank: 1, username: 'Alice', time_ms: 18442 }],
       },
-    })
+    });
 
-    expect(wrapper.get('caption').text()).toBe('Rooftops Bhop leaderboard')
-    expect(wrapper.findAll('th[scope="col"]')).toHaveLength(3)
-    expect(wrapper.get('tbody th[scope="row"]').text()).toBe('1')
-    expect(wrapper.text()).toContain('Alice')
-  })
-})
+    expect(wrapper.get('caption').text()).toBe('Rooftops Bhop leaderboard');
+    expect(wrapper.findAll('th[scope="col"]')).toHaveLength(3);
+    expect(wrapper.get('tbody th[scope="row"]').text()).toBe('1');
+    expect(wrapper.text()).toContain('Alice');
+  });
+});

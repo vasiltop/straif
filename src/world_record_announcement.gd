@@ -11,9 +11,11 @@ static func clear_if_disabled(messages: Array[String], enabled: bool) -> void:
 		messages.clear()
 
 static func format_message(record: Dictionary) -> String:
-	return "WORLD RECORD! %s - %s (%s): %.3fs" % [
-		record.username as String,
-		record.map_name as String,
-		record.mode as String,
-		(record.time_ms as int) / 1000.0,
-	]
+	return (
+		"WORLD RECORD! %s - %s (%s): %.3fs" % [
+			record.username as String,
+			record.map_name as String,
+			record.mode as String,
+			(record.time_ms as int) / 1000.0,
+		]
+	)

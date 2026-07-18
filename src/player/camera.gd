@@ -16,10 +16,12 @@ func _process(delta: float) -> void:
 	player.gun_camera.global_transform = global_transform
 	player.camera_anchor.transform.basis = Basis.from_euler(Vector3(_input_rotation.x, 0.0, 0.0))
 	player.global_transform.basis = Basis.from_euler(Vector3(0.0, _input_rotation.y, 0.0))
-	
-	if not player.can_move: return
-	if not player.is_me(): return
-	
+
+	if not player.can_move:
+		return
+	if not player.is_me():
+		return
+
 	if _remaining > 0:
 		_remaining -= delta
 		h_offset = randf_range(-_magnitude, _magnitude)
@@ -28,21 +30,26 @@ func _process(delta: float) -> void:
 		h_offset = 0
 		v_offset = 0
 
-	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED: return
-	
+	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		return
+
 	_input_rotation.x = clampf(_input_rotation.x + _mouse_input.y, deg_to_rad(-90), deg_to_rad(85))
 	_input_rotation.y += _mouse_input.x
 
 	_mouse_input = Vector2.ZERO
 
 func _input(event: InputEvent) -> void:
-	if not player.is_me(): return
-	if not player.can_move: return
-	if not player.can_turn: return
-	
-	var sens: float = Global.settings_manager.value("Controls", "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity")
+	if not player.is_me():
+		return
+	if not player.can_move:
+		return
+	if not player.can_turn:
+		return
+
+	var sensitivity_key := "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity"
+	var sens: float = Global.settings_manager.value("Controls", sensitivity_key)
 	sens = sens / 1000
-	
+
 	if event is InputEventMouseMotion:
 		var ev := event as InputEventMouseMotion
 		_mouse_input.x += -ev.screen_relative.x * sens

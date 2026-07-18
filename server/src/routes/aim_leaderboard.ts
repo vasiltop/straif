@@ -5,13 +5,11 @@ import { and, asc, desc, eq, gt, lt, or, sql } from 'drizzle-orm';
 import { version_compare, steam_auth, ban_auth } from '../middleware';
 import { z } from 'zod';
 import {
-  describeRoute,
-  resolver,
   validator as zValidator,
   type DescribeRouteOptions,
 } from 'hono-openapi';
 import { type Variables } from '../index';
-import { hide_route } from './common';
+import { hide_route, describe_leaderboard_route } from './common';
 import {
   AIM_SCENARIOS,
   parseAimScenario,
@@ -167,40 +165,6 @@ const AvgReaction = AvgReactionExpression.mapWith(Number).as('avg_reaction_ms');
 const DeterministicUsername =
   sql<string>`coalesce(max(${aim_scores.username}), '')`.as('username');
 
-function describe_aim_route<T extends z.ZodTypeAny>(
-  description: string,
-  success_schema: T,
-  options: Omit<DescribeRouteOptions, 'description' | 'responses'> = {}
-) {
-  return describeRoute({
-    description,
-    tags: ['leaderboard'],
-    ...options,
-    responses: {
-      200: {
-        description: 'Successful',
-        content: {
-          'application/json': {
-            schema: resolver(success_schema),
-          },
-        },
-      },
-      400: {
-        description: 'Error',
-        content: {
-          'application/json': {
-            schema: resolver(
-              z.object({
-                error: z.string(),
-              })
-            ),
-          },
-        },
-      },
-    },
-  });
-}
-
 function formatAimScoreRow(
   score: Pick<
     typeof aim_scores.$inferSelect,
@@ -264,7 +228,7 @@ function getRowsAheadCondition(
 
 app.post(
   '/scenarios/:scenario/scores',
-  describe_aim_route(
+  describe_leaderboard_route(
     'Submits a player score for a specific aim scenario and updates that scenario personal best only when the new score is strictly higher.',
     AimScoreSubmissionResponse,
     {
@@ -370,7 +334,7 @@ app.post(
 
 app.get(
   '/scenarios/:scenario/scores',
-  describe_aim_route(
+  describe_leaderboard_route(
     'Fetches a paginated leaderboard for a single aim scenario ordered by score descending, then accuracy descending, then average reaction time ascending.',
     AimScenarioLeaderboardResponse,
     {
@@ -438,7 +402,7 @@ app.get(
 
 app.get(
   '/overall',
-  describe_aim_route(
+  describe_leaderboard_route(
     'Fetches the overall aim leaderboard by aggregating each player’s best score from every completed scenario.',
     AimOverallLeaderboardResponse,
     { parameters: LeaderboardPaginationParameters }

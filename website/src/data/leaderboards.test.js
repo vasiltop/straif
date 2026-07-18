@@ -1,18 +1,15 @@
-import { describe, expect, it } from 'vitest'
-import {
-  getCategoryMaps,
-  normalizeLeaderboardQuery,
-} from './leaderboards'
+import { describe, expect, it } from 'vitest';
+import { getCategoryMaps, normalizeLeaderboardQuery } from './leaderboards';
 
 describe('leaderboard metadata', () => {
   it('excludes bhop-only maps from Target', () => {
     expect(getCategoryMaps('target').map((map) => map.value)).not.toContain(
       'map_taurus'
-    )
+    );
     expect(getCategoryMaps('movement').map((map) => map.value)).toContain(
       'map_taurus'
-    )
-  })
+    );
+  });
 
   it('normalizes incompatible route values', () => {
     expect(
@@ -25,6 +22,6 @@ describe('leaderboard metadata', () => {
       category: 'aim',
       scenario: 'gridshot',
       page: 1,
-    })
-  })
-})
+    });
+  });
+});

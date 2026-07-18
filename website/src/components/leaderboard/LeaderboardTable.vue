@@ -3,13 +3,17 @@ defineProps({
   caption: { type: String, required: true },
   columns: { type: Array, required: true },
   rows: { type: Array, required: true },
-})
+});
 </script>
 
 <template>
   <div class="table-scroll" tabindex="0" aria-label="Scrollable leaderboard">
     <table class="leaderboard-table">
-      <caption>{{ caption }}</caption>
+      <caption>
+        {{
+          caption
+        }}
+      </caption>
       <thead>
         <tr>
           <th v-for="column in columns" :key="column.key" scope="col">

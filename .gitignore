@@ -1,4 +1,6 @@
 .godot/
+.venv/
+.tools/
 /android/
 godothost
 bin
@@ -25,3 +27,4 @@ lerna-debug.log*
 build/
 steam/steam.env
 steam/output/
+artifacts/e2e/

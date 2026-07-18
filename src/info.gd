@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 func alert(message: String) -> void:
 	if current_inst:
 		current_inst.queue_free()
-	
+
 	timer = 0.0
 	var inst: InfoUi = Scene.instantiate()
 	add_child(inst)

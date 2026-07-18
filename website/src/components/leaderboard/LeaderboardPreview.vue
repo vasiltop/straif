@@ -1,20 +1,20 @@
 <script setup>
-import { computed } from 'vue'
-import LeaderboardStatus from './LeaderboardStatus.vue'
-import LeaderboardTable from './LeaderboardTable.vue'
-import { useLeaderboard } from '@/composables/useLeaderboard'
-import { getLeaderboardColumns } from '@/data/leaderboards'
+import { computed } from 'vue';
+import LeaderboardStatus from './LeaderboardStatus.vue';
+import LeaderboardTable from './LeaderboardTable.vue';
+import { useLeaderboard } from '@/composables/useLeaderboard';
+import { getLeaderboardColumns } from '@/data/leaderboards';
 
 const request = computed(() => ({
   category: 'movement',
   map: 'map_rooftops',
   page: 1,
-}))
-const { rows, status, error, reload } = useLeaderboard(request)
+}));
+const { rows, status, error, reload } = useLeaderboard(request);
 const columns = getLeaderboardColumns(request.value).filter(
   (column) => column.key !== 'date'
-)
-const previewRows = computed(() => rows.value.slice(0, 5))
+);
+const previewRows = computed(() => rows.value.slice(0, 5));
 </script>
 
 <template>
@@ -29,9 +29,20 @@ const previewRows = computed(() => rows.value.slice(0, 5))
           name: 'leaderboard',
           query: { category: 'movement', map: 'map_rooftops', page: '1' },
         }"
-      >Full leaderboard</RouterLink>
+        >Full leaderboard</RouterLink
+      >
     </header>
-    <LeaderboardStatus v-if="status !== 'success'" :status="status" :error="error" @retry="reload" />
-    <LeaderboardTable v-else caption="Rooftops Bhop leaderboard preview" :columns="columns" :rows="previewRows" />
+    <LeaderboardStatus
+      v-if="status !== 'success'"
+      :status="status"
+      :error="error"
+      @retry="reload"
+    />
+    <LeaderboardTable
+      v-else
+      caption="Rooftops Bhop leaderboard preview"
+      :columns="columns"
+      :rows="previewRows"
+    />
   </section>
 </template>

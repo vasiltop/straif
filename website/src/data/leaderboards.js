@@ -4,16 +4,16 @@ import {
   formatPercentage,
   formatReaction,
   formatTime,
-} from '@/utils/formatters'
+} from '@/utils/formatters';
 
-export const PAGE_SIZE = 25
+export const PAGE_SIZE = 25;
 
 export const CATEGORIES = [
   { value: 'movement', label: 'Movement' },
   { value: 'target', label: 'Target' },
   { value: 'aim', label: 'Aim' },
   { value: 'overall', label: 'Overall' },
-]
+];
 
 export const MAPS = [
   ['Tutorial', 'Tutorial', ['movement', 'target']],
@@ -30,34 +30,34 @@ export const MAPS = [
   ['map_rooftops2', 'Rooftops 2', ['movement', 'target']],
   ['map_slope', 'Slope', ['movement']],
   ['map_taurus', 'Taurus', ['movement']],
-].map(([value, label, categories]) => ({ value, label, categories }))
+].map(([value, label, categories]) => ({ value, label, categories }));
 
 export const AIM_SCENARIOS = [
   { value: 'gridshot', label: 'Gridshot' },
   { value: 'flick', label: 'Flick' },
   { value: 'tracking', label: 'Tracking' },
-]
+];
 
 export const OVERALL_DISCIPLINES = [
   { value: 'movement', label: 'Movement' },
   { value: 'target', label: 'Target' },
   { value: 'aim', label: 'Aim' },
-]
+];
 
 const rankColumn = {
   key: 'rank',
   label: 'Rank',
   format: (row) => row.rank,
-}
+};
 
 const playerColumn = {
   key: 'player',
   label: 'Player',
   format: (row) => row.username,
-}
+};
 
 export function getCategoryMaps(category) {
-  return MAPS.filter((map) => map.categories.includes(category))
+  return MAPS.filter((map) => map.categories.includes(category));
 }
 
 export function getLeaderboardColumns(query) {
@@ -85,7 +85,7 @@ export function getLeaderboardColumns(query) {
         label: 'Date',
         format: (row) => formatDate(row.created_at),
       },
-    ]
+    ];
   }
 
   if (query.category === 'overall' && query.discipline === 'aim') {
@@ -112,7 +112,7 @@ export function getLeaderboardColumns(query) {
         label: 'Reaction',
         format: (row) => formatReaction(row.avg_reaction_ms),
       },
-    ]
+    ];
   }
 
   if (query.category === 'overall') {
@@ -124,7 +124,7 @@ export function getLeaderboardColumns(query) {
         label: 'Points',
         format: (row) => formatInteger(row.points),
       },
-    ]
+    ];
   }
 
   return [
@@ -140,22 +140,22 @@ export function getLeaderboardColumns(query) {
       label: 'Date',
       format: (row) => formatDate(row.created_at),
     },
-  ]
+  ];
 }
 
 export function normalizeLeaderboardQuery(query = {}) {
   const category = CATEGORIES.some((entry) => entry.value === query.category)
     ? query.category
-    : 'movement'
-  const page = Math.max(Number.parseInt(query.page, 10) || 1, 1)
+    : 'movement';
+  const page = Math.max(Number.parseInt(query.page, 10) || 1, 1);
 
   if (category === 'aim') {
     const scenario = AIM_SCENARIOS.some(
       (entry) => entry.value === query.scenario
     )
       ? query.scenario
-      : 'gridshot'
-    return { category, scenario, page }
+      : 'gridshot';
+    return { category, scenario, page };
   }
 
   if (category === 'overall') {
@@ -163,13 +163,13 @@ export function normalizeLeaderboardQuery(query = {}) {
       (entry) => entry.value === query.discipline
     )
       ? query.discipline
-      : 'movement'
-    return { category, discipline, page }
+      : 'movement';
+    return { category, discipline, page };
   }
 
-  const maps = getCategoryMaps(category)
+  const maps = getCategoryMaps(category);
   const map = maps.some((entry) => entry.value === query.map)
     ? query.map
-    : 'map_rooftops'
-  return { category, map, page }
+    : 'map_rooftops';
+  return { category, map, page };
 }

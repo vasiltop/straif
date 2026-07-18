@@ -1,13 +1,13 @@
 <script setup>
-import rooftopsImage from '@/assets/maps/map_rooftops.png'
-import streetsImage from '@/assets/maps/map_streets.png'
-import taurusImage from '@/assets/maps/map_taurus.png'
+import rooftopsImage from '@/assets/maps/map_rooftops.png';
+import streetsImage from '@/assets/maps/map_streets.png';
+import taurusImage from '@/assets/maps/map_taurus.png';
 
 const maps = [
   { name: 'Streets', modes: 'Movement and target', image: streetsImage },
   { name: 'Taurus', modes: 'Movement', image: taurusImage },
   { name: 'Rooftops', modes: 'Movement and target', image: rooftopsImage },
-]
+];
 </script>
 
 <template>
@@ -21,7 +21,13 @@ const maps = [
     </header>
     <div class="map-list">
       <figure v-for="map in maps" :key="map.name" class="map-feature">
-        <img :src="map.image" :alt="`${map.name} map in Straif`" width="1920" height="1080" loading="lazy">
+        <img
+          :src="map.image"
+          :alt="`${map.name} map in Straif`"
+          width="1920"
+          height="1080"
+          loading="lazy"
+        />
         <figcaption>
           <p class="eyebrow">{{ map.modes }}</p>
           <h3>{{ map.name }}</h3>

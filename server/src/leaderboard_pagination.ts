@@ -19,9 +19,7 @@ export const LeaderboardPaginationQuery = z.object({
     .default(LEADERBOARD_DEFAULT_LIMIT),
 });
 
-export type LeaderboardPagination = z.infer<
-  typeof LeaderboardPaginationQuery
->;
+export type LeaderboardPagination = z.infer<typeof LeaderboardPaginationQuery>;
 
 export const LeaderboardPaginationParameters = [
   {
@@ -49,10 +47,7 @@ export const LeaderboardPaginationParameters = [
   },
 ] satisfies OpenApiParameter[];
 
-export function get_leaderboard_offset({
-  page,
-  limit,
-}: LeaderboardPagination) {
+export function get_leaderboard_offset({ page, limit }: LeaderboardPagination) {
   return page * limit;
 }
 

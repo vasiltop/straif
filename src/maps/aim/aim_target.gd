@@ -43,7 +43,12 @@ func register_hit(hit_position: Vector3, current_time: float) -> bool:
 	hit.emit(self, hit_position, reaction_time)
 	return true
 
-func configure_tracking_motion(center: Vector3, extent: Vector2, speed_range: Vector2, direction_interval: Vector2) -> void:
+func configure_tracking_motion(
+		center: Vector3,
+		extent: Vector2,
+		speed_range: Vector2,
+		direction_interval: Vector2,
+) -> void:
 	motion_center = center
 	motion_extent = extent
 	tracking_speed_range = speed_range

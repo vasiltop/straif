@@ -1,25 +1,25 @@
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   page: { type: Number, required: true },
   total: { type: Number, required: true },
   pageSize: { type: Number, required: true },
-})
-const emit = defineEmits(['update:page'])
+});
+const emit = defineEmits(['update:page']);
 
 const totalPages = computed(() =>
   Math.max(Math.ceil(props.total / props.pageSize), 1)
-)
+);
 const start = computed(() =>
   props.total ? (props.page - 1) * props.pageSize + 1 : 0
-)
-const end = computed(() => Math.min(props.page * props.pageSize, props.total))
+);
+const end = computed(() => Math.min(props.page * props.pageSize, props.total));
 const pages = computed(() => {
-  const first = Math.max(1, Math.min(props.page - 2, totalPages.value - 4))
-  const last = Math.min(totalPages.value, first + 4)
-  return Array.from({ length: last - first + 1 }, (_, index) => first + index)
-})
+  const first = Math.max(1, Math.min(props.page - 2, totalPages.value - 4));
+  const last = Math.min(totalPages.value, first + 4);
+  return Array.from({ length: last - first + 1 }, (_, index) => first + index);
+});
 </script>
 
 <template>

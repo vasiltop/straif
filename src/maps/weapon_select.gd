@@ -8,17 +8,16 @@ func _ready() -> void:
 	visible = false
 
 	for weapon in Global.game_manager.weapons:
-		if weapon == null: continue
+		if weapon == null:
+			continue
 
 		var index := Global.game_manager.get_weapon_index(weapon)
-		if index <= 0: continue
+		if index <= 0:
+			continue
 
 		var btn := Button.new()
 		weapon_buttons_container.add_child(btn)
 		btn.text = weapon.name
 		btn.focus_mode = Control.FOCUS_NONE
 
-		btn.pressed.connect(
-			func() -> void:
-				weapon_chosen.emit(index)
-		)
+		btn.pressed.connect(func() -> void: weapon_chosen.emit(index))

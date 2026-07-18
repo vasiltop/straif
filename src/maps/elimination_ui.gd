@@ -31,7 +31,6 @@ var scoreboard_signature := ""
 var spectated_player: Player = null
 var current_phase := PHASE_WAITING
 
-
 func _ready() -> void:
 	scoreboard_panel.visible = false
 	spectator_panel.visible = false
@@ -39,10 +38,8 @@ func _ready() -> void:
 	weapon_select.weapon_chosen.connect(_on_weapon_chosen)
 	refresh_scoreboard()
 
-
 func _on_weapon_chosen(index: int) -> void:
 	weapon_requested.emit(index)
-
 
 func _process(_delta: float) -> void:
 	if Global.is_sv():
@@ -61,7 +58,6 @@ func _process(_delta: float) -> void:
 
 	_update_spectator()
 
-
 func set_weapon_menu_visible(value: bool) -> void:
 	var local_player := _get_player(Global.id())
 
@@ -77,7 +73,6 @@ func set_weapon_menu_visible(value: bool) -> void:
 
 	hide_weapon_menu()
 
-
 func hide_weapon_menu(restore_mouse := true) -> void:
 	if not weapon_select.visible:
 		return
@@ -89,7 +84,6 @@ func hide_weapon_menu(restore_mouse := true) -> void:
 	var local_player := _get_player(Global.id())
 	if local_player != null and not local_player.is_paused():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
 
 func update_round(phase: int, seconds: int, score1: int, score2: int, winner: int) -> void:
 	current_phase = phase
@@ -106,7 +100,6 @@ func update_round(phase: int, seconds: int, score1: int, score2: int, winner: in
 	match_end_panel.visible = match_over
 	if match_over:
 		match_end_label.text = "Team %d wins the match" % winner
-
 
 func refresh_scoreboard() -> void:
 	var team1_players := _players_on_team(1)
@@ -131,21 +124,18 @@ func refresh_scoreboard() -> void:
 		for player: Player in team2_players:
 			_add_player_row(team2_rows, player)
 
-
-func on_shot(mag_ammo: int, reserve_ammo: int) -> void:
+func on_shot(mag_ammo: int, _reserve_ammo: int) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % mag_ammo
-
 
 func on_damaged(health: float) -> void:
 	health_label.text = "Health: %d" % int(maxf(0.0, health))
-
 
 func _phase_text(phase: int) -> String:
 	match phase:
 		PHASE_WAITING:
 			return "Waiting for players"
 		PHASE_FREEZE:
-			return "Freeze time - %s to buy" % (Global.settings_manager.get_keybind_string("buy_menu") if not Global.is_sv() else "Freeze Time")
+			return ("Freeze time - %s to buy" % (Global.settings_manager.get_keybind_string("buy_menu") if not Global.is_sv() else "Freeze Time"))
 		PHASE_LIVE:
 			return "Round live"
 		PHASE_ROUND_END:
@@ -154,19 +144,16 @@ func _phase_text(phase: int) -> String:
 			return "Match over"
 	return "Waiting for players"
 
-
 func _clear_rows(container: VBoxContainer) -> void:
 	for child in container.get_children():
 		container.remove_child(child)
 		child.queue_free()
-
 
 func _add_waiting_row(container: VBoxContainer) -> void:
 	var waiting := Label.new()
 	waiting.text = "Waiting for player..."
 	waiting.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	container.add_child(waiting)
-
 
 func _add_player_row(container: VBoxContainer, player: Player) -> void:
 	var row := HBoxContainer.new()
@@ -191,13 +178,11 @@ func _add_player_row(container: VBoxContainer, player: Player) -> void:
 	row.add_child(state)
 	container.add_child(row)
 
-
 func _team_signature(players: Array[Player]) -> String:
 	var signature := ""
 	for player: Player in players:
 		signature += "%d:%s:%s;" % [player.pid, player.player_name(), player.is_dead]
 	return signature
-
 
 func _update_spectator() -> void:
 	var local_player := _get_player(Global.id())
@@ -233,13 +218,11 @@ func _update_spectator() -> void:
 	else:
 		spectator_index = current_index
 
-
 func _spectate(teammates: Array[Player], next_index: int) -> void:
 	spectator_index = posmod(next_index, teammates.size())
 	var target := teammates[spectator_index]
 	spectator_target_id = target.pid
 	_begin_spectate(target)
-
 
 func _begin_spectate(target: Player) -> void:
 	_end_spectate()
@@ -248,12 +231,10 @@ func _begin_spectate(target: Player) -> void:
 	spectator_label.text = "Spectating %s\nClick to switch" % target.player_name()
 	spectator_panel.visible = true
 
-
 func _end_spectate() -> void:
 	if spectated_player != null and is_instance_valid(spectated_player):
 		spectated_player.end_local_spectate_view()
 	spectated_player = null
-
 
 func _show_no_teammates(local_player: Player) -> void:
 	_end_spectate()
@@ -264,34 +245,23 @@ func _show_no_teammates(local_player: Player) -> void:
 	spectator_label.text = "No teammates alive"
 	spectator_panel.visible = true
 
-
 func _reset_spectator() -> void:
 	_end_spectate()
 	spectator_target_id = 0
 	spectator_index = -1
 	spectator_panel.visible = false
 
-
 func _get_player(id: int) -> Player:
-	var game := get_parent()
-	if game == null or not game.has_method("get_player"):
+	var game := get_parent() as Elimination
+	if game == null:
 		return null
-	return game.call("get_player", id) as Player
-
+	return game.get_player(id)
 
 func _players_on_team(team: int) -> Array[Player]:
-	var players: Array[Player] = []
-	var game := get_parent()
-	if game == null or not game.has_method("get_team_players"):
-		return players
-
-	var team_players = game.call("get_team_players", team)
-	if team_players is Array:
-		for player in team_players:
-			if player is Player:
-				players.append(player)
-	return players
-
+	var game := get_parent() as Elimination
+	if game == null:
+		return []
+	return game.get_team_players(team)
 
 func _living_teammates(team: int) -> Array[Player]:
 	var teammates: Array[Player] = []
@@ -300,13 +270,11 @@ func _living_teammates(team: int) -> Array[Player]:
 			teammates.append(player)
 	return teammates
 
-
 func _team_for_player(player: Player) -> int:
-	var game := get_parent()
-	if game == null or not game.has_method("get_team"):
+	var game := get_parent() as Elimination
+	if game == null:
 		return 0
-	return int(game.call("get_team", player.pid))
-
+	return game.get_team(player.pid)
 
 func _find_player_index(players: Array[Player], player_id: int) -> int:
 	for index in players.size():

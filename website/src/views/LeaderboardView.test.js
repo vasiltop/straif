@@ -1,17 +1,17 @@
-import { mount } from '@vue/test-utils'
-import { createMemoryHistory } from 'vue-router'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { createStraifRouter } from '@/router'
-import { fetchLeaderboard } from '@/services/leaderboardApi'
-import LeaderboardView from './LeaderboardView.vue'
+import { mount } from '@vue/test-utils';
+import { createMemoryHistory } from 'vue-router';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { createStraifRouter } from '@/router';
+import { fetchLeaderboard } from '@/services/leaderboardApi';
+import LeaderboardView from './LeaderboardView.vue';
 
 vi.mock('@/services/leaderboardApi', () => ({
   fetchLeaderboard: vi.fn(),
-}))
+}));
 
 describe('LeaderboardView', () => {
-  const originalMatchMedia = window.matchMedia
-  const originalScrollIntoView = Element.prototype.scrollIntoView
+  const originalMatchMedia = window.matchMedia;
+  const originalScrollIntoView = Element.prototype.scrollIntoView;
 
   beforeEach(() => {
     vi.mocked(fetchLeaderboard).mockResolvedValue({
@@ -25,7 +25,7 @@ describe('LeaderboardView', () => {
         },
       ],
       total: 1,
-    })
+    });
 
     window.matchMedia = vi.fn().mockReturnValue({
       matches: false,
@@ -36,57 +36,56 @@ describe('LeaderboardView', () => {
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn(),
-    })
-    Element.prototype.scrollIntoView = vi.fn()
-  })
+    });
+    Element.prototype.scrollIntoView = vi.fn();
+  });
 
   afterEach(() => {
-    window.matchMedia = originalMatchMedia
-    Element.prototype.scrollIntoView = originalScrollIntoView
-  })
-
+    window.matchMedia = originalMatchMedia;
+    Element.prototype.scrollIntoView = originalScrollIntoView;
+  });
 
   it('normalizes incompatible query parameters on mount', async () => {
-    const router = createStraifRouter(createMemoryHistory())
+    const router = createStraifRouter(createMemoryHistory());
 
-    await router.push('/leaderboard?category=target&map=map_taurus&page=0')
-    await router.isReady()
+    await router.push('/leaderboard?category=target&map=map_taurus&page=0');
+    await router.isReady();
 
     mount(LeaderboardView, {
       global: {
         plugins: [router],
       },
-    })
+    });
 
     await vi.waitFor(() => {
       expect(router.currentRoute.value.query).toEqual({
         category: 'target',
         map: 'map_rooftops',
         page: '1',
-      })
-    })
-  })
+      });
+    });
+  });
 
   it('resets the map and page when switching categories', async () => {
-    const router = createStraifRouter(createMemoryHistory())
+    const router = createStraifRouter(createMemoryHistory());
 
-    await router.push('/leaderboard?category=movement&map=map_taurus&page=3')
-    await router.isReady()
+    await router.push('/leaderboard?category=movement&map=map_taurus&page=3');
+    await router.isReady();
 
     const wrapper = mount(LeaderboardView, {
       global: {
         plugins: [router],
       },
-    })
+    });
 
-    await wrapper.get('button[data-category="target"]').trigger('click')
+    await wrapper.get('button[data-category="target"]').trigger('click');
 
     await vi.waitFor(() => {
       expect(router.currentRoute.value.query).toEqual({
         category: 'target',
         map: 'map_rooftops',
         page: '1',
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

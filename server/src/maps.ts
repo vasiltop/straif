@@ -11,12 +11,8 @@ export type Map = {
   medals_bhop?: number[];
 };
 
-export function get_maps(): Map[] {
-  return mapData.maps;
-}
-
 export function get_maps_of_mode(mode: RunMode): Map[] {
-  return get_maps().filter((m) => {
+  return mapData.maps.filter((m) => {
     return m.modes.includes(mode);
   });
 }

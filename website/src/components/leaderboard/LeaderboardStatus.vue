@@ -2,8 +2,8 @@
 defineProps({
   status: { type: String, required: true },
   error: { type: String, default: '' },
-})
-defineEmits(['retry'])
+});
+defineEmits(['retry']);
 </script>
 
 <template>

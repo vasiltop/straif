@@ -7,8 +7,8 @@
   --color-border: oklch(0.28 0 0);
   --color-border-strong: oklch(0.39 0.006 100);
   --color-local-shadow: oklch(0.07 0 0 / 0.82);
-  --font-primary: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-data: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --font-primary: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-data: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
   --content-width: 82rem;
   --page-gutter: clamp(1rem, 4vw, 3.5rem);
   --section-space: clamp(4rem, 10vw, 8.5rem);
@@ -246,7 +246,7 @@ a {
   border-top: 0.45rem solid transparent;
   border-bottom: 0.45rem solid transparent;
   border-left: 0.72rem solid var(--color-text);
-  content: "";
+  content: '';
 }
 
 .trailer-hero__media button:active {
@@ -469,7 +469,7 @@ a {
     color var(--transition-fast);
 }
 
-.leaderboard-tabs button[aria-current="page"] {
+.leaderboard-tabs button[aria-current='page'] {
   border-bottom-color: var(--color-text);
   color: var(--color-text);
 }
@@ -658,7 +658,7 @@ a {
     color var(--transition-fast);
 }
 
-.pagination button[aria-current="page"] {
+.pagination button[aria-current='page'] {
   border-color: var(--color-text);
   color: var(--color-text);
 }

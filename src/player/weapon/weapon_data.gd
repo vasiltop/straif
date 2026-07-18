@@ -17,22 +17,22 @@ class_name WeaponData extends Resource
 @export var reserve_ammo: int
 
 func _init(
-		name: String = "", 
-		weapon_shot_delay: float = 1.0, 
-		damage: float = 1.0, 
-		scene: PackedScene = null, 
-		shoot_sound: Resource = null, 
-		recoil: float = 0.0, 
-		attack_range := 5.0, 
-		is_melee := false, 
+		name: String = "",
+		weapon_shot_delay: float = 1.0,
+		damage: float = 1.0,
+		scene: PackedScene = null,
+		shoot_sound: Resource = null,
+		recoil: float = 0.0,
+		attack_range := 5.0,
+		is_melee := false,
 		automatic := false,
 		is_sniper := false,
 		spread := 0.0,
 		bullet_count := 1,
 		moving_spread := 0.0,
 		mag_ammo := 30,
-		reserve_ammo := 180
-	) -> void:
+		reserve_ammo := 180,
+) -> void:
 	self.name = name
 	self.weapon_shot_delay = weapon_shot_delay
 	self.damage = damage

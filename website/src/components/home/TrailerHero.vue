@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const isPlaying = ref(false)
-const trailerSrc = 'https://www.youtube-nocookie.com/embed/CfzotZZ3Sd0?autoplay=1&rel=0'
+const isPlaying = ref(false);
+const trailerSrc =
+  'https://www.youtube-nocookie.com/embed/CfzotZZ3Sd0?autoplay=1&rel=0';
 </script>
 
 <template>
@@ -18,7 +19,15 @@ const trailerSrc = 'https://www.youtube-nocookie.com/embed/CfzotZZ3Sd0?autoplay=
         <iframe
           :src="trailerSrc"
           title="Straif official trailer"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allow="
+            accelerometer;
+            autoplay;
+            clipboard-write;
+            encrypted-media;
+            gyroscope;
+            picture-in-picture;
+            web-share;
+          "
           allowfullscreen
         />
       </template>

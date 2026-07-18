@@ -1,16 +1,17 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
-import { resolver, validator as zValidator } from 'hono-openapi';
+import { validator as zValidator } from 'hono-openapi';
 
 const app = new Hono();
 
-const SERVER_HEALTH_TIMER = 1000 * 10; // server must be down for 10 secs min before deletion
+const SERVER_EXPIRY_THRESHOLD_MS = 1000 * 10;
+const HEALTH_CHECK_INTERVAL_MS = 1000 * 10;
 
-setInterval(check_server_health, 1000 * 10); // check every 3 seconds
+setInterval(check_server_health, HEALTH_CHECK_INTERVAL_MS);
 
 function check_server_health() {
   const d = Date.now();
-  const latest = d - SERVER_HEALTH_TIMER;
+  const latest = d - SERVER_EXPIRY_THRESHOLD_MS;
 
   servers.forEach((server, name) => {
     if (server.last_ping.getTime() < latest) {
@@ -35,7 +36,6 @@ const ServerExtend = ServerInput.extend({
 
 type Server = z.infer<typeof ServerExtend>;
 
-// maps the server name to the info
 const servers = new Map<string, Server>();
 
 app.post('/', zValidator('json', ServerInput), async (c) => {

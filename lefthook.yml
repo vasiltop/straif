@@ -1,0 +1,35 @@
+pre-commit:
+  piped: true
+  commands:
+    gdscript-format:
+      priority: 1
+      glob: "*.gd"
+      exclude:
+        - "addons/**/*"
+      run: .tools/gdscript-formatter --safe {staged_files}
+      stage_fixed: true
+    gdlint:
+      priority: 2
+      glob: "*.gd"
+      exclude:
+        - "addons/**/*"
+      run: .venv/bin/gdlint {staged_files}
+    oxfmt:
+      priority: 3
+      glob: "*.{ts,tsx,js,jsx,vue}"
+      run: server/node_modules/.bin/oxfmt {staged_files}
+      stage_fixed: true
+    oxlint:
+      priority: 4
+      glob: "*.{ts,tsx,js,jsx,vue}"
+      run: server/node_modules/.bin/oxlint --deny-warnings --vue-plugin {staged_files}
+
+pre-push:
+  parallel: true
+  commands:
+    godot-suite:
+      run: ./scripts/test-godot.sh && ./scripts/test-e2e.sh
+    server-quality:
+      run: cd server && pnpm quality && pnpm test && pnpm build
+    website-build:
+      run: cd website && pnpm build
