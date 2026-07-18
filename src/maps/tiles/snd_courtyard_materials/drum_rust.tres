@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://dm5y4fhd4u0g1"]
-
-[resource]
-resource_name = "drum_rust"
-cull_mode = 2
-albedo_color = Color(0.7014107, 0.50638646, 0.38109186, 1)
-metallic = 0.3
-roughness = 0.7

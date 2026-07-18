@@ -1,9 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://bupph6khmysyk"]
-
-[resource]
-resource_name = "cone_orange"
-cull_mode = 2
-albedo_color = Color(0.9309246, 0.6262097, 0.3133042, 1)
-roughness = 0.6
-emission_enabled = true
-emission = Color(0.392248, 0.25401923, 0.11207495, 1)

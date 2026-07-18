@@ -1,7 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://cy251iatedd4w"]
-
-[resource]
-resource_name = "plant_green"
-cull_mode = 2
-albedo_color = Color(0.5271128, 0.6651851, 0.46135613, 1)
-roughness = 0.8

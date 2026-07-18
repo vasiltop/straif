@@ -176,7 +176,6 @@ func update_input_map() -> void:
 	for action in get_custom_actions():
 		var stored: Variant = value("Controls", action)
 
-		# action added since this config was written: fall back to its default
 		if stored == null:
 			if not default_keybinds.has(action):
 				continue

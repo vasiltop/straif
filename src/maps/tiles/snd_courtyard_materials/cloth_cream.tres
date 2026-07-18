@@ -1,7 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://8beev8oklb06"]
-
-[resource]
-resource_name = "cloth_cream"
-cull_mode = 2
-albedo_color = Color(0.91627353, 0.8756056, 0.76737565, 1)
-roughness = 0.85

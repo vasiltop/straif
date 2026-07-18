@@ -22,6 +22,8 @@ if ! command -v "$GODOT_BIN" >/dev/null 2>&1; then
 	exit 1
 fi
 
+"$GODOT_BIN" --headless --path "$ROOT" --import
+
 for test_script in "${TEST_SCRIPTS[@]}"; do
 	echo "Running ${test_script}..."
 	"$GODOT_BIN" --headless --path "$ROOT" --script "$test_script" -- --offline-playtest
