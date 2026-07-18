@@ -21,3 +21,9 @@ func on_death() -> void:
 
 func on_damage() -> void:
 	pass
+
+func apply_damage(damage: float) -> void:
+	health -= damage
+
+	if health <= 0:
+		queue_free()
