@@ -1,0 +1,33 @@
+extends SceneTree
+
+const PLAYER_SCENE := preload("res://src/player/player.tscn")
+
+var failed := false
+
+func _init() -> void:
+	call_deferred("_run")
+
+func _run() -> void:
+	var player := PLAYER_SCENE.instantiate() as Player
+	_check(player != null, "Expected player scene to instantiate")
+	if player != null:
+		root.add_child(player)
+		await process_frame
+
+		player._show_local_ragdoll_view()
+
+		_check(player.ragdoll_camera.is_current(), "Ragdoll camera should become current")
+		_check(player.third_person.visible, "Third-person body should remain visible")
+		_check(not player.weapon_handler.visible, "Weapon handler should be hidden")
+		_check(not player.gun_vp_container.visible, "Gun viewport container should be hidden")
+
+		player.queue_free()
+
+	await process_frame
+	quit(1 if failed else 0)
+
+func _check(condition: bool, message: String) -> void:
+	if condition:
+		return
+	failed = true
+	push_error(message)

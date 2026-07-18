@@ -74,6 +74,12 @@ func show_blood() -> void:
 	blood_overlay.flip_h = randi() % 2 == 0
 	blood_overlay.flip_v = randi() % 2 == 0
 
+func _show_local_ragdoll_view() -> void:
+	third_person.visible = true
+	weapon_handler.visible = false
+	set_viewmodel_viewport_visible(false)
+	ragdoll_camera.make_current()
+
 @rpc("call_local", "authority", "reliable")
 func ragdoll() -> void:
 	bone_simulator.physical_bones_start_simulation()
@@ -85,9 +91,7 @@ func ragdoll() -> void:
 		if sniper_overlay.visible:
 			weapon_handler.toggle_sniper_scope()
 
-		ragdoll_camera.current = true
-		weapon_handler.visible = false
-		set_viewmodel_viewport_visible(false)
+		_show_local_ragdoll_view()
 
 @rpc("call_local", "authority", "reliable")
 func respawn() -> void:
