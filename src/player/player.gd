@@ -310,7 +310,7 @@ func _apply_gravity(velocity_y: float, delta: float) -> float:
 	return velocity_y - gravity * delta
 
 func grounded() -> bool:
-	return test_move(global_transform, Vector3(0, -0.01, 0))
+	return is_on_floor() or test_move(global_transform, Vector3(0, -0.01, 0))
 
 func _apply_friction(vel_planar: Vector2, delta: float, wish_dir: Vector2, jump_input: bool) -> Vector2:
 	if not grounded() or jump_input:

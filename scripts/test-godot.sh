@@ -15,6 +15,7 @@ TEST_SCRIPTS=(
 	"res://tests/aim_trainer_smoke.gd"
 	"res://tests/death_camera_test.gd"
 	"res://tests/elimination_round_state_test.gd"
+	"res://tests/player_grounding_test.gd"
 )
 
 if ! command -v "$GODOT_BIN" >/dev/null 2>&1; then
