@@ -44,11 +44,7 @@ const trailerSrc =
             aria-label="Play the Straif trailer"
             @click="isPlaying = true"
           >
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              focusable="false"
-            >
+            <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
               <path d="M8.5 5.75 19 12 8.5 18.25Z" />
             </svg>
           </button>
