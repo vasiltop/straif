@@ -28,12 +28,14 @@ func _ready() -> void:
 
 	play_btn \
 			.pressed \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				var base_path := "res://src/maps/speedrun/"
 				var path := base_path + map.name.to_lower().replace(" ", "_") + ".tscn"
 				get_tree().change_scene_to_file(path)
 				Global.game_manager.current_map = map
-				Global.game_manager.current_mode = mode)
+				Global.game_manager.current_mode = mode
+	)
 
 	for child: TextureRect in medals.get_children():
 		child.texture = EMPTY_MEDAL

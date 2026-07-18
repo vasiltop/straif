@@ -45,19 +45,23 @@ func _ready() -> void:
 
 	replay_last_run \
 			.pressed \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				if map_ui.map.recorder.frames.size() <= 0:
 					Info.alert("Cannot play empty recording.")
 					return
 				var replay := map_ui.map.recorder.to_hex()
-				Global.game_manager.replay_requested.emit(replay))
+				Global.game_manager.replay_requested.emit(replay)
+	)
 
 	set_start_pos_btn \
 			.pressed \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				if not map_ui.map.running and not map_ui.map.completed:
 					map_ui.map.start_pos = map_ui.map.player.global_position
-					map_ui.map.start_rotation = map_ui.map.player.camera._input_rotation)
+					map_ui.map.start_rotation = map_ui.map.player.camera._input_rotation
+	)
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard") and map_ui.visible and not map_ui.map.player.pause_menu.visible:
@@ -156,7 +160,8 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 
 	race_btn \
 			.pressed \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				if not map_ui.map.currently_racing_steam_id == steam_id:
 					var replay := await Global.server_bridge.get_replay(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
 
@@ -174,7 +179,8 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 					map_ui.map.currently_racing_steam_id = 0
 
 				if race_btn:
-					race_btn.text = setup_race_btn_text.call())
+					race_btn.text = setup_race_btn_text.call()
+	)
 
 	var replay_btn := Button.new()
 
@@ -184,21 +190,25 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	replay_btn.focus_mode = Control.FOCUS_NONE
 	replay_btn \
 			.pressed \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				var replay := await Global.server_bridge.get_replay(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
 				if replay != "":
 					Global.game_manager.replay_requested.emit(replay)
 				else:
-					Info.alert("Invalid replay request"))
+					Info.alert("Invalid replay request")
+	)
 	replay_btn.custom_minimum_size.y = 1.0
 	replay_btn.add_theme_font_size_override("font_size", BUTTON_FONT_SIZES)
 
 	name_label \
 			.pressed \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				if not Global.game_manager.admin:
 					return
-				add_admin_actions_for_player(player_name, steam_id))
+				add_admin_actions_for_player(player_name, steam_id)
+	)
 
 func initialize_admin_actions() -> void:
 	var maintenance := Global.game_manager.maintenance
@@ -209,9 +219,11 @@ func initialize_admin_actions() -> void:
 
 	toggle_maintenance_btn \
 			.pressed \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				Info.alert("Toggled maintenance, please wait a few seconds to confirm.")
-				Global.server_bridge.set_maintenance(not maintenance))
+				Global.server_bridge.set_maintenance(not maintenance)
+	)
 
 func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
 	for child in admin_actions_container.get_children():
@@ -230,7 +242,8 @@ func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
 
 	delete_btn \
 			.pressed \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				for child in admin_actions_container.get_children():
 					if child.has_meta("delete_btn"):
 						return
@@ -242,9 +255,12 @@ func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
 				confirm_btn.focus_mode = Control.FOCUS_NONE
 				confirm_btn \
 						.pressed \
-						.connect(func() -> void:
+						.connect(
+						func() -> void:
 							await Global.server_bridge.delete_run(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
-							confirm_btn.queue_free()))
+							confirm_btn.queue_free()
+				)
+	)
 
 	var is_admin := await Global.server_bridge.is_admin(steam_id)
 	var toggle_admin_btn := Button.new()

@@ -11,10 +11,12 @@ var info: ServerBridge.ServerResponse
 func _ready() -> void:
 	join_btn \
 			.pressed \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				Global.game_manager.connect_to_server(info.ip, info.port)
 				Global.game_manager.current_pvp_map = info.map
-				Global.game_manager.current_pvp_mode = info.mode)
+				Global.game_manager.current_pvp_mode = info.mode
+	)
 
 func set_info(info: ServerBridge.ServerResponse) -> void:
 	self.info = info

@@ -49,35 +49,45 @@ func _ready() -> void:
 
 	start_zone \
 			.body_exited \
-			.connect(func(body):
+			.connect(
+			func(body):
 				if not running and not completed:
-					_start_run())
+					_start_run()
+	)
 
 	map_ui.replay_slider.value_changed.connect(_on_replay_slider_changed)
 	map_ui \
 			.replay_slider \
 			.drag_started \
-			.connect(func() -> void:
+			.connect(
+			func() -> void:
 				recorder.pause_playback()
-				dragging_frame_slider = true)
+				dragging_frame_slider = true
+	)
 	map_ui \
 			.replay_slider \
 			.drag_ended \
-			.connect(func(changed: bool) -> void:
+			.connect(
+			func(changed: bool) -> void:
 				recorder.resume_playback()
-				dragging_frame_slider = false)
+				dragging_frame_slider = false
+	)
 
 	end_zone \
 			.body_entered \
-			.connect(func(body: Node3D) -> void:
+			.connect(
+			func(body: Node3D) -> void:
 				if body is Player and body.is_me():
-					player_in_end_zone = true)
+					player_in_end_zone = true
+	)
 
 	end_zone \
 			.body_exited \
-			.connect(func(body: Node3D) -> void:
+			.connect(
+			func(body: Node3D) -> void:
 				if body is Player and body.is_me():
-					player_in_end_zone = false)
+					player_in_end_zone = false
+	)
 
 	restart(player)
 
