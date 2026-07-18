@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bnati2e7fo1g"]
+[gd_scene load_steps=14 format=3 uid="uid://bnati2e7fo1g"]
 
 [ext_resource type="Script" uid="uid://vuacki0u3vnw" path="res://src/maps/map_ui.gd" id="1_jnrmt"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_uralg"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="9_k6ak5"]
 [ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="10_dxk01"]
 [ext_resource type="FontFile" uid="uid://reim7hyo6sqy" path="res://src/fonts/OpenSans-Regular.ttf" id="11_5vm7s"]
+[ext_resource type="PackedScene" path="res://src/maps/replay_input_display.tscn" id="12_pfxlv"]
 
 [sub_resource type="Theme" id="Theme_of3v1"]
 default_font_size = 15
@@ -17,7 +18,7 @@ default_font_size = 15
 [sub_resource type="Theme" id="Theme_nvgh5"]
 default_font = ExtResource("11_5vm7s")
 
-[node name="MapUi" type="CanvasLayer" node_paths=PackedStringArray("keybind_info_label", "done_replay_btn", "tick_label", "replay_slider", "replay_container", "replay_v", "game_info", "ammo_label", "leaderboard")]
+[node name="MapUi" type="CanvasLayer" node_paths=PackedStringArray("keybind_info_label", "done_replay_btn", "tick_label", "replay_slider", "replay_container", "replay_v", "replay_input_display", "game_info", "ammo_label", "leaderboard")]
 script = ExtResource("1_jnrmt")
 keybind_info_label = NodePath("ReplayContainer/V/KeybindInfo")
 done_replay_btn = NodePath("ReplayContainer/V/Done")
@@ -25,6 +26,7 @@ tick_label = NodePath("ReplayContainer/V/Label")
 replay_slider = NodePath("ReplayContainer/V/Slider")
 replay_container = NodePath("ReplayContainer")
 replay_v = NodePath("ReplayContainer/V")
+replay_input_display = NodePath("ReplayContainer/V/ReplayInputDisplay")
 game_info = NodePath("UiContainer/GameInfo")
 ammo_label = NodePath("UiContainer/BottomLeft/V/Ammo")
 leaderboard = NodePath("UiContainer/GameInfo/Leaderboard")
@@ -327,7 +329,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -150.0
-offset_top = -147.0
+offset_top = -215.0
 offset_right = 150.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -336,11 +338,14 @@ grow_vertical = 0
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 offset_right = 300.0
-offset_bottom = 147.0
+offset_bottom = 215.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("2_uralg")
 alignment = 1
+
+[node name="ReplayInputDisplay" parent="ReplayContainer/V" instance=ExtResource("12_pfxlv")]
+layout_mode = 2
 
 [node name="Label" type="Label" parent="ReplayContainer/V"]
 layout_mode = 2

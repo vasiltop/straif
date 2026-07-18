@@ -2,6 +2,7 @@ extends SceneTree
 
 const TestCase = preload("res://tests/support/test_case.gd")
 const SCENE_PATH := "res://src/maps/replay_input_display.tscn"
+const MAP_UI_SCENE_PATH := "res://src/maps/map_ui.tscn"
 
 func _init() -> void:
 	call_deferred("_run")
@@ -66,6 +67,42 @@ func _run() -> void:
 
 			replay_input_display.queue_free()
 
+	var map_ui_scene := load(MAP_UI_SCENE_PATH) as PackedScene
+	t.check(map_ui_scene != null, "Expected %s to load" % MAP_UI_SCENE_PATH)
+	if map_ui_scene != null:
+		var map_ui = map_ui_scene.instantiate()
+		t.check(map_ui != null, "Expected %s to instantiate" % MAP_UI_SCENE_PATH)
+		if map_ui != null:
+			var replay_input_display = map_ui.get_node_or_null("ReplayContainer/V/ReplayInputDisplay")
+			t.check(
+					replay_input_display != null,
+					"MapUi should own ReplayContainer/V/ReplayInputDisplay",
+			)
+			t.check_equal(
+					map_ui.get("replay_input_display"),
+					replay_input_display,
+					"MapUi replay_input_display export should reference ReplayContainer/V/ReplayInputDisplay",
+			)
+
+			if t.check(map_ui.has_method("set_replay_inputs"), "MapUi should expose set_replay_inputs(Recorder.Frame)"):
+				var frame := _RecorderFrame.new()
+				frame.forward_input = true
+				frame.back_input = false
+				frame.left_input = false
+				frame.right_input = true
+				frame.shoot_input = false
+				frame.ads_input = true
+				frame.reload_input = false
+
+				map_ui.set_replay_inputs(frame)
+				if replay_input_display != null:
+					_check_input_state(t, replay_input_display, &"forward", true)
+					_check_input_state(t, replay_input_display, &"right", true)
+					_check_input_state(t, replay_input_display, &"ads", true)
+					_check_input_state(t, replay_input_display, &"shoot", false)
+
+			map_ui.queue_free()
+
 	await process_frame
 	quit(t.finish())
 
@@ -89,3 +126,12 @@ func _panel_stylebox(replay_input_display: Node, label_path: String) -> StyleBox
 
 	var parent_control := label.get_parent() as Control
 	return parent_control.get_theme_stylebox("panel") if parent_control != null else null
+
+class _RecorderFrame:
+	var forward_input: bool
+	var back_input: bool
+	var left_input: bool
+	var right_input: bool
+	var shoot_input: bool
+	var ads_input: bool
+	var reload_input: bool

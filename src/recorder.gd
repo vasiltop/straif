@@ -103,6 +103,7 @@ func set_frame(value: int) -> void:
 	else:
 		map.map_ui.set_speed(speed)
 		map.map_ui.set_timer(current_frame * dt)
+		map.map_ui.set_replay_inputs(frame)
 
 	if prev_frame.weapon_index != frame.weapon_index:
 		controller.weapon_handler.set_weapon(Global.game_manager.get_weapon_from_index(frame.weapon_index), is_ghost)

@@ -15,6 +15,7 @@ signal return_control_to_player
 @export var replay_slider: HSlider
 @export var replay_container: Control
 @export var replay_v: VBoxContainer
+@export var replay_input_display: ReplayInputDisplay
 @export var game_info: Container
 @export var ammo_label: Label
 @export var leaderboard: Container
@@ -23,20 +24,34 @@ func on_shot(mag_ammo: int, _reserve_ammo := 0) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % [mag_ammo]
 
 func _ready() -> void:
-	keybind_info_label.text = ("Press Ctrl to toggle UI\nPress %s to restart" % Global.settings_manager.get_keybind_string("restart"))
+	var settings_manager = get_node("/root/Global").settings_manager
+	keybind_info_label.text = ("Press Ctrl to toggle UI\nPress %s to restart" % settings_manager.get_keybind_string("restart"))
 	done_replay_btn.pressed.connect(func() -> void: return_control_to_player.emit())
 
-	alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
+	alt_speed_label.visible = settings_manager.value("Display", "speed")
 
 func set_frame(frame: int, total: int) -> void:
 	tick_label.text = "Tick: %d / %d" % [frame + 1, total]
 	replay_slider.value = frame
 	replay_slider.max_value = total - 1
 
+func set_replay_inputs(frame) -> void:
+	replay_input_display.set_inputs(
+			frame.forward_input,
+			frame.back_input,
+			frame.left_input,
+			frame.right_input,
+			frame.shoot_input,
+			frame.ads_input,
+			frame.reload_input,
+	)
+
 func set_replay_visible(value: bool) -> void:
 	replay_container.visible = value
 	replay_v.visible = value
 	map.recorder.controller.visible = value
+	if not value:
+		replay_input_display.reset()
 
 func is_replay_visible() -> bool:
 	return replay_container.visible
