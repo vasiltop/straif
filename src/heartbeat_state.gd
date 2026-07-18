@@ -13,27 +13,35 @@ const MAINTENANCE := Result.MAINTENANCE
 const TRANSIENT_FAILURE := Result.TRANSIENT_FAILURE
 const REQUEST_REJECTED := Result.REQUEST_REJECTED
 
-var _request_in_flight := false
+var _active_request_id := 0
+var _next_request_id := 0
 var _degraded := false
+var _failure_result := -1
 
 
-func begin_request() -> bool:
-	if _request_in_flight:
+func begin_request() -> int:
+	if _active_request_id != 0:
+		return 0
+
+	_next_request_id += 1
+	_active_request_id = _next_request_id
+	return _active_request_id
+
+
+func finish_request(request_id: int) -> bool:
+	if request_id != _active_request_id:
 		return false
 
-	_request_in_flight = true
+	_active_request_id = 0
 	return true
 
 
-func finish_request() -> void:
-	_request_in_flight = false
-
-
-func mark_failure() -> bool:
-	if _degraded:
+func mark_failure(result := Result.TRANSIENT_FAILURE) -> bool:
+	if _degraded and result == _failure_result:
 		return false
 
 	_degraded = true
+	_failure_result = result
 	return true
 
 
@@ -42,6 +50,7 @@ func mark_success() -> bool:
 		return false
 
 	_degraded = false
+	_failure_result = -1
 	return true
 
 

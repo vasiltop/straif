@@ -7,6 +7,7 @@ const DISCORD_URL := "https://discord.gg/DScF2QqKzF"
 const WORLD_RECORD_ALERT_DURATION := 3.0
 const HEARTBEAT_CONNECTION_WARNING := "Connection to online services interrupted. Retrying..."
 const HEARTBEAT_RECOVERED_MESSAGE := "Connection restored."
+const HEARTBEAT_REQUEST_TIMEOUT := 10.0
 const HeartbeatStateScript = preload("res://src/heartbeat_state.gd")
 const WorldRecordAnnouncement = preload("res://src/world_record_announcement.gd")
 var client: BetterHTTPClient
@@ -42,9 +43,14 @@ func _init() -> void:
 	heartbeat_timer = BetterTimer.new(Global, 3.0, _on_heartbeat_timer)
 
 func _on_heartbeat_timer() -> void:
-	if not _heartbeat_state.begin_request():
+	var request_id := _heartbeat_state.begin_request()
+	if request_id == 0:
 		return
 
+	_send_heartbeat_request(request_id)
+	_watch_heartbeat_request(request_id)
+
+func _send_heartbeat_request(request_id: int) -> void:
 	var url := "/game/heartbeat"
 
 	var response := await client.http_get(url).header(
@@ -58,20 +64,32 @@ func _on_heartbeat_timer() -> void:
 	if response != null:
 		status = response.status()
 		payload = await response.json()
-	_heartbeat_state.finish_request()
+	if not _heartbeat_state.finish_request(request_id):
+		return
 
 	match HeartbeatState.classify(response != null, status, payload):
 		HeartbeatState.TRANSIENT_FAILURE:
-			_mark_heartbeat_failed()
+			_mark_heartbeat_failed(HeartbeatState.TRANSIENT_FAILURE)
 		HeartbeatState.REQUEST_REJECTED:
-			_mark_heartbeat_failed(_heartbeat_rejection_message(status, payload))
+			_mark_heartbeat_failed(
+				HeartbeatState.REQUEST_REJECTED,
+				_heartbeat_rejection_message(status, payload)
+			)
 		HeartbeatState.HEALTHY, HeartbeatState.MAINTENANCE:
 			_mark_heartbeat_healthy()
 			var data: Dictionary = (payload as Dictionary).get("data")
 			_apply_heartbeat_data(data)
 
-func _mark_heartbeat_failed(message := HEARTBEAT_CONNECTION_WARNING) -> void:
-	if _heartbeat_state.mark_failure():
+func _watch_heartbeat_request(request_id: int) -> void:
+	await Global.get_tree().create_timer(HEARTBEAT_REQUEST_TIMEOUT).timeout
+	if _heartbeat_state.finish_request(request_id):
+		_mark_heartbeat_failed(HeartbeatState.TRANSIENT_FAILURE)
+
+func _mark_heartbeat_failed(
+	result: int,
+	message := HEARTBEAT_CONNECTION_WARNING
+) -> void:
+	if _heartbeat_state.mark_failure(result):
 		Info.alert(message)
 
 func _mark_heartbeat_healthy() -> void:
