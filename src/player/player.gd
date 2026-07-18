@@ -1,7 +1,7 @@
 class_name Player extends CharacterBody3D
 
 signal jumped
-signal dead(sender: int, id: int)
+signal dead(sender: int, id: int, weapon_name: String)
 signal damaged(health: float)
 signal toggled_pause(value: bool)
 
@@ -47,6 +47,7 @@ var can_move := true
 var can_turn := true
 var health := MAX_HEALTH
 var is_dead := false
+var damage_enabled := true
 var is_pre_capped: bool
 var hardcore := true
 var _local_spectate_view := false
@@ -56,18 +57,45 @@ func player_name() -> String:
 
 @rpc("call_remote", "any_peer", "reliable")
 func on_damage(value: float, weapon_name: String) -> void:
-	health -= value
-	damaged.emit(health)
-	
-	show_blood()
+	if not Global.is_sv():
+		return
+	_apply_authoritative_damage(
+		value,
+		weapon_name,
+		multiplayer.get_remote_sender_id()
+	)
 
-	if not Global.is_sv(): return
-	if is_dead: return
 
-	var sender := multiplayer.get_remote_sender_id()
+func _apply_authoritative_damage(
+	value: float,
+	weapon_name: String,
+	sender: int
+) -> void:
+	if not damage_enabled or is_dead or value <= 0.0:
+		return
+
+	health = maxf(0.0, health - value)
+	if Global.mp():
+		_sync_health.rpc_id(pid, health, true)
+	else:
+		_sync_health(health, true)
 
 	if health <= 0:
+		damage_enabled = false
 		dead.emit(sender, pid, weapon_name)
+
+
+@rpc("call_local", "authority", "reliable")
+func _sync_health(value: float, show_damage: bool) -> void:
+	health = value
+	damaged.emit(health)
+	if show_damage:
+		show_blood()
+
+
+@rpc("call_local", "authority", "reliable")
+func set_damage_enabled(value: bool) -> void:
+	damage_enabled = value
 
 func show_blood() -> void:
 	hud_animator.play("bleed")
@@ -91,8 +119,10 @@ func _show_local_first_person_view() -> void:
 func ragdoll() -> void:
 	bone_simulator.physical_bones_start_simulation()
 	is_dead = true
+	damage_enabled = false
 	can_move = false
 	weapon_handler.weapon_scene.visible = false
+	refresh_view_visibility()
 
 	if is_me():
 		if sniper_overlay.visible:
@@ -101,13 +131,15 @@ func ragdoll() -> void:
 		_show_local_ragdoll_view()
 
 @rpc("call_local", "authority", "reliable")
-func respawn() -> void:
+func respawn(enable_damage := true) -> void:
 	bone_simulator.physical_bones_stop_simulation()
 	is_dead = false
+	damage_enabled = enable_damage
 	can_move = true
 	weapon_handler.weapon_scene.visible = true
 	health = MAX_HEALTH
 	damaged.emit(health)
+	refresh_view_visibility()
 
 	if is_me():
 		weapon_handler.reset_ammo()
@@ -129,14 +161,12 @@ func is_local_spectate_view() -> bool:
 
 func begin_local_spectate_view() -> void:
 	_local_spectate_view = true
-	third_person.visible = false
-	weapon_handler.visible = true
 	if weapon_handler.current_weapon != null:
 		weapon_handler.set_weapon(weapon_handler.current_weapon, false)
 	else:
 		weapon_handler.apply_first_person_layers()
 	weapon_handler.reset_viewmodel_pitch()
-	set_viewmodel_viewport_visible(true)
+	refresh_view_visibility()
 	camera.make_current()
 	gun_camera.make_current()
 	_on_viewport_resized()
@@ -150,20 +180,21 @@ func end_local_spectate_view() -> void:
 	camera.current = false
 	gun_camera.current = false
 
-	if is_me():
-		third_person.visible = false
-		weapon_handler.visible = true
-		set_viewmodel_viewport_visible(true)
-	else:
-		third_person.visible = true
-		weapon_handler.visible = false
-		set_viewmodel_viewport_visible(false)
-		if weapon_handler.current_weapon != null:
-			weapon_handler.set_weapon(weapon_handler.current_weapon, true)
+	if not is_me() and weapon_handler.current_weapon != null:
+		weapon_handler.set_weapon(weapon_handler.current_weapon, true)
+	refresh_view_visibility()
 
 
 func set_viewmodel_viewport_visible(value: bool) -> void:
 	gun_vp_container.visible = value
+
+
+func refresh_view_visibility() -> void:
+	var first_person_view := is_me() or _local_spectate_view
+	var show_viewmodel := first_person_view and not is_dead
+	third_person.visible = not first_person_view
+	weapon_handler.visible = show_viewmodel
+	set_viewmodel_viewport_visible(show_viewmodel)
 
 
 func set_name_label(value: String) -> void:
@@ -178,10 +209,8 @@ func setup() -> void:
 	camera.make_current()
 	gun_camera.make_current()
 	pid = Global.id()
-	weapon_handler.visible = true
 	weapon_handler.add_child(weapon_handler.audio)
 	add_child(_run_audio_player)
-	third_person.visible = false
 	name_label.visible = false
 	teammate_marker.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -197,7 +226,7 @@ func setup() -> void:
 	back_btn.pressed.connect(toggle_pause)
 
 	ui.visible = true
-	set_viewmodel_viewport_visible(true)
+	refresh_view_visibility()
 
 func _on_viewport_resized() ->  void:
 	var window_size := get_viewport().get_visible_rect().size
