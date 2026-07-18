@@ -180,23 +180,24 @@ Use the `godot` binary on `PATH` (or a cached Godot 4.6 at
 
 ```bash
 # 1. Reimport so the new .glb is picked up + fresh .glb.import written
-godot --headless --editor --quit
+godot --headless --path . --editor --quit
 
-# 2. Load-check with a SceneTree script run via -s (NOT positional — that hangs):
-godot --headless -s /tmp/verify.gd
+# 2. Run the committed, reusable QC harness (see Rule 12):
+godot --headless --path . -s tools/map_qc.gd -- --map=<map>
 ```
 
-The check must confirm: the `.tscn` loads with **no errors**; the glb instance
-has generated **StaticBody3D + CollisionShape3D** children (one per `-col`
-group); all **6 `Spawns/Team{1,2}/Spawn{1..3}`** resolve on their correct sides
-~0.1 m above the floor. Then sanity-check clearances vs the 2.1 m player.
+`tools/map_qc.gd` confirms: the `.tscn` loads with **no errors**; the glb
+instance generated **StaticBody3D + CollisionShape3D** children (one per `-col`
+group); all **6 `Spawns/Team{1,2}/Spawn{1..3}`** resolve; and each spawn passes
+a physics clearance test (not embedded, floor below, head-room, escape room).
+Exit code 0 = pass. Then sanity-check clearances vs the 2.1 m player.
 
 Headless gotchas: give types in GDScript (`var hit: Dictionary`,
-`var space: PhysicsDirectSpaceState3D`); the game's autoloads load other maps
-into the **same physics space**, so **isolate your instance on a unique
-collision layer/mask** when raycasting for spawn floors, or you'll hit another
-map's colliders. `get_global_transform` errors in `_init` (not in tree) — query
-from `_process` after one frame.
+`var space: PhysicsDirectSpaceState3D`). Run SceneTree scripts via `-s` (NOT a
+positional arg — that hangs). Add the map instance to `get_root()` and wait a
+few `physics_frame`s before querying the space, then filter `intersect_shape`
+hits to `is_ancestor_of(collider)` so autoloaded maps in the same physics space
+don't pollute results. `get_global_transform` errors in `_init` (not in tree).
 
 ## Rule 10 — dressing with props (CS-style clutter) & organic collision
 
@@ -269,6 +270,39 @@ selected_editable_objects=list, selected_objects=list)`, then set `.name` +
 `.data.name`. Gotcha: if another object still holds the target name at rename
 time, Blender appends `.NNN` — rename again once the collider is consumed.
 
+## Rule 12 — automated QC (reusable, committed)
+
+Two committed scripts catch the bugs that keep recurring (spawns embedded in
+geometry, players stuck under low catwalks, floating collision, ramps that need
+a jump at the top, props clipping walls). **Run both when iterating on a map.**
+
+**`tools/blender_map_audit.py`** — pre-export, runs in Blender against the live
+scene (Scripting console or the MCP `execute_blender_code`; `exec()` the file
+then call `run(spawns=[...blender XY...])`). Reports:
+- *floaters* — connected islands of a `-col` object whose base sits above the
+  floor with nothing beneath (a real bug). Visual decor may hang, so it only
+  audits collision objects; caps/bands resting on a parent are excluded.
+- *clips* — islands of one object interpenetrating another (drum inside a
+  container, deck through a wall). **AABB-based**, so props near an *angled*
+  wall segment (large AABB) can false-positive — confirm with a render or a
+  point-to-line distance before "fixing".
+- *ramps* — `ramp_profile([(x,y),...])` prints the top-down surface z along a
+  path so you can see a ramp is monotonic and flush at both ends (no step/jump).
+- *spawns* — for each spawn (in **Blender** XY), walkable floor below,
+  head-room, and a clear radius, correctly treating "floor under a high
+  catwalk" as walkable (cast down again from just below the deck).
+
+**`tools/map_qc.gd`** — post-import, the authoritative check (real collision
+shapes, no AABB false positives). `godot --headless --path . -s tools/map_qc.gd
+-- --map=<map>`. Fails (exit 1) if collision is missing, a spawn is missing,
+or a spawn capsule is embedded / floating / has a low ceiling / is boxed in
+(needs ≥5 of 8 escape directions). Spawns are allowed to sit *near* cover — the
+requirement is "not inside anything, with room to move out", not empty space on
+all sides.
+
+Workflow: build → `blender_map_audit.run(...)` → fix floaters/clips/ramps →
+export → reimport → `map_qc.gd`. Both green before you show or commit.
+
 ## Checklist
 
 - [ ] Layout: T/CT spawns, A/B sites, mid, chokepoints; rotational; fair.
@@ -285,5 +319,11 @@ time, Blender appends `.NNN` — rename again once the collider is consumed.
       rocks are visual-only with convex-hull collision; no lane blocked.
 - [ ] `.tscn` instances the glb; CSG removed; `Spawns/Team*/Spawn*` preserved.
 - [ ] 6 spawns from verified imported coords, ~0.1 m above floor, facing in.
+- [ ] Spawns pass `tools/map_qc.gd` (not embedded, floor below, head-room,
+      escape room) and `blender_map_audit` spawn check is clear.
+- [ ] Ramps monotonic + flush at top/bottom (no jump/step); posts reach the
+      surface below; no props clipping walls/each other (audit clean or a
+      confirmed AABB false-positive).
 - [ ] Moody lighting tuned.
-- [ ] Headless import + load pass: no errors, collisions + 6 spawns resolve.
+- [ ] Headless import + `tools/map_qc.gd` pass (exit 0): no errors, collisions
+      + 6 spawns resolve and clear.
