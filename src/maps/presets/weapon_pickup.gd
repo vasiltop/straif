@@ -14,7 +14,6 @@ var currently_touching: Player
 var frame_picked_up := -1
 var previous_weapon: WeaponData
 
-
 func _ready() -> void:
 	var inst: Node3D = weapon.scene.instantiate()
 	add_child(inst)
@@ -29,25 +28,23 @@ func _ready() -> void:
 	weapon_scene = inst
 
 	body_entered.connect(
-		func(body: Node3D) -> void:
-			if body is Player and body.is_me():
-				currently_touching = body
-				is_touching_player = true
+			func(body: Node3D) -> void:
+				if body is Player and body.is_me():
+					currently_touching = body
+					is_touching_player = true
 	)
 
 	body_exited.connect(
-		func(body: Node3D) -> void:
-			if body is Player and body.is_me():
-				is_touching_player = false
+			func(body: Node3D) -> void:
+				if body is Player and body.is_me():
+					is_touching_player = false
 	)
-
 
 func reset() -> void:
 	weapon_scene.visible = true
 	active = true
 	is_touching_player = false
 	frame_picked_up = -1
-
 
 func _process(delta: float) -> void:
 	if not active:
@@ -61,7 +58,6 @@ func _process(delta: float) -> void:
 		previous_weapon = currently_touching.weapon_handler.current_weapon
 		currently_touching.weapon_handler.set_weapon(weapon)
 		deactivate()
-
 
 func deactivate() -> void:
 	weapon_scene.visible = false

@@ -3,7 +3,6 @@ class_name BodyPart extends Node3D
 @export var owned_by: Node3D
 @export var multiplier: float = 1.0
 
-
 func apply_damage(amount: float, weapon_name: String) -> void:
 	if not owned_by:
 		return

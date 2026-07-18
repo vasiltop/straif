@@ -5,10 +5,8 @@ class_name Target extends Node3D
 var health: float = 100
 var identifier: int
 
-
 func _ready() -> void:
 	tree_exited.connect(map.target_killed.emit)
-
 
 func _process(_delta: float) -> void:
 	var target_position := (
@@ -20,10 +18,8 @@ func _process(_delta: float) -> void:
 
 	look_at(target_position, Vector3.UP)
 
-
 func on_death() -> void:
 	queue_free()
-
 
 func on_damage() -> void:
 	pass

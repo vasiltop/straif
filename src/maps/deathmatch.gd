@@ -6,7 +6,6 @@ const DmUiScene = preload("res://src/maps/dm_ui.tscn")
 var loaded_map: Node3D = null
 var dm_ui: DmUi = DmUiScene.instantiate()
 
-
 func _ready() -> void:
 	add_child(dm_ui)
 
@@ -19,7 +18,6 @@ func _ready() -> void:
 		var map_path := get_current_map_path()
 		change_map.rpc(map_path)
 
-
 @rpc("call_local", "authority", "reliable")
 func change_map(path: String) -> void:
 	Global.mp_print("Changing map to %s" % path)
@@ -31,7 +29,6 @@ func change_map(path: String) -> void:
 	add_child(inst)
 	loaded_map = inst
 
-
 func _on_player_disconnected(id: int) -> void:
 	for player in players.get_children():
 		if player.pid == id:
@@ -40,13 +37,11 @@ func _on_player_disconnected(id: int) -> void:
 			player.queue_free()
 			return
 
-
 func get_rand_spawn() -> Vector3:
 	var spawns := loaded_map.get_node("Spawns").get_children()
 	var spawn: Vector3 = spawns[randi_range(0, len(spawns) - 1)].global_position
 	Global.mp_print("Generated random spawn pos: %s" % spawn)
 	return spawn
-
 
 @rpc("call_remote", "any_peer", "reliable")
 func _send_info(steam_name: String) -> void:
@@ -61,16 +56,19 @@ func _send_info(steam_name: String) -> void:
 	for player: Player in players.get_children():
 		var weapon_index := Global.game_manager.get_weapon_index(player.weapon_handler.current_weapon)
 		Global.mp_print(
-			(
-				"Sending weapon index of %d (%s) from player %d to %d"
-				% [weapon_index, player.weapon_handler.current_weapon.name, player.pid, sender]
-			)
+				(
+					"Sending weapon index of %d (%s) from player %d to %d" % [
+						weapon_index,
+						player.weapon_handler.current_weapon.name,
+						player.pid,
+						sender,
+					]
+				)
 		)
 		_create_player.rpc_id(sender, player.pid, player.global_position, player.player_name(), weapon_index)
 
 	_create_player.rpc(sender, get_rand_spawn(), steam_name, 1)
 	dm_ui.log_player_event.rpc(steam_name, true)
-
 
 @rpc("call_local", "authority", "reliable")
 func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_index: int) -> void:
@@ -94,10 +92,8 @@ func _create_player(id: int, spawn_point: Vector3, steam_name: String, weapon_in
 	if Global.is_sv():
 		inst.dead.connect(_on_player_death)
 
-
 func _on_toggled_pause(_value: bool) -> void:
 	dm_ui.weapon_select.visible = false
-
 
 func new_map() -> void:
 	var map := Global.map_manager.get_random_map(Global.game_manager.current_pvp_mode)
@@ -110,7 +106,6 @@ func new_map() -> void:
 
 	for player: Player in players.get_children():
 		player._update_state.rpc(get_rand_spawn(), 0, 0, 0)
-
 
 func _on_player_death(sender: int, id: int, weapon_name: String) -> void:
 	Global.mp_print("Player %d has been killed." % id)

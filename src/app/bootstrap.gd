@@ -8,7 +8,6 @@ const _OFFLINE_PLAYER_ID := 1
 const _OFFLINE_DISPLAY_NAME := "Playtester"
 const _OFFLINE_TICKET := "offline-playtest-ticket"
 
-
 class BuildResult:
 	extends RefCounted
 
@@ -18,9 +17,10 @@ class BuildResult:
 	func is_ok() -> bool:
 		return error.is_empty() and context != null
 
-
 static func build(
-	options: RuntimeOptions, server_bridge: Variant = null, allow_test_adapters := OS.has_feature("editor")
+		options: RuntimeOptions,
+		server_bridge: Variant = null,
+		allow_test_adapters := OS.has_feature("editor"),
 ) -> BuildResult:
 	var result := BuildResult.new()
 
@@ -75,17 +75,14 @@ static func build(
 	result.context = context
 	return result
 
-
 static func _e2e_identity(instance: String) -> FakeIdentityProvider:
 	var account_id := absi(instance.hash()) + 1
 	var display_name := instance.capitalize()
 	var ticket := "e2e-%s-ticket" % instance
 	return FakeIdentityProvider.new(account_id, display_name, ticket)
 
-
 static func _is_supported_role(role: int) -> bool:
 	return (
-		role == RuntimeOptions.Role.MENU_CLIENT
-		or role == RuntimeOptions.Role.DEDICATED_SERVER
+		role == RuntimeOptions.Role.MENU_CLIENT or role == RuntimeOptions.Role.DEDICATED_SERVER
 		or role == RuntimeOptions.Role.CONNECT_CLIENT
 	)

@@ -5,7 +5,6 @@ var options: RuntimeOptions
 var identity: IdentityProvider
 var server_registry: ServerRegistry
 
-
 func validate() -> String:
 	if options == null:
 		return "AppContext requires RuntimeOptions"

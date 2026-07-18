@@ -36,8 +36,11 @@ jobs:
       - name: Install GDScript tooling
         run: pip install -r requirements-dev.txt
 
+      - name: Install GDScript formatter
+        run: ./scripts/install-gdscript-formatter.sh
+
       - name: Check formatting
-        run: gdformat --check src tests
+        run: .tools/gdscript-formatter --check src tests
 
       - name: Lint
         run: gdlint src tests

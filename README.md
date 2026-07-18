@@ -10,7 +10,6 @@ It is heavily inspired by source engine games such as Counter Strike: Source, le
 - [Screenshots](#screenshots)
 - [Local Setup](#local-setup)
 - [Steam Deployment](#steam-deployment)
-- [Documentation](#documentation)
 
 ## Website
 The straif leaderboard can be viewed at [straif.pumped.software](https://straif.pumped.software/).
@@ -32,10 +31,9 @@ cd straif
 godot -e
 ```
 
-Requires Godot 4.6.1. See [docs/development.md](./docs/development.md) for full
-prerequisites and the one-command `./scripts/setup-dev.sh` (format/lint tooling +
-Git hooks), and [docs/testing.md](./docs/testing.md) for the Godot test suite,
-formatting/linting, and the multi-process ENet end-to-end test (`./scripts/test-e2e.sh`).
+Requires Godot 4.6.1. Run `./scripts/setup-dev.sh` to install development
+dependencies and Git hooks. Run `./scripts/test-godot.sh` for the Godot test
+suite and `./scripts/test-e2e.sh` for the multi-process ENet test.
 
 ### Hosting a game server
 
@@ -49,8 +47,6 @@ The game executable can be ran as a game server as well by providing the followi
 ```
 
 This will continously ping the server browser to let other players know your server is online.
-See [docs/game-server.md](./docs/game-server.md) for invocation details, supported modes,
-and troubleshooting.
 
 #### Dockerized game servers
 
@@ -109,9 +105,6 @@ pnpm db:push
 pnpm dev
 ```
 
-See [docs/backend.md](./docs/backend.md) for the full API/route/schema reference and
-[docs/development.md](./docs/development.md) for the website's equivalent setup.
-
 ## Steam Deployment
 
 ### One-time setup
@@ -148,8 +141,3 @@ to the matching depot IDs from Steamworks.
 To export all platforms and upload them in one command, run
 `./scripts/upload-steam.sh --build`. Steam uploads the platform build
 directories, including the runnable `build/macos/Straif.app` bundle.
-
-## Documentation
-
-Full docs — architecture, gameplay, game server, development, testing/CI, backend,
-website, map creation, asset attribution — are indexed in [docs/README.md](./docs/README.md).

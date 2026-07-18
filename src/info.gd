@@ -6,7 +6,6 @@ const TTL := 3.0
 var current_inst: InfoUi
 var timer := 0.0
 
-
 func _process(delta: float) -> void:
 	if current_inst != null:
 		timer += delta
@@ -14,7 +13,6 @@ func _process(delta: float) -> void:
 	if timer >= TTL and current_inst != null:
 		current_inst.queue_free()
 		timer = 0
-
 
 func alert(message: String) -> void:
 	if current_inst:

@@ -7,11 +7,9 @@ var _magnitude: float
 var _mouse_input: Vector2
 var _input_rotation: Vector3
 
-
 func shake(duration: float, magnitude: float) -> void:
 	_remaining = duration
 	_magnitude = magnitude
-
 
 func _process(delta: float) -> void:
 	global_transform = player.camera_anchor.get_global_transform_interpolated()
@@ -40,7 +38,6 @@ func _process(delta: float) -> void:
 
 	_mouse_input = Vector2.ZERO
 
-
 func _input(event: InputEvent) -> void:
 	if not player.is_me():
 		return
@@ -49,9 +46,8 @@ func _input(event: InputEvent) -> void:
 	if not player.can_turn:
 		return
 
-	var sens: float = Global.settings_manager.value(
-		"Controls", "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity"
-	)
+	var sensitivity_key := "sensitivity" if not player.sniper_overlay.visible else "ads_sensitivity"
+	var sens: float = Global.settings_manager.value("Controls", sensitivity_key)
 	sens = sens / 1000
 
 	if event is InputEventMouseMotion:

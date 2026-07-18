@@ -4,7 +4,6 @@ signal weapon_chosen(index: int)
 
 @onready var weapon_buttons_container: VBoxContainer = $MarginContainer/VBoxContainer/WeaponButtons
 
-
 func _ready() -> void:
 	visible = false
 

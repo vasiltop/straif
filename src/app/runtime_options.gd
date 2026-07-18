@@ -1,7 +1,11 @@
 class_name RuntimeOptions
 extends RefCounted
 
-enum Role { MENU_CLIENT, DEDICATED_SERVER, CONNECT_CLIENT }
+enum Role {
+	MENU_CLIENT,
+	DEDICATED_SERVER,
+	CONNECT_CLIENT,
+}
 
 const SUPPORTED_SERVER_MODES := ["deathmatch", "elimination"]
 
@@ -17,7 +21,6 @@ var connect_port: int = 0
 var e2e_instance: String = ""
 var e2e_control_port: int = 0
 
-
 class ParseResult:
 	extends RefCounted
 
@@ -26,7 +29,6 @@ class ParseResult:
 
 	func is_ok() -> bool:
 		return error.is_empty()
-
 
 static func parse(args: PackedStringArray, allow_e2e: bool) -> ParseResult:
 	var result := ParseResult.new()
@@ -87,7 +89,6 @@ static func parse(args: PackedStringArray, allow_e2e: bool) -> ParseResult:
 
 	return result
 
-
 static func _parse_server(args: PackedStringArray, start_index: int, options: RuntimeOptions) -> String:
 	if start_index + 4 >= args.size():
 		return "server requires exactly 4 arguments: <name> <port> <max_players> <mode>"
@@ -125,7 +126,6 @@ static func _parse_server(args: PackedStringArray, start_index: int, options: Ru
 	options.mode = mode
 	return ""
 
-
 static func _parse_connect(args: PackedStringArray, start_index: int, options: RuntimeOptions) -> String:
 	if start_index + 2 >= args.size():
 		return "connect requires exactly 2 arguments: <host> <port>"
@@ -148,7 +148,6 @@ static func _parse_connect(args: PackedStringArray, start_index: int, options: R
 	options.connect_port = port
 	return ""
 
-
 static func _parse_e2e_instance(args: PackedStringArray, flag_index: int, options: RuntimeOptions) -> String:
 	var value: Variant = _flag_value(args, flag_index)
 	if value == null:
@@ -158,7 +157,6 @@ static func _parse_e2e_instance(args: PackedStringArray, flag_index: int, option
 		return "--e2e-instance must not be empty"
 	options.e2e_instance = instance
 	return ""
-
 
 static func _parse_e2e_control_port(args: PackedStringArray, flag_index: int, options: RuntimeOptions) -> String:
 	var value: Variant = _flag_value(args, flag_index)
@@ -173,7 +171,6 @@ static func _parse_e2e_control_port(args: PackedStringArray, flag_index: int, op
 	options.e2e_control_port = control_port
 	return ""
 
-
 static func _flag_value(args: PackedStringArray, flag_index: int) -> Variant:
 	var value_index := flag_index + 1
 	if value_index >= args.size():
@@ -182,7 +179,6 @@ static func _flag_value(args: PackedStringArray, flag_index: int) -> Variant:
 	if value.begins_with("--"):
 		return null
 	return value
-
 
 static func _validate(options: RuntimeOptions, allow_e2e: bool) -> String:
 	var has_instance := not options.e2e_instance.is_empty()

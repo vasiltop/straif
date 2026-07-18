@@ -11,6 +11,8 @@ fi
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -r requirements-dev.txt
 
+./scripts/install-gdscript-formatter.sh
+
 corepack enable
 (cd server && pnpm install --frozen-lockfile)
 (cd website && pnpm install --frozen-lockfile)

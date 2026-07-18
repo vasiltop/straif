@@ -8,7 +8,6 @@ const TTL := 5000
 @onready var spawn_time := Time.get_ticks_msec()
 var target: Vector3
 
-
 static func spawn(parent: Node, spawn_position: Vector3, target: Vector3) -> void:
 	var inst: BulletTracer = TracerScene.instantiate()
 	inst.target = target
@@ -16,7 +15,6 @@ static func spawn(parent: Node, spawn_position: Vector3, target: Vector3) -> voi
 
 	inst.global_position = spawn_position
 	inst.look_at(target)
-
 
 func _process(delta: float) -> void:
 	var diff := target - global_position

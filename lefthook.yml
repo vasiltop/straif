@@ -1,12 +1,12 @@
 pre-commit:
   piped: true
   commands:
-    gdformat:
+    gdscript-format:
       priority: 1
       glob: "*.gd"
       exclude:
         - "addons/**/*"
-      run: .venv/bin/gdformat {staged_files}
+      run: .tools/gdscript-formatter --safe {staged_files}
       stage_fixed: true
     gdlint:
       priority: 2

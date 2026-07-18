@@ -20,9 +20,8 @@ var default_keybinds: Dictionary[String, Keybind] = {
 	"leaderboard": Keybind.new(KEY_TAB),
 	"buy_menu": Keybind.new(KEY_B),
 	"attack": Keybind.new(MOUSE_BUTTON_LEFT, true),
-	"scope": Keybind.new(MOUSE_BUTTON_RIGHT, true)
+	"scope": Keybind.new(MOUSE_BUTTON_RIGHT, true),
 }
-
 
 class Keybind:
 	var is_mouse: bool
@@ -31,7 +30,6 @@ class Keybind:
 	func _init(code: int, is_mouse := false) -> void:
 		self.is_mouse = is_mouse
 		self.code = code
-
 
 func _init() -> void:
 	self.node = Global
@@ -49,10 +47,8 @@ func _init() -> void:
 
 	update_input_map()
 
-
 func get_vsync_enum(value: bool) -> DisplayServer.VSyncMode:
 	return DisplayServer.VSYNC_DISABLED if not value else DisplayServer.VSYNC_ENABLED
-
 
 func load_settings() -> void:
 	config.load(PATH)
@@ -68,7 +64,6 @@ func load_settings() -> void:
 		config.set_value("Game", "world_record_announcements", true)
 		save()
 
-
 func get_custom_actions() -> Array[String]:
 	var all_actions := InputMap.get_actions()
 
@@ -79,16 +74,13 @@ func get_custom_actions() -> Array[String]:
 
 	return custom_actions
 
-
 func get_keybind_string(action_name: String) -> String:
 	var events := InputMap.action_get_events(action_name)
 	var first := events[0]
 	return first.as_text()
 
-
 func save() -> void:
 	config.save(PATH)
-
 
 func change_res(value: String) -> void:
 	var arr := value.split("x")
@@ -96,7 +88,6 @@ func change_res(value: String) -> void:
 	var height := int(arr[1])
 	self.node.get_tree().root.content_scale_size = Vector2i(width, height)
 	DisplayServer.window_set_size(Vector2i(width, height))
-
 
 func reset_to_defaults() -> void:
 	config.set_value("Controls", "sensitivity", 1.0)
@@ -113,7 +104,6 @@ func reset_to_defaults() -> void:
 	for action in get_custom_actions():
 		config.set_value("Controls", action, serialize_keybind(default_keybinds[action]))
 
-
 func serialize_keybind(keybind: Keybind) -> String:
 	var res := ""
 
@@ -123,7 +113,6 @@ func serialize_keybind(keybind: Keybind) -> String:
 	res += str(keybind.code)
 
 	return res
-
 
 func deserialize_keybind(string: String) -> Keybind:
 	var is_mouse := string.begins_with("mouse_")
@@ -135,21 +124,18 @@ func deserialize_keybind(string: String) -> Keybind:
 
 	return Keybind.new(code, is_mouse)
 
-
 func event_to_keybind(event: InputEvent) -> Keybind:
 	var keybind := Keybind.new(0)
 
 	if event is InputEventKey:
 		var iek: InputEventKey = event
 		keybind.code = iek.keycode
-
 	elif event is InputEventMouseButton:
 		var iem: InputEventMouseButton = event
 		keybind.is_mouse = true
 		keybind.code = iem.button_index
 
 	return keybind
-
 
 func change_action_to_keybind(action_name: String, keybind: Keybind) -> void:
 	var ev: InputEvent
@@ -165,12 +151,10 @@ func change_action_to_keybind(action_name: String, keybind: Keybind) -> void:
 
 	change_action_to_event(action_name, ev)
 
-
 func change_action_to_event(action_name: String, event: InputEvent) -> void:
 	InputMap.action_erase_events(action_name)
 	InputMap.action_add_event(action_name, event)
 	config.set_value("Controls", action_name, serialize_keybind(event_to_keybind(event)))
-
 
 func update_input_map() -> void:
 	for action in get_custom_actions():
@@ -185,14 +169,11 @@ func update_input_map() -> void:
 
 		change_action_to_keybind(action, deserialize_keybind(stored as String))
 
-
 func update(section: String, key: String, value: Variant) -> void:
 	config.set_value(section, key, value)
 
-
 func value(section: String, key: String) -> Variant:
 	return config.get_value(section, key)
-
 
 func change_display_mode(index: int) -> void:
 	match index:

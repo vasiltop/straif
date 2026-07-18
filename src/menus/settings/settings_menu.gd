@@ -14,7 +14,6 @@ class_name SettingsMenu extends TabContainer
 @export var world_record_announcements_input: CheckBox
 @export var save_settings_btn: Button
 
-
 func _ready() -> void:
 	if Global.is_sv():
 		return
@@ -39,20 +38,16 @@ func _ready() -> void:
 		keybinds.add_child(label)
 		keybinds.add_child(inst)
 
-
 func _on_vsync_changed(toggled_on: bool) -> void:
 	DisplayServer.window_set_vsync_mode(Global.settings_manager.get_vsync_enum(toggled_on))
 	Global.settings_manager.update("Display", "vsync", toggled_on)
 
-
 func _on_speed_label_input_changed(toggled_on: bool) -> void:
 	Global.settings_manager.update("Display", "speed", toggled_on)
-
 
 func _on_world_record_announcements_changed(toggled_on: bool) -> void:
 	Global.settings_manager.update("Game", "world_record_announcements", toggled_on)
 	Global.server_bridge.set_world_record_announcements_enabled(toggled_on)
-
 
 func _set_init_values() -> void:
 	var sens: float = Global.settings_manager.value("Controls", "sensitivity")
@@ -68,9 +63,8 @@ func _set_init_values() -> void:
 	volume_slider.value = Global.settings_manager.value("Audio", "master_volume")
 	vsync_input.button_pressed = Global.settings_manager.value("Display", "vsync")
 	speed_label_input.button_pressed = Global.settings_manager.value("Display", "speed")
-	world_record_announcements_input.button_pressed = Global.settings_manager.value(
-		"Game", "world_record_announcements"
-	)
+	var world_record_enabled: bool = Global.settings_manager.value("Game", "world_record_announcements")
+	world_record_announcements_input.button_pressed = world_record_enabled
 
 	var res: String = Global.settings_manager.value("Display", "resolution")
 	for i in resolution_input.item_count:
@@ -79,33 +73,27 @@ func _set_init_values() -> void:
 			resolution_input.select(i)
 			break
 
-
 func _on_volume_slider_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(0, value)
 	Global.settings_manager.update("Audio", "master_volume", value)
-
 
 func _on_max_fps_changed(value: float) -> void:
 	Engine.max_fps = int(value)
 	Global.settings_manager.update("Display", "max_fps", Engine.max_fps)
 
-
 func _on_window_mode_changed(index: int) -> void:
 	Global.settings_manager.change_display_mode(index)
 	Global.settings_manager.update("Display", "mode", index)
-
 
 func _on_resolution_changed(index: int) -> void:
 	var value := resolution_input.get_item_text(index)
 	Global.settings_manager.change_res(value)
 	Global.settings_manager.update("Display", "resolution", value)
 
-
 func _on_sens_slider_changed(value: float) -> void:
 	var new_sens: float = snapped(value, 0.01)
 	sens_label.text = str(new_sens)
 	Global.settings_manager.update("Controls", "sensitivity", new_sens)
-
 
 func _on_ads_sens_slider_changed(value: float) -> void:
 	var new_sens: float = snapped(value, 0.01)

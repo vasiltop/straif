@@ -28,11 +28,10 @@ var _options: RuntimeOptions
 var _server_registry: ServerRegistry
 var _map_manager: MapManager
 
-
 class PbInfo:
 	var mode_to_map_info: Dictionary[String, Dictionary] = {
-		"target": {"total": 0, "position": 0, "pb": INF},
-		"bhop": {"total": 0, "position": 0, "pb": INF},
+		"target": { "total": 0, "position": 0, "pb": INF },
+		"bhop": { "total": 0, "position": 0, "pb": INF },
 	}
 
 	func _init(total := 0, position := 0, pb := INF) -> void:
@@ -41,13 +40,12 @@ class PbInfo:
 			self.mode_to_map_info[mode].position = position
 			self.mode_to_map_info[mode].pb = pb
 
-
 var weapons: Array[WeaponData] = [null]
 
 var pvp_mode_to_map := {
-	"deathmatch": "res://src/maps/deathmatch.tscn", "elimination": "res://src/maps/elimination.tscn"
+	"deathmatch": "res://src/maps/deathmatch.tscn",
+	"elimination": "res://src/maps/elimination.tscn",
 }
-
 
 func _init(options: RuntimeOptions, server_registry: ServerRegistry, map_manager: MapManager) -> void:
 	_options = options
@@ -62,10 +60,8 @@ func _init(options: RuntimeOptions, server_registry: ServerRegistry, map_manager
 		if file.ends_with(".tres"):
 			weapons.append(load(path + file))
 
-
 func store_auth_ticket(ticket: String) -> void:
 	auth_ticket_hex = ticket
-
 
 func get_weapon_index(weapon: WeaponData) -> int:
 	if weapon == null:
@@ -78,16 +74,13 @@ func get_weapon_index(weapon: WeaponData) -> int:
 
 	return -1
 
-
 func get_weapon_from_index(index: int) -> WeaponData:
 	return weapons[index]
-
 
 func get_current_aim_scenario() -> String:
 	if current_aim_scenario in VALID_AIM_SCENARIOS:
 		return current_aim_scenario
 	return VALID_AIM_SCENARIOS[0]
-
 
 func init_server() -> void:
 	var peer := ENetMultiplayerPeer.new()
@@ -112,7 +105,6 @@ func init_server() -> void:
 
 	print("Created server on port %d." % _options.port)
 
-
 func _publish_server_snapshot() -> void:
 	if _server_registry == null:
 		return
@@ -131,7 +123,6 @@ func _publish_server_snapshot() -> void:
 	if err != OK:
 		push_warning("Failed to publish server snapshot: %s" % error_string(err))
 
-
 @rpc("authority", "call_remote", "reliable")
 func _server_ready(mode: String) -> void:
 	if not pvp_mode_to_map.has(mode):
@@ -139,7 +130,6 @@ func _server_ready(mode: String) -> void:
 		return
 	current_pvp_mode = mode
 	get_tree().change_scene_to_file(pvp_mode_to_map[mode])
-
 
 func connect_to_server(ip: String, port: int) -> void:
 	var peer := ENetMultiplayerPeer.new()
@@ -149,14 +139,12 @@ func connect_to_server(ip: String, port: int) -> void:
 		return
 	multiplayer.multiplayer_peer = peer
 
-
 func on_peer_connected(id: int) -> void:
 	_log("Connected to player %d" % id)
 
 	if is_server:
 		_server_ready.rpc_id(id, current_pvp_mode)
 		player_count += 1
-
 
 func on_peer_disconnected(id: int) -> void:
 	_log("Disconnected from player %d" % id)
@@ -165,20 +153,16 @@ func on_peer_disconnected(id: int) -> void:
 	if is_server:
 		player_count = maxi(0, player_count - 1)
 
-
 func on_connection_failed() -> void:
 	Info.alert("Failed to connect to server.")
 
-
 func on_server_disconnected() -> void:
 	Info.alert("Disconnected from the server.")
-
 
 func _local_peer_id() -> int:
 	if not multiplayer.multiplayer_peer:
 		return 1
 	return multiplayer.get_unique_id()
-
 
 func _log(message: String) -> void:
 	print("[%d]: %s" % [_local_peer_id(), message])

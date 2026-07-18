@@ -54,14 +54,12 @@ func set_weapon_to_index(index: int, is_tp := false) -> void:
 	var weapon := Global.game_manager.get_weapon_from_index(index)
 	set_weapon(weapon, is_tp)
 
-
 func reset_ammo() -> void:
 	mag_ammo = current_weapon.mag_ammo
 	max_mag_ammo = mag_ammo
 	reserve_ammo = INF
 
 	shot.emit(mag_ammo, reserve_ammo)
-
 
 @rpc("any_peer", "call_local", "reliable")
 func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
@@ -110,7 +108,6 @@ func set_weapon(weapon: WeaponData, is_third_person := false) -> void:
 
 	init_ik(is_third_person)
 
-
 func apply_first_person_layers() -> void:
 	var arms_mesh := arms.get_node("Armature/Skeleton3D/arms") as MeshInstance3D
 	arms_mesh.set_layer_mask_value(1, false)
@@ -118,17 +115,14 @@ func apply_first_person_layers() -> void:
 	if weapon_scene != null:
 		_set_first_person_weapon_layers(weapon_scene)
 
-
 func reset_viewmodel_pitch() -> void:
 	gun_container.rotation.x = 0.0
-
 
 func sync_remote_pitch(rot_x: float) -> void:
 	if player.is_local_spectate_view():
 		gun_container.rotation.x = 0.0
 	elif weapon_scene != null:
 		gun_container.rotation.x = rot_x
-
 
 func _set_first_person_weapon_layers(weapon: Node3D) -> void:
 	var mesh := weapon.get_node("Mesh") as MeshInstance3D
@@ -139,7 +133,6 @@ func _set_first_person_weapon_layers(weapon: Node3D) -> void:
 	muzzle_flash.set_layer_mask_value(1, false)
 	muzzle_flash.set_layer_mask_value(2, true)
 
-
 func _set_third_person_weapon_layers(weapon: Node3D) -> void:
 	var mesh := weapon.get_node("Mesh") as MeshInstance3D
 	mesh.set_layer_mask_value(1, true)
@@ -149,18 +142,15 @@ func _set_third_person_weapon_layers(weapon: Node3D) -> void:
 	muzzle_flash.set_layer_mask_value(1, true)
 	muzzle_flash.set_layer_mask_value(2, false)
 
-
 func _on_animation_started(anim_name: String) -> void:
 	if anim_name == "shoot" and player.is_me():
 		var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
 		hitbox.monitoring = true
 
-
 func _on_animation_finished(anim_name: String) -> void:
 	if anim_name == "shoot":
 		var hitbox: Area3D = weapon_scene.get_node("Mesh/Hitbox")
 		hitbox.monitoring = false
-
 
 func _on_sword_hit(body: Node3D) -> void:
 	if body is BodyPart:
@@ -171,10 +161,8 @@ func _on_sword_hit(body: Node3D) -> void:
 		body.apply_damage(current_weapon.damage, "Sword")
 		player.camera.shake(0.1, 0.03)
 
-
 func _ready() -> void:
 	add_child(audio)
-
 
 func _process(delta: float) -> void:
 	time_since_last_shot += delta
@@ -194,12 +182,10 @@ func _process(delta: float) -> void:
 		current_recoil.x -= dx * delta
 		current_recoil.y -= dy * delta
 
-
 func attack_input() -> bool:
 	if not current_weapon:
 		return false
 	return Input.is_action_just_pressed("attack") if not current_weapon.automatic else Input.is_action_pressed("attack")
-
 
 func _handle_inputs() -> void:
 	if not player.is_me():
@@ -227,7 +213,6 @@ func _handle_inputs() -> void:
 	if Input.is_action_just_pressed("reload") and not current_weapon.is_melee and not mag_ammo == max_mag_ammo:
 		reload()
 
-
 func reload() -> void:
 	if not current_weapon:
 		return
@@ -244,12 +229,10 @@ func reload() -> void:
 	audio_player.stream = ReloadSound
 	audio_player.play()
 
-
 @rpc("any_peer", "call_local", "unreliable")
 func reload_anim() -> void:
 	var audio_player: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
 	audio_player.play("equip")
-
 
 func toggle_sniper_scope() -> void:
 	if not current_weapon:
@@ -271,19 +254,17 @@ func toggle_sniper_scope() -> void:
 		false:
 			player.camera.fov += FOV_DIFF
 
-
 func _physics_process(delta: float) -> void:
 	if not player.is_me():
 		return
 
 	sway(
-		delta,
-		Input.is_action_pressed("left"),
-		Input.is_action_pressed("right"),
-		Input.is_action_pressed("up"),
-		Input.is_action_pressed("down")
+			delta,
+			Input.is_action_pressed("left"),
+			Input.is_action_pressed("right"),
+			Input.is_action_pressed("up"),
+			Input.is_action_pressed("down"),
 	)
-
 
 func sway(delta: float, left: bool, right: bool, up: bool, down: bool) -> void:
 	var sway_rot := Vector3.ZERO
@@ -307,7 +288,6 @@ func sway(delta: float, left: bool, right: bool, up: bool, down: bool) -> void:
 	rotation = rotation.lerp(sway_rot, SWAY_LERP * delta)
 	mouse_mov = 0
 
-
 @rpc("call_local", "any_peer", "unreliable")
 func _attack_visuals() -> void:
 	var anim: AnimationPlayer = weapon_scene.get_node("AnimationPlayer")
@@ -317,7 +297,6 @@ func _attack_visuals() -> void:
 	audio_player.stream = current_weapon.shoot_sound
 	audio_player.pitch_scale = randf_range(0.95, 1.05)
 	audio_player.play()
-
 
 func can_shoot(ghost_bullet: bool) -> bool:
 	if current_weapon == null:
@@ -330,7 +309,6 @@ func can_shoot(ghost_bullet: bool) -> bool:
 		return false
 
 	return shooting_enabled
-
 
 func _try_shoot(ghost_bullet := false) -> void:
 	if not can_shoot(ghost_bullet):
@@ -359,7 +337,6 @@ func _try_shoot(ghost_bullet := false) -> void:
 	for i in range(current_weapon.bullet_count):
 		_shoot_bullet(ghost_bullet)
 
-
 @rpc("call_local", "any_peer", "unreliable")
 func _gun_visuals(hit_pos: Vector3) -> void:
 	var muzzle_flash: GPUParticles3D = weapon_scene.get_node("MuzzleFlash")
@@ -368,14 +345,12 @@ func _gun_visuals(hit_pos: Vector3) -> void:
 	var tracer_pos: Vector3 = weapon_scene.get_node("MuzzleFlash").global_position
 	BulletTracer.spawn(player, tracer_pos, hit_pos)
 
-
 @rpc("call_local", "any_peer", "unreliable")
 func _spawn_bullet_hole(pos: Vector3, normal: Vector3) -> void:
 	var inst: Decal = BulletHoleScene.instantiate()
 	player.add_child(inst)
 	inst.global_position = pos
 	_align_bullet_hole_to_surface(inst, pos, normal)
-
 
 func _align_bullet_hole_to_surface(decal: Decal, hit_position: Vector3, surface_normal: Vector3) -> void:
 	var surface_faces_straight_up := surface_normal == Vector3.UP
@@ -385,13 +360,11 @@ func _align_bullet_hole_to_surface(decal: Decal, hit_position: Vector3, surface_
 
 	decal.rotate(surface_normal, randf_range(0, 2 * PI))
 
-
 @rpc("call_local", "any_peer", "unreliable")
 func _spawn_blood(hit_pos: Vector3) -> void:
 	var inst: Node3D = BloodScene.instantiate()
 	player.add_child(inst)
 	inst.global_position = hit_pos
-
 
 func _shoot_bullet(ghost_bullet := false) -> void:
 	var rad := deg_to_rad(current_weapon.recoil / 2)
@@ -435,7 +408,7 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 	var hit_pos := origin + direction * distance
 	var collider: Object = null
 
-	if result != {}:
+	if result != { }:
 		hit_pos = result.position
 		collider = result.collider
 
@@ -465,7 +438,6 @@ func _shoot_bullet(ghost_bullet := false) -> void:
 	else:
 		_gun_visuals(hit_pos)
 
-
 func _input(event: InputEvent) -> void:
 	if not player.is_me():
 		return
@@ -473,7 +445,6 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		var motion: InputEventMouseMotion = event
 		mouse_mov = -motion.relative.x
-
 
 func init_ik(is_third_person: bool) -> void:
 	var rik = r_hand_ik_tp if is_third_person else r_hand_ik

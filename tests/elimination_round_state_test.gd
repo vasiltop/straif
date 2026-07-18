@@ -5,10 +5,8 @@ const AK47_PATH := "res://src/player/weapon/resources/ak47.tres"
 
 var failed := false
 
-
 func _init() -> void:
 	call_deferred("_run")
-
 
 func _run() -> void:
 	var player_scene := load(PLAYER_SCENE_PATH) as PackedScene
@@ -53,7 +51,6 @@ func _run() -> void:
 	player.free()
 	await process_frame
 	quit(1 if failed else 0)
-
 
 func _check(condition: bool, message: String) -> void:
 	if condition:

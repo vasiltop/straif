@@ -1,5 +1,6 @@
 .godot/
 .venv/
+.tools/
 /android/
 godothost
 bin

@@ -4,7 +4,6 @@ extends CSGCombiner3D
 
 var zone_material: StandardMaterial3D = preload("res://src/maps/presets/zone.tres").duplicate()
 
-
 func _ready() -> void:
 	var sm: StandardMaterial3D = zone_material
 

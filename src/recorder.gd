@@ -13,7 +13,6 @@ var controller: Player
 var map: Map
 var is_ghost: bool
 
-
 class Frame:
 	var position: Vector3
 	var rot: Vector2
@@ -30,11 +29,9 @@ class Frame:
 	var ammo: int
 	var targets_state: Array[bool]
 
-
 func _init(player_cam: Camera3D, map: Map) -> void:
 	self.player_cam = player_cam
 	self.map = map
-
 
 func _ready() -> void:
 	var inst := PlayerScene.instantiate()
@@ -49,22 +46,17 @@ func _ready() -> void:
 	for child: PhysicalBone3D in inst.bone_simulator.get_children():
 		child.collision_layer = 0
 
-
 func add_frame(frame: Frame) -> void:
 	frames.append(frame)
-
 
 func clear() -> void:
 	frames.clear()
 
-
 func pause_playback() -> void:
 	paused = true
 
-
 func resume_playback() -> void:
 	paused = false
-
 
 func set_frame(value: int) -> void:
 	if value >= currently_playing.size():
@@ -131,7 +123,6 @@ func set_frame(value: int) -> void:
 
 	current_frame = value
 
-
 func play_frames(frames: Array, is_ghost: bool) -> void:
 	current_frame = 0
 	controller.visible = true
@@ -153,10 +144,8 @@ func play_frames(frames: Array, is_ghost: bool) -> void:
 	currently_playing = frames
 	resume_playback()
 
-
 func is_playing() -> bool:
 	return current_frame < len(currently_playing)
-
 
 func _physics_process(_delta: float) -> void:
 	if not paused and not is_playing():
@@ -167,11 +156,9 @@ func _physics_process(_delta: float) -> void:
 
 	set_frame(current_frame + 1)
 
-
 func to_hex() -> String:
 	var bytes := to_bytes()
 	return Marshalls.raw_to_base64(bytes)
-
 
 func to_bytes() -> PackedByteArray:
 	var buffer := StreamPeerBuffer.new()
@@ -223,7 +210,6 @@ func to_bytes() -> PackedByteArray:
 
 	return buffer.data_array
 
-
 func frames_from_bytes(data: PackedByteArray) -> Array:
 	var buffer := StreamPeerBuffer.new()
 	buffer.data_array = data
@@ -272,7 +258,6 @@ func frames_from_bytes(data: PackedByteArray) -> Array:
 
 	return frames
 
-
 func get_version(data: PackedByteArray) -> int:
 	var buffer := StreamPeerBuffer.new()
 
@@ -281,7 +266,6 @@ func get_version(data: PackedByteArray) -> int:
 	var header := buffer.get_32()
 
 	return header
-
 
 func play_bytes(data: PackedByteArray, is_ghost := false) -> void:
 	var frames := frames_from_bytes(data)

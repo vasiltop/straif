@@ -3,10 +3,8 @@ extends ServerRegistry
 
 var _bridge: Variant
 
-
 func _init(server_bridge: Variant) -> void:
 	_bridge = server_bridge
-
 
 func publish(snapshot: Dictionary) -> Error:
 	if _bridge == null or _bridge.client == null:

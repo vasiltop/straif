@@ -5,10 +5,8 @@ const MAIN_MENU_SCENE_PATH := "res://src/menus/main/main_menu.tscn"
 
 var failed := false
 
-
 func _init() -> void:
 	call_deferred("_run")
-
 
 func _run() -> void:
 	var aim_menu_scene := load(AIM_MENU_SCENE_PATH) as PackedScene
@@ -17,38 +15,37 @@ func _run() -> void:
 	if aim_menu != null:
 		_check(aim_menu.has_node("Scroll/Margin/Content/ScenarioList"), "Aim menu should expose scenario selectors")
 		_check(
-			aim_menu.has_node("Scroll/Margin/Content/SelectedScenarioLabel"),
-			"Aim menu should expose the selected scenario summary"
+				aim_menu.has_node("Scroll/Margin/Content/SelectedScenarioLabel"),
+				"Aim menu should expose the selected scenario summary",
 		)
 		_check(
-			aim_menu.has_node("Scroll/Margin/Content/StartButton"), "Aim menu should expose the session start button"
+				aim_menu.has_node("Scroll/Margin/Content/StartButton"),
+				"Aim menu should expose the session start button",
 		)
 		_check(
-			aim_menu.has_node("Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs"),
-			"Aim menu should expose leaderboard tabs"
+				aim_menu.has_node("Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs"),
+				"Aim menu should expose leaderboard tabs",
 		)
 		_check(
-			aim_menu.has_node(
-				(
-					"Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs"
-					+ "/ScenarioRankings/ScenarioLeaderboardScroll/ScenarioLeaderboardRows"
-				)
-			),
-			"Aim menu should expose scenario leaderboard rows"
+				aim_menu.has_node(
+						(
+							"Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs" + "/ScenarioRankings/ScenarioLeaderboardScroll/ScenarioLeaderboardRows"
+						)
+				),
+				"Aim menu should expose scenario leaderboard rows",
 		)
 		_check(
-			aim_menu.has_node(
-				(
-					"Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs"
-					+ "/OverallRankings/OverallLeaderboardScroll/OverallLeaderboardRows"
-				)
-			),
-			"Aim menu should expose overall leaderboard rows"
+				aim_menu.has_node(
+						(
+							"Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs" + "/OverallRankings/OverallLeaderboardScroll/OverallLeaderboardRows"
+						)
+				),
+				"Aim menu should expose overall leaderboard rows",
 		)
 		root.add_child(aim_menu)
 		await process_frame
 		var leaderboard_tabs = aim_menu.get_node(
-			"Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs"
+				"Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs"
 		)
 		_check(leaderboard_tabs is TabContainer, "Aim menu leaderboard view should be a TabContainer")
 		_check(leaderboard_tabs.get_tab_count() == 2, "Aim menu should expose scenario and overall leaderboard tabs")
@@ -58,7 +55,8 @@ func _run() -> void:
 	var main_menu = main_menu_scene.instantiate() if main_menu_scene != null else null
 	if main_menu != null:
 		_check(
-			main_menu.has_node("MarginContainer/Content/Body/Aim Trainer"), "Main menu should expose an Aim Trainer tab"
+				main_menu.has_node("MarginContainer/Content/Body/Aim Trainer"),
+				"Main menu should expose an Aim Trainer tab",
 		)
 
 	var global_node = root.get_node_or_null("Global")
@@ -72,7 +70,6 @@ func _run() -> void:
 		main_menu.free()
 	await process_frame
 	quit(1 if failed else 0)
-
 
 func _check(condition: bool, message: String) -> void:
 	if condition:

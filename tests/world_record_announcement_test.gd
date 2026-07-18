@@ -2,7 +2,6 @@ extends SceneTree
 
 const WorldRecordAnnouncement = preload("res://src/world_record_announcement.gd")
 
-
 func _init() -> void:
 	var record := {
 		"username": "Alice",
@@ -18,7 +17,7 @@ func _init() -> void:
 		quit(1)
 		return
 
-	var seen_ids: Dictionary[String, bool] = {}
+	var seen_ids: Dictionary[String, bool] = { }
 	if not WorldRecordAnnouncement.consume_unseen("record-1", seen_ids, true):
 		push_error("Expected a new record to be queued when announcements are enabled.")
 		quit(1)

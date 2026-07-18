@@ -4,11 +4,9 @@ const BASE_MAP_PATH := "res://src/maps/"
 const MAPS_FILE_PATH := "res://maps.json"
 var maps: Array[MapData]
 
-
 func get_map_image(map_name: String) -> Texture2D:
 	const IMAGES_LOCATION := "res://images/screenshots/"
 	return load(IMAGES_LOCATION + map_name + ".png")
-
 
 func load_maps() -> Array[MapData]:
 	var file := FileAccess.open(MAPS_FILE_PATH, FileAccess.READ)
@@ -23,7 +21,7 @@ func load_maps() -> Array[MapData]:
 		var image: Texture2D = get_map_image(map_name)
 
 		var modes: Array = map.modes
-		var mode_times := {}
+		var mode_times := { }
 
 		for mode: String in modes:
 			var mode_medal_times: Array = map["medals_" + mode]
@@ -34,11 +32,9 @@ func load_maps() -> Array[MapData]:
 
 	return maps
 
-
 func get_full_map_path(mode: String, map_name: String) -> String:
 	var path := BASE_MAP_PATH + mode + "/"
 	return path + map_name
-
 
 func get_random_map(mode: String) -> String:
 	var path := BASE_MAP_PATH + mode + "/"
@@ -56,7 +52,6 @@ func get_random_map(mode: String) -> String:
 	var map_scene_name := filtered[index]
 
 	return map_scene_name
-
 
 func get_map_with_name(mname: String) -> MapData:
 	for map in maps:

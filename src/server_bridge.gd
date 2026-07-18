@@ -14,20 +14,17 @@ var version: String
 var last_aim_overall_leaderboard_available := true
 
 var heartbeat_timer: BetterTimer
-var _seen_world_record_ids: Dictionary[String, bool] = {}
+var _seen_world_record_ids: Dictionary[String, bool] = { }
 var _world_record_messages: Array[String] = []
 var _showing_world_records := false
-
 
 func _settings_file() -> String:
 	if OS.has_feature("editor_runtime"):
 		return "res://settings-dev.json"
 	return "res://settings-prod.json"
 
-
 func get_leaderboard_base(mode: String) -> String:
 	return "/leaderboard/mode/" + mode
-
 
 func _init() -> void:
 	print(_settings_file())
@@ -40,17 +37,13 @@ func _init() -> void:
 	client = BetterHTTPClient.new(Global, BetterHTTPURL.parse(api_url))
 	heartbeat_timer = BetterTimer.new(Global, 3.0, _on_heartbeat_timer)
 
-
 func _on_heartbeat_timer() -> void:
 	var url := "/game/heartbeat"
 
-	var response := await (
-		client
-		. http_get(url)
-		. header("auth-ticket", Global.game_manager.auth_ticket_hex)
-		. header("version", version)
-		. send()
-	)
+	var request := client.http_get(url)
+	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
+	request.header("version", version)
+	var response := await request.send()
 
 	if not response or response.status() != 200:
 		Global.get_tree().change_scene_to_file("res://src/maintenance.tscn")
@@ -72,7 +65,6 @@ func _on_heartbeat_timer() -> void:
 		else:
 			Global.get_tree().change_scene_to_file("res://src/maintenance.tscn")
 
-
 func _handle_world_records(data: Dictionary) -> void:
 	if not data.has("world_records"):
 		return
@@ -86,10 +78,8 @@ func _handle_world_records(data: Dictionary) -> void:
 	if not _showing_world_records and not _world_record_messages.is_empty():
 		_show_world_record_announcements()
 
-
 func set_world_record_announcements_enabled(enabled: bool) -> void:
 	WorldRecordAnnouncement.clear_if_disabled(_world_record_messages, enabled)
-
 
 func _show_world_record_announcements() -> void:
 	_showing_world_records = true
@@ -101,7 +91,6 @@ func _show_world_record_announcements() -> void:
 		Info.alert(_world_record_messages.pop_front())
 		await Global.get_tree().create_timer(WORLD_RECORD_ALERT_DURATION).timeout
 	_showing_world_records = false
-
 
 func data_or_print_error(response: BetterHTTPResponse, silent := false) -> Variant:
 	if response == null:
@@ -119,7 +108,6 @@ func data_or_print_error(response: BetterHTTPResponse, silent := false) -> Varia
 		return null
 
 	return json.data
-
 
 class MapRunsResponse:
 	var runs: Array[Run]
@@ -141,7 +129,6 @@ class MapRunsResponse:
 		self.runs = runs
 		self.total = total
 
-
 class AimScoreEntry:
 	var steam_id: String
 	var username: String
@@ -154,15 +141,15 @@ class AimScoreEntry:
 	var position: int
 
 	func _init(
-		steam_id: String,
-		username: String,
-		score: int,
-		hits: int,
-		misses: int,
-		accuracy: float,
-		avg_reaction_ms: float,
-		created_at: String,
-		position: int
+			steam_id: String,
+			username: String,
+			score: int,
+			hits: int,
+			misses: int,
+			accuracy: float,
+			avg_reaction_ms: float,
+			created_at: String,
+			position: int,
 	) -> void:
 		self.steam_id = steam_id
 		self.username = username
@@ -174,7 +161,6 @@ class AimScoreEntry:
 		self.created_at = created_at
 		self.position = position
 
-
 class AimScoresResponse:
 	var scores: Array[AimScoreEntry]
 	var total: int
@@ -182,7 +168,6 @@ class AimScoresResponse:
 	func _init(scores: Array[AimScoreEntry], total: int) -> void:
 		self.scores = scores
 		self.total = total
-
 
 class AimOverallEntry:
 	var steam_id: String
@@ -193,12 +178,12 @@ class AimOverallEntry:
 	var avg_reaction_ms: float
 
 	func _init(
-		steam_id: String,
-		username: String,
-		total_score: int,
-		scenarios_completed: int,
-		accuracy: float,
-		avg_reaction_ms: float
+			steam_id: String,
+			username: String,
+			total_score: int,
+			scenarios_completed: int,
+			accuracy: float,
+			avg_reaction_ms: float,
 	) -> void:
 		self.steam_id = steam_id
 		self.username = username
@@ -206,7 +191,6 @@ class AimOverallEntry:
 		self.scenarios_completed = scenarios_completed
 		self.accuracy = accuracy
 		self.avg_reaction_ms = avg_reaction_ms
-
 
 class AimScoreSubmissionResult:
 	var message: String
@@ -220,31 +204,28 @@ class AimScoreSubmissionResult:
 		self.score = score
 		self.position = position
 
-
 func _parse_aim_score_entry(entry: Dictionary) -> AimScoreEntry:
 	return AimScoreEntry.new(
-		entry.steam_id as String,
-		entry.username as String,
-		entry.score as int,
-		entry.hits as int,
-		entry.misses as int,
-		float(entry.accuracy),
-		float(entry.avg_reaction_ms),
-		entry.created_at as String,
-		entry.position as int
+			entry.steam_id as String,
+			entry.username as String,
+			entry.score as int,
+			entry.hits as int,
+			entry.misses as int,
+			float(entry.accuracy),
+			float(entry.avg_reaction_ms),
+			entry.created_at as String,
+			entry.position as int,
 	)
-
 
 func _parse_aim_overall_entry(entry: Dictionary) -> AimOverallEntry:
 	return AimOverallEntry.new(
-		entry.steam_id as String,
-		entry.username as String,
-		entry.total_score as int,
-		entry.scenarios_completed as int,
-		float(entry.accuracy),
-		float(entry.avg_reaction_ms)
+			entry.steam_id as String,
+			entry.username as String,
+			entry.total_score as int,
+			entry.scenarios_completed as int,
+			float(entry.accuracy),
+			float(entry.avg_reaction_ms),
 	)
-
 
 func get_runs(mode: String, map_name: String, page: int) -> MapRunsResponse:
 	var url := get_leaderboard_base(mode) + "/maps/%s/runs?page=%d" % [map_name, page - 1]
@@ -257,13 +238,12 @@ func get_runs(mode: String, map_name: String, page: int) -> MapRunsResponse:
 	var runs: Array[MapRunsResponse.Run]
 	for run: Dictionary in data.runs:
 		runs.append(
-			MapRunsResponse.Run.new(
-				run.time_ms as int, run.username as String, run.created_at as String, run.steam_id as String
-			)
+				MapRunsResponse
+				.Run
+				.new(run.time_ms as int, run.username as String, run.created_at as String, run.steam_id as String)
 		)
 
 	return MapRunsResponse.new(runs, data.total as int)
-
 
 class PositionalRunResponse:
 	var time_ms: int
@@ -279,7 +259,6 @@ class PositionalRunResponse:
 		self.username = username
 		self.position = position
 
-
 func get_my_run_by_map(mode: String, map_name: String) -> PositionalRunResponse:
 	var url := get_leaderboard_base(mode) + "/maps/%s/runs/%d" % [map_name, Global.account_id()]
 	var response := await client.http_get(url).send()
@@ -289,33 +268,28 @@ func get_my_run_by_map(mode: String, map_name: String) -> PositionalRunResponse:
 		return null
 
 	return PositionalRunResponse.new(
-		data.time_ms as int,
-		data.username as String,
-		data.created_at as String,
-		data.steam_id as String,
-		data.position as int
+			data.time_ms as int,
+			data.username as String,
+			data.created_at as String,
+			data.steam_id as String,
+			data.position as int,
 	)
-
 
 func publish_run(mode: String, recording: PackedByteArray, map_name: String, time_ms: int) -> void:
 	if len(recording) > MAX_RUN_RECORDING_BYTES:
 		Info.alert("Could not submit run, you went past the run size limit.")
 		return
 
-	var response := await (
-		client
-		. http_post(get_leaderboard_base(mode) + "/maps/%s/runs" % map_name)
-		. json(
-			{
-				"recording": Marshalls.raw_to_base64(recording),
-				"time_ms": time_ms,
-				"username": Global.display_name(),
-			}
-		)
-		. header("auth-ticket", Global.game_manager.auth_ticket_hex)
-		. header("version", version)
-		. send()
-	)
+	var request := client.http_post(get_leaderboard_base(mode) + "/maps/%s/runs" % map_name)
+	var body := {
+		"recording": Marshalls.raw_to_base64(recording),
+		"time_ms": time_ms,
+		"username": Global.display_name(),
+	}
+	request.json(body)
+	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
+	request.header("version", version)
+	var response := await request.send()
 
 	var data := await data_or_print_error(response)
 
@@ -330,7 +304,6 @@ func publish_run(mode: String, recording: PackedByteArray, map_name: String, tim
 		if is_pb:
 			mode_info.pb = time_s
 
-
 func is_admin(steam_id: int) -> bool:
 	var url := "/admin/player/%d" % steam_id
 	var response := await client.http_get(url).header("auth-ticket", Global.game_manager.auth_ticket_hex).send()
@@ -338,32 +311,23 @@ func is_admin(steam_id: int) -> bool:
 	var data := await data_or_print_error(response)
 	return data if data else false
 
-
 func set_maintenance(new_value: bool) -> void:
-	var response := await (
-		client
-		. http_post("/admin/maintenance")
-		. json({"new_value": new_value})
-		. header("auth-ticket", Global.game_manager.auth_ticket_hex)
-		. send()
-	)
+	var request := client.http_post("/admin/maintenance")
+	request.json({ "new_value": new_value })
+	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
+	var response := await request.send()
 
 	await data_or_print_error(response)
 
-
 func set_admin(steam_id: int, new_value: bool) -> void:
-	var response := await (
-		client
-		. http_post("/admin/%d" % steam_id)
-		. json({"new_value": new_value})
-		. header("auth-ticket", Global.game_manager.auth_ticket_hex)
-		. send()
-	)
+	var request := client.http_post("/admin/%d" % steam_id)
+	request.json({ "new_value": new_value })
+	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
+	var response := await request.send()
 
 	var data := await data_or_print_error(response)
 	if data != null:
 		Info.alert(data as String)
-
 
 func delete_run(mode: String, map_name: String, steam_id: int) -> void:
 	var url := get_leaderboard_base(mode) + "/maps/%s/runs/%d" % [map_name, steam_id]
@@ -372,7 +336,6 @@ func delete_run(mode: String, map_name: String, steam_id: int) -> void:
 
 	if data != null:
 		Info.alert(data as String)
-
 
 func get_replay(mode: String, map_name: String, steam_id: int) -> String:
 	var url := get_leaderboard_base(mode) + "/maps/%s/players/%d/recording" % [map_name, steam_id]
@@ -383,7 +346,6 @@ func get_replay(mode: String, map_name: String, steam_id: int) -> String:
 		return ""
 
 	return data
-
 
 class RunsRequestResponse:
 	var runs: Array[Run]
@@ -405,26 +367,20 @@ class RunsRequestResponse:
 	func _init(runs: Array[Run]) -> void:
 		self.runs = runs
 
-
 func is_banned(steam_id: int) -> bool:
 	var response := await client.http_get("/admin/bans/%s" % steam_id).send()
 	var data := await data_or_print_error(response)
 	return data
 
-
 func set_ban(steam_id: int, new_value: bool) -> void:
-	var response := await (
-		client
-		. http_post("/admin/bans/%d" % steam_id)
-		. json({"new_value": new_value})
-		. header("auth-ticket", Global.game_manager.auth_ticket_hex)
-		. send()
-	)
+	var request := client.http_post("/admin/bans/%d" % steam_id)
+	request.json({ "new_value": new_value })
+	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
+	var response := await request.send()
 
 	var data := await data_or_print_error(response)
 	if data != null:
 		Info.alert(data as String)
-
 
 func get_my_runs(mode: String) -> RunsRequestResponse:
 	var url := get_leaderboard_base(mode) + "/players/%d/runs" % [Global.account_id()]
@@ -436,46 +392,44 @@ func get_my_runs(mode: String) -> RunsRequestResponse:
 	var runs: Array[RunsRequestResponse.Run]
 	for run: Dictionary in data:
 		runs.append(
-			RunsRequestResponse.Run.new(
-				run.time_ms as int,
-				run.map_name as String,
-				run.created_at as String,
-				run.position as int,
-				run.total as int
-			)
+				RunsRequestResponse
+				.Run
+				.new(run.time_ms as int, run.map_name as String, run.created_at as String, run.position as int, run.total as int)
 		)
 
 	return RunsRequestResponse.new(runs)
 
-
 func submit_aim_score(
-	scenario: String, score: int, hits: int, misses: int, accuracy: float, avg_reaction_ms: int
+		scenario: String,
+		score: int,
+		hits: int,
+		misses: int,
+		accuracy: float,
+		avg_reaction_ms: int,
 ) -> AimScoreSubmissionResult:
-	var response := await (
-		client
-		. http_post("/leaderboard/aim/scenarios/%s/scores" % scenario)
-		. json(
-			{
-				"score": score,
-				"hits": hits,
-				"misses": misses,
-				"accuracy": accuracy,
-				"avg_reaction_ms": avg_reaction_ms,
-				"username": Global.display_name(),
-			}
-		)
-		. header("auth-ticket", Global.game_manager.auth_ticket_hex)
-		. header("version", version)
-		. send()
-	)
+	var request := client.http_post("/leaderboard/aim/scenarios/%s/scores" % scenario)
+	var body := {
+		"score": score,
+		"hits": hits,
+		"misses": misses,
+		"accuracy": accuracy,
+		"avg_reaction_ms": avg_reaction_ms,
+		"username": Global.display_name(),
+	}
+	request.json(body)
+	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
+	request.header("version", version)
+	var response := await request.send()
 	var data := await data_or_print_error(response)
 	if data == null:
 		return null
 
 	return AimScoreSubmissionResult.new(
-		data.message as String, data.personal_best as bool, data.score as int, data.position as int
+			data.message as String,
+			data.personal_best as bool,
+			data.score as int,
+			data.position as int,
 	)
-
 
 func get_aim_scores(scenario: String, page := 1) -> AimScoresResponse:
 	var response := await client.http_get("/leaderboard/aim/scenarios/%s/scores?page=%d" % [scenario, page - 1]).send()
@@ -488,7 +442,6 @@ func get_aim_scores(scenario: String, page := 1) -> AimScoresResponse:
 		scores.append(_parse_aim_score_entry(entry))
 
 	return AimScoresResponse.new(scores, data.total as int)
-
 
 func get_aim_overall_leaderboard() -> Array[AimOverallEntry]:
 	var response := await client.http_get("/leaderboard/aim/overall").send()
@@ -503,7 +456,6 @@ func get_aim_overall_leaderboard() -> Array[AimOverallEntry]:
 		scores.append(_parse_aim_overall_entry(entry))
 	return scores
 
-
 func get_overall_leaderboard(mode: String) -> Array:
 	var res = await client.http_get(get_leaderboard_base(mode) + "/overall").send()
 	var data := await data_or_print_error(res)
@@ -511,7 +463,6 @@ func get_overall_leaderboard(mode: String) -> Array:
 		return []
 
 	return data
-
 
 class ServerResponse:
 	var port: int
@@ -522,7 +473,6 @@ class ServerResponse:
 	var max_players: int
 	var last_ping: String
 	var ip: String
-
 
 func get_servers() -> Array[ServerResponse]:
 	var response := await (client.http_get("/browser")).send()

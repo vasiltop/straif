@@ -9,7 +9,6 @@ const ServerButtonScene = preload("res://src/menus/multiplayer/server_button/ser
 var cached_servers: Array[ServerBridge.ServerResponse] = []
 var _refreshing := false
 
-
 func _ready() -> void:
 	mode_tabs.clear_tabs()
 	mode_tabs.add_tab("All")
@@ -18,7 +17,6 @@ func _ready() -> void:
 	refresh_servers_btn.pressed.connect(_refresh_servers)
 	mode_tabs.tab_selected.connect(_on_mode_selected)
 	_refresh_servers()
-
 
 func _refresh_servers() -> void:
 	if _refreshing:
@@ -31,10 +29,8 @@ func _refresh_servers() -> void:
 	refresh_servers_btn.disabled = false
 	_render_servers()
 
-
 func _on_mode_selected(_tab: int) -> void:
 	_render_servers()
-
 
 func _render_servers() -> void:
 	var servers: Array[ServerBridge.ServerResponse] = []

@@ -12,7 +12,6 @@ class_name MainMenu extends Control
 
 const MapButtonScene = preload("res://src/menus/main/map_button/map_button.tscn")
 
-
 func _on_leaderboard_timer() -> void:
 	var target_lb := await Global.server_bridge.get_overall_leaderboard("target")
 
@@ -39,7 +38,6 @@ func _on_leaderboard_timer() -> void:
 		movement_only_leaderboard.add_child(label_from_run.call(run, lb_pos))
 		lb_pos += 1
 
-
 func _ready() -> void:
 	Global.multiplayer.multiplayer_peer = null
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -54,7 +52,6 @@ func _ready() -> void:
 	discord_btn.pressed.connect(func() -> void: OS.shell_open(Global.server_bridge.DISCORD_URL))
 
 	leaderboard_timer.start()
-
 
 func _instantiate_maps() -> void:
 	var mode_to_container: Dictionary[String, ModeContainer]
@@ -86,13 +83,11 @@ func _instantiate_maps() -> void:
 				continue
 			btn.set_personal_best(snapped(float(run.time_ms) / 1000, 0.001) as float, run.position, run.total, mode)
 
-
 func _on_refresh_lobby_search() -> void:
 	if not Global.steam_available():
 		return
 	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
 	Steam.requestLobbyList()
-
 
 func _on_loaded_avatar(_user_id: int, avatar_size: int, avatar_buffer: PackedByteArray) -> void:
 	var image := Image.create_from_data(avatar_size, avatar_size, false, Image.FORMAT_RGBA8, avatar_buffer)

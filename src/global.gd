@@ -11,7 +11,6 @@ var game_manager: GameManager
 var is_server: bool
 var offline_playtest: bool
 
-
 func _ready() -> void:
 	var args := _gather_launch_args()
 	var allow_test_adapters := OS.has_feature("editor")
@@ -70,7 +69,6 @@ func _ready() -> void:
 
 	get_tree().call_deferred("change_scene_to_file", "res://src/menus/main/main_menu.tscn")
 
-
 func _start_e2e_control_client() -> bool:
 	var script_path := "res://tests/e2e/godot/control_client.gd"
 	if not ResourceLoader.exists(script_path):
@@ -88,7 +86,6 @@ func _start_e2e_control_client() -> bool:
 	add_child(control_client)
 	return true
 
-
 func _start_identity(identity: IdentityProvider) -> void:
 	if identity == null:
 		return
@@ -103,18 +100,15 @@ func _start_identity(identity: IdentityProvider) -> void:
 		identity.auth_ticket_failed.connect(_on_auth_ticket_failed)
 		identity.request_auth_ticket()
 
-
 func _on_auth_ticket_ready(ticket: String) -> void:
 	game_manager.store_auth_ticket(ticket)
 	if ticket.is_empty():
 		return
 	server_bridge.heartbeat_timer.start()
 
-
 func _on_auth_ticket_failed(message: String) -> void:
 	push_error("Steam authentication failed: %s" % message)
 	Info.alert("Failed to authenticate with Steam.\n" + message)
-
 
 func _gather_launch_args() -> PackedStringArray:
 	var user_args := OS.get_cmdline_user_args()
@@ -122,22 +116,18 @@ func _gather_launch_args() -> PackedStringArray:
 		return user_args
 	return _launch_args_without_editor_script_prefix(OS.get_cmdline_args())
 
-
 func _launch_args_without_editor_script_prefix(args: PackedStringArray) -> PackedStringArray:
 	if OS.has_feature("editor_runtime") and args.size() >= 2:
 		return args.slice(2)
 	return args
-
 
 func _abort_startup(message: String) -> void:
 	push_error(message)
 	printerr(message)
 	get_tree().call_deferred("quit", 1)
 
-
 func mp_print(message: String) -> void:
 	print("[%d]: %s" % [id(), message])
-
 
 func id() -> int:
 	if not multiplayer.multiplayer_peer:
@@ -145,30 +135,24 @@ func id() -> int:
 
 	return multiplayer.get_unique_id()
 
-
 func account_id() -> int:
 	if context == null or context.identity == null:
 		return 0
 	return context.identity.player_id()
-
 
 func display_name() -> String:
 	if context == null or context.identity == null:
 		return ""
 	return context.identity.display_name()
 
-
 func steam_available() -> bool:
 	return context != null and context.identity is SteamIdentityProvider
-
 
 func mp() -> bool:
 	return multiplayer.multiplayer_peer != null
 
-
 func is_sv() -> bool:
 	return is_server
-
 
 func is_offline_playtest_mode(user_args: PackedStringArray) -> bool:
 	return user_args.has("--offline-playtest")

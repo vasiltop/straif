@@ -19,10 +19,8 @@ const WARM_UP_FRAMES := 4
 var _complete := false
 var _running := false
 
-
 func _ready() -> void:
 	warm_up()
-
 
 func warm_up() -> void:
 	if _complete:
@@ -47,10 +45,8 @@ func warm_up() -> void:
 	await get_tree().process_frame
 	_finish()
 
-
 func is_complete() -> bool:
 	return _complete
-
 
 func _create_viewport() -> SubViewport:
 	var viewport := SubViewport.new()
@@ -67,7 +63,6 @@ func _create_viewport() -> SubViewport:
 	light.rotation_degrees = Vector3(-45.0, -30.0, 0.0)
 	viewport.add_child(light)
 	return viewport
-
 
 func _add_vfx(viewport: SubViewport) -> void:
 	var receiver := MeshInstance3D.new()
@@ -118,7 +113,6 @@ func _add_vfx(viewport: SubViewport) -> void:
 	shader_mesh.mesh = quad
 	shader_mesh.position = Vector3(-0.35, 0.0, 0.1)
 	viewport.add_child(shader_mesh)
-
 
 func _finish() -> void:
 	_running = false
