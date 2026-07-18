@@ -58,11 +58,14 @@ export async function fetchLeaderboard(
 
   const offset = (query.page - 1) * PAGE_SIZE
   return {
-    rows: normalizeRows(query, body).map((row, index) => ({
-      ...row,
-      id: row.steam_id,
-      rank: row.position ?? offset + index + 1,
-    })),
+    rows: normalizeRows(query, body).map((row, index) => {
+      const rank = row.position ?? offset + index + 1
+      return {
+        ...row,
+        id: String(rank),
+        rank,
+      }
+    }),
     total: normalizeTotal(query, body),
   }
 }

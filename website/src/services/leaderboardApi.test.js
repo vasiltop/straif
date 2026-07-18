@@ -10,12 +10,20 @@ describe('fetchLeaderboard', () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       response({
         data: {
-          runs: [{
-            steam_id: '1',
-            username: 'Alice',
-            time_ms: 18442,
-            created_at: '2026-07-18',
-          }],
+          runs: [
+            {
+              steam_id: '1',
+              username: 'Alice',
+              time_ms: 18442,
+              created_at: '2026-07-18',
+            },
+            {
+              steam_id: '1',
+              username: 'Alice',
+              time_ms: 18510,
+              created_at: '2026-07-18',
+            },
+          ],
           total: 26,
         },
       })
@@ -33,11 +41,12 @@ describe('fetchLeaderboard', () => {
       expect.objectContaining({ signal: undefined })
     )
     expect(result.rows[0]).toMatchObject({
-      id: '1',
+      id: '26',
       rank: 26,
       username: 'Alice',
       time_ms: 18442,
     })
+    expect(result.rows.map((row) => row.id)).toEqual(['26', '27'])
     expect(result.total).toBe(26)
   })
 
