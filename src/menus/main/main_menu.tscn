@@ -24,9 +24,6 @@
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
 size = Vector2(64, 64)
 
-[sub_resource type="Theme" id="Theme_og6j4"]
-default_font_size = 20
-
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3dplo"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iyvra"]
@@ -159,8 +156,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_wwn1r")
 script = ExtResource("1_cput1")
-target_practice_leaderboard = NodePath("MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer/TargetPracticeLeaderboard")
-movement_only_leaderboard = NodePath("MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer2/MovementOnlyLeaderboard")
+target_practice_leaderboard = NodePath("MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Target Practice/Content/OverallLeaderboard/TargetPracticeLeaderboard")
+movement_only_leaderboard = NodePath("MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Movement Only/Content/OverallLeaderboard/MovementOnlyLeaderboard")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1955005440]
 layout_mode = 1
@@ -275,6 +272,49 @@ mode = "target"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 0
 
+[node name="Content" type="VBoxContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Target Practice" unique_id=100000001]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MapScroll" type="ScrollContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Target Practice/Content" unique_id=100000002]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MapMargin" type="MarginContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Target Practice/Content/MapScroll" unique_id=100000003]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="MapContainer" type="HFlowContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Target Practice/Content/MapScroll/MapMargin" unique_id=100000004]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+
+[node name="OverallLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Target Practice/Content" unique_id=100000005]
+layout_mode = 2
+
+[node name="Heading" type="Label" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Target Practice/Content/OverallLeaderboard" unique_id=100000006]
+layout_mode = 2
+text = "Overall Leaderboard"
+
+[node name="TargetPracticeLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Target Practice/Content/OverallLeaderboard" unique_id=100000015]
+layout_mode = 2
+
+[node name="ExplanationText" type="Label" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Target Practice/Content/OverallLeaderboard" unique_id=100000007]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Points are given based on runs in the top 10.
+1st place is 10 points, 2nd place is 9 points, etc.."
+horizontal_alignment = 1
+
 [node name="Movement Only" type="Control" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher" unique_id=868796938]
 visible = false
 layout_mode = 2
@@ -282,6 +322,49 @@ script = ExtResource("5_0gscq")
 mode = "bhop"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 metadata/_tab_index = 1
+
+[node name="Content" type="VBoxContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Movement Only" unique_id=100000008]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MapScroll" type="ScrollContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Movement Only/Content" unique_id=100000009]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MapMargin" type="MarginContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Movement Only/Content/MapScroll" unique_id=100000010]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="MapContainer" type="HFlowContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Movement Only/Content/MapScroll/MapMargin" unique_id=100000011]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+
+[node name="OverallLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Movement Only/Content" unique_id=100000012]
+layout_mode = 2
+
+[node name="Heading" type="Label" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Movement Only/Content/OverallLeaderboard" unique_id=100000013]
+layout_mode = 2
+text = "Overall Leaderboard"
+
+[node name="MovementOnlyLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Movement Only/Content/OverallLeaderboard" unique_id=100000016]
+layout_mode = 2
+
+[node name="ExplanationText" type="Label" parent="MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher/Movement Only/Content/OverallLeaderboard" unique_id=100000014]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Points are given based on runs in the top 10.
+1st place is 10 points, 2nd place is 9 points, etc.."
+horizontal_alignment = 1
 
 [node name="Aim Trainer" parent="MarginContainer/Content/Body" unique_id=792485455 instance=ExtResource("17_aim")]
 visible = false
@@ -293,64 +376,10 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="Leaderboard" type="Control" parent="MarginContainer/Content/Body" unique_id=1078392968]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 3
-
-[node name="Overall" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard" unique_id=1926363149]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -110.0
-offset_top = -18.0
-offset_right = 110.0
-offset_bottom = 18.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 20
-
-[node name="H" type="HBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall" unique_id=257135821]
-layout_mode = 2
-theme = SubResource("Theme_og6j4")
-theme_override_constants/separation = 50
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H" unique_id=1128228830]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer" unique_id=637673176]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Target Practice"
-
-[node name="TargetPracticeLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer" unique_id=1291506203]
-layout_mode = 2
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H" unique_id=15554509]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer2" unique_id=2137644706]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Movement Only"
-
-[node name="MovementOnlyLeaderboard" type="VBoxContainer" parent="MarginContainer/Content/Body/Leaderboard/Overall/H/VBoxContainer2" unique_id=257067248]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/Content/Body/Leaderboard/Overall" unique_id=1815162472]
-layout_mode = 2
-theme_override_font_sizes/font_size = 13
-text = "Points are given based on runs in the top 10.
-1st place is 10 points, 2nd place is 9 points, etc.."
-horizontal_alignment = 1
-
 [node name="Settings" type="Control" parent="MarginContainer/Content/Body" unique_id=1145642441]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 4
+metadata/_tab_index = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Content/Body/Settings" unique_id=199957781]
 layout_mode = 1
