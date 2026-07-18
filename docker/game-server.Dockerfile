@@ -9,10 +9,15 @@
 # Build context is the repository root (see game-servers.compose.yaml) so that the
 # exported `build/linux/` artifacts are available.
 
-FROM alpine:3.20
+FROM debian:bookworm-slim
 
-# Godot ships glibc binaries; gcompat + libstdc++/libgcc let them run under musl.
-RUN apk add --no-cache gcompat libstdc++ libgcc
+# Godot ships glibc binaries; musl+gcompat (e.g. Alpine) doesn't implement enough
+# of glibc's surface for them to run (missing symbols like fcntl64, __res_init),
+# so a real glibc base is required here.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libstdc++6 \
+        ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

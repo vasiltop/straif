@@ -34,9 +34,9 @@ services:
     <<: *game-server
     container_name: straif-gs-bhop-1
     environment:
-      SERVER_NAME: "BHOP-1"
+      SERVER_NAME: "ELIM-1"
       PORT: "3006"
-      MAX_PLAYERS: "12"
-      MODE: "bhop"
+      MAX_PLAYERS: "6"
+      MODE: "elimination"
     ports:
       - "3006:3006/udp"

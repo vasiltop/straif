@@ -134,6 +134,7 @@ func play_frames(header: int, frames: Array, is_ghost: bool) -> void:
 		controller.weapon_handler.visible = true
 		controller.third_person.visible = false
 		controller.ui.visible = true
+		controller.set_viewmodel_viewport_visible(true)
 	else:
 		controller.third_person.visible = true
 		controller.weapon_handler.visible = false
