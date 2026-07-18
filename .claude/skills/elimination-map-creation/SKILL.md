@@ -198,6 +198,77 @@ collision layer/mask** when raycasting for spawn floors, or you'll hit another
 map's colliders. `get_global_transform` errors in `_init` (not in tree) — query
 from `_process` after one frame.
 
+## Rule 10 — dressing with props (CS-style clutter) & organic collision
+
+Open floors read as empty. Populate them with dense, believable clutter
+(market stalls, oil drums, gas cylinders, crates, baskets, fruit displays,
+tables/chairs, planters, traffic cones, pallets/sacks, tarps, pipes, ladders,
+carpets/rugs, signs) — mirroring Dust2/Mirage/Cache prop vocabulary. Keep it
+**greybox-plus**: simple primitives, chunky silhouettes, no beauty detail.
+
+**Two objects per prop pass — split visual from collision:**
+
+- Merge all **decorative** prop meshes into one collision-free visual object
+  (e.g. `bazaar`, `rubble`) — no `-col` suffix, so they cost nothing physically.
+- Merge the **blocking** proxies into one `-col` object (e.g. `bazaar-col`).
+  Use **simplified box/convex proxies**, not the detailed visual mesh, for
+  collision. This keeps the trimesh cheap and avoids snag geometry.
+
+**Organic props (rocks, rubble, boulders) → convex-hull collision.**
+A detailed concave rock imported as its own trimesh `-col` creates **inward
+pockets that wedge the 0.5×2.1 capsule** (player gets stuck on jump-down) and,
+because the wedge leaves residual velocity, retriggers the footstep loop
+(`player.gd` fires footsteps while `velocity>0 && grounded()`). Fix: keep the
+detailed rock as **visual-only** (`rubble`) and add a **convex hull** proxy to
+the `-col` object — a convex trimesh has no inward pocket, so the capsule slides
+off cleanly. Per cluster:
+
+```python
+res = bmesh.ops.convex_hull(bm, input=bm.verts[:])
+# delete ONLY interior verts — don't concat geom_interior+unused+holes (dupes → error)
+interior = [e for e in res['geom_interior'] if isinstance(e, bmesh.types.BMVert)]
+bmesh.ops.delete(bm, geom=interior, context='VERTS')
+```
+
+Cluster loose rocks by centroid distance (<~2.5 m) and hull each cluster
+separately so hulls hug the shapes (one giant hull would swallow walkways).
+
+**Place props with a downward raycast so nothing floats or clips:**
+
+```python
+deps = bpy.context.evaluated_depsgraph_get()
+hit = bpy.context.scene.ray_cast(deps, Vector((x, y, 60)), Vector((0,0,-1)))
+# open floor only if it hit the floor near Z=0 (not another prop/wall):
+ok = hit[0] and hit[1].z < 0.35 and hit[4].name.startswith('floor')
+```
+
+Seat each prop's base on `hit[1].z`. Enforce a min-distance list between anchors
+so clusters don't interpenetrate, and keep clusters ~1 m off walls (the raycast
+validates only the anchor point — a wide cluster can still clip a nearby wall).
+**Never fully block a lane/chokepoint** — after placing, re-check a top-down
+render that every route is still passable.
+
+**New pixel textures for props** (reuse existing materials first): create tiny
+images in Blender and pack them —
+
+```python
+img = bpy.data.images.new('fruit_mix', 16, 16)
+img.pixels = flat_rgba_list          # len == w*h*4
+img.pack()
+tex = nodes.new('ShaderNodeTexImage'); tex.image = img
+tex.interpolation = 'Closest'        # nearest look; post-import script also forces it
+```
+
+Keep them 16–32 px. Godot re-extracts embedded textures on reimport and the
+post-import script (Rule 7) forces nearest filtering, so the pixel look is
+automatic — no on-disk resizing.
+
+**Editing a merged group later:** `mesh.separate(type='LOOSE')` → edit parts →
+re-`join` via `bpy.context.temp_override(active_object=t,
+selected_editable_objects=list, selected_objects=list)`, then set `.name` +
+`.data.name`. Gotcha: if another object still holds the target name at rename
+time, Blender appends `.NNN` — rename again once the collider is consumed.
+
 ## Checklist
 
 - [ ] Layout: T/CT spawns, A/B sites, mid, chokepoints; rotational; fair.
@@ -210,6 +281,8 @@ from `_process` after one frame.
 - [ ] (Pixel look) small textures, normals dropped, nearest-filter post-import
       script wired in `.glb.import`.
 - [ ] No floating geometry.
+- [ ] Props dress open floors (visual object + separate `-col` proxy); organic
+      rocks are visual-only with convex-hull collision; no lane blocked.
 - [ ] `.tscn` instances the glb; CSG removed; `Spawns/Team*/Spawn*` preserved.
 - [ ] 6 spawns from verified imported coords, ~0.1 m above floor, facing in.
 - [ ] Moody lighting tuned.

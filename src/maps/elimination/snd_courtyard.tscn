@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dhn8r5p2wak7c"]
+[gd_scene load_steps=6 format=3 uid="uid://dhn8r5p2wak7c"]
 
 [ext_resource type="PackedScene" uid="uid://cby8geolqcubx" path="res://src/maps/tiles/snd_courtyard.glb" id="1_court"]
 [ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/skyboxes/pink.png" id="2_dywee"]
@@ -28,7 +28,6 @@ volumetric_fog_detail_spread = 6.0
 [node name="Courtyard" type="Node3D" unique_id=1641421048]
 
 [node name="snd_courtyard" parent="." unique_id=273547291 instance=ExtResource("1_court")]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 
 [node name="Spawns" type="Node3D" parent="." unique_id=566534199]
 
@@ -49,7 +48,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.1, 35)
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -8, 1.1, -35)
 
 [node name="Spawn2" type="Marker3D" parent="Spawns/Team2" unique_id=632416976]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 1.1, -35)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 1.1, -37)
 
 [node name="Spawn3" type="Marker3D" parent="Spawns/Team2" unique_id=1148752944]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8, 1.1, -35)
