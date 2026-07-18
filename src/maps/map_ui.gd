@@ -24,26 +24,33 @@ func on_shot(mag_ammo: int, _reserve_ammo := 0) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % [mag_ammo]
 
 func _ready() -> void:
-	var settings_manager = get_node("/root/Global").settings_manager
-	keybind_info_label.text = ("Press Ctrl to toggle UI\nPress %s to restart" % settings_manager.get_keybind_string("restart"))
+	keybind_info_label.text = ("Press Ctrl to toggle UI\nPress %s to restart" % Global.settings_manager.get_keybind_string("restart"))
 	done_replay_btn.pressed.connect(func() -> void: return_control_to_player.emit())
 
-	alt_speed_label.visible = settings_manager.value("Display", "speed")
+	alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
 
 func set_frame(frame: int, total: int) -> void:
 	tick_label.text = "Tick: %d / %d" % [frame + 1, total]
 	replay_slider.value = frame
 	replay_slider.max_value = total - 1
 
-func set_replay_inputs(frame) -> void:
+func set_replay_inputs(
+		forward_input: bool,
+		back_input: bool,
+		left_input: bool,
+		right_input: bool,
+		shoot_input: bool,
+		ads_input: bool,
+		reload_input: bool,
+	) -> void:
 	replay_input_display.set_inputs(
-			frame.forward_input,
-			frame.back_input,
-			frame.left_input,
-			frame.right_input,
-			frame.shoot_input,
-			frame.ads_input,
-			frame.reload_input,
+			forward_input,
+			back_input,
+			left_input,
+			right_input,
+			shoot_input,
+			ads_input,
+			reload_input,
 	)
 
 func set_replay_visible(value: bool) -> void:

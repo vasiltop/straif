@@ -84,17 +84,8 @@ func _run() -> void:
 					"MapUi replay_input_display export should reference ReplayContainer/V/ReplayInputDisplay",
 			)
 
-			if t.check(map_ui.has_method("set_replay_inputs"), "MapUi should expose set_replay_inputs(Recorder.Frame)"):
-				var frame := _RecorderFrame.new()
-				frame.forward_input = true
-				frame.back_input = false
-				frame.left_input = false
-				frame.right_input = true
-				frame.shoot_input = false
-				frame.ads_input = true
-				frame.reload_input = false
-
-				map_ui.set_replay_inputs(frame)
+			if t.check(map_ui.has_method("set_replay_inputs"), "MapUi should expose set_replay_inputs(bool, bool, bool, bool, bool, bool, bool)"):
+				map_ui.set_replay_inputs(true, false, false, true, false, true, false)
 				if replay_input_display != null:
 					_check_input_state(t, replay_input_display, &"forward", true)
 					_check_input_state(t, replay_input_display, &"right", true)
@@ -126,12 +117,3 @@ func _panel_stylebox(replay_input_display: Node, label_path: String) -> StyleBox
 
 	var parent_control := label.get_parent() as Control
 	return parent_control.get_theme_stylebox("panel") if parent_control != null else null
-
-class _RecorderFrame:
-	var forward_input: bool
-	var back_input: bool
-	var left_input: bool
-	var right_input: bool
-	var shoot_input: bool
-	var ads_input: bool
-	var reload_input: bool
