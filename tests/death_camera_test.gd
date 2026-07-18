@@ -27,6 +27,14 @@ func _run() -> void:
 		_check(not player.weapon_handler.visible, "Weapon handler should be hidden")
 		_check(not player.gun_vp_container.visible, "Gun viewport container should be hidden")
 
+		player._show_local_first_person_view()
+
+		_check(player.camera.is_current(), "Camera should become current again")
+		_check(player.gun_camera.is_current(), "Gun camera should become current again")
+		_check(not player.third_person.visible, "Third-person body should hide again")
+		_check(player.weapon_handler.visible, "Weapon handler should show again")
+		_check(player.gun_vp_container.visible, "Gun viewport container should show again")
+
 		player.queue_free()
 
 	await process_frame

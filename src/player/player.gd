@@ -80,6 +80,13 @@ func _show_local_ragdoll_view() -> void:
 	set_viewmodel_viewport_visible(false)
 	ragdoll_camera.make_current()
 
+func _show_local_first_person_view() -> void:
+	third_person.visible = false
+	weapon_handler.visible = true
+	set_viewmodel_viewport_visible(true)
+	camera.make_current()
+	gun_camera.make_current()
+
 @rpc("call_local", "authority", "reliable")
 func ragdoll() -> void:
 	bone_simulator.physical_bones_start_simulation()
@@ -104,10 +111,7 @@ func respawn() -> void:
 
 	if is_me():
 		weapon_handler.reset_ammo()
-		camera.current = true
-		gun_camera.current = true
-		weapon_handler.visible = true
-		set_viewmodel_viewport_visible(true)
+		_show_local_first_person_view()
 
 func on_death() -> void:
 	pass
