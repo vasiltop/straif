@@ -1,5 +1,4 @@
 import {
-  boolean,
   pgTable,
   primaryKey,
   text,
@@ -63,5 +62,5 @@ export const admins = pgTable('admins', {
 });
 
 export const banned_values = pgTable('banned_values', {
-  value: text('value').unique().notNull(), // can either be steam_id or ip
+  value: text('value').unique().notNull(),
 });

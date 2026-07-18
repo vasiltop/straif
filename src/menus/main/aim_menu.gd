@@ -9,32 +9,26 @@ const SCENARIO_ORDER := [SCENARIO_GRIDSHOT, SCENARIO_FLICK, SCENARIO_TRACKING]
 const LEADERBOARD_TAB_SCENARIO := 0
 const LEADERBOARD_TAB_OVERALL := 1
 const SCENARIO_INFO := {
-	SCENARIO_GRIDSHOT: {
-		"label": "Gridshot",
-	},
-	SCENARIO_FLICK: {
-		"label": "Flick",
-	},
-	SCENARIO_TRACKING: {
-		"label": "Tracking",
-	}
+	SCENARIO_GRIDSHOT: { "label": "Gridshot" },
+	SCENARIO_FLICK: { "label": "Flick" },
+	SCENARIO_TRACKING: { "label": "Tracking" },
 }
 
-@onready var gridshot_button: Button = $Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack/GridshotButton
-@onready var flick_button: Button = $Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack/FlickButton
-@onready var tracking_button: Button = $Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack/TrackingButton
+@onready var gridshot_button: Button = get_node("Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack/GridshotButton")
+@onready var flick_button: Button = get_node("Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack/FlickButton")
+@onready var tracking_button: Button = get_node("Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack/TrackingButton")
 @onready var selected_scenario_label: Label = $Scroll/Margin/Content/SelectedScenarioLabel
 @onready var start_button: Button = $Scroll/Margin/Content/StartButton
 @onready var leaderboard_tabs: TabContainer = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs
-@onready var scenario_status_label: Label = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings/ScenarioLeaderboardStatus
-@onready var scenario_rows: VBoxContainer = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings/ScenarioLeaderboardScroll/ScenarioLeaderboardRows
-@onready var overall_status_label: Label = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings/OverallLeaderboardStatus
-@onready var overall_rows: VBoxContainer = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings/OverallLeaderboardScroll/OverallLeaderboardRows
+@onready var scenario_status_label: Label = leaderboard_tabs.get_node("ScenarioRankings/ScenarioLeaderboardStatus")
+@onready var scenario_rows: VBoxContainer = leaderboard_tabs.get_node("ScenarioRankings/ScenarioLeaderboardScroll/ScenarioLeaderboardRows")
+@onready var overall_status_label: Label = leaderboard_tabs.get_node("OverallRankings/OverallLeaderboardStatus")
+@onready var overall_rows: VBoxContainer = leaderboard_tabs.get_node("OverallRankings/OverallLeaderboardScroll/OverallLeaderboardRows")
 
 var selected_scenario := SCENARIO_GRIDSHOT
 var scenario_request_generation := 0
 var overall_request_generation := 0
-var scenario_buttons: Dictionary = {}
+var scenario_buttons: Dictionary = { }
 
 func _ready() -> void:
 	scenario_buttons = {
@@ -94,7 +88,7 @@ func _refresh_scenario_leaderboard() -> void:
 		scenario_status_label.text = "No %s scores yet." % String(info["label"]).to_lower()
 		return
 
-	scenario_status_label.text = "Showing top %d of %d %s scores" % [response.scores.size(), response.total, info["label"]]
+	scenario_status_label.text = ("Showing top %d of %d %s scores" % [response.scores.size(), response.total, info["label"]])
 	_populate_scenario_rows(response.scores)
 
 func _refresh_overall_leaderboard() -> void:
@@ -125,27 +119,29 @@ func _can_apply_overall_request(generation: int) -> bool:
 func _populate_scenario_rows(scores: Array) -> void:
 	var data_rows: Array = []
 	for entry in scores:
-		data_rows.append([
+		var row := [
 			"#%d" % entry.position,
 			entry.username,
 			str(entry.score),
 			"%.1f%%" % entry.accuracy,
 			_format_reaction(entry.avg_reaction_ms),
-		])
+		]
+		data_rows.append(row)
 	_build_leaderboard_grid(scenario_rows, ["#", "Player", "Score", "Accuracy", "Reaction"], data_rows, 1)
 
 func _populate_overall_rows(scores: Array) -> void:
 	var data_rows: Array = []
 	var rank := 1
 	for entry in scores:
-		data_rows.append([
+		var row := [
 			"#%d" % rank,
 			entry.username,
 			str(entry.total_score),
 			str(entry.scenarios_completed),
 			"%.1f%%" % entry.accuracy,
 			_format_reaction(entry.avg_reaction_ms),
-		])
+		]
+		data_rows.append(row)
 		rank += 1
 	_build_leaderboard_grid(overall_rows, ["#", "Player", "Total", "Scenarios", "Accuracy", "Reaction"], data_rows, 1)
 

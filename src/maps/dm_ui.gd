@@ -13,10 +13,12 @@ const TIME_PER_MAP := 180.0
 
 var time_since_last_feed_update := 0.0
 var game_time := TIME_PER_MAP
-var game_timer := BetterTimer.new(self, 1.0, 
-	func() -> void:
-		if Global.is_sv():
-			update_time_label.rpc(game_time)
+var game_timer := BetterTimer.new(
+		self,
+		1.0,
+		func() -> void:
+			if Global.is_sv():
+				update_time_label.rpc(game_time),
 )
 
 @rpc("call_local", "authority", "unreliable")
@@ -35,7 +37,8 @@ func _on_weapon_chosen(index: int) -> void:
 
 func send_weapon_update_to(weapon_index: int, to: int) -> void:
 	var local_player: Player = get_parent().get_player(Global.id())
-	if local_player == null: return
+	if local_player == null:
+		return
 
 	local_player.weapon_handler.set_weapon_to_index.rpc_id(to, weapon_index, Global.id() != to)
 
@@ -79,15 +82,15 @@ func feed_log(value: String) -> void:
 	var count := killfeed.get_child_count()
 	if count >= MAX_KILLFEED_LENGTH:
 		killfeed.get_child(0).queue_free()
-		
+
 	killfeed.visible = true
 	time_since_last_feed_update = 0.0
 	var label := Label.new()
 	label.text = value
 	killfeed.add_child(label)
 	label.add_theme_font_size_override("font_size", KILLFEED_FONT_SIZE)
-	
-func on_shot(mag_ammo: int, reserve_ammo: int) -> void:
+
+func on_shot(mag_ammo: int, _reserve_ammo: int) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % [mag_ammo]
 
 func on_damaged(health: float) -> void:

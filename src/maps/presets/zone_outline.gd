@@ -2,13 +2,15 @@ extends CSGCombiner3D
 
 @onready var zone: Area3D = $".."
 
-var ZoneMaterial: StandardMaterial3D = preload("res://src/maps/presets/zone.tres").duplicate()
+var zone_material: StandardMaterial3D = preload("res://src/maps/presets/zone.tres").duplicate()
 
 func _ready() -> void:
-	var sm: StandardMaterial3D = ZoneMaterial
-	
+	var sm: StandardMaterial3D = zone_material
+
 	match zone.name:
-		"EndZone": sm.albedo_color = Color("ff000005")
-		"StartZone": sm.albedo_color = Color("00ff0005")
-	
+		"EndZone":
+			sm.albedo_color = Color("ff000005")
+		"StartZone":
+			sm.albedo_color = Color("00ff0005")
+
 	material_override = sm

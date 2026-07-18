@@ -48,7 +48,7 @@ var hits := 0
 var misses := 0
 var reaction_samples: Array[float] = []
 var active_targets: Array = []
-var gridshot_slots := {}
+var gridshot_slots := { }
 var last_flick_position := Vector3.ZERO
 var tracking_target = null
 var tracking_sample_accumulator := 0.0
@@ -70,10 +70,7 @@ func _ready() -> void:
 	spawn_position = player.global_position
 	spawn_rotation = player.global_rotation
 
-	if player.weapon_handler.audio.get_parent() != null:
-		player.weapon_handler.audio.get_parent().remove_child(player.weapon_handler.audio)
-
-	player.setup()
+	player.setup_as_local_player()
 	player.hardcore = false
 	player.weapon_handler.unlimited_ammo = true
 	player.weapon_handler.set_weapon_to_index(1)
@@ -211,11 +208,13 @@ func show_leaderboard_rows(rows: Array) -> void:
 			rank_label.text = str(row_data.get("rank", index + 1))
 			name_label.text = str(row_data.get("name", row_data.get("player", "Player")))
 			if row_data.has("accuracy") or row_data.has("reaction"):
-				value_label.text = "%s pts · %s · %s" % [
-					str(row_data.get("score", row_data.get("value", ""))),
-					str(row_data.get("accuracy", "--")),
-					str(row_data.get("reaction", "--"))
-				]
+				value_label.text = (
+					"%s pts · %s · %s" % [
+						str(row_data.get("score", row_data.get("value", ""))),
+						str(row_data.get("accuracy", "--")),
+						str(row_data.get("reaction", "--")),
+					]
+				)
 			else:
 				value_label.text = str(row_data.get("score", row_data.get("value", "")))
 		else:
@@ -322,7 +321,12 @@ func _spawn_flick_target() -> void:
 func _spawn_tracking_target() -> void:
 	active_targets.clear()
 	tracking_target = _create_target(target_wall_anchor.global_position)
-	tracking_target.configure_tracking_motion(target_wall_anchor.global_position, Vector2(3.6, 1.7), Vector2(4.0, 7.5), Vector2(0.3, 0.75))
+	tracking_target.configure_tracking_motion(
+			target_wall_anchor.global_position,
+			Vector2(3.6, 1.7),
+			Vector2(4.0, 7.5),
+			Vector2(0.3, 0.75),
+	)
 	active_targets.append(tracking_target)
 	tracking_pending_reaction_started_at = 0.0
 
@@ -339,22 +343,14 @@ func _grid_positions() -> Array[Vector3]:
 	var y_offset := GRIDSHOT_SPACING.y
 	for row in GRIDSHOT_ROWS:
 		for column in GRIDSHOT_COLUMNS:
-			var local_position := Vector3(
-				(float(column) - 1.0) * x_offset,
-				(1.0 - float(row)) * y_offset,
-				0.0
-			)
+			var local_position := Vector3((float(column) - 1.0) * x_offset, (1.0 - float(row)) * y_offset, 0.0)
 			positions.append(target_wall_anchor.global_position + local_position)
 	return positions
 
 func _next_flick_position() -> Vector3:
 	var candidate := target_wall_anchor.global_position
 	for _attempt in 8:
-		candidate = target_wall_anchor.global_position + Vector3(
-			rng.randf_range(-3.6, 3.6),
-			rng.randf_range(-1.8, 1.8),
-			0.0
-		)
+		candidate = (target_wall_anchor.global_position + Vector3(rng.randf_range(-3.6, 3.6), rng.randf_range(-1.8, 1.8), 0.0))
 		if candidate.distance_to(last_flick_position) >= FLICK_MIN_REPOSITION_DISTANCE:
 			break
 	last_flick_position = candidate
@@ -419,7 +415,7 @@ func _sample_tracking() -> void:
 	var result := space_state.intersect_ray(query)
 	var current_time := _session_elapsed()
 	var on_target := false
-	if result != {}:
+	if result != { }:
 		on_target = result.collider == tracking_target and tracking_target != null and tracking_target.active
 
 	if on_target:
@@ -476,7 +472,7 @@ func _refresh_hud() -> void:
 	misses_label.text = "MISSES\n%d" % misses
 	accuracy_label.text = "ACCURACY\n%.1f%%" % calculate_accuracy(hits, misses)
 	var average_reaction_ms := calculate_average_reaction_ms(reaction_samples)
-	reaction_label.text = "AVG REACTION\n%s" % ("--" if reaction_samples.is_empty() else "%d ms" % int(round(average_reaction_ms)))
+	reaction_label.text = ("AVG REACTION\n%s" % ("--" if reaction_samples.is_empty() else "%d ms" % int(round(average_reaction_ms))))
 
 	if session_finished:
 		status_label.text = "Session complete"
@@ -487,12 +483,16 @@ func _refresh_hud() -> void:
 
 func _update_results_panel() -> void:
 	results_score_label.text = "Score %d" % score
-	results_stats_label.text = "Hits %d\nMisses %d\nAccuracy %.1f%%\nAverage Reaction %s" % [
-		hits,
-		misses,
-		calculate_accuracy(hits, misses),
-		"--" if reaction_samples.is_empty() else "%d ms" % int(round(calculate_average_reaction_ms(reaction_samples)))
-	]
+	results_stats_label.text = (
+		"Hits %d\nMisses %d\nAccuracy %.1f%%\nAverage Reaction %s" % [
+			hits,
+			misses,
+			calculate_accuracy(hits, misses),
+			("--"
+				if reaction_samples.is_empty()
+				else "%d ms" % int(round(calculate_average_reaction_ms(reaction_samples)))),
+		]
+	)
 	leaderboard_status.text = "Submitting score..."
 
 func _submission_status_text(submission) -> String:
@@ -504,13 +504,15 @@ func _submission_status_text(submission) -> String:
 func _scenario_leaderboard_rows(scores: Array) -> Array[Dictionary]:
 	var rows: Array[Dictionary] = []
 	for entry in scores:
-		rows.append({
-			"rank": entry.position,
-			"name": entry.username,
-			"score": entry.score,
-			"accuracy": "%.1f%%" % entry.accuracy,
-			"reaction": "--" if is_zero_approx(entry.avg_reaction_ms) else "%d ms" % int(round(entry.avg_reaction_ms))
-		})
+		rows.append(
+				{
+					"rank": entry.position,
+					"name": entry.username,
+					"score": entry.score,
+					"accuracy": "%.1f%%" % entry.accuracy,
+					"reaction": "--" if is_zero_approx(entry.avg_reaction_ms) else "%d ms" % int(round(entry.avg_reaction_ms)),
+				}
+		)
 	return rows
 
 func _can_apply_results_request(generation: int) -> bool:
@@ -519,14 +521,7 @@ func _can_apply_results_request(generation: int) -> bool:
 func _submit_results_and_load_leaderboard(generation: int) -> void:
 	var accuracy := calculate_accuracy(hits, misses)
 	var average_reaction_ms := calculate_average_reaction_ms(reaction_samples)
-	var submission = await Global.server_bridge.submit_aim_score(
-		selected_scenario,
-		score,
-		hits,
-		misses,
-		accuracy,
-		int(round(average_reaction_ms))
-	)
+	var submission = await Global.server_bridge.submit_aim_score(selected_scenario, score, hits, misses, accuracy, int(round(average_reaction_ms)))
 	if not _can_apply_results_request(generation):
 		return
 

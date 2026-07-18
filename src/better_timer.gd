@@ -7,7 +7,7 @@ var _timer: Timer
 func _init(node: Node, time_secs: float, on_timeout: Callable) -> void:
 	var timer := Timer.new()
 	node.add_child(timer)
-	
+
 	self._timer = timer
 	self._time_secs = time_secs
 	self._on_timeout = on_timeout

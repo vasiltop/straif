@@ -60,18 +60,9 @@ func player_name() -> String:
 func on_damage(value: float, weapon_name: String) -> void:
 	if not Global.is_sv():
 		return
-	_apply_authoritative_damage(
-		value,
-		weapon_name,
-		multiplayer.get_remote_sender_id()
-	)
+	_apply_authoritative_damage(value, weapon_name, multiplayer.get_remote_sender_id())
 
-
-func _apply_authoritative_damage(
-	value: float,
-	weapon_name: String,
-	sender: int
-) -> void:
+func _apply_authoritative_damage(value: float, weapon_name: String, sender: int) -> void:
 	if not damage_enabled or is_dead or value <= 0.0:
 		return
 
@@ -85,14 +76,12 @@ func _apply_authoritative_damage(
 		damage_enabled = false
 		dead.emit(sender, pid, weapon_name)
 
-
 @rpc("call_local", "authority", "reliable")
 func _sync_health(value: float, show_damage: bool) -> void:
 	health = value
 	damaged.emit(health)
 	if show_damage:
 		show_blood()
-
 
 @rpc("call_local", "authority", "reliable")
 func set_damage_enabled(value: bool) -> void:
@@ -146,19 +135,14 @@ func respawn(enable_damage := true) -> void:
 		weapon_handler.reset_ammo()
 		_show_local_first_person_view()
 
-func on_death() -> void:
-	pass
-
 func is_me() -> bool:
 	if not Global.multiplayer.multiplayer_peer:
 		return pid == 1
 
 	return multiplayer.get_unique_id() == pid
 
-
 func is_local_spectate_view() -> bool:
 	return _local_spectate_view
-
 
 func begin_local_spectate_view() -> void:
 	_local_spectate_view = true
@@ -172,7 +156,6 @@ func begin_local_spectate_view() -> void:
 	gun_camera.make_current()
 	_on_viewport_resized()
 
-
 func end_local_spectate_view() -> void:
 	if not _local_spectate_view:
 		return
@@ -185,10 +168,8 @@ func end_local_spectate_view() -> void:
 		weapon_handler.set_weapon(weapon_handler.current_weapon, true)
 	refresh_view_visibility()
 
-
 func set_viewmodel_viewport_visible(value: bool) -> void:
 	gun_vp_container.visible = value
-
 
 func refresh_view_visibility() -> void:
 	var first_person_view := is_me() or _local_spectate_view
@@ -197,20 +178,16 @@ func refresh_view_visibility() -> void:
 	weapon_handler.visible = show_viewmodel
 	set_viewmodel_viewport_visible(show_viewmodel)
 
-
 func set_name_label(value: String) -> void:
 	name_label.text = value
-
 
 func set_teammate_indicator(visible: bool) -> void:
 	teammate_marker.visible = visible
 
-# This only gets called on the player we are controlling
-func setup() -> void:
+func setup_as_local_player() -> void:
 	camera.make_current()
 	gun_camera.make_current()
 	pid = Global.id()
-	weapon_handler.add_child(weapon_handler.audio)
 	add_child(_run_audio_player)
 	name_label.visible = false
 	teammate_marker.visible = false
@@ -219,17 +196,14 @@ func setup() -> void:
 	for child: PhysicalBone3D in bone_simulator.get_children():
 		child.collision_layer = 0
 
-	main_menu_btn.pressed.connect(
-		func() -> void:
-			get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")
-	)
+	main_menu_btn.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn"))
 
 	back_btn.pressed.connect(toggle_pause)
 
 	ui.visible = true
 	refresh_view_visibility()
 
-func _on_viewport_resized() ->  void:
+func _on_viewport_resized() -> void:
 	var window_size := get_viewport().get_visible_rect().size
 	gun_vp.size = window_size
 
@@ -253,11 +227,12 @@ func requires_unlock() -> bool:
 	return pause_menu.visible
 
 func _process(delta: float) -> void:
-	if not is_me(): return
+	if not is_me():
+		return
 
 	if Input.is_action_just_pressed("pause"):
 		toggle_pause()
-	
+
 	_time_since_last_run_sound += delta
 	_time_since_last_jump += delta
 
@@ -265,16 +240,17 @@ func is_paused() -> bool:
 	return pause_menu.visible
 
 func _physics_process(delta: float) -> void:
-	if not is_me(): return
-	
+	if not is_me():
+		return
+
 	var jump_input := Input.is_action_just_pressed("jump") or (auto_bhop and Input.is_action_pressed("jump"))
 	_movement_process(delta, wish_dir(), jump_input)
-	
+
 	if Global.mp():
 		_update_state.rpc(global_position, global_rotation.y, camera.global_rotation.x, get_ups())
-	
+
 	fps_label.text = "%d fps" % Engine.get_frames_per_second()
-	
+
 @rpc("any_peer", "call_remote", "unreliable")
 func _update_state(pos: Vector3, rot_y: float, rot_x: float, speed: float) -> void:
 	global_position = pos
@@ -286,7 +262,7 @@ func _update_state(pos: Vector3, rot_y: float, rot_x: float, speed: float) -> vo
 func set_animation_blend(value: float) -> void:
 	var anim_tree: AnimationTree = get_node("ThirdPerson/AnimationTree")
 	anim_tree.set("parameters/blend/blend_amount", value)
-	
+
 func get_ups() -> float:
 	var current_vel := velocity
 	current_vel.y = 0.0
@@ -295,7 +271,7 @@ func get_ups() -> float:
 func wish_dir_from(left: bool, right: bool, up: bool, down: bool) -> Vector2:
 	var wish_dir = Vector2(float(right) - float(left), float(down) - float(up))
 	wish_dir = wish_dir.normalized()
-	
+
 	return wish_dir
 
 func wish_dir() -> Vector2:
@@ -306,19 +282,20 @@ func wish_dir() -> Vector2:
 	return wish_dir_from(left_input, right_input, up_input, down_input)
 
 func _movement_process(delta: float, wish_dir: Vector2, jump_input: bool) -> void:
-	if not can_move: return
-	
+	if not can_move:
+		return
+
 	var vel_vertical := _apply_gravity(velocity.y, delta)
 
 	wish_dir = wish_dir.rotated(-rotation.y)
 	var vel_planar := Vector2(velocity.x, velocity.z)
-	
+
 	vel_planar = _apply_friction(vel_planar, delta, wish_dir, jump_input)
 	vel_planar = _update_velocity(vel_planar, wish_dir, delta, jump_input)
 	vel_vertical = _check_for_jump(vel_vertical, jump_input)
-	
+
 	velocity = Vector3(vel_planar.x, vel_vertical, vel_planar.y)
-	
+
 	if velocity.length() > 0 and _time_since_last_run_sound >= RUN_SOUND_DELAY and grounded():
 		_run_audio_player.stream = RunSound
 		_run_audio_player.pitch_scale = randf_range(0.95, 1.05)
@@ -328,33 +305,34 @@ func _movement_process(delta: float, wish_dir: Vector2, jump_input: bool) -> voi
 	move_and_slide()
 
 func _apply_gravity(velocity_y: float, delta: float) -> float:
-	if grounded(): return velocity_y
+	if grounded():
+		return velocity_y
 	return velocity_y - gravity * delta
 
 func grounded() -> bool:
 	return test_move(global_transform, Vector3(0, -0.01, 0))
 
 func _apply_friction(vel_planar: Vector2, delta: float, wish_dir: Vector2, jump_input: bool) -> Vector2:
-	if not grounded() or jump_input: return vel_planar
-	
+	if not grounded() or jump_input:
+		return vel_planar
+
 	var v: Vector2 = vel_planar - vel_planar.normalized() * delta * MAX_G_ACCEL / 1.9
 
 	if v.length_squared() < 1.0 and wish_dir.length_squared() < 0.01:
 		return Vector2.ZERO
-	else:
-		return v
+	return v
 
 func _update_velocity(vel_planar: Vector2, wish_dir: Vector2, delta: float, jump_input: bool) -> Vector2:
 	var current_speed := vel_planar.dot(wish_dir)
 	var max_speed := MAX_G_SPEED if grounded() else MAX_A_SPEED
 	var max_accel := MAX_G_ACCEL if grounded() else MAX_A_ACCEL
 	var add_speed: float = clamp(max_speed - current_speed, 0.0, max_accel * delta)
-	
+
 	var new_vel := vel_planar + wish_dir * add_speed
-	
+
 	if grounded() and not jump_input and is_pre_capped:
 		new_vel = new_vel.limit_length(MAX_PRE)
-		
+
 	return new_vel
 
 func _check_for_jump(vel_vertical: float, jump_input: bool) -> float:

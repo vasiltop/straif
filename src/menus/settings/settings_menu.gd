@@ -15,7 +15,8 @@ class_name SettingsMenu extends TabContainer
 @export var save_settings_btn: Button
 
 func _ready() -> void:
-	if Global.is_sv(): return
+	if Global.is_sv():
+		return
 	_set_init_values()
 
 	sens_slider.value_changed.connect(_on_sens_slider_changed)
@@ -28,19 +29,19 @@ func _ready() -> void:
 	speed_label_input.toggled.connect(_on_speed_label_input_changed)
 	world_record_announcements_input.toggled.connect(_on_world_record_announcements_changed)
 	save_settings_btn.pressed.connect(Global.settings_manager.save)
-	
+
 	for action in Global.settings_manager.get_custom_actions():
 		var label := Label.new()
 		label.text = action
 		var inst := InputButton.new(self, action)
-		
+
 		keybinds.add_child(label)
 		keybinds.add_child(inst)
 
 func _on_vsync_changed(toggled_on: bool) -> void:
 	DisplayServer.window_set_vsync_mode(Global.settings_manager.get_vsync_enum(toggled_on))
 	Global.settings_manager.update("Display", "vsync", toggled_on)
-	
+
 func _on_speed_label_input_changed(toggled_on: bool) -> void:
 	Global.settings_manager.update("Display", "speed", toggled_on)
 
@@ -52,7 +53,7 @@ func _set_init_values() -> void:
 	var sens: float = Global.settings_manager.value("Controls", "sensitivity")
 	sens_slider.value = sens
 	sens_label.text = str(sens)
-	
+
 	var ads_sens: float = Global.settings_manager.value("Controls", "ads_sensitivity")
 	ads_sens_slider.value = ads_sens
 	ads_sens_label.text = str(ads_sens)
@@ -62,7 +63,8 @@ func _set_init_values() -> void:
 	volume_slider.value = Global.settings_manager.value("Audio", "master_volume")
 	vsync_input.button_pressed = Global.settings_manager.value("Display", "vsync")
 	speed_label_input.button_pressed = Global.settings_manager.value("Display", "speed")
-	world_record_announcements_input.button_pressed = Global.settings_manager.value("Game", "world_record_announcements")
+	var world_record_enabled: bool = Global.settings_manager.value("Game", "world_record_announcements")
+	world_record_announcements_input.button_pressed = world_record_enabled
 
 	var res: String = Global.settings_manager.value("Display", "resolution")
 	for i in resolution_input.item_count:

@@ -35,5 +35,5 @@ func get_map(name: String) -> MapButton:
 	for child: MapButton in map_container.get_children():
 		if child.map_name == name:
 			return child
-	
+
 	return null
