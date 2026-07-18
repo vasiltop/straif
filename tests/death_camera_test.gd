@@ -1,6 +1,6 @@
 extends SceneTree
 
-const PLAYER_SCENE := preload("res://src/player/player.tscn")
+const PLAYER_SCENE_PATH := "res://src/player/player.tscn"
 
 var failed := false
 
@@ -8,7 +8,9 @@ func _init() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
-	var player := PLAYER_SCENE.instantiate() as Player
+	var player_scene := load(PLAYER_SCENE_PATH) as PackedScene
+	_check(player_scene != null, "Expected player scene to load")
+	var player = player_scene.instantiate() if player_scene != null else null
 	_check(player != null, "Expected player scene to instantiate")
 	if player != null:
 		root.add_child(player)
