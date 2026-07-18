@@ -9,6 +9,7 @@ GODOT_BIN="${GODOT_BIN:-godot}"
 TEST_SCRIPTS=(
 	"res://tests/unit/runtime_options_test.gd"
 	"res://tests/unit/bootstrap_test.gd"
+	"res://tests/replay_input_display_test.gd"
 	"res://tests/world_record_announcement_test.gd"
 	"res://tests/offline_playtest_smoke.gd"
 	"res://tests/aim_menu_smoke.gd"
