@@ -56,6 +56,31 @@ func _run() -> void:
 				main_menu.has_node("MarginContainer/Content/Body/Aim Trainer"),
 				"Main menu should expose an Aim Trainer tab",
 		)
+		var speedrun_modes_path := "MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher"
+		var speedrun_leaderboard_path := speedrun_modes_path + "/Leaderboard"
+		var target_leaderboard_path := speedrun_leaderboard_path + "/Overall/H/VBoxContainer/TargetPracticeLeaderboard"
+		var movement_leaderboard_path := speedrun_leaderboard_path + "/Overall/H/VBoxContainer2/MovementOnlyLeaderboard"
+		var speedrun_modes = main_menu.get_node(speedrun_modes_path)
+		_check(
+				speedrun_modes.get_tab_count() == 3,
+				"Speedrun should expose Target Practice, Movement Only, and Leaderboard tabs",
+		)
+		_check(
+				main_menu.has_node(speedrun_leaderboard_path),
+				"Speedrun should expose a dedicated leaderboard mode tab",
+		)
+		_check(
+				main_menu.has_node(target_leaderboard_path),
+				"Speedrun leaderboard tab should expose Target Practice rankings",
+		)
+		_check(
+				main_menu.has_node(movement_leaderboard_path),
+				"Speedrun leaderboard tab should expose Movement Only rankings",
+		)
+		_check(
+				not main_menu.has_node("MarginContainer/Content/Body/Leaderboard"),
+				"Main menu should not expose a separate Leaderboard tab",
+		)
 
 	var global_node = root.get_node_or_null("Global")
 	_check(global_node != null, "Global autoload should exist during the smoke test")
