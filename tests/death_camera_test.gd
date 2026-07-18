@@ -16,6 +16,10 @@ func _run() -> void:
 		root.add_child(player)
 		await process_frame
 
+		player.third_person.visible = false
+		player.weapon_handler.visible = true
+		player.set_viewmodel_viewport_visible(true)
+
 		player._show_local_ragdoll_view()
 
 		_check(player.ragdoll_camera.is_current(), "Ragdoll camera should become current")
