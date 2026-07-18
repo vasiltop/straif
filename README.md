@@ -12,7 +12,18 @@ It is heavily inspired by source engine games such as Counter Strike: Source, le
 - [Steam Deployment](#Steam-Deployment)
 
 ## Website
-The straif leaderboard can be viewed at [straif.pumped.software](https://straif.pumped.software/).
+
+The Straif website includes a trailer-led game overview and complete Movement,
+Target, Aim, and Overall leaderboards at
+[straif.pumped.software](https://straif.pumped.software/).
+
+Run it locally:
+
+```bash
+cd website
+pnpm install
+pnpm dev
+```
 
 ## Web Api
 The straif [web api](https://straifapi.pumped.software) is public and [documentation](https://straifapi.pumped.software/docs) can be viewed as well.
