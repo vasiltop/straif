@@ -171,6 +171,26 @@ a {
   font-weight: 500;
 }
 
+.site-header nav .site-header__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+  padding: 0.45rem 0.65rem;
+  white-space: nowrap;
+}
+
+.site-header__cta svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.75;
+}
+
 .site-header nav a.router-link-exact-active {
   color: var(--color-text);
 }
@@ -185,12 +205,21 @@ a {
   text-transform: uppercase;
 }
 
+.trailer-hero-shell {
+  width: min(
+    calc(100% - var(--page-gutter) - var(--page-gutter)),
+    84rem,
+    calc(156.4444vh - 7.1111rem)
+  );
+  margin-top: clamp(0.75rem, 2vw, 1.5rem);
+  margin-inline: auto;
+}
+
 .trailer-hero {
   position: relative;
   isolation: isolate;
-  width: min(100%, 100rem, calc(177.7778vh - 7.1111rem));
-  max-height: calc(100vh - 4rem);
-  margin-inline: auto;
+  width: 100%;
+  max-height: calc(88vh - 4rem);
   overflow: hidden;
   aspect-ratio: 16 / 9;
   background: var(--color-surface);
@@ -239,14 +268,15 @@ a {
     transform var(--transition-fast);
 }
 
-.trailer-hero__media button::before {
-  width: 0;
-  height: 0;
-  margin-left: 0.2rem;
-  border-top: 0.45rem solid transparent;
-  border-bottom: 0.45rem solid transparent;
-  border-left: 0.72rem solid var(--color-text);
-  content: '';
+.trailer-hero__media button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-text);
+  transform: translateX(0.08rem);
+}
+
+.trailer-hero__media button path {
+  fill: currentColor;
 }
 
 .trailer-hero__media button:active {
@@ -259,9 +289,9 @@ a {
   right: var(--page-gutter);
   bottom: var(--page-gutter);
   left: var(--page-gutter);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: flex-end;
-  justify-content: space-between;
   gap: 1.5rem;
   pointer-events: none;
 }
@@ -276,10 +306,6 @@ a {
   line-height: 1.4;
   text-shadow: 0 1px 12px var(--color-local-shadow);
   text-transform: uppercase;
-}
-
-.trailer-hero__copy > p:last-child {
-  text-align: right;
 }
 
 .trailer-hero h1,
@@ -718,7 +744,17 @@ a {
   }
 
   .site-header {
+    gap: 0.75rem;
     padding-block: 1.25rem;
+  }
+
+  .site-header nav {
+    justify-content: flex-end;
+    gap: 0.625rem;
+  }
+
+  .site-header nav .site-header__cta {
+    padding-inline: 0.45rem;
   }
 
   .site-footer {
@@ -740,10 +776,6 @@ a {
   .trailer-hero__copy > p {
     width: min(9rem, 42vw);
     font-size: 0.625rem;
-  }
-
-  .trailer-hero__copy > p:last-child {
-    display: none;
   }
 
   .game-intro {
