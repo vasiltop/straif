@@ -50,6 +50,7 @@ var is_dead := false
 var damage_enabled := true
 var is_pre_capped: bool
 var hardcore := true
+var auto_bhop := true
 var _local_spectate_view := false
 
 func player_name() -> String:
@@ -266,7 +267,7 @@ func is_paused() -> bool:
 func _physics_process(delta: float) -> void:
 	if not is_me(): return
 	
-	var jump_input := Input.is_action_just_pressed("jump") or Input.is_action_pressed("jump")
+	var jump_input := Input.is_action_just_pressed("jump") or (auto_bhop and Input.is_action_pressed("jump"))
 	_movement_process(delta, wish_dir(), jump_input)
 	
 	if Global.mp():

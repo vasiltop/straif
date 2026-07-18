@@ -3,8 +3,9 @@
 [ext_resource type="Script" path="res://src/maps/elimination_ui.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_theme"]
 [ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="3_panel"]
+[ext_resource type="PackedScene" uid="uid://bqw7n2yx8vk3l" path="res://src/maps/weapon_select.tscn" id="4_ws0nb"]
 
-[node name="EliminationUi" type="CanvasLayer" unique_id=18501979 node_paths=PackedStringArray("scoreboard_panel", "team1_rows", "team2_rows", "phase_label", "timer_label", "team1_score_label", "team2_score_label", "scoreboard_score_label", "ammo_label", "health_label", "spectator_panel", "spectator_label", "match_end_panel", "match_end_label")]
+[node name="EliminationUi" type="CanvasLayer" unique_id=18501979 node_paths=PackedStringArray("scoreboard_panel", "team1_rows", "team2_rows", "phase_label", "timer_label", "team1_score_label", "team2_score_label", "scoreboard_score_label", "ammo_label", "health_label", "spectator_panel", "spectator_label", "match_end_panel", "match_end_label", "weapon_select")]
 script = ExtResource("1_script")
 scoreboard_panel = NodePath("Control/Scoreboard")
 team1_rows = NodePath("Control/Scoreboard/MarginContainer/Content/Columns/Team1Column/Rows")
@@ -20,6 +21,7 @@ spectator_panel = NodePath("Control/Spectator")
 spectator_label = NodePath("Control/Spectator/MarginContainer/Label")
 match_end_panel = NodePath("Control/MatchEnd")
 match_end_label = NodePath("Control/MatchEnd/MarginContainer/Label")
+weapon_select = NodePath("Control/WeaponSelect")
 
 [node name="Control" type="Control" parent="." unique_id=1527419888]
 layout_mode = 3
@@ -30,6 +32,20 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_theme")
+
+[node name="WeaponSelect" parent="Control" instance=ExtResource("4_ws0nb")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -28.5
+offset_right = 72.0
+offset_bottom = 28.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="TopMiddle" type="PanelContainer" parent="Control" unique_id=1800732139]
 layout_mode = 1

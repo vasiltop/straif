@@ -14,6 +14,9 @@ class_name EliminationUi extends CanvasLayer
 @export var spectator_label: Label
 @export var match_end_panel: PanelContainer
 @export var match_end_label: Label
+@export var weapon_select: WeaponSelect
+
+signal weapon_requested(index: int)
 
 const PHASE_WAITING := 0
 const PHASE_FREEZE := 1
@@ -26,13 +29,19 @@ var spectator_index := -1
 var was_locally_dead := false
 var scoreboard_signature := ""
 var spectated_player: Player = null
+var current_phase := PHASE_WAITING
 
 
 func _ready() -> void:
 	scoreboard_panel.visible = false
 	spectator_panel.visible = false
 	match_end_panel.visible = false
+	weapon_select.weapon_chosen.connect(_on_weapon_chosen)
 	refresh_scoreboard()
+
+
+func _on_weapon_chosen(index: int) -> void:
+	weapon_requested.emit(index)
 
 
 func _process(_delta: float) -> void:
@@ -47,10 +56,46 @@ func _process(_delta: float) -> void:
 	elif wants_scoreboard:
 		refresh_scoreboard()
 
+	if Input.is_action_just_pressed("buy_menu"):
+		set_weapon_menu_visible(not weapon_select.visible)
+
 	_update_spectator()
 
 
+func set_weapon_menu_visible(value: bool) -> void:
+	var local_player := _get_player(Global.id())
+
+	if value:
+		if local_player == null or local_player.is_dead or local_player.is_paused():
+			return
+		if current_phase != PHASE_FREEZE:
+			return
+
+		weapon_select.visible = true
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		return
+
+	hide_weapon_menu()
+
+
+func hide_weapon_menu(restore_mouse := true) -> void:
+	if not weapon_select.visible:
+		return
+
+	weapon_select.visible = false
+	if not restore_mouse:
+		return
+
+	var local_player := _get_player(Global.id())
+	if local_player != null and not local_player.is_paused():
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
 func update_round(phase: int, seconds: int, score1: int, score2: int, winner: int) -> void:
+	current_phase = phase
+	if phase != PHASE_FREEZE:
+		hide_weapon_menu()
+
 	phase_label.text = _phase_text(phase)
 	timer_label.text = "%02d:%02d" % [int(seconds / 60), seconds % 60]
 	team1_score_label.text = str(score1)
@@ -100,7 +145,7 @@ func _phase_text(phase: int) -> String:
 		PHASE_WAITING:
 			return "Waiting for players"
 		PHASE_FREEZE:
-			return "Freeze time"
+			return "Freeze time - %s to buy" % (Global.settings_manager.get_keybind_string("buy_menu") if not Global.is_sv() else "Freeze Time")
 		PHASE_LIVE:
 			return "Round live"
 		PHASE_ROUND_END:

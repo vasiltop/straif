@@ -242,10 +242,9 @@ text = "Quit"
 
 [node name="Body" type="TabContainer" parent="MarginContainer/Content" unique_id=879515857]
 layout_mode = 2
-current_tab = 2
+current_tab = 0
 
 [node name="Speedrun" type="Control" parent="MarginContainer/Content/Body" unique_id=151761713]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -290,6 +289,7 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="Server Browser" parent="MarginContainer/Content/Body" unique_id=1793080607 instance=ExtResource("6_og6j4")]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

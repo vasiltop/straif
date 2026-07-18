@@ -34,19 +34,12 @@ theme_override_constants/margin_bottom = 24
 [node name="Content" type="VBoxContainer" parent="Scroll/Margin" unique_id=527657549]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 18
+theme_override_constants/separation = 23
 
 [node name="Title" type="Label" parent="Scroll/Margin/Content" unique_id=109730127]
 layout_mode = 2
 theme_override_font_sizes/font_size = 34
 text = "Aim Trainer"
-
-[node name="Subtitle" type="Label" parent="Scroll/Margin/Content" unique_id=1926154948]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.776471, 0.815686, 0.866667, 1)
-theme_override_font_sizes/font_size = 18
-text = "Choose a focused 60-second scenario, warm up your mechanics, and compare every run on the live leaderboard."
-autowrap_mode = 3
 
 [node name="ScenarioList" type="HFlowContainer" parent="Scroll/Margin/Content" unique_id=1176750593]
 layout_mode = 2
@@ -76,13 +69,6 @@ layout_mode = 2
 toggle_mode = true
 text = "Gridshot"
 
-[node name="Description" type="Label" parent="Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack" unique_id=1288014168]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.662745, 0.701961, 0.756863, 1)
-theme_override_font_sizes/font_size = 16
-text = "Clear a 3x3 wall of targets for chaining speed and accuracy."
-autowrap_mode = 3
-
 [node name="FlickOption" type="PanelContainer" parent="Scroll/Margin/Content/ScenarioList" unique_id=1237486155]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
@@ -104,13 +90,6 @@ theme_override_constants/separation = 8
 layout_mode = 2
 toggle_mode = true
 text = "Flick"
-
-[node name="Description" type="Label" parent="Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack" unique_id=392375644]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.662745, 0.701961, 0.756863, 1)
-theme_override_font_sizes/font_size = 16
-text = "Snap between distant targets and convert the first shot cleanly."
-autowrap_mode = 3
 
 [node name="TrackingOption" type="PanelContainer" parent="Scroll/Margin/Content/ScenarioList" unique_id=2006786585]
 custom_minimum_size = Vector2(180, 0)
@@ -134,13 +113,6 @@ layout_mode = 2
 toggle_mode = true
 text = "Tracking"
 
-[node name="Description" type="Label" parent="Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack" unique_id=2136396717]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.662745, 0.701961, 0.756863, 1)
-theme_override_font_sizes/font_size = 16
-text = "Stay glued to a moving target and stabilize every correction."
-autowrap_mode = 3
-
 [node name="SelectedScenarioLabel" type="Label" parent="Scroll/Margin/Content" unique_id=346974051]
 layout_mode = 2
 theme_override_font_sizes/font_size = 19
@@ -151,7 +123,7 @@ autowrap_mode = 3
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Start 60s Session"
+text = "Start"
 
 [node name="LeaderboardPanel" type="PanelContainer" parent="Scroll/Margin/Content" unique_id=1716217605]
 custom_minimum_size = Vector2(0, 300)

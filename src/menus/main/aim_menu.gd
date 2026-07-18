@@ -11,15 +11,12 @@ const LEADERBOARD_TAB_OVERALL := 1
 const SCENARIO_INFO := {
 	SCENARIO_GRIDSHOT: {
 		"label": "Gridshot",
-		"description": "Keep three targets up, refilling the wall as fast as you clear them."
 	},
 	SCENARIO_FLICK: {
 		"label": "Flick",
-		"description": "Snap between distant targets and convert the first shot cleanly."
 	},
 	SCENARIO_TRACKING: {
 		"label": "Tracking",
-		"description": "Stay glued to a moving target and stabilize every correction."
 	}
 }
 
@@ -67,7 +64,7 @@ func _apply_selected_scenario(refresh_leaderboard: bool) -> void:
 		button.button_pressed = scenario == selected_scenario
 
 	var info: Dictionary = SCENARIO_INFO[selected_scenario]
-	selected_scenario_label.text = "Selected Scenario: %s — %s" % [info["label"], info["description"]]
+	selected_scenario_label.text = "Selected Scenario: %s" % info["label"]
 	if refresh_leaderboard:
 		_refresh_scenario_leaderboard()
 

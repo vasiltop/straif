@@ -1,8 +1,7 @@
 class_name DmUi extends CanvasLayer
 
 @export var killfeed: Container
-@export var weapon_buttons_container: Container
-@export var weapon_select: Container
+@export var weapon_select: WeaponSelect
 @export var ammo_label: Label
 @export var health_label: Label
 @export var time_left_label: Label
@@ -26,38 +25,33 @@ func update_time_label(value: float) -> void:
 
 func _ready() -> void:
 	game_timer.start()
-	weapon_select.visible = false
-	
-	for weapon in Global.game_manager.weapons:
-		if weapon == null: continue
-		
-		var btn := Button.new()
-		weapon_buttons_container.add_child(btn)
-		btn.text = weapon.name
-		btn.focus_mode = Control.FOCUS_NONE
-		var index := Global.game_manager.get_weapon_index(weapon)
-		
-		btn.pressed.connect(
-			func() -> void:
-				for player in get_parent().get_players():
-					send_weapon_update_to(index, player.pid)
-				
-				send_weapon_update_to(index, 1)
-		)
+	weapon_select.weapon_chosen.connect(_on_weapon_chosen)
+
+func _on_weapon_chosen(index: int) -> void:
+	for player in get_parent().get_players():
+		send_weapon_update_to(index, player.pid)
+
+	send_weapon_update_to(index, 1)
 
 func send_weapon_update_to(weapon_index: int, to: int) -> void:
-	get_parent().get_player(Global.id()).weapon_handler.set_weapon_to_index.rpc_id(to, weapon_index, Global.id() != to)
+	var local_player: Player = get_parent().get_player(Global.id())
+	if local_player == null: return
+
+	local_player.weapon_handler.set_weapon_to_index.rpc_id(to, weapon_index, Global.id() != to)
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("leaderboard"):
-		weapon_select.visible = true
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	var local_player: Player = get_parent().get_player(Global.id())
 
-	if Input.is_action_just_released("leaderboard"):
-		weapon_select.visible = false
-		
-		if not get_parent().get_player(Global.id()).is_paused():
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if local_player != null:
+		if Input.is_action_just_pressed("leaderboard"):
+			weapon_select.visible = true
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+		if Input.is_action_just_released("leaderboard"):
+			weapon_select.visible = false
+
+			if not local_player.is_paused():
+				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 	time_since_last_feed_update += delta
 

@@ -1,7 +1,7 @@
 class_name Settings
 
 const PATH := "user://settings.cfg"
-const SETTINGS_VERSION := 10
+const SETTINGS_VERSION := 11
 
 var node: Node
 var config := ConfigFile.new()
@@ -18,6 +18,7 @@ var default_keybinds: Dictionary[String, Keybind] = {
 	"inspect" = Keybind.new(KEY_E),
 	"interact" = Keybind.new(KEY_F),
 	"leaderboard"  = Keybind.new(KEY_TAB),
+	"buy_menu" = Keybind.new(KEY_B),
 	"attack" = Keybind.new(MOUSE_BUTTON_LEFT, true),
 	"scope" = Keybind.new(MOUSE_BUTTON_RIGHT, true)
 }
@@ -158,8 +159,16 @@ func change_action_to_event(action_name: String, event: InputEvent) -> void:
 
 func update_input_map() -> void:
 	for action in get_custom_actions():
-		var value: String = value("Controls", action)
-		change_action_to_keybind(action, deserialize_keybind(value))
+		var stored: Variant = value("Controls", action)
+
+		# action added since this config was written: fall back to its default
+		if stored == null:
+			if not default_keybinds.has(action): continue
+
+			change_action_to_keybind(action, default_keybinds[action])
+			continue
+
+		change_action_to_keybind(action, deserialize_keybind(stored as String))
 
 func update(section: String, key: String, value: Variant) -> void:
 	config.set_value(section, key, value)
