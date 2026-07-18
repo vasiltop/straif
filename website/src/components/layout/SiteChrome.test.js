@@ -29,6 +29,7 @@ describe('site Steam links', () => {
       target: '_blank',
       rel: 'noopener noreferrer',
     });
+    expect(link.get('svg').attributes('aria-hidden')).toBe('true');
   });
 
   it('adds the approved Steam link to the footer', () => {

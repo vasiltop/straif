@@ -3,16 +3,10 @@ import { describe, expect, it } from 'vitest';
 import TrailerHero from './TrailerHero.vue';
 
 describe('TrailerHero', () => {
-  it('links to Steam without the retired Watch film copy', () => {
+  it('does not render promotional copy or a Steam link over the trailer', () => {
     const wrapper = mount(TrailerHero);
-    const steamLink = wrapper.get('a');
 
-    expect(steamLink.text()).toBe('Get Straif on Steam');
-    expect(steamLink.attributes()).toMatchObject({
-      href: 'https://store.steampowered.com/app/3850480/Straif/',
-      target: '_blank',
-      rel: 'noopener noreferrer',
-    });
+    expect(wrapper.find('a').exists()).toBe(false);
     expect(wrapper.text()).not.toMatch(/watch film/i);
   });
 
