@@ -38,15 +38,15 @@ func _run() -> void:
 
 			replay_input_display.set_inputs(true, false, true, false, true, false, true)
 			_check_input_state(t, replay_input_display, &"forward", true)
-			_check_input_state(t, replay_input_display, &"left", false)
-			_check_input_state(t, replay_input_display, &"back", true)
+			_check_input_state(t, replay_input_display, &"left", true)
+			_check_input_state(t, replay_input_display, &"back", false)
 			_check_input_state(t, replay_input_display, &"right", false)
 			_check_input_state(t, replay_input_display, &"shoot", true)
 			_check_input_state(t, replay_input_display, &"ads", false)
 			_check_input_state(t, replay_input_display, &"reload", true)
 
 			var active_panel := _panel_stylebox(replay_input_display, "Movement/W/Label")
-			var inactive_panel := _panel_stylebox(replay_input_display, "Movement/A/Label")
+			var inactive_panel := _panel_stylebox(replay_input_display, "Movement/S/Label")
 			t.check(active_panel != null, "Active keycap should expose a panel stylebox")
 			t.check(inactive_panel != null, "Inactive keycap should expose a panel stylebox")
 			if active_panel is StyleBoxFlat and inactive_panel is StyleBoxFlat:
