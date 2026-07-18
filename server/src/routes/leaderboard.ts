@@ -9,12 +9,23 @@ import {
   ban_auth,
 } from '../middleware';
 import { z } from 'zod';
-import { describeRoute, resolver, validator as zValidator } from 'hono-openapi';
+import {
+  describeRoute,
+  resolver,
+  validator as zValidator,
+  type DescribeRouteOptions,
+} from 'hono-openapi';
 import { discord_client } from '../index';
 import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';
 import { hide_route } from './common';
 import { get_maps_of_mode, type RunMode } from '../maps';
+import {
+  get_leaderboard_offset,
+  LeaderboardPaginationParameters,
+  LeaderboardPaginationQuery,
+  paginate_leaderboard,
+} from '../leaderboard_pagination';
 import {
   is_new_world_record,
   recent_world_records,
@@ -32,11 +43,13 @@ const RunInput = z.object({
 
 function describe_leaderboard_route<T extends z.ZodTypeAny>(
   description: string,
-  success_schema: T
+  success_schema: T,
+  options: Omit<DescribeRouteOptions, 'description' | 'responses'> = {}
 ) {
   return describeRoute({
     description,
     tags: ['leaderboard'],
+    ...options,
     responses: {
       200: {
         description: 'Successful',
@@ -245,16 +258,15 @@ function format_date(date: Date) {
 app.get(
   '/mode/:mode_name/maps/:map_name/runs',
   describe_leaderboard_route(
-    'Retrieves a paginated leaderboard of runs for the specified map. Returns run details sorted by time in ascending order. Accepts a page query parameter to navigate through leaderboard pages.',
-    MapRunsResponse
+    'Retrieves a paginated leaderboard of runs for the specified map.',
+    MapRunsResponse,
+    { parameters: LeaderboardPaginationParameters }
   ),
+  zValidator('query', LeaderboardPaginationQuery),
   async (c) => {
     const map_name = c.req.param('map_name');
-    const page_string = c.req.query('page');
     const run_mode = coerce_to_run_mode(c.req.param('mode_name'));
-
-    let page = 0;
-    if (page_string) page = parseInt(page_string);
+    const pagination = c.req.valid('query');
 
     try {
       const runs_result = await db
@@ -267,21 +279,20 @@ app.get(
         .from(runs)
         .where(and(eq(runs.map_name, map_name), eq(runs.mode, run_mode)))
         .orderBy(asc(runs.time_ms))
-        .limit(10)
-        .offset(page * 10);
+        .limit(pagination.limit)
+        .offset(get_leaderboard_offset(pagination));
 
       const formatted_result = runs_result.map((run) => ({
         ...run,
         created_at: format_date(run.created_at),
       }));
 
-      const data: z.infer<typeof MapRunsResponse> = {
+      return c.json({
         data: {
           runs: formatted_result,
           total: await get_run_count(run_mode, map_name),
         },
-      };
-      return c.json(data);
+      });
     } catch (e) {
       console.log(e);
       return c.json({ error: 'Internal server error' }, 500);

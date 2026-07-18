@@ -39,6 +39,16 @@ test('get_leaderboard_offset uses zero-based pages', () => {
   assert.equal(get_leaderboard_offset({ page: 3, limit: 25 }), 75);
 });
 
+test('leaderboard pagination accepts the website page size', () => {
+  const parsed = LeaderboardPaginationQuery.parse({
+    page: '1',
+    limit: '25',
+  });
+
+  assert.equal(parsed.limit, 25);
+  assert.equal(get_leaderboard_offset(parsed), 25);
+});
+
 test('paginate_leaderboard preserves order and reports the unsliced total', () => {
   const result = paginate_leaderboard(
     ['first', 'second', 'third', 'fourth', 'fifth'],
