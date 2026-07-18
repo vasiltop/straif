@@ -56,8 +56,11 @@ func _ready() -> void:
 func _instantiate_maps() -> void:
 	var mode_to_container: Dictionary[String, ModeContainer]
 
-	for child: ModeContainer in mode_switcher.get_children():
-		mode_to_container[child.mode] = child
+	for child in mode_switcher.get_children():
+		if child is not ModeContainer:
+			continue
+		var mode_container := child as ModeContainer
+		mode_to_container[mode_container.mode] = mode_container
 
 	mode_to_container[Global.game_manager.current_mode].visible = true
 

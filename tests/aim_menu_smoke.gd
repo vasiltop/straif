@@ -57,15 +57,25 @@ func _run() -> void:
 				"Main menu should expose an Aim Trainer tab",
 		)
 		var speedrun_modes_path := "MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher"
-		var target_leaderboard_path := speedrun_modes_path + "/Target Practice/Content/OverallLeaderboard/TargetPracticeLeaderboard"
-		var movement_leaderboard_path := speedrun_modes_path + "/Movement Only/Content/OverallLeaderboard/MovementOnlyLeaderboard"
+		var speedrun_leaderboard_path := speedrun_modes_path + "/Leaderboard"
+		var target_leaderboard_path := speedrun_leaderboard_path + "/Overall/H/VBoxContainer/TargetPracticeLeaderboard"
+		var movement_leaderboard_path := speedrun_leaderboard_path + "/Overall/H/VBoxContainer2/MovementOnlyLeaderboard"
+		var speedrun_modes = main_menu.get_node(speedrun_modes_path)
+		_check(
+				speedrun_modes.get_tab_count() == 3,
+				"Speedrun should expose Target Practice, Movement Only, and Leaderboard tabs",
+		)
+		_check(
+				main_menu.has_node(speedrun_leaderboard_path),
+				"Speedrun should expose a dedicated leaderboard mode tab",
+		)
 		_check(
 				main_menu.has_node(target_leaderboard_path),
-				"Target Practice should expose its overall leaderboard below the map list",
+				"Speedrun leaderboard tab should expose Target Practice rankings",
 		)
 		_check(
 				main_menu.has_node(movement_leaderboard_path),
-				"Movement Only should expose its overall leaderboard below the map list",
+				"Speedrun leaderboard tab should expose Movement Only rankings",
 		)
 		_check(
 				not main_menu.has_node("MarginContainer/Content/Body/Leaderboard"),
