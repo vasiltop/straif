@@ -16,6 +16,12 @@ import { type Variables } from '../index';
 import { hide_route, describe_leaderboard_route } from './common';
 import { get_maps_of_mode, type RunMode } from '../maps';
 import {
+  get_leaderboard_offset,
+  LeaderboardPaginationParameters,
+  LeaderboardPaginationQuery,
+  paginate_leaderboard,
+} from '../leaderboard_pagination';
+import {
   is_new_world_record,
   recent_world_records,
   world_record_lock_key,
@@ -50,16 +56,22 @@ const PlayerPoints = z.object({
   points: z.number(),
 });
 
-const OverallLeaderboard = z.array(PlayerPoints);
+const OverallLeaderboardResponse = z.object({
+  data: z.array(PlayerPoints),
+  total: z.number().int().min(0),
+});
 
 app.get(
   '/mode/:mode_name/overall',
   describe_leaderboard_route(
     'Fetches the overall leaderboard for a specific mode.',
-    z.array(PlayerPoints)
+    OverallLeaderboardResponse,
+    { parameters: LeaderboardPaginationParameters }
   ),
+  zValidator('query', LeaderboardPaginationQuery),
   async (c) => {
     const mode = coerce_to_run_mode(c.req.param('mode_name'));
+    const pagination = c.req.valid('query');
     const maps = get_maps_of_mode(mode);
     const points_per_position = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     const points_map = new Map<string, z.infer<typeof PlayerPoints>>();
@@ -92,12 +104,15 @@ app.get(
       });
     }
 
-    const leaderboard = Array.from(points_map.values())
-      .sort((a, b) => b.points - a.points)
-      .slice(0, 10);
+    const sorted_leaderboard = Array.from(points_map.values()).sort(
+      (a, b) => b.points - a.points || a.steam_id.localeCompare(b.steam_id)
+    );
+    const page = paginate_leaderboard(sorted_leaderboard, pagination);
 
-    const data: z.infer<typeof OverallLeaderboard> = leaderboard;
-    return c.json({ data: data });
+    return c.json({
+      data: page.rows,
+      total: page.total,
+    });
   }
 );
 
@@ -216,16 +231,15 @@ function format_date(date: Date) {
 app.get(
   '/mode/:mode_name/maps/:map_name/runs',
   describe_leaderboard_route(
-    'Retrieves a paginated leaderboard of runs for the specified map. Returns run details sorted by time in ascending order. Accepts a page query parameter to navigate through leaderboard pages.',
-    MapRunsResponse
+    'Retrieves a paginated leaderboard of runs for the specified map.',
+    MapRunsResponse,
+    { parameters: LeaderboardPaginationParameters }
   ),
+  zValidator('query', LeaderboardPaginationQuery),
   async (c) => {
     const map_name = c.req.param('map_name');
-    const page_string = c.req.query('page');
     const run_mode = coerce_to_run_mode(c.req.param('mode_name'));
-
-    let page = 0;
-    if (page_string) page = parseInt(page_string);
+    const pagination = c.req.valid('query');
 
     try {
       const runs_result = await db
@@ -238,21 +252,20 @@ app.get(
         .from(runs)
         .where(and(eq(runs.map_name, map_name), eq(runs.mode, run_mode)))
         .orderBy(asc(runs.time_ms))
-        .limit(10)
-        .offset(page * 10);
+        .limit(pagination.limit)
+        .offset(get_leaderboard_offset(pagination));
 
       const formatted_result = runs_result.map((run) => ({
         ...run,
         created_at: format_date(run.created_at),
       }));
 
-      const data: z.infer<typeof MapRunsResponse> = {
+      return c.json({
         data: {
           runs: formatted_result,
           total: await get_run_count(run_mode, map_name),
         },
-      };
-      return c.json(data);
+      });
     } catch (e) {
       console.log(e);
       return c.json({ error: 'Internal server error' }, 500);

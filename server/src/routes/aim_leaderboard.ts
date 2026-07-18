@@ -15,6 +15,11 @@ import {
   parseAimScenario,
   type AimScenario,
 } from '../aim_leaderboard';
+import {
+  get_leaderboard_offset,
+  LeaderboardPaginationParameters,
+  LeaderboardPaginationQuery,
+} from '../leaderboard_pagination';
 
 const app = new Hono<{ Variables: Variables }>();
 
@@ -41,10 +46,6 @@ const AimScoreInput = z.object({
   username: z.string().trim().min(1).max(64),
 });
 
-const PaginationQuery = z.object({
-  page: z.coerce.number().int().min(0).default(0),
-});
-
 const ScenarioPathParameter = {
   name: 'scenario',
   in: 'path',
@@ -54,18 +55,6 @@ const ScenarioPathParameter = {
     enum: [...AIM_SCENARIOS],
   },
   description: 'The aim scenario to operate on.',
-} satisfies OpenApiParameter;
-
-const PageQueryParameter = {
-  name: 'page',
-  in: 'query',
-  required: false,
-  schema: {
-    type: 'integer',
-    minimum: 0,
-    default: 0,
-  },
-  description: 'Zero-based leaderboard page number.',
 } satisfies OpenApiParameter;
 
 const AimScoreRequestBody = {
@@ -155,10 +144,13 @@ const AimOverallScore = z.object({
 const AimOverallLeaderboardResponse = z.object({
   data: z.object({
     scores: z.array(AimOverallScore),
+    total: z.number().int().min(0),
   }),
 });
 
 const CountAll = sql<number>`count(*)`.mapWith(Number);
+const DistinctPlayerCount =
+  sql<number>`count(distinct ${aim_scores.steam_id})`.mapWith(Number);
 const TotalScoreExpression = sql`sum(${aim_scores.score})`;
 const TotalScore = TotalScoreExpression.mapWith(Number).as('total_score');
 const ScenariosCompletedExpression = sql`count(*)`;
@@ -346,19 +338,18 @@ app.get(
     'Fetches a paginated leaderboard for a single aim scenario ordered by score descending, then accuracy descending, then average reaction time ascending.',
     AimScenarioLeaderboardResponse,
     {
-      parameters: [ScenarioPathParameter, PageQueryParameter],
+      parameters: [ScenarioPathParameter, ...LeaderboardPaginationParameters],
     }
   ),
   zValidator('param', ScenarioParamInput),
-  zValidator('query', PaginationQuery),
+  zValidator('query', LeaderboardPaginationQuery),
   async (c) => {
     const parsedScenario = getValidatedScenario(c.req.valid('param').scenario);
     if (!parsedScenario) {
       return c.json({ error: 'Invalid aim scenario.' }, 400);
     }
 
-    const { page } = c.req.valid('query');
-    const offset = page * 10;
+    const pagination = c.req.valid('query');
 
     try {
       const [scores, totalRows] = await Promise.all([
@@ -381,8 +372,8 @@ app.get(
             asc(aim_scores.avg_reaction_ms),
             asc(aim_scores.steam_id)
           )
-          .limit(10)
-          .offset(offset),
+          .limit(pagination.limit)
+          .offset(get_leaderboard_offset(pagination)),
         db
           .select({
             count: CountAll,
@@ -394,7 +385,10 @@ app.get(
       return c.json({
         data: {
           scores: scores.map((score, index) =>
-            formatAimScoreRow(score, offset + index + 1)
+            formatAimScoreRow(
+              score,
+              get_leaderboard_offset(pagination) + index + 1
+            )
           ),
           total: totalRows[0].count,
         },
@@ -410,33 +404,42 @@ app.get(
   '/overall',
   describe_leaderboard_route(
     'Fetches the overall aim leaderboard by aggregating each player’s best score from every completed scenario.',
-    AimOverallLeaderboardResponse
+    AimOverallLeaderboardResponse,
+    { parameters: LeaderboardPaginationParameters }
   ),
+  zValidator('query', LeaderboardPaginationQuery),
   async (c) => {
+    const pagination = c.req.valid('query');
+
     try {
-      const scores = await db
-        .select({
-          steam_id: aim_scores.steam_id,
-          username: DeterministicUsername,
-          total_score: TotalScore,
-          scenarios_completed: ScenariosCompleted,
-          accuracy: AccuracyAverage,
-          avg_reaction_ms: AvgReaction,
-        })
-        .from(aim_scores)
-        .groupBy(aim_scores.steam_id)
-        .orderBy(
-          desc(TotalScoreExpression),
-          desc(ScenariosCompletedExpression),
-          desc(AccuracyAverageExpression),
-          asc(AvgReactionExpression),
-          asc(aim_scores.steam_id)
-        )
-        .limit(10);
+      const [scores, totals] = await Promise.all([
+        db
+          .select({
+            steam_id: aim_scores.steam_id,
+            username: DeterministicUsername,
+            total_score: TotalScore,
+            scenarios_completed: ScenariosCompleted,
+            accuracy: AccuracyAverage,
+            avg_reaction_ms: AvgReaction,
+          })
+          .from(aim_scores)
+          .groupBy(aim_scores.steam_id)
+          .orderBy(
+            desc(TotalScoreExpression),
+            desc(ScenariosCompletedExpression),
+            desc(AccuracyAverageExpression),
+            asc(AvgReactionExpression),
+            asc(aim_scores.steam_id)
+          )
+          .limit(pagination.limit)
+          .offset(get_leaderboard_offset(pagination)),
+        db.select({ count: DistinctPlayerCount }).from(aim_scores),
+      ]);
 
       return c.json({
         data: {
           scores,
+          total: totals[0].count,
         },
       });
     } catch (e) {
