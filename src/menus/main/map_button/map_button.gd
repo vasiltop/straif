@@ -22,19 +22,18 @@ var index_to_medal: Array[Texture] = [BRONZE_MEDAL, SILVER_MEDAL, GOLD_MEDAL, PL
 var earned_medals := 0
 var mode: String
 
-
 func _ready() -> void:
 	map = Global.map_manager.get_map_with_name(map_name)
 	map_name_label.text = map_name
 
-	play_btn.pressed.connect(
-		func() -> void:
-			var base_path := "res://src/maps/speedrun/"
-			var path := base_path + map.name.to_lower().replace(" ", "_") + ".tscn"
-			get_tree().change_scene_to_file(path)
-			Global.game_manager.current_map = map
-			Global.game_manager.current_mode = mode
-	)
+	play_btn \
+			.pressed \
+			.connect(func() -> void:
+				var base_path := "res://src/maps/speedrun/"
+				var path := base_path + map.name.to_lower().replace(" ", "_") + ".tscn"
+				get_tree().change_scene_to_file(path)
+				Global.game_manager.current_map = map
+				Global.game_manager.current_mode = mode)
 
 	for child: TextureRect in medals.get_children():
 		child.texture = EMPTY_MEDAL
@@ -42,7 +41,6 @@ func _ready() -> void:
 	var sb := StyleBoxTexture.new()
 	sb.texture = map.image
 	add_theme_stylebox_override("panel", sb)
-
 
 func set_personal_best(time: float, position: int, total: int, mode: String) -> void:
 	timer_label.text = "Not Completed..."

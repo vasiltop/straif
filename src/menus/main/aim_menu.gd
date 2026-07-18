@@ -14,26 +14,16 @@ const SCENARIO_INFO := {
 	SCENARIO_TRACKING: { "label": "Tracking" },
 }
 
-@onready var gridshot_button: Button = get_node(
-		"Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack/GridshotButton"
-)
-@onready var flick_button: Button = get_node(
-		"Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack/FlickButton"
-)
-@onready var tracking_button: Button = get_node(
-		"Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack/TrackingButton"
-)
+@onready var gridshot_button: Button = get_node("Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack/GridshotButton")
+@onready var flick_button: Button = get_node("Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack/FlickButton")
+@onready var tracking_button: Button = get_node("Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack/TrackingButton")
 @onready var selected_scenario_label: Label = $Scroll/Margin/Content/SelectedScenarioLabel
 @onready var start_button: Button = $Scroll/Margin/Content/StartButton
 @onready var leaderboard_tabs: TabContainer = $Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs
 @onready var scenario_status_label: Label = leaderboard_tabs.get_node("ScenarioRankings/ScenarioLeaderboardStatus")
-@onready var scenario_rows: VBoxContainer = leaderboard_tabs.get_node(
-		"ScenarioRankings/ScenarioLeaderboardScroll/ScenarioLeaderboardRows"
-)
+@onready var scenario_rows: VBoxContainer = leaderboard_tabs.get_node("ScenarioRankings/ScenarioLeaderboardScroll/ScenarioLeaderboardRows")
 @onready var overall_status_label: Label = leaderboard_tabs.get_node("OverallRankings/OverallLeaderboardStatus")
-@onready var overall_rows: VBoxContainer = leaderboard_tabs.get_node(
-		"OverallRankings/OverallLeaderboardScroll/OverallLeaderboardRows"
-)
+@onready var overall_rows: VBoxContainer = leaderboard_tabs.get_node("OverallRankings/OverallLeaderboardScroll/OverallLeaderboardRows")
 
 var selected_scenario := SCENARIO_GRIDSHOT
 var scenario_request_generation := 0
@@ -98,9 +88,7 @@ func _refresh_scenario_leaderboard() -> void:
 		scenario_status_label.text = "No %s scores yet." % String(info["label"]).to_lower()
 		return
 
-	scenario_status_label.text = (
-		"Showing top %d of %d %s scores" % [response.scores.size(), response.total, info["label"]]
-	)
+	scenario_status_label.text = ("Showing top %d of %d %s scores" % [response.scores.size(), response.total, info["label"]])
 	_populate_scenario_rows(response.scores)
 
 func _refresh_overall_leaderboard() -> void:

@@ -32,9 +32,7 @@ func _options(args: PackedStringArray, allow_e2e := false) -> RuntimeOptions:
 
 func _e2e_connect_options(instance: String) -> RuntimeOptions:
 	return _options(
-			PackedStringArray(
-					["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", instance, "--e2e-control-port", "6001"]
-			),
+			PackedStringArray(["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", instance, "--e2e-control-port", "6001"]),
 			true,
 	)
 
@@ -92,8 +90,7 @@ func _test_e2e_connect_selects_readable_fake_identities(t: TestCase) -> void:
 		t.check(ticket["value"] != "", "E2E identity must deliver a nonempty auth ticket without contacting Steam")
 
 func _test_e2e_server_selects_recording_registry(t: TestCase) -> void:
-	var args := PackedStringArray(
-			[
+	var args := PackedStringArray([
 				"server",
 				"DM-1",
 				"3005",
@@ -104,8 +101,7 @@ func _test_e2e_server_selects_recording_registry(t: TestCase) -> void:
 				"srv",
 				"--e2e-control-port",
 				"6002",
-			]
-	)
+			])
 	var result := Bootstrap.build(_options(args, true), null, true)
 	t.check(result.is_ok(), "E2E dedicated server should build without a bridge, got: %s" % result.error)
 	if result.is_ok():

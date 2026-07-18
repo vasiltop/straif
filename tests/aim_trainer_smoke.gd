@@ -62,9 +62,7 @@ func _run() -> void:
 				spawned_player.weapon_handler.audio.get_parent() == spawned_player.weapon_handler,
 				"Weapon handler audio should remain owned by the weapon handler after spawn",
 		)
-		aim_trainer.show_leaderboard_rows(
-				[{ "rank": 1, "name": "Tester", "score": 1000, "accuracy": "95.0%", "reaction": "240 ms" }]
-		)
+		aim_trainer.show_leaderboard_rows([{ "rank": 1, "name": "Tester", "score": 1000, "accuracy": "95.0%", "reaction": "240 ms" }])
 		_check(
 				aim_trainer.get_node("HUD/ResultsPanel/LeaderboardScroll/LeaderboardRows").get_child_count() == 1,
 				"Aim trainer should create leaderboard rows at runtime",

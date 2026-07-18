@@ -17,6 +17,4 @@ func _ready() -> void:
 
 	restart_label.text = "To restart, use the %s key." % Global.settings_manager.get_keybind_string("restart")
 
-	leaderboard_label.text = (
-		"To view the leaderboard, use the %s key." % Global.settings_manager.get_keybind_string("leaderboard")
-	)
+	leaderboard_label.text = ("To view the leaderboard, use the %s key." % Global.settings_manager.get_keybind_string("leaderboard"))

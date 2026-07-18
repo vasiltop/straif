@@ -135,9 +135,7 @@ func _phase_text(phase: int) -> String:
 		PHASE_WAITING:
 			return "Waiting for players"
 		PHASE_FREEZE:
-			return (
-				"Freeze time - %s to buy" % (Global.settings_manager.get_keybind_string("buy_menu") if not Global.is_sv() else "Freeze Time")
-			)
+			return ("Freeze time - %s to buy" % (Global.settings_manager.get_keybind_string("buy_menu") if not Global.is_sv() else "Freeze Time"))
 		PHASE_LIVE:
 			return "Round live"
 		PHASE_ROUND_END:

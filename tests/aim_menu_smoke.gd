@@ -44,9 +44,7 @@ func _run() -> void:
 		)
 		root.add_child(aim_menu)
 		await process_frame
-		var leaderboard_tabs = aim_menu.get_node(
-				"Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs"
-		)
+		var leaderboard_tabs = aim_menu.get_node("Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs")
 		_check(leaderboard_tabs is TabContainer, "Aim menu leaderboard view should be a TabContainer")
 		_check(leaderboard_tabs.get_tab_count() == 2, "Aim menu should expose scenario and overall leaderboard tabs")
 

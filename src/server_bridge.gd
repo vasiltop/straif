@@ -237,11 +237,7 @@ func get_runs(mode: String, map_name: String, page: int) -> MapRunsResponse:
 
 	var runs: Array[MapRunsResponse.Run]
 	for run: Dictionary in data.runs:
-		runs.append(
-				MapRunsResponse
-				.Run
-				.new(run.time_ms as int, run.username as String, run.created_at as String, run.steam_id as String)
-		)
+		runs.append(MapRunsResponse.Run.new(run.time_ms as int, run.username as String, run.created_at as String, run.steam_id as String))
 
 	return MapRunsResponse.new(runs, data.total as int)
 
@@ -391,11 +387,7 @@ func get_my_runs(mode: String) -> RunsRequestResponse:
 
 	var runs: Array[RunsRequestResponse.Run]
 	for run: Dictionary in data:
-		runs.append(
-				RunsRequestResponse
-				.Run
-				.new(run.time_ms as int, run.map_name as String, run.created_at as String, run.position as int, run.total as int)
-		)
+		runs.append(RunsRequestResponse.Run.new(run.time_ms as int, run.map_name as String, run.created_at as String, run.position as int, run.total as int))
 
 	return RunsRequestResponse.new(runs)
 

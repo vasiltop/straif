@@ -23,9 +23,7 @@ func on_shot(mag_ammo: int, _reserve_ammo := 0) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % [mag_ammo]
 
 func _ready() -> void:
-	keybind_info_label.text = (
-		"Press Ctrl to toggle UI\nPress %s to restart" % Global.settings_manager.get_keybind_string("restart")
-	)
+	keybind_info_label.text = ("Press Ctrl to toggle UI\nPress %s to restart" % Global.settings_manager.get_keybind_string("restart"))
 	done_replay_btn.pressed.connect(func() -> void: return_control_to_player.emit())
 
 	alt_speed_label.visible = Global.settings_manager.value("Display", "speed")

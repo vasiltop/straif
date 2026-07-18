@@ -56,14 +56,12 @@ func _send_info(steam_name: String) -> void:
 	for player: Player in players.get_children():
 		var weapon_index := Global.game_manager.get_weapon_index(player.weapon_handler.current_weapon)
 		Global.mp_print(
-				(
-					"Sending weapon index of %d (%s) from player %d to %d" % [
+				("Sending weapon index of %d (%s) from player %d to %d" % [
 						weapon_index,
 						player.weapon_handler.current_weapon.name,
 						player.pid,
 						sender,
-					]
-				)
+					])
 		)
 		_create_player.rpc_id(sender, player.pid, player.global_position, player.player_name(), weapon_index)
 

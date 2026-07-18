@@ -119,9 +119,7 @@ func _test_offline_playtest_flag(t: TestCase) -> void:
 	)
 
 func _test_valid_connect_with_e2e(t: TestCase) -> void:
-	var args := PackedStringArray(
-			["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "6001"]
-	)
+	var args := PackedStringArray(["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "6001"])
 	var result := RuntimeOptions.parse(args, true)
 	t.check(result.is_ok(), "Valid connect + e2e args should parse without error, got: %s" % result.error)
 	if result.is_ok():
@@ -174,9 +172,7 @@ func _test_e2e_value_flags_reject_flag_values(t: TestCase) -> void:
 	)
 	t.check(not instance_flag_as_value.is_ok(), "--e2e-instance must not consume a following flag as its value")
 	var control_port_flag_as_value := RuntimeOptions.parse(
-			PackedStringArray(
-					["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "--e2e"]
-			),
+			PackedStringArray(["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "--e2e"]),
 			true,
 	)
 	t.check(not control_port_flag_as_value.is_ok(), "--e2e-control-port must not consume a following flag as its value")
@@ -186,24 +182,19 @@ func _test_e2e_value_flags_reject_flag_values(t: TestCase) -> void:
 	)
 	t.check(not instance_missing_value.is_ok(), "--e2e-instance without a value should error")
 	var control_port_non_integer := RuntimeOptions.parse(
-			PackedStringArray(
-					["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "abc"]
-			),
+			PackedStringArray(["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "abc"]),
 			true,
 	)
 	t.check(not control_port_non_integer.is_ok(), "--e2e-control-port with a non-integer value should error")
 	var control_port_out_of_range := RuntimeOptions.parse(
-			PackedStringArray(
-					["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "70000"]
-			),
+			PackedStringArray(["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "70000"]),
 			true,
 	)
 	t.check(not control_port_out_of_range.is_ok(), "--e2e-control-port out of the 1..65535 range should error")
 
 func _test_e2e_role_gating(t: TestCase) -> void:
 	var server_e2e := RuntimeOptions.parse(
-			PackedStringArray(
-					[
+			PackedStringArray([
 						"server",
 						"DM-1",
 						"3005",
@@ -214,8 +205,7 @@ func _test_e2e_role_gating(t: TestCase) -> void:
 						"srv",
 						"--e2e-control-port",
 						"6002",
-					]
-			),
+					]),
 			true,
 	)
 	t.check(server_e2e.is_ok(), "server + e2e + instance + control port should parse, got: %s" % server_e2e.error)
@@ -233,9 +223,7 @@ func _test_e2e_role_gating(t: TestCase) -> void:
 	)
 	t.check(not menu_client_e2e.is_ok(), "e2e for a menu client should be rejected")
 	var production_e2e := RuntimeOptions.parse(
-			PackedStringArray(
-					["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "6001"]
-			),
+			PackedStringArray(["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "6001"]),
 			false,
 	)
 	t.check(not production_e2e.is_ok(), "e2e should be rejected in a production build")

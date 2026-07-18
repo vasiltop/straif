@@ -82,7 +82,4 @@ static func _e2e_identity(instance: String) -> FakeIdentityProvider:
 	return FakeIdentityProvider.new(account_id, display_name, ticket)
 
 static func _is_supported_role(role: int) -> bool:
-	return (
-		role == RuntimeOptions.Role.MENU_CLIENT or role == RuntimeOptions.Role.DEDICATED_SERVER
-		or role == RuntimeOptions.Role.CONNECT_CLIENT
-	)
+	return (role == RuntimeOptions.Role.MENU_CLIENT or role == RuntimeOptions.Role.DEDICATED_SERVER or role == RuntimeOptions.Role.CONNECT_CLIENT)
