@@ -1,11 +1,21 @@
 extends SceneTree
 
-const HeartbeatState = preload("res://src/heartbeat_state.gd")
+const HEARTBEAT_STATE_PATH := "res://src/heartbeat_state.gd"
 
 var failed := false
 
 
 func _init() -> void:
+	_run()
+
+
+func _run() -> void:
+	var HeartbeatState = load(HEARTBEAT_STATE_PATH)
+	if HeartbeatState == null:
+		_check(false, "Expected heartbeat state helper to load")
+		quit(1)
+		return
+
 	var state = HeartbeatState.new()
 
 	_check(state.begin_request(), "begin_request should accept the first request")
