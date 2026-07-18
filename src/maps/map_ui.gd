@@ -15,6 +15,7 @@ signal return_control_to_player
 @export var replay_slider: HSlider
 @export var replay_container: Control
 @export var replay_v: VBoxContainer
+@export var replay_input_display: ReplayInputDisplay
 @export var game_info: Container
 @export var ammo_label: Label
 @export var leaderboard: Container
@@ -33,10 +34,31 @@ func set_frame(frame: int, total: int) -> void:
 	replay_slider.value = frame
 	replay_slider.max_value = total - 1
 
+func set_replay_inputs(
+		forward_input: bool,
+		back_input: bool,
+		left_input: bool,
+		right_input: bool,
+		shoot_input: bool,
+		ads_input: bool,
+		reload_input: bool,
+) -> void:
+	replay_input_display.set_inputs(
+			forward_input,
+			back_input,
+			left_input,
+			right_input,
+			shoot_input,
+			ads_input,
+			reload_input,
+	)
+
 func set_replay_visible(value: bool) -> void:
 	replay_container.visible = value
 	replay_v.visible = value
 	map.recorder.controller.visible = value
+	if not value:
+		replay_input_display.reset()
 
 func is_replay_visible() -> bool:
 	return replay_container.visible
