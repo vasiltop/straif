@@ -1,0 +1,19 @@
+:root {
+  color-scheme: dark;
+  font-family: Archivo, Arial, sans-serif;
+  background: #050505;
+  color: #f2f2ed;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; background: #050505; }
+a { color: inherit; }
+button, select { font: inherit; }
+:focus-visible { outline: 2px solid #f2f2ed; outline-offset: 4px; }
+.skip-link { position: fixed; left: 1rem; top: -5rem; z-index: 100; }
+.skip-link:focus { top: 1rem; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
