@@ -5,6 +5,9 @@ signal invalid_version
 const FILE_CHUNK_SIZE := 1024
 const DISCORD_URL := "https://discord.gg/DScF2QqKzF"
 const WORLD_RECORD_ALERT_DURATION := 3.0
+const HEARTBEAT_CONNECTION_WARNING := "Connection to online services interrupted. Retrying..."
+const HEARTBEAT_RECOVERED_MESSAGE := "Connection restored."
+const HeartbeatStateScript = preload("res://src/heartbeat_state.gd")
 const WorldRecordAnnouncement = preload("res://src/world_record_announcement.gd")
 var client: BetterHTTPClient
 
@@ -13,6 +16,7 @@ var version: String
 var last_aim_overall_leaderboard_available := true
 
 var heartbeat_timer: BetterTimer
+var _heartbeat_state := HeartbeatStateScript.new()
 var _seen_world_record_ids: Dictionary[String, bool] = {}
 var _world_record_messages: Array[String] = []
 var _showing_world_records := false
@@ -38,6 +42,9 @@ func _init() -> void:
 	heartbeat_timer = BetterTimer.new(Global, 3.0, _on_heartbeat_timer)
 
 func _on_heartbeat_timer() -> void:
+	if not _heartbeat_state.begin_request():
+		return
+
 	var url := "/game/heartbeat"
 
 	var response := await client.http_get(url).header(
@@ -45,16 +52,45 @@ func _on_heartbeat_timer() -> void:
 		).header(
 			"version", version
 		).send()
-	
-	if not response or response.status() != 200:
-		Global.get_tree().change_scene_to_file("res://src/maintenance.tscn")
-		return
-	
-	var json := await response.json()
-	var data: Dictionary = json.data
 
-	Global.game_manager.admin = data.admin as bool
-	Global.game_manager.maintenance = data.maintenance as bool
+	var status := 0
+	var payload: Variant = null
+	if response != null:
+		status = response.status()
+		payload = await response.json()
+	_heartbeat_state.finish_request()
+
+	match HeartbeatState.classify(response != null, status, payload):
+		HeartbeatState.TRANSIENT_FAILURE:
+			_mark_heartbeat_failed()
+		HeartbeatState.REQUEST_REJECTED:
+			_mark_heartbeat_failed(_heartbeat_rejection_message(status, payload))
+		HeartbeatState.HEALTHY, HeartbeatState.MAINTENANCE:
+			_mark_heartbeat_healthy()
+			var data: Dictionary = (payload as Dictionary).get("data")
+			_apply_heartbeat_data(data)
+
+func _mark_heartbeat_failed(message := HEARTBEAT_CONNECTION_WARNING) -> void:
+	if _heartbeat_state.mark_failure():
+		Info.alert(message)
+
+func _mark_heartbeat_healthy() -> void:
+	if _heartbeat_state.mark_success():
+		Info.alert(HEARTBEAT_RECOVERED_MESSAGE)
+
+func _heartbeat_rejection_message(status: int, payload: Variant) -> String:
+	var server_error := "Request rejected. Please restart the game and try again."
+	if payload is Dictionary:
+		var error: Variant = payload.get("error")
+		if error is String and not error.strip_edges().is_empty():
+			server_error = error
+	return "Online services error (%d): %s" % [status, server_error]
+
+func _apply_heartbeat_data(data: Dictionary) -> void:
+	var admin: Variant = data.get("admin", false)
+	var maintenance: Variant = data.get("maintenance", false)
+	Global.game_manager.admin = admin if admin is bool else false
+	Global.game_manager.maintenance = maintenance if maintenance is bool else false
 	_handle_world_records(data)
 	
 	if not Global.game_manager.maintenance:
