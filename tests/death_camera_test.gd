@@ -19,6 +19,8 @@ func _run() -> void:
 		player.third_person.visible = false
 		player.weapon_handler.visible = true
 		player.set_viewmodel_viewport_visible(true)
+		player.camera.make_current()
+		_check(not player.ragdoll_camera.is_current(), "Ragdoll camera should not be current before death view")
 
 		player._show_local_ragdoll_view()
 
