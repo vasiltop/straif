@@ -5,6 +5,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc && tsup src/index.ts src/migrate.ts --format esm --outDir dist",
     "start": "node dist/index.js",
+    "test": "tsx --test src/*.test.ts",
     "populate": "node scripts/populate.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
