@@ -1,0 +1,106 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/maps/replay_input_display.gd" id="1_ry1dp"]
+
+[node name="ReplayInputDisplay" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+script = ExtResource("1_ry1dp")
+
+[node name="Movement" type="GridContainer" parent="."]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 3
+
+[node name="TopLeftSpacer" type="PanelContainer" parent="Movement"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="W" type="PanelContainer" parent="Movement"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Movement/W"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "W"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TopRightSpacer" type="PanelContainer" parent="Movement"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="A" type="PanelContainer" parent="Movement"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Movement/A"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="S" type="PanelContainer" parent="Movement"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Movement/S"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "S"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="D" type="PanelContainer" parent="Movement"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Movement/D"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "D"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Combat" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Shoot" type="PanelContainer" parent="Combat"]
+custom_minimum_size = Vector2(46, 30)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Combat/Shoot"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "LMB"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ads" type="PanelContainer" parent="Combat"]
+custom_minimum_size = Vector2(46, 30)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Combat/Ads"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "RMB"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Reload" type="PanelContainer" parent="Combat"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Combat/Reload"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "R"
+horizontal_alignment = 1
+vertical_alignment = 1
