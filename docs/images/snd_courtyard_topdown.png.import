@@ -2,21 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c57lniubbnkav"
-path.s3tc="res://.godot/imported/snd_courtyard_Rock030_1K-JPG_NormalGL.jpg-9535982ee68011df9c24a1a11fcd2c68.s3tc.ctex"
-path.etc2="res://.godot/imported/snd_courtyard_Rock030_1K-JPG_NormalGL.jpg-9535982ee68011df9c24a1a11fcd2c68.etc2.ctex"
+uid="uid://y730xsqq6dow"
+path="res://.godot/imported/snd_courtyard_topdown.png-0b45f05df8785c434a0b45b53026a9f7.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "fb97eb553e302ee31cebaa7666176cff"
-}
 
 [deps]
 
-source_file="res://src/maps/tiles/snd_courtyard_Rock030_1K-JPG_NormalGL.jpg"
-dest_files=["res://.godot/imported/snd_courtyard_Rock030_1K-JPG_NormalGL.jpg-9535982ee68011df9c24a1a11fcd2c68.s3tc.ctex", "res://.godot/imported/snd_courtyard_Rock030_1K-JPG_NormalGL.jpg-9535982ee68011df9c24a1a11fcd2c68.etc2.ctex"]
+source_file="res://docs/images/snd_courtyard_topdown.png"
+dest_files=["res://.godot/imported/snd_courtyard_topdown.png-0b45f05df8785c434a0b45b53026a9f7.ctex"]
 
 [params]
 
@@ -28,7 +24,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=1
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=1
 roughness/src_normal="res://src/maps/tiles/snd_courtyard_Rock030_1K-JPG_NormalGL.jpg"

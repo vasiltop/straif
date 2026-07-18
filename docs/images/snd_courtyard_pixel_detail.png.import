@@ -2,21 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgcxqps3pu5r2"
-path.s3tc="res://.godot/imported/snd_courtyard_Wood062_1K-JPG_NormalGL.jpg-31b3a4d6918841da93454e63b4ccfbed.s3tc.ctex"
-path.etc2="res://.godot/imported/snd_courtyard_Wood062_1K-JPG_NormalGL.jpg-31b3a4d6918841da93454e63b4ccfbed.etc2.ctex"
+uid="uid://lxstself46v0"
+path="res://.godot/imported/snd_courtyard_pixel_detail.png-3a5c1e638be7fc462f073764600c351c.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "d27e6cc19f71b8da3a9b45d24f0fa985"
-}
 
 [deps]
 
-source_file="res://src/maps/tiles/snd_courtyard_Wood062_1K-JPG_NormalGL.jpg"
-dest_files=["res://.godot/imported/snd_courtyard_Wood062_1K-JPG_NormalGL.jpg-31b3a4d6918841da93454e63b4ccfbed.s3tc.ctex", "res://.godot/imported/snd_courtyard_Wood062_1K-JPG_NormalGL.jpg-31b3a4d6918841da93454e63b4ccfbed.etc2.ctex"]
+source_file="res://docs/images/snd_courtyard_pixel_detail.png"
+dest_files=["res://.godot/imported/snd_courtyard_pixel_detail.png-3a5c1e638be7fc462f073764600c351c.ctex"]
 
 [params]
 
@@ -28,7 +24,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=1
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=1
 roughness/src_normal="res://src/maps/tiles/snd_courtyard_Wood062_1K-JPG_NormalGL.jpg"

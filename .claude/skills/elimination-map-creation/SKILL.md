@@ -1,0 +1,216 @@
+---
+name: elimination-map-creation
+description: >-
+  Use when creating, redesigning, or editing a straif elimination / CS-style map
+  (the maps in src/maps/elimination/*.tscn). Covers the full pipeline: authoring
+  geometry in Blender, exporting a single .glb tile, baking collision via -col
+  name suffixes, wiring the .tscn (instance + spawns), CC0 / pixel textures, the
+  glTF Z-up→Y-up axis mapping, object merging for efficiency, and headless
+  verification. Godot 4.6, units = meters.
+---
+
+# Elimination map creation (straif)
+
+Build brand-new elimination maps as **mesh geometry authored in Blender**,
+exported to one `.glb`, and **instanced** inside the map's `.tscn`. Do **not**
+use CSG (`CSGCombiner3D`/`CSGBox3D`) for new/redesigned maps.
+
+The reference implementation is **`snd_courtyard`**
+(`src/maps/elimination/snd_courtyard.tscn` + `src/maps/tiles/snd_courtyard.glb`).
+The full, detailed guide lives in **`docs/map_creation.md`** — read it for the
+grid-rasterized floorplan method, the design direction, and the checklist. This
+skill is the fast operational summary plus the hard-won gotchas.
+
+## Pipeline
+
+```
+Blender scene ──export──► src/maps/tiles/<map>.glb ──instance──► src/maps/elimination/<map>.tscn
+```
+
+`project.godot` sets `import/blender/enabled=false`, so Godot imports the
+**pre-exported `.glb`** with its glTF importer — Blender is **not** needed at
+import time. You must export and commit the `.glb` yourself.
+
+## Rule 1 — collision via the `-col` name suffix (critical)
+
+The tile import preset has `nodes/use_name_suffixes=true`, so:
+
+> **Any Blender object whose name ends in `-col` becomes a Godot
+> `StaticBody3D` + `CollisionShape3D` (trimesh) on import.**
+
+Name **every solid object** with a `-col` suffix (`floor-col`, `walls-col`,
+`crate_a-col`, …). Objects without the suffix import as plain visual
+`MeshInstance3D` with **no collision** — use that for purely decorative bits
+players can't touch (e.g. window boards, lamps flush on a wall).
+
+## Rule 2 — scale & movement budget (meters)
+
+Player capsule **0.5 w × 2.1 h**, Source-style movement.
+
+| Element | Value |
+|---|---|
+| Jump step-up | ~0.6 m |
+| Stairs | rise ≤ 0.5 m/step |
+| Ramps | ≤ 45° |
+| Doorways | ≥ 1.4 w × 2.4 h |
+| Corridors | ≥ 2.0 w |
+| Chest-high cover | ~1.1 m |
+| Sightline walls | ≥ 2.6 m |
+| Perimeter (unjumpable) | ≥ 6 m |
+
+Arena must be **fully bounded and sealed** (no killzones) — players can't fall
+or escape. Verify ≥ ~2.3 m overhead clearance on all walkable paths.
+
+## Rule 3 — build method (grid-rasterized floorplan)
+
+Author a tight, carved-cave CS layout by rasterizing a 2D floorplan on a grid,
+then extruding: floor slabs at top `Z=0`; thin closed cells → built stone walls
+(~7 m); thick regions → rock massif (9 m+); a jagged perimeter belt (varied
+11–24 m, irregular silhouette — **not a rectangle**). Flood-fill from T spawn to
+prove every open cell is reachable. Detail pass: site platforms, ramps/stairs/
+catwalks, cover (crates/barrels/sandbags/rubble), a van on tires. See
+`docs/map_creation.md` §5 for the step-by-step.
+
+Requirements: T/CT spawns, A/B sites, mid, real chokepoints; rotational + fair;
+dense cover (few long sightlines); vertical high ground; moody dusk lighting.
+
+## Rule 4 — glTF axis mapping (verified)
+
+Blender is **Z-up**; glTF export converts to Y-up. Measured on `snd_courtyard`:
+
+```
+Godot(x, y, z) = Blender(x, z, -y)
+```
+
+i.e. **Godot Y = Blender Z (up)**, **Godot Z = −Blender Y**, Godot X = Blender X.
+So **T spawn south (Blender −Y) lands at Godot +Z**; CT north (Blender +Y) at
+Godot −Z. One horizontal sign flips — **never assume**; read the actual imported
+coordinates (raycast probe) before placing spawns.
+
+## Rule 5 — export from Blender
+
+```python
+bpy.ops.export_scene.gltf(
+    filepath='<repo>/src/maps/tiles/<map>.glb',
+    export_format='GLB',       # single binary, embeds textures
+    use_selection=False,
+    export_apply=True,         # apply transforms so local == world
+    export_yup=True,
+)
+```
+
+Confirm **every solid object name ends in `-col`** before exporting.
+
+## Rule 6 — efficiency: merge before export
+
+A cell-per-object greybox can explode into thousands of objects → thousands of
+`StaticBody3D`. **Merge objects by role/material** into a handful of `-col`
+meshes with `bpy.ops.object.join()` (use `bpy.context.temp_override(...)`).
+`snd_courtyard` merges to ~10 objects: `floor-col`, `walls-col`, `cliffs-col`,
+`cover-col`, `catwalk-col`, `van-col`, `sites-col`, `gates-col`, plus
+collision-free visual meshes `windows` and `lamps`. Joins preserve per-vertex
+UVs and multi-material assignment; each merged `-col` mesh is one trimesh body
+(ideal for static geometry). This cut the tile from ~1500 bodies → 8 and the
+GLB from 28 MB → ~2.5 MB.
+
+Decorative props that sit flush on a wall (window boards, lamps) don't need
+collision — drop their `-col` suffix so they import as visual-only.
+
+## Rule 7 — textures
+
+Two supported looks; both embed images in the GLB and bake UVs (glTF does **not**
+export procedural Mapping-node scale — after applying transforms, generate
+box/tri-planar UVs from world coords, ~0.3–0.4 scale).
+
+- **PBR:** CC0 sets (ambientCG Ground/Rock/Bricks/PavingStones/Wood/Metal), each
+  `Color → Base Color`, `Roughness` (Non-Color) → `Roughness`, `NormalGL`
+  (Non-Color) → `Normal Map → Normal`. Importer sets `ensure_tangents=true`.
+- **Pixel-art (snd_courtyard follow-up):** downscale source images to small
+  powers (128², down to ~48² for chunky surfaces), **drop normal maps** for a
+  flat look + smaller file, and set **nearest texture filtering** via an
+  `EditorScenePostImport` script wired into the `.glb.import`:
+
+  ```gdscript
+  # src/maps/tiles/<map>_post_import.gd
+  @tool
+  extends EditorScenePostImport
+  func _post_import(scene: Node) -> Object:
+      _apply(scene); return scene
+  func _apply(node: Node) -> void:
+      if node is MeshInstance3D and (node as MeshInstance3D).mesh:
+          var m := (node as MeshInstance3D).mesh
+          for i in m.get_surface_count():
+              var mat := m.surface_get_material(i)
+              if mat is BaseMaterial3D:
+                  (mat as BaseMaterial3D).texture_filter = \
+                      BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+      for c in node.get_children(): _apply(c)
+  ```
+
+  Wire it: in `<map>.glb.import` set
+  `import_script/path="res://src/maps/tiles/<map>_post_import.gd"`.
+  Godot **re-extracts embedded textures on reimport**, so any downscaling must be
+  baked into the GLB (scale + pack images in Blender, then export) — resizing the
+  extracted files on disk gets overwritten.
+
+Record any external assets (CC0 / commercial-OK) in `docs/ASSET_ATTRIBUTION.md`.
+
+## Rule 8 — wire the `.tscn`
+
+Root is a `Node3D`. The scene must:
+
+1. Add an `ext_resource` PackedScene for the glb and **instance it** as a child
+   of the root (replacing any old geometry). Delete any old `Geometry` CSG
+   subtree + its unused sub-resources.
+2. **Keep the spawn nodes exactly** — `elimination.gd` reads
+   `Spawns/Team%d` then iterates child `Marker3D` `.global_position`:
+   ```
+   Spawns/Team1/Spawn1..3   ← south team (T),  faces +Z→−Z (identity basis)
+   Spawns/Team2/Spawn1..3   ← north team (CT), faces −Z→+Z (180° Y basis)
+   ```
+3. Place the 6 markers on the correct team floor, **~0.1 m above** it (marker
+   `y = floor_y + 1.1` places feet ~0.1 m up), facing inward — using the
+   **verified imported Godot coordinates** (Rule 4), not Blender coords.
+4. Keep `WorldEnvironment`; tune `Sun` (`DirectionalLight3D`) + fog/sky to mood.
+
+## Rule 9 — verify headless (no commit)
+
+Use the `godot` binary on `PATH` (or a cached Godot 4.6 at
+`.../Godot.app/Contents/MacOS/Godot`).
+
+```bash
+# 1. Reimport so the new .glb is picked up + fresh .glb.import written
+godot --headless --editor --quit
+
+# 2. Load-check with a SceneTree script run via -s (NOT positional — that hangs):
+godot --headless -s /tmp/verify.gd
+```
+
+The check must confirm: the `.tscn` loads with **no errors**; the glb instance
+has generated **StaticBody3D + CollisionShape3D** children (one per `-col`
+group); all **6 `Spawns/Team{1,2}/Spawn{1..3}`** resolve on their correct sides
+~0.1 m above the floor. Then sanity-check clearances vs the 2.1 m player.
+
+Headless gotchas: give types in GDScript (`var hit: Dictionary`,
+`var space: PhysicsDirectSpaceState3D`); the game's autoloads load other maps
+into the **same physics space**, so **isolate your instance on a unique
+collision layer/mask** when raycasting for spawn floors, or you'll hit another
+map's colliders. `get_global_transform` errors in `_init` (not in tree) — query
+from `_process` after one frame.
+
+## Checklist
+
+- [ ] Layout: T/CT spawns, A/B sites, mid, chokepoints; rotational; fair.
+- [ ] Bounded by organic cliffs/gates — irregular silhouette, sealed.
+- [ ] Tight, not too open; many rooms; deliberate long angles only.
+- [ ] Vertical elements with valid step/slope.
+- [ ] Every solid object named `*-col`; props flush on walls left visual-only.
+- [ ] Objects merged by role → few `-col` bodies; transforms applied.
+- [ ] Exactly one `.glb` in `src/maps/tiles/`; textures embedded, UVs baked.
+- [ ] (Pixel look) small textures, normals dropped, nearest-filter post-import
+      script wired in `.glb.import`.
+- [ ] No floating geometry.
+- [ ] `.tscn` instances the glb; CSG removed; `Spawns/Team*/Spawn*` preserved.
+- [ ] 6 spawns from verified imported coords, ~0.1 m above floor, facing in.
+- [ ] Moody lighting tuned.
+- [ ] Headless import + load pass: no errors, collisions + 6 spawns resolve.
