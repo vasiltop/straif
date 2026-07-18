@@ -2,7 +2,7 @@ extends Node
 
 signal finished
 
-const WeaponScenes: Array[PackedScene] = [
+const WEAPON_SCENES: Array[PackedScene] = [
 	preload("res://src/player/weapon/scenes/ak47.tscn"),
 	preload("res://src/player/weapon/scenes/rifle.tscn"),
 	preload("res://src/player/weapon/scenes/shotgun.tscn"),
@@ -77,17 +77,13 @@ func _add_vfx(viewport: SubViewport) -> void:
 	receiver.position.z = -0.05
 	viewport.add_child(receiver)
 
-	for index in WeaponScenes.size():
-		var weapon := WeaponScenes[index].instantiate()
+	for index in WEAPON_SCENES.size():
+		var weapon := WEAPON_SCENES[index].instantiate()
 		var source := weapon.get_node("MuzzleFlash") as GPUParticles3D
 		var muzzle_flash := source.duplicate() as GPUParticles3D
 		weapon.free()
 		viewport.add_child(muzzle_flash)
-		muzzle_flash.position = Vector3(
-			-0.5 + float(index % 3) * 0.5,
-			0.45 - float(index / 3) * 0.5,
-			0.0
-		)
+		muzzle_flash.position = Vector3(-0.5 + float(index % 3) * 0.5, 0.45 - float(index / 3) * 0.5, 0.0)
 		muzzle_flash.restart()
 		muzzle_flash.emitting = true
 

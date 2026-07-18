@@ -30,23 +30,24 @@ var player_in_end_zone: bool
 var _has_jumped: bool
 var dragging_frame_slider: bool
 
+
 func _ready() -> void:
 	Global.multiplayer.multiplayer_peer = null
-	player.setup()
+	player.setup_as_local_player()
 	add_child(recorder)
 	add_child(sound_player)
 	add_child(map_ui)
 	player.weapon_handler.shot.connect(map_ui.on_shot)
 	player.toggled_pause.connect(_on_toggled_pause)
 	player.hardcore = false
-	
+
 	map_ui.return_control_to_player.connect(_on_return_control_to_player)
 	map_ui.set_replay_visible(false)
 	player.jumped.connect(_on_player_jump)
 	Global.game_manager.replay_requested.connect(_on_replay_requested)
 	target_killed.connect(_on_target_killed)
 	_on_target_killed()
-	
+
 	start_zone.body_exited.connect(
 		func(body):
 			if not running and not completed:
@@ -58,12 +59,12 @@ func _ready() -> void:
 		func() -> void:
 			recorder.pause_playback()
 			dragging_frame_slider = true
-			)
+	)
 	map_ui.replay_slider.drag_ended.connect(
 		func(changed: bool) -> void:
 			recorder.resume_playback()
 			dragging_frame_slider = false
-			)
+	)
 
 	end_zone.body_entered.connect(
 		func(body: Node3D) -> void:
@@ -76,19 +77,23 @@ func _ready() -> void:
 			if body is Player and body.is_me():
 				player_in_end_zone = false
 	)
-	
+
 	restart(player)
 
-func _on_toggled_pause(value: bool) -> void:
+
+func _on_toggled_pause(_value: bool) -> void:
 	map_ui.set_replay_visible(false)
 	map_ui.leaderboard.middle.visible = false
 	_on_return_control_to_player()
 
+
 func _on_replay_slider_changed(value: float) -> void:
 	recorder.set_frame(value)
 
+
 func is_watching_replay() -> bool:
 	return map_ui.is_replay_visible()
+
 
 func _on_return_control_to_player(should_restart := true) -> void:
 	map_ui.set_replay_visible(false)
@@ -102,17 +107,19 @@ func _on_return_control_to_player(should_restart := true) -> void:
 	player.weapon_handler.visible = true
 	recorder.pause_playback()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	
+
 	if should_restart:
 		restart(player)
+
 
 func _on_target_killed() -> void:
 	map_ui.set_target_status(target_container.get_child_count(), target_spawns_container.get_child_count())
 
+
 func _on_replay_requested(data: String) -> void:
 	race_recording_bytes.clear()
 	currently_racing_steam_id = 0
-	
+
 	restart(recorder.controller)
 	map_ui.set_replay_visible(true)
 	player.camera.current = false
@@ -124,11 +131,14 @@ func _on_replay_requested(data: String) -> void:
 	recorder.play_bytes(Marshalls.base64_to_raw(data))
 	map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
 
+
 func requires_unlock() -> bool:
 	return map_ui.requires_unlock()
 
+
 func combined_requires_unlock() -> bool:
 	return requires_unlock() or player.requires_unlock()
+
 
 func _physics_process(delta: float) -> void:
 	if running:
@@ -137,9 +147,10 @@ func _physics_process(delta: float) -> void:
 
 	if recorder.is_playing():
 		map_ui.set_frame(recorder.current_frame, len(recorder.currently_playing))
-		
-	if map_ui.is_replay_visible(): return
-	
+
+	if map_ui.is_replay_visible():
+		return
+
 	if not completed and player_in_end_zone and target_container.get_child_count() == 0:
 		await _win()
 
@@ -148,7 +159,8 @@ func _physics_process(delta: float) -> void:
 
 	if running:
 		timer += delta
-		
+
+
 func _recorder_process() -> void:
 	var ads_input := Input.is_action_just_pressed("scope")
 	var reload_input := Input.is_action_just_pressed("reload")
@@ -156,18 +168,18 @@ func _recorder_process() -> void:
 	var rot_y := player.global_rotation.y
 	var rot_x := player.camera.global_rotation.x
 	var rot := Vector2(rot_x, rot_y)
-	
+
 	var left_input := Input.is_action_pressed("left")
 	var right_input := Input.is_action_pressed("right")
 	var up_input := Input.is_action_pressed("up")
 	var down_input := Input.is_action_pressed("down")
-	
+
 	var targets := target_container.get_children()
 	var targets_state: Array[bool]
 	targets_state.resize(len(get_target_spawns()))
 	for target in targets:
 		targets_state[target.identifier] = true
-	
+
 	var frame: Recorder.Frame = Recorder.Frame.new()
 
 	frame.rot = rot
@@ -185,21 +197,24 @@ func _recorder_process() -> void:
 
 	recorder.add_frame(frame)
 
+
 func get_target_spawns() -> Array[Node3D]:
 	var ret: Array[Node3D]
 	ret.assign(target_spawns_container.get_children())
 	return ret
 
+
 func _start_run() -> void:
 	if currently_racing_steam_id != 0:
 		recorder.play_bytes(race_recording_bytes, true)
-	
+
 	recorder.clear()
 	sound_player.stream = StartRunSound
 	sound_player.play()
 	running = true
 	end_zone.monitoring = true
 	player.can_move = true
+
 
 func _on_player_jump() -> void:
 	if not _has_jumped:
@@ -210,14 +225,18 @@ func _on_player_jump() -> void:
 		map_ui.first_jump_speed_label.visible = map_ui.alt_speed_label.visible
 		map_ui.first_jump_speed_label.text = map_ui.speed_label.text
 
+
 func _win() -> void:
 	completed = true
 	running = false
 	sound_player.stream = WinRunSound
 	sound_player.play()
-	
+
 	var bytes := recorder.to_bytes()
-	await Global.server_bridge.publish_run(Global.game_manager.current_mode, bytes, Global.game_manager.current_map.name, int(timer * 1000))
+	await Global.server_bridge.publish_run(
+		Global.game_manager.current_mode, bytes, Global.game_manager.current_map.name, int(timer * 1000)
+	)
+
 
 func spawn_target(identifier: int, pos: Vector3) -> void:
 	var inst: Target = TargetScene.instantiate()
@@ -225,11 +244,11 @@ func spawn_target(identifier: int, pos: Vector3) -> void:
 	inst.global_position = pos
 	inst.identifier = identifier
 
+
 func restart(player: Player) -> void:
 	recorder.pause_playback()
 	recorder.controller.visible = false
-	#player.can_move = false
-	
+
 	if player.sniper_overlay.visible:
 		player.weapon_handler.toggle_sniper_scope()
 
@@ -241,9 +260,9 @@ func restart(player: Player) -> void:
 
 	player.velocity = Vector3.ZERO
 	player.weapon_handler.set_weapon(null)
-	
+
 	var mode := Global.game_manager.current_mode
-	
+
 	for node in get_tree().get_nodes_in_group("decal"):
 		node.queue_free()
 
@@ -257,12 +276,13 @@ func restart(player: Player) -> void:
 	end_zone.monitoring = false
 	_has_jumped = false
 	map_ui.first_jump_speed_label.visible = false
-	
+
 	start_timer = START_ZONE_TIMER
+
 
 func reset_weapon_pickups() -> void:
 	var mode := Global.game_manager.current_mode
-	
+
 	for node in get_tree().get_nodes_in_group("weapon_pickup"):
 		var wp: WeaponPickup = node
 		if mode == "target":
@@ -270,9 +290,10 @@ func reset_weapon_pickups() -> void:
 		else:
 			wp.deactivate()
 
+
 func reset_targets() -> void:
 	var mode := Global.game_manager.current_mode
-	
+
 	for node in target_container.get_children():
 		node.queue_free()
 
@@ -280,5 +301,5 @@ func reset_targets() -> void:
 		var target_spawns := get_target_spawns()
 		for i in range(len(target_spawns)):
 			spawn_target(int(target_spawns[i].name), target_spawns[i].global_position)
-	
+
 	_on_target_killed()

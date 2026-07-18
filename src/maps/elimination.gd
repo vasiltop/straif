@@ -1,6 +1,5 @@
-class_name Elimination extends Node3D
+class_name Elimination extends MultiplayerGame
 
-const PlayerScene := preload("res://src/player/player.tscn")
 const EliminationUiScene := preload("res://src/maps/elimination_ui.tscn")
 
 const FREEZE_TIME := 8.0
@@ -11,8 +10,6 @@ const WIN_SCORE := 5
 const DEFAULT_WEAPON_INDEX := 1
 
 enum Phase { WAITING, FREEZE, LIVE, ROUND_END, MATCH_END }
-
-@export var players: Node
 
 var loaded_map: Node3D = null
 var elimination_ui = EliminationUiScene.instantiate()
@@ -38,7 +35,7 @@ func _ready() -> void:
 		change_map.rpc(get_current_map_path())
 		_enter_waiting()
 	else:
-		_send_info.rpc_id(1, Steam.getPersonaName())
+		_send_info.rpc_id(1, Global.display_name())
 
 
 func _process(delta: float) -> void:
@@ -71,13 +68,6 @@ func _process(delta: float) -> void:
 			_advance_timer(delta)
 			if time_left <= 0.0:
 				_reset_match()
-
-
-func get_current_map_path() -> String:
-	return Global.map_manager.get_full_map_path(
-		Global.game_manager.current_pvp_mode,
-		Global.game_manager.current_pvp_map
-	)
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -140,13 +130,7 @@ func _assign_team() -> int:
 
 
 @rpc("any_peer", "call_local", "reliable")
-func _create_player(
-	id: int,
-	spawn_point: Vector3,
-	steam_name: String,
-	team: int,
-	weapon_index: int
-) -> void:
+func _create_player(id: int, spawn_point: Vector3, steam_name: String, team: int, weapon_index: int) -> void:
 	var inst := PlayerScene.instantiate()
 	players.add_child(inst)
 	inst.global_position = spawn_point
@@ -160,15 +144,12 @@ func _create_player(
 	player_weapons[id] = weapon_index
 
 	if id == Global.id():
-		inst.setup()
+		inst.setup_as_local_player()
 		inst.weapon_handler.shot.connect(elimination_ui.on_shot)
 		inst.damaged.connect(elimination_ui.on_damaged)
 		inst.toggled_pause.connect(_on_toggled_pause)
 
-	inst.weapon_handler.set_weapon(
-		Global.game_manager.get_weapon_from_index(_weapon_index_for(id)),
-		id != Global.id()
-	)
+	inst.weapon_handler.set_weapon(Global.game_manager.get_weapon_from_index(_weapon_index_for(id)), id != Global.id())
 
 	if Global.is_sv():
 		inst.dead.connect(_on_player_death)
@@ -179,35 +160,18 @@ func _create_player(
 func refresh_teammate_indicators() -> void:
 	var local_team := get_team(Global.id())
 	for player: Player in get_players():
-		var show_indicator := (
-			player.pid != Global.id()
-			and get_team(player.pid) == local_team
-			and not player.is_dead
-		)
+		var show_indicator := player.pid != Global.id() and get_team(player.pid) == local_team and not player.is_dead
 		player.set_teammate_indicator(show_indicator)
 
 
 func _on_toggled_pause(paused: bool) -> void:
 	if paused:
-		# toggle_pause() owns the mouse mode on both edges
 		elimination_ui.hide_weapon_menu(false)
 
 
 @rpc("any_peer", "call_local", "reliable")
 func _sync_teammate_indicators() -> void:
 	refresh_teammate_indicators()
-
-
-func get_player(id: int) -> Player:
-	for player: Player in get_players():
-		if player.pid == id:
-			return player
-
-	return null
-
-
-func get_players() -> Array[Node]:
-	return players.get_children()
 
 
 func get_team(id: int) -> int:
@@ -260,7 +224,6 @@ func _start_freeze() -> void:
 			player.velocity = Vector3.ZERO
 			player.respawn.rpc(false)
 			player._update_state.rpc(spawn_point, player.global_rotation.y, 0.0, 0.0)
-			# after respawn(), so the ammo HUD lands on the new weapon's magazine
 			_equip_weapon.rpc(player.pid, _weapon_index_for(player.pid))
 			_set_player_frozen.rpc(player.pid, true)
 
@@ -338,35 +301,17 @@ func _set_phase(next_phase: int, duration: float) -> void:
 
 
 func _broadcast_round_state() -> void:
-	_set_round_state.rpc(
-		phase,
-		time_left,
-		team_scores[1],
-		team_scores[2],
-		match_winner
-	)
+	_set_round_state.rpc(phase, time_left, team_scores[1], team_scores[2], match_winner)
 
 
 @rpc("any_peer", "call_local", "reliable")
-func _set_round_state(
-	next_phase: int,
-	next_time_left: float,
-	score1: int,
-	score2: int,
-	winner: int
-) -> void:
+func _set_round_state(next_phase: int, next_time_left: float, score1: int, score2: int, winner: int) -> void:
 	phase = next_phase
 	time_left = next_time_left
 	team_scores[1] = score1
 	team_scores[2] = score2
 	match_winner = winner
-	elimination_ui.update_round(
-		phase,
-		_displayed_seconds(),
-		team_scores[1],
-		team_scores[2],
-		match_winner
-	)
+	elimination_ui.update_round(phase, _displayed_seconds(), team_scores[1], team_scores[2], match_winner)
 	elimination_ui.refresh_scoreboard()
 
 
@@ -403,8 +348,6 @@ func request_weapon(index: int) -> void:
 	if sender == 0:
 		sender = Global.id()
 
-	# gated to freeze: set_weapon() calls reset_ammo(), so an ungated
-	# swap would be a free instant reload mid-round
 	if phase != Phase.FREEZE:
 		return
 
@@ -425,13 +368,10 @@ func _equip_weapon(id: int, index: int) -> void:
 	if player == null or not _is_valid_weapon_index(index):
 		return
 
-	player.weapon_handler.set_weapon(
-		Global.game_manager.get_weapon_from_index(index),
-		id != Global.id()
-	)
+	player.weapon_handler.set_weapon(Global.game_manager.get_weapon_from_index(index), id != Global.id())
 
 
-func _on_player_death(sender: int, id: int, _weapon_name: String) -> void:
+func _on_player_death(_sender: int, id: int, _weapon_name: String) -> void:
 	if phase != Phase.LIVE:
 		return
 

@@ -1,18 +1,4 @@
 #!/usr/bin/env bash
-#
-# Build the Straif Linux server binary locally, ship it to the droplet, and
-# (re)build + restart the dockerized game servers there.
-#
-# The droplet only copies the prebuilt binary into a tiny image, so it never has
-# to run a memory-hungry Godot export.
-#
-# Usage:
-#   DROPLET_HOST=user@1.2.3.4 ./scripts/deploy-game-servers.sh [--skip-build]
-#
-# Config (env or flags):
-#   DROPLET_HOST   ssh target, e.g. root@1.2.3.4            (required)
-#   DROPLET_PATH   remote dir to sync into (default: ~/straif-game-servers)
-#   --skip-build   reuse an existing build/linux/ instead of re-exporting
 
 set -euo pipefail
 

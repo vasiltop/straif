@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bcx3q234w4wyq"]
+
+[ext_resource type="Texture2D" uid="uid://cf1c8yi8ftgqh" path="res://src/maps/tiles/snd_courtyard_awning_stripe.png" id="1_4tj22"]
+
+[resource]
+resource_name = "awning_stripe"
+cull_mode = 2
+albedo_texture = ExtResource("1_4tj22")
+roughness = 0.9
+texture_filter = 2

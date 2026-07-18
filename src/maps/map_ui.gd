@@ -19,50 +19,59 @@ signal return_control_to_player
 @export var ammo_label: Label
 @export var leaderboard: Container
 
-func on_shot(mag_ammo: int, reserve_ammo := 0) -> void:
+
+func on_shot(mag_ammo: int, _reserve_ammo := 0) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % [mag_ammo]
 
+
 func _ready() -> void:
-	keybind_info_label.text = "Press Ctrl to toggle UI\nPress %s to restart" % Global.settings_manager.get_keybind_string("restart")
-	done_replay_btn.pressed.connect(func() -> void:
-		return_control_to_player.emit()
+	keybind_info_label.text = (
+		"Press Ctrl to toggle UI\nPress %s to restart" % Global.settings_manager.get_keybind_string("restart")
 	)
-	
+	done_replay_btn.pressed.connect(func() -> void: return_control_to_player.emit())
+
 	alt_speed_label.visible = Global.settings_manager.value("Display", "speed")
+
 
 func set_frame(frame: int, total: int) -> void:
 	tick_label.text = "Tick: %d / %d" % [frame + 1, total]
 	replay_slider.value = frame
 	replay_slider.max_value = total - 1
 
+
 func set_replay_visible(value: bool) -> void:
 	replay_container.visible = value
 	replay_v.visible = value
 	map.recorder.controller.visible = value
 
+
 func is_replay_visible() -> bool:
 	return replay_container.visible
+
 
 func set_speed(value: float) -> void:
 	speed_label.text = "%.2f u/s" % value
 	alt_speed_label.text = speed_label.text
-	
+
+
 func requires_unlock() -> bool:
 	return is_replay_visible() or game_info.visible
 
-func _process(delta: float) -> void:
+
+func _process(_delta: float) -> void:
 	if not is_replay_visible():
 		set_speed(map.player.get_ups())
-	
+
 	if Input.is_action_just_pressed("ui_admin") and is_replay_visible():
 		replay_v.visible = not replay_v.visible
-		#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if not v.visible else Input.MOUSE_MODE_VISIBLE
-	
+
 	if Input.is_action_just_pressed("restart") and is_replay_visible():
 		map.recorder.set_frame(0)
 
+
 func set_timer(value: float) -> void:
 	timer_label.text = "Time: %.3fs" % value
+
 
 func set_target_status(left: int, total: int) -> void:
 	target_label.text = "Targets: %d/%d" % [left, total]

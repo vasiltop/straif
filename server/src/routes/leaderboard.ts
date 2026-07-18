@@ -9,11 +9,11 @@ import {
   ban_auth,
 } from '../middleware';
 import { z } from 'zod';
-import { describeRoute, resolver, validator as zValidator } from 'hono-openapi';
+import { validator as zValidator } from 'hono-openapi';
 import { discord_client } from '../index';
 import { ChannelType, TextChannel } from 'discord.js';
 import { type Variables } from '../index';
-import { hide_route } from './common';
+import { hide_route, describe_leaderboard_route } from './common';
 import { get_maps_of_mode, type RunMode } from '../maps';
 import {
   is_new_world_record,
@@ -24,43 +24,14 @@ import aim_leaderboard from './aim_leaderboard';
 
 const app = new Hono<{ Variables: Variables }>();
 
+const MIN_RUN_TIME_MS = 1000;
+const MAX_RECORDING_BASE64_LENGTH = 474854;
+
 const RunInput = z.object({
   recording: z.string(),
-  time_ms: z.number().min(1000), // Must be at least 1 seconds, since no map will be this short.
-  username: z.string(), // TODO: Remove username and send username in a different request instead to update it globally.
+  time_ms: z.number().min(MIN_RUN_TIME_MS),
+  username: z.string(),
 });
-
-function describe_leaderboard_route<T extends z.ZodTypeAny>(
-  description: string,
-  success_schema: T
-) {
-  return describeRoute({
-    description,
-    tags: ['leaderboard'],
-    responses: {
-      200: {
-        description: 'Successful',
-        content: {
-          'application/json': {
-            schema: resolver(success_schema),
-          },
-        },
-      },
-      400: {
-        description: 'Error',
-        content: {
-          'application/json': {
-            schema: resolver(
-              z.object({
-                error: z.string(),
-              })
-            ),
-          },
-        },
-      },
-    },
-  });
-}
 
 const RecordingResponse = z.object({
   data: z.string(),
@@ -381,28 +352,16 @@ app.get(
 );
 
 async function send_discord_update(
+  channel: TextChannel,
   newTime: number,
   player: string,
   mapName: string,
-  position: number,
-  mode: RunMode,
-  channel_id: string
+  mode: RunMode
 ) {
-  try {
-    const channel = await discord_client.channels.fetch(channel_id);
-    if (!channel || !channel.isTextBased()) {
-      throw new Error('Channel not configured');
-    }
-    if (channel.type === ChannelType.GuildText) {
-      const mode_string =
-        mode === 'target' ? 'Target Practice' : 'Movement Only';
-      await channel.send(
-        `Player ${player} has achieved a **WORLD RECORD** on ${mapName} in the ${mode_string} mode with a time of ${(newTime / 1000).toFixed(3)} seconds!`
-      );
-    }
-  } catch (e) {
-    console.log(e);
-  }
+  const mode_string = mode === 'target' ? 'Target Practice' : 'Movement Only';
+  await channel.send(
+    `Player ${player} has achieved a **WORLD RECORD** on ${mapName} in the ${mode_string} mode with a time of ${(newTime / 1000).toFixed(3)} seconds!`
+  );
 }
 
 app.delete(
@@ -454,8 +413,7 @@ app.post(
     const map_name = c.req.param('map_name');
     const steam_id = c.get('steam_id');
 
-    if (body.recording.length >= 474854) {
-      // 474864 = 370s
+    if (body.recording.length >= MAX_RECORDING_BASE64_LENGTH) {
       return c.json(
         { error: 'Run was rejected due to excessive length.' },
         400
@@ -517,25 +475,28 @@ app.post(
           username: body.username,
           time_ms: body.time_ms,
         });
-        discord_client.guilds.cache.forEach(async (guild) => {
-          const channels = await guild.channels.fetch();
-          const target_channel = channels.find(
-            (ch) =>
-              ch?.type === ChannelType.GuildText &&
-              ch.name == 'wr-announcements'
-          ) as TextChannel | undefined;
+        for (const guild of discord_client.guilds.cache.values()) {
+          try {
+            const channels = await guild.channels.fetch();
+            const target_channel = channels.find(
+              (ch) =>
+                ch?.type === ChannelType.GuildText &&
+                ch.name == 'wr-announcements'
+            ) as TextChannel | undefined;
 
-          if (target_channel) {
-            send_discord_update(
-              body.time_ms,
-              body.username,
-              map_name,
-              1,
-              run_mode,
-              target_channel.id
-            );
+            if (target_channel) {
+              await send_discord_update(
+                target_channel,
+                body.time_ms,
+                body.username,
+                map_name,
+                run_mode
+              );
+            }
+          } catch (e) {
+            console.log(e);
           }
-        });
+        }
       }
 
       const msg = `Run completed in ${body.time_ms / 1000}. ${submission_result.is_pb ? 'New PB! Open the leaderboard to view your ranking.' : ''}`;

@@ -132,7 +132,7 @@ func refresh_scoreboard() -> void:
 			_add_player_row(team2_rows, player)
 
 
-func on_shot(mag_ammo: int, reserve_ammo: int) -> void:
+func on_shot(mag_ammo: int, _reserve_ammo: int) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % mag_ammo
 
 
@@ -145,7 +145,10 @@ func _phase_text(phase: int) -> String:
 		PHASE_WAITING:
 			return "Waiting for players"
 		PHASE_FREEZE:
-			return "Freeze time - %s to buy" % (Global.settings_manager.get_keybind_string("buy_menu") if not Global.is_sv() else "Freeze Time")
+			return (
+				"Freeze time - %s to buy"
+				% (Global.settings_manager.get_keybind_string("buy_menu") if not Global.is_sv() else "Freeze Time")
+			)
 		PHASE_LIVE:
 			return "Round live"
 		PHASE_ROUND_END:
@@ -273,24 +276,17 @@ func _reset_spectator() -> void:
 
 
 func _get_player(id: int) -> Player:
-	var game := get_parent()
-	if game == null or not game.has_method("get_player"):
+	var game := get_parent() as Elimination
+	if game == null:
 		return null
-	return game.call("get_player", id) as Player
+	return game.get_player(id)
 
 
 func _players_on_team(team: int) -> Array[Player]:
-	var players: Array[Player] = []
-	var game := get_parent()
-	if game == null or not game.has_method("get_team_players"):
-		return players
-
-	var team_players = game.call("get_team_players", team)
-	if team_players is Array:
-		for player in team_players:
-			if player is Player:
-				players.append(player)
-	return players
+	var game := get_parent() as Elimination
+	if game == null:
+		return []
+	return game.get_team_players(team)
 
 
 func _living_teammates(team: int) -> Array[Player]:
@@ -302,10 +298,10 @@ func _living_teammates(team: int) -> Array[Player]:
 
 
 func _team_for_player(player: Player) -> int:
-	var game := get_parent()
-	if game == null or not game.has_method("get_team"):
+	var game := get_parent() as Elimination
+	if game == null:
 		return 0
-	return int(game.call("get_team", player.pid))
+	return game.get_team(player.pid)
 
 
 func _find_player_index(players: Array[Player], player_id: int) -> int:

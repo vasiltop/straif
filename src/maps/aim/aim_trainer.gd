@@ -60,6 +60,7 @@ var spawn_position := Vector3.ZERO
 var spawn_rotation := Vector3.ZERO
 var results_request_generation := 0
 
+
 func _ready() -> void:
 	rng.randomize()
 	var global_node = _global_node()
@@ -70,10 +71,7 @@ func _ready() -> void:
 	spawn_position = player.global_position
 	spawn_rotation = player.global_rotation
 
-	if player.weapon_handler.audio.get_parent() != null:
-		player.weapon_handler.audio.get_parent().remove_child(player.weapon_handler.audio)
-
-	player.setup()
+	player.setup_as_local_player()
 	player.hardcore = false
 	player.weapon_handler.unlimited_ammo = true
 	player.weapon_handler.set_weapon_to_index(1)
@@ -83,6 +81,7 @@ func _ready() -> void:
 	main_menu_button.pressed.connect(_go_to_main_menu)
 
 	retry_session()
+
 
 func _process(delta: float) -> void:
 	if player == null:
@@ -111,6 +110,7 @@ func _process(delta: float) -> void:
 
 	_refresh_hud()
 
+
 func _physics_process(delta: float) -> void:
 	if player == null:
 		return
@@ -124,6 +124,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	tracking_target.update_tracking_motion(delta)
+
 
 func retry_session() -> void:
 	results_request_generation += 1
@@ -174,11 +175,13 @@ func retry_session() -> void:
 
 	_refresh_hud()
 
+
 func calculate_accuracy(hit_total: int, miss_total: int) -> float:
 	var attempts := hit_total + miss_total
 	if attempts <= 0:
 		return 0.0
 	return (float(hit_total) / float(attempts)) * 100.0
+
 
 func calculate_average_reaction_ms(samples: Array) -> float:
 	if samples.is_empty():
@@ -188,6 +191,7 @@ func calculate_average_reaction_ms(samples: Array) -> float:
 	for sample in samples:
 		total += float(sample)
 	return (total / float(samples.size())) * 1000.0
+
 
 func show_leaderboard_rows(rows: Array) -> void:
 	_clear_leaderboard_rows()
@@ -211,11 +215,14 @@ func show_leaderboard_rows(rows: Array) -> void:
 			rank_label.text = str(row_data.get("rank", index + 1))
 			name_label.text = str(row_data.get("name", row_data.get("player", "Player")))
 			if row_data.has("accuracy") or row_data.has("reaction"):
-				value_label.text = "%s pts · %s · %s" % [
-					str(row_data.get("score", row_data.get("value", ""))),
-					str(row_data.get("accuracy", "--")),
-					str(row_data.get("reaction", "--"))
-				]
+				value_label.text = (
+					"%s pts · %s · %s"
+					% [
+						str(row_data.get("score", row_data.get("value", ""))),
+						str(row_data.get("accuracy", "--")),
+						str(row_data.get("reaction", "--"))
+					]
+				)
 			else:
 				value_label.text = str(row_data.get("score", row_data.get("value", "")))
 		else:
@@ -228,9 +235,11 @@ func show_leaderboard_rows(rows: Array) -> void:
 		entry.add_child(value_label)
 		leaderboard_rows.add_child(entry)
 
+
 func show_leaderboard_error(message: String) -> void:
 	_clear_leaderboard_rows()
 	leaderboard_status.text = message
+
 
 func _spawn_player():
 	var player_scene := load(PLAYER_SCENE_PATH) as PackedScene
@@ -242,6 +251,7 @@ func _spawn_player():
 	player_instance.global_rotation = player_spawn.global_rotation
 	return player_instance
 
+
 func _resolve_scenario() -> String:
 	var global_node = _global_node()
 	if global_node != null and global_node.game_manager != null:
@@ -250,8 +260,10 @@ func _resolve_scenario() -> String:
 			return configured
 	return VALID_SCENARIOS[0]
 
+
 func _global_node():
 	return get_node_or_null("/root/Global")
+
 
 func _start_session() -> void:
 	session_started = true
@@ -276,6 +288,7 @@ func _start_session() -> void:
 
 	_refresh_hud()
 
+
 func _end_session() -> void:
 	session_finished = true
 	session_started = false
@@ -288,12 +301,14 @@ func _end_session() -> void:
 	results_panel.visible = true
 	_submit_results_and_load_leaderboard(results_request_generation)
 
+
 func _spawn_gridshot_wave() -> void:
 	_clear_targets()
 	active_targets.clear()
 	gridshot_slots.clear()
 	for _i in GRIDSHOT_ACTIVE_TARGETS:
 		_spawn_gridshot_target()
+
 
 func _spawn_gridshot_target() -> void:
 	var index := _random_free_grid_index()
@@ -305,6 +320,7 @@ func _spawn_gridshot_target() -> void:
 	gridshot_slots[index] = target
 	active_targets.append(target)
 
+
 func _random_free_grid_index() -> int:
 	var free_indices: Array[int] = []
 	for index in GRIDSHOT_COLUMNS * GRIDSHOT_ROWS:
@@ -314,17 +330,22 @@ func _random_free_grid_index() -> int:
 		return -1
 	return free_indices[rng.randi_range(0, free_indices.size() - 1)]
 
+
 func _spawn_flick_target() -> void:
 	active_targets.clear()
 	var target = _create_target(_next_flick_position())
 	active_targets.append(target)
 
+
 func _spawn_tracking_target() -> void:
 	active_targets.clear()
 	tracking_target = _create_target(target_wall_anchor.global_position)
-	tracking_target.configure_tracking_motion(target_wall_anchor.global_position, Vector2(3.6, 1.7), Vector2(4.0, 7.5), Vector2(0.3, 0.75))
+	tracking_target.configure_tracking_motion(
+		target_wall_anchor.global_position, Vector2(3.6, 1.7), Vector2(4.0, 7.5), Vector2(0.3, 0.75)
+	)
 	active_targets.append(tracking_target)
 	tracking_pending_reaction_started_at = 0.0
+
 
 func _create_target(target_position: Vector3):
 	var target_scene := load("res://src/maps/aim/aim_target.tscn") as PackedScene
@@ -333,32 +354,29 @@ func _create_target(target_position: Vector3):
 	target.activate(target_position, _session_elapsed())
 	return target
 
+
 func _grid_positions() -> Array[Vector3]:
 	var positions: Array[Vector3] = []
 	var x_offset := GRIDSHOT_SPACING.x
 	var y_offset := GRIDSHOT_SPACING.y
 	for row in GRIDSHOT_ROWS:
 		for column in GRIDSHOT_COLUMNS:
-			var local_position := Vector3(
-				(float(column) - 1.0) * x_offset,
-				(1.0 - float(row)) * y_offset,
-				0.0
-			)
+			var local_position := Vector3((float(column) - 1.0) * x_offset, (1.0 - float(row)) * y_offset, 0.0)
 			positions.append(target_wall_anchor.global_position + local_position)
 	return positions
+
 
 func _next_flick_position() -> Vector3:
 	var candidate := target_wall_anchor.global_position
 	for _attempt in 8:
-		candidate = target_wall_anchor.global_position + Vector3(
-			rng.randf_range(-3.6, 3.6),
-			rng.randf_range(-1.8, 1.8),
-			0.0
+		candidate = (
+			target_wall_anchor.global_position + Vector3(rng.randf_range(-3.6, 3.6), rng.randf_range(-1.8, 1.8), 0.0)
 		)
 		if candidate.distance_to(last_flick_position) >= FLICK_MIN_REPOSITION_DISTANCE:
 			break
 	last_flick_position = candidate
 	return candidate
+
 
 func _on_bullet_fired(collider: Object, hit_position: Vector3) -> void:
 	if not _is_session_active():
@@ -380,6 +398,7 @@ func _on_bullet_fired(collider: Object, hit_position: Vector3) -> void:
 		misses += 1
 
 	_refresh_hud()
+
 
 func _handle_target_hit(target, hit_position: Vector3) -> bool:
 	var current_time := _session_elapsed()
@@ -404,11 +423,14 @@ func _handle_target_hit(target, hit_position: Vector3) -> bool:
 
 	return true
 
+
 func _gridshot_hit_score(reaction_time: float) -> int:
 	return 100 + int(clampf((1.15 - reaction_time) * 160.0, 0.0, 240.0))
 
+
 func _flick_hit_score(reaction_time: float) -> int:
 	return 160 + int(clampf((1.0 - reaction_time) * 220.0, 0.0, 320.0))
+
 
 func _sample_tracking() -> void:
 	var space_state := get_world_3d().direct_space_state
@@ -437,24 +459,30 @@ func _sample_tracking() -> void:
 			tracking_loss_started_at = current_time
 			tracking_pending_reaction_started_at = current_time
 
+
 func _session_elapsed() -> float:
 	return SESSION_DURATION - session_time_remaining
 
+
 func _is_session_active() -> bool:
 	return session_started and not session_finished
+
 
 func _clear_targets() -> void:
 	for child in aim_targets.get_children():
 		child.free()
 
+
 func _clear_leaderboard_rows() -> void:
 	for child in leaderboard_rows.get_children():
 		child.free()
+
 
 func _lock_finished_session_controls() -> void:
 	player.can_move = false
 	player.can_turn = false
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 
 func _on_player_toggled_pause(value: bool) -> void:
 	if session_finished:
@@ -468,6 +496,7 @@ func _on_player_toggled_pause(value: bool) -> void:
 	else:
 		_refresh_hud()
 
+
 func _refresh_hud() -> void:
 	timer_label.text = "TIME\n%.1f" % session_time_remaining
 	score_label.text = "SCORE\n%d" % score
@@ -476,7 +505,9 @@ func _refresh_hud() -> void:
 	misses_label.text = "MISSES\n%d" % misses
 	accuracy_label.text = "ACCURACY\n%.1f%%" % calculate_accuracy(hits, misses)
 	var average_reaction_ms := calculate_average_reaction_ms(reaction_samples)
-	reaction_label.text = "AVG REACTION\n%s" % ("--" if reaction_samples.is_empty() else "%d ms" % int(round(average_reaction_ms)))
+	reaction_label.text = (
+		"AVG REACTION\n%s" % ("--" if reaction_samples.is_empty() else "%d ms" % int(round(average_reaction_ms)))
+	)
 
 	if session_finished:
 		status_label.text = "Session complete"
@@ -485,15 +516,24 @@ func _refresh_hud() -> void:
 	else:
 		status_label.text = "Starting in %.1f" % countdown_remaining
 
+
 func _update_results_panel() -> void:
 	results_score_label.text = "Score %d" % score
-	results_stats_label.text = "Hits %d\nMisses %d\nAccuracy %.1f%%\nAverage Reaction %s" % [
-		hits,
-		misses,
-		calculate_accuracy(hits, misses),
-		"--" if reaction_samples.is_empty() else "%d ms" % int(round(calculate_average_reaction_ms(reaction_samples)))
-	]
+	results_stats_label.text = (
+		"Hits %d\nMisses %d\nAccuracy %.1f%%\nAverage Reaction %s"
+		% [
+			hits,
+			misses,
+			calculate_accuracy(hits, misses),
+			(
+				"--"
+				if reaction_samples.is_empty()
+				else "%d ms" % int(round(calculate_average_reaction_ms(reaction_samples)))
+			)
+		]
+	)
 	leaderboard_status.text = "Submitting score..."
+
 
 func _submission_status_text(submission) -> String:
 	if submission == null:
@@ -501,31 +541,32 @@ func _submission_status_text(submission) -> String:
 	var prefix := "New personal best saved" if submission.personal_best else "Score submitted"
 	return "%s · Position #%d" % [prefix, submission.position]
 
+
 func _scenario_leaderboard_rows(scores: Array) -> Array[Dictionary]:
 	var rows: Array[Dictionary] = []
 	for entry in scores:
-		rows.append({
-			"rank": entry.position,
-			"name": entry.username,
-			"score": entry.score,
-			"accuracy": "%.1f%%" % entry.accuracy,
-			"reaction": "--" if is_zero_approx(entry.avg_reaction_ms) else "%d ms" % int(round(entry.avg_reaction_ms))
-		})
+		rows.append(
+			{
+				"rank": entry.position,
+				"name": entry.username,
+				"score": entry.score,
+				"accuracy": "%.1f%%" % entry.accuracy,
+				"reaction":
+				"--" if is_zero_approx(entry.avg_reaction_ms) else "%d ms" % int(round(entry.avg_reaction_ms))
+			}
+		)
 	return rows
+
 
 func _can_apply_results_request(generation: int) -> bool:
 	return is_inside_tree() and generation == results_request_generation
+
 
 func _submit_results_and_load_leaderboard(generation: int) -> void:
 	var accuracy := calculate_accuracy(hits, misses)
 	var average_reaction_ms := calculate_average_reaction_ms(reaction_samples)
 	var submission = await Global.server_bridge.submit_aim_score(
-		selected_scenario,
-		score,
-		hits,
-		misses,
-		accuracy,
-		int(round(average_reaction_ms))
+		selected_scenario, score, hits, misses, accuracy, int(round(average_reaction_ms))
 	)
 	if not _can_apply_results_request(generation):
 		return
@@ -554,6 +595,7 @@ func _submit_results_and_load_leaderboard(generation: int) -> void:
 		leaderboard_status.text = "Unable to submit score. Showing latest leaderboard."
 	else:
 		leaderboard_status.text = submission_status
+
 
 func _go_to_main_menu() -> void:
 	results_request_generation += 1

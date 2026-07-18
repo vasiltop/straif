@@ -6,6 +6,7 @@ const TTL := 3.0
 var current_inst: InfoUi
 var timer := 0.0
 
+
 func _process(delta: float) -> void:
 	if current_inst != null:
 		timer += delta
@@ -14,10 +15,11 @@ func _process(delta: float) -> void:
 		current_inst.queue_free()
 		timer = 0
 
+
 func alert(message: String) -> void:
 	if current_inst:
 		current_inst.queue_free()
-	
+
 	timer = 0.0
 	var inst: InfoUi = Scene.instantiate()
 	add_child(inst)

@@ -13,7 +13,9 @@ const TIME_PER_MAP := 180.0
 
 var time_since_last_feed_update := 0.0
 var game_time := TIME_PER_MAP
-var game_timer := BetterTimer.new(self, 1.0, 
+var game_timer := BetterTimer.new(
+	self,
+	1.0,
 	func() -> void:
 		if Global.is_sv():
 			update_time_label.rpc(game_time)
@@ -23,9 +25,11 @@ var game_timer := BetterTimer.new(self, 1.0,
 func update_time_label(value: float) -> void:
 	time_left_label.text = "Time Left: %ds" % value
 
+
 func _ready() -> void:
 	game_timer.start()
 	weapon_select.weapon_chosen.connect(_on_weapon_chosen)
+
 
 func _on_weapon_chosen(index: int) -> void:
 	for player in get_parent().get_players():
@@ -33,11 +37,14 @@ func _on_weapon_chosen(index: int) -> void:
 
 	send_weapon_update_to(index, 1)
 
+
 func send_weapon_update_to(weapon_index: int, to: int) -> void:
 	var local_player: Player = get_parent().get_player(Global.id())
-	if local_player == null: return
+	if local_player == null:
+		return
 
 	local_player.weapon_handler.set_weapon_to_index.rpc_id(to, weapon_index, Global.id() != to)
+
 
 func _process(delta: float) -> void:
 	var local_player: Player = get_parent().get_player(Global.id())
@@ -67,28 +74,33 @@ func _process(delta: float) -> void:
 			get_parent().new_map()
 			game_time = TIME_PER_MAP
 
+
 @rpc("authority", "call_local", "reliable")
 func log_kill(killer_name: String, player_name: String, weapon_name: String) -> void:
 	feed_log("Player %s has eliminated %s with weapon: %s!" % [killer_name, player_name, weapon_name])
+
 
 @rpc("authority", "call_local", "reliable")
 func log_player_event(player_name: String, joined: bool) -> void:
 	feed_log("Player %s has %s the lobby." % [player_name, "joined" if joined else "left"])
 
+
 func feed_log(value: String) -> void:
 	var count := killfeed.get_child_count()
 	if count >= MAX_KILLFEED_LENGTH:
 		killfeed.get_child(0).queue_free()
-		
+
 	killfeed.visible = true
 	time_since_last_feed_update = 0.0
 	var label := Label.new()
 	label.text = value
 	killfeed.add_child(label)
 	label.add_theme_font_size_override("font_size", KILLFEED_FONT_SIZE)
-	
-func on_shot(mag_ammo: int, reserve_ammo: int) -> void:
+
+
+func on_shot(mag_ammo: int, _reserve_ammo: int) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % [mag_ammo]
+
 
 func on_damaged(health: float) -> void:
 	health_label.text = "Health: %d" % [health]

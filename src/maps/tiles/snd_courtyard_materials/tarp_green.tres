@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cytj365jiy4w0"]
+
+[resource]
+resource_name = "tarp_green"
+cull_mode = 2
+albedo_color = Color(0.5657284, 0.6799757, 0.54685426, 1)
+roughness = 0.85

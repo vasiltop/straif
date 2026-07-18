@@ -22,6 +22,7 @@ var index_to_medal: Array[Texture] = [BRONZE_MEDAL, SILVER_MEDAL, GOLD_MEDAL, PL
 var earned_medals := 0
 var mode: String
 
+
 func _ready() -> void:
 	map = Global.map_manager.get_map_with_name(map_name)
 	map_name_label.text = map_name
@@ -34,13 +35,14 @@ func _ready() -> void:
 			Global.game_manager.current_map = map
 			Global.game_manager.current_mode = mode
 	)
-	
+
 	for child: TextureRect in medals.get_children():
 		child.texture = EMPTY_MEDAL
-		
+
 	var sb := StyleBoxTexture.new()
 	sb.texture = map.image
 	add_theme_stylebox_override("panel", sb)
+
 
 func set_personal_best(time: float, position: int, total: int, mode: String) -> void:
 	timer_label.text = "Not Completed..."
@@ -48,13 +50,14 @@ func set_personal_best(time: float, position: int, total: int, mode: String) -> 
 	var info := Global.game_manager.map_name_to_pb_info.get(map_name)
 	if info == null:
 		Global.game_manager.map_name_to_pb_info[map_name] = Global.game_manager.PbInfo.new()
-	
+
 	var dict := Global.game_manager.map_name_to_pb_info[map_name].mode_to_map_info[mode]
 	dict.position = position
 	dict.total = total
 	dict.pb = time
 
-	if time == INF: return
+	if time == INF:
+		return
 	timer_label.text = "Personal Best: %.3fs\nPosition: %d / %d" % [time, position, total]
 
 	var medal_times: Array = Global.map_manager.get_map_with_name(map_name).medals[mode]

@@ -14,6 +14,7 @@ var currently_touching: Player
 var frame_picked_up := -1
 var previous_weapon: WeaponData
 
+
 func _ready() -> void:
 	var inst: Node3D = weapon.scene.instantiate()
 	add_child(inst)
@@ -26,19 +27,20 @@ func _ready() -> void:
 	gun_mesh.set_layer_mask_value(2, false)
 
 	weapon_scene = inst
-	
+
 	body_entered.connect(
 		func(body: Node3D) -> void:
 			if body is Player and body.is_me():
 				currently_touching = body
 				is_touching_player = true
 	)
-	
+
 	body_exited.connect(
 		func(body: Node3D) -> void:
 			if body is Player and body.is_me():
 				is_touching_player = false
 	)
+
 
 func reset() -> void:
 	weapon_scene.visible = true
@@ -46,19 +48,20 @@ func reset() -> void:
 	is_touching_player = false
 	frame_picked_up = -1
 
+
 func _process(delta: float) -> void:
-	if not active: return
-	
+	if not active:
+		return
+
 	weapon_scene.rotate_y(deg_to_rad(45 * delta))
 	weapon_scene.global_position.y = weapon_spawn.global_position.y + sin(float(Time.get_ticks_msec()) / 1000) / 7
-	
+
 	if is_touching_player:
 		frame_picked_up = map.recorder.current_frame
 		previous_weapon = currently_touching.weapon_handler.current_weapon
 		currently_touching.weapon_handler.set_weapon(weapon)
-		#audio_player.stream = EquipSound
-		#audio_player.play()
 		deactivate()
+
 
 func deactivate() -> void:
 	weapon_scene.visible = false

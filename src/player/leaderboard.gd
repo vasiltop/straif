@@ -23,26 +23,28 @@ signal ghost_enabled(steam_id: int)
 	$M/V/MedalInfo/AuthorTime
 ]
 
-const PAGE_SIZE: float = 10 # this needs to be a float to divide the total pages properly
+const PAGE_SIZE: float = 10
 const MAX_NAME_LENGTH := 15
 
 var current_page := 1
 var total_pages := 1
 
+
 func modify_page(value: int) -> void:
 	var old := current_page
 	current_page += value
 	current_page = clamp(current_page, 1, total_pages)
-	
+
 	if current_page != old:
 		_load_runs()
+
 
 func _ready() -> void:
 	dec_page_btn.pressed.connect(func() -> void: modify_page(-1))
 	inc_page_btn.pressed.connect(func() -> void: modify_page(1))
 	middle.visible = false
 	_setup()
-	
+
 	replay_last_run.pressed.connect(
 		func() -> void:
 			if map_ui.map.recorder.frames.size() <= 0:
@@ -51,13 +53,14 @@ func _ready() -> void:
 			var replay := map_ui.map.recorder.to_hex()
 			Global.game_manager.replay_requested.emit(replay)
 	)
-	
+
 	set_start_pos_btn.pressed.connect(
 		func() -> void:
 			if not map_ui.map.running and not map_ui.map.completed:
 				map_ui.map.start_pos = map_ui.map.player.global_position
 				map_ui.map.start_rotation = map_ui.map.player.camera._input_rotation
 	)
+
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("leaderboard") and map_ui.visible and not map_ui.map.player.pause_menu.visible:
@@ -69,28 +72,33 @@ func _process(_delta: float) -> void:
 
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		_setup()
-		
+
 	elif Input.is_action_just_released("leaderboard") and not map_ui.map.player.pause_menu.visible:
 		middle.visible = false
 		admin_panel.visible = false
 		map_ui.map.player.can_turn = true
-		
+
 		if not map_ui.map.is_watching_replay() and not map_ui.map.player.is_paused():
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+
 func _load_runs() -> void:
-	var response := await Global.server_bridge.get_runs(Global.game_manager.current_mode, Global.game_manager.current_map.name, current_page)
-	var my_run := await Global.server_bridge.get_my_run_by_map(Global.game_manager.current_mode, Global.game_manager.current_map.name)
+	var response := await Global.server_bridge.get_runs(
+		Global.game_manager.current_mode, Global.game_manager.current_map.name, current_page
+	)
+	var my_run := await Global.server_bridge.get_my_run_by_map(
+		Global.game_manager.current_mode, Global.game_manager.current_map.name
+	)
 
 	total_pages = max(1, ceil(response.total / PAGE_SIZE))
 	page_label.text = "Page %d of %d" % [current_page, total_pages]
-	
+
 	var runs := response.runs
 	var run_position := (current_page - 1) * PAGE_SIZE + 1
-	
+
 	for child in t_rows.get_children():
 		child.queue_free()
-		
+
 	for run in runs:
 		var shortened_name := run.username as String
 		if len(shortened_name) >= MAX_NAME_LENGTH:
@@ -103,7 +111,8 @@ func _load_runs() -> void:
 		var pos := my_run.position
 		if pos > 10:
 			_insert_table_row(pos, my_run.username, my_run.time_ms, my_run.created_at, int(my_run.steam_id))
-	
+
+
 func _setup() -> void:
 	map_name_label.text = "Map: " + Global.game_manager.current_map.name
 
@@ -119,6 +128,7 @@ func _setup() -> void:
 
 		initialize_admin_actions()
 
+
 func _insert_table_row(run_position: int, player_name: String, time: float, date: String, steam_id: int) -> void:
 	var position_label := Label.new()
 	t_rows.add_child(position_label)
@@ -131,20 +141,20 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	name_label.text = player_name
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND
 	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	
+
 	var time_label := Label.new()
 	t_rows.add_child(time_label)
 	time_label.text = str(snapped(time / 1000, 0.001))
 	time_label.size_flags_horizontal = Control.SIZE_EXPAND
-	
+
 	var date_label := Label.new()
 	t_rows.add_child(date_label)
 	date_label.text = str(date).substr(0, len("2024-10-10"))
 	date_label.size_flags_horizontal = Control.SIZE_EXPAND
-	
+
 	var setup_race_btn_text := func() -> String:
 		return "Race %s" % player_name if not map_ui.map.currently_racing_steam_id == steam_id else "Stop Racing"
-	
+
 	const BUTTON_FONT_SIZES := 10
 	var race_btn := Button.new()
 	t_rows.add_child(race_btn)
@@ -154,54 +164,58 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	race_btn.set_meta("player_name", player_name)
 	race_btn.custom_minimum_size.y = 1.0
 	race_btn.add_theme_font_size_override("font_size", BUTTON_FONT_SIZES)
-	
+
 	race_btn.pressed.connect(
 		func() -> void:
 			if not map_ui.map.currently_racing_steam_id == steam_id:
-				var replay := await Global.server_bridge.get_replay(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
-				
+				var replay := await Global.server_bridge.get_replay(
+					Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id
+				)
+
 				map_ui.map.race_recording_bytes = Marshalls.base64_to_raw(replay)
 				map_ui.map.currently_racing_steam_id = steam_id
 				map_ui.map.recorder.controller.get_node("Name").text = "%s's Ghost" % player_name
-				
+
 				for child in t_rows.get_children():
 					if child.has_meta("player_name"):
 						var b: Button = child
 						var this_player_name: String = child.get_meta("player_name")
 						b.text = "Race %s" % this_player_name
-						
+
 			else:
 				map_ui.map.race_recording_bytes.clear()
 				map_ui.map.currently_racing_steam_id = 0
-				
-				#if map_ui.map.recorder.ghost:
-				#	map_ui.map.recorder.ghost.visible = false
-			
+
 			if race_btn:
 				race_btn.text = setup_race_btn_text.call()
 	)
-	
+
 	var replay_btn := Button.new()
-	
+
 	t_rows.add_child(replay_btn)
 	replay_btn.text = "View Replay"
 	replay_btn.size_flags_horizontal = Control.SIZE_EXPAND
 	replay_btn.focus_mode = Control.FOCUS_NONE
-	replay_btn.pressed.connect(func() -> void:
-		var replay := await Global.server_bridge.get_replay(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
-		if replay != "":
-			Global.game_manager.replay_requested.emit(replay)
-		else:
-			Info.alert("Invalid replay request")
+	replay_btn.pressed.connect(
+		func() -> void:
+			var replay := await Global.server_bridge.get_replay(
+				Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id
+			)
+			if replay != "":
+				Global.game_manager.replay_requested.emit(replay)
+			else:
+				Info.alert("Invalid replay request")
 	)
 	replay_btn.custom_minimum_size.y = 1.0
 	replay_btn.add_theme_font_size_override("font_size", BUTTON_FONT_SIZES)
-	
+
 	name_label.pressed.connect(
 		func() -> void:
-			if not Global.game_manager.admin: return
+			if not Global.game_manager.admin:
+				return
 			add_admin_actions_for_player(player_name, steam_id)
 	)
+
 
 func initialize_admin_actions() -> void:
 	var maintenance := Global.game_manager.maintenance
@@ -209,33 +223,35 @@ func initialize_admin_actions() -> void:
 	admin_actions_container.add_child(toggle_maintenance_btn)
 	toggle_maintenance_btn.text = "Enable Game Maintenace" if not maintenance else "Disable Game Maintenance"
 	toggle_maintenance_btn.focus_mode = Control.FOCUS_NONE
-	
+
 	toggle_maintenance_btn.pressed.connect(
 		func() -> void:
 			Info.alert("Toggled maintenance, please wait a few seconds to confirm.")
 			Global.server_bridge.set_maintenance(not maintenance)
 	)
-	
+
+
 func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
 	for child in admin_actions_container.get_children():
 		child.queue_free()
-	
+
 	initialize_admin_actions()
-	
+
 	var name_label := Label.new()
 	admin_actions_container.add_child(name_label)
 	name_label.text = "Actions for player: %s" % player_name
-	
+
 	var delete_btn := Button.new()
 	admin_actions_container.add_child(delete_btn)
 	delete_btn.text = "Delete Run"
 	delete_btn.focus_mode = Control.FOCUS_NONE
-	
+
 	delete_btn.pressed.connect(
 		func() -> void:
 			for child in admin_actions_container.get_children():
-				if child.has_meta("delete_btn"): return
-				
+				if child.has_meta("delete_btn"):
+					return
+
 			var confirm_btn := Button.new()
 			delete_btn.add_sibling(confirm_btn)
 			confirm_btn.set_meta("delete_btn", true)
@@ -243,28 +259,24 @@ func add_admin_actions_for_player(player_name: String, steam_id: int) -> void:
 			confirm_btn.focus_mode = Control.FOCUS_NONE
 			confirm_btn.pressed.connect(
 				func() -> void:
-					await Global.server_bridge.delete_run(Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id)
-					confirm_btn.queue_free()
+					await Global.server_bridge.delete_run(
+						Global.game_manager.current_mode, Global.game_manager.current_map.name, steam_id
 					)
+					confirm_btn.queue_free()
+			)
 	)
-	
+
 	var is_admin := await Global.server_bridge.is_admin(steam_id)
 	var toggle_admin_btn := Button.new()
 	admin_actions_container.add_child(toggle_admin_btn)
 	toggle_admin_btn.text = "Give admin" if not is_admin else "Revoke admin"
 	toggle_admin_btn.focus_mode = Control.FOCUS_NONE
-	
-	toggle_admin_btn.pressed.connect(
-		func() -> void:
-			Global.server_bridge.set_admin(steam_id, not is_admin)
-	)
+
+	toggle_admin_btn.pressed.connect(func() -> void: Global.server_bridge.set_admin(steam_id, not is_admin))
 
 	var is_banned := await Global.server_bridge.is_banned(steam_id)
 	var ban_btn := Button.new()
 	admin_actions_container.add_child(ban_btn)
 	ban_btn.text = "Ban" if not is_banned else "Unban"
-	
-	ban_btn.pressed.connect(
-		func() -> void:
-			Global.server_bridge.set_ban(steam_id, not is_banned)
-	)
+
+	ban_btn.pressed.connect(func() -> void: Global.server_bridge.set_ban(steam_id, not is_banned))

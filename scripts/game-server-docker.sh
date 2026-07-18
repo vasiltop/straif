@@ -1,16 +1,4 @@
 #!/usr/bin/env bash
-#
-# Launch a single ad-hoc Straif dedicated game server in Docker.
-#
-# Builds the game-server image (from the prebuilt build/linux/ binary) if needed,
-# then runs one named, UDP-port-mapped container. Use the compose file
-# (docker/game-servers.compose.yaml) instead when you want a managed fleet.
-#
-# Usage:
-#   ./scripts/game-server-docker.sh <name> <port> <max_players> <mode>
-#
-# Example:
-#   ./scripts/game-server-docker.sh DM-1 3005 8 deathmatch
 
 set -euo pipefail
 

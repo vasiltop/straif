@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://48kj04su1buo"]
+
+[resource]
+resource_name = "tarp_blue"
+cull_mode = 2
+albedo_color = Color(0.48452926, 0.6180314, 0.7483791, 1)
+roughness = 0.85

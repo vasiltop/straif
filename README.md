@@ -5,11 +5,12 @@ Straif is a fast-paced 3D platforming shooter where you race through a variety o
 It is heavily inspired by source engine games such as Counter Strike: Source, leaving a high skill ceiling for players to compete.
 
 ## Quick Links
-- [Website](#Website)
-- [Web Api](#Web-Api)
-- [Screenshots](#Screenshots)
-- [Local Setup](#Local-Setup)
-- [Steam Deployment](#Steam-Deployment)
+- [Website](#website)
+- [Web Api](#web-api)
+- [Screenshots](#screenshots)
+- [Local Setup](#local-setup)
+- [Steam Deployment](#steam-deployment)
+- [Documentation](#documentation)
 
 ## Website
 The straif leaderboard can be viewed at [straif.pumped.software](https://straif.pumped.software/).
@@ -31,6 +32,11 @@ cd straif
 godot -e
 ```
 
+Requires Godot 4.6.1. See [docs/development.md](./docs/development.md) for full
+prerequisites and the one-command `./scripts/setup-dev.sh` (format/lint tooling +
+Git hooks), and [docs/testing.md](./docs/testing.md) for the Godot test suite,
+formatting/linting, and the multi-process ENet end-to-end test (`./scripts/test-e2e.sh`).
+
 ### Hosting a game server
 
 The game executable can be ran as a game server as well by providing the following arguments.
@@ -43,6 +49,8 @@ The game executable can be ran as a game server as well by providing the followi
 ```
 
 This will continously ping the server browser to let other players know your server is online.
+See [docs/game-server.md](./docs/game-server.md) for invocation details, supported modes,
+and troubleshooting.
 
 #### Dockerized game servers
 
@@ -95,10 +103,14 @@ To run the server directly against the Dockerized database:
 cd server
 cp .env.example .env
 docker compose up -d db
-npm install
-npx drizzle-kit push
-npm run dev
+corepack enable
+pnpm install --frozen-lockfile
+pnpm db:push
+pnpm dev
 ```
+
+See [docs/backend.md](./docs/backend.md) for the full API/route/schema reference and
+[docs/development.md](./docs/development.md) for the website's equivalent setup.
 
 ## Steam Deployment
 
@@ -136,3 +148,8 @@ to the matching depot IDs from Steamworks.
 To export all platforms and upload them in one command, run
 `./scripts/upload-steam.sh --build`. Steam uploads the platform build
 directories, including the runnable `build/macos/Straif.app` bundle.
+
+## Documentation
+
+Full docs — architecture, gameplay, game server, development, testing/CI, backend,
+website, map creation, asset attribution — are indexed in [docs/README.md](./docs/README.md).

@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dwmfpdp88pgke"]
+
+[resource]
+resource_name = "drum_blue"
+cull_mode = 2
+albedo_color = Color(0.46135613, 0.58383155, 0.72202736, 1)
+metallic = 0.6
+roughness = 0.5

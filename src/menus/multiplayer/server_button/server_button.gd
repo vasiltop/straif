@@ -8,6 +8,7 @@ class_name ServerButton extends Panel
 
 var info: ServerBridge.ServerResponse
 
+
 func _ready() -> void:
 	join_btn.pressed.connect(
 		func() -> void:
@@ -16,13 +17,14 @@ func _ready() -> void:
 			Global.game_manager.current_pvp_mode = info.mode
 	)
 
+
 func set_info(info: ServerBridge.ServerResponse) -> void:
 	self.info = info
 	name_label.text = info.name
 	mode_label.text = "Mode: %s" % info.mode
 	map_label.text = "Map: %s" % info.map
 	player_count_label.text = "Players: %d / %d" % [info.player_count, info.max_players]
-	
+
 	var sb := StyleBoxTexture.new()
 	sb.texture = Global.map_manager.get_map_image(info.map)
 	add_theme_stylebox_override("panel", sb)
