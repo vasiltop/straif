@@ -5,10 +5,11 @@ const EliminationUiScene := preload("res://src/maps/elimination_ui.tscn")
 
 const FREEZE_TIME := 4.0
 const ROUND_TIME := 60.0
+const ROUND_END_TIME := 5.0
 const MATCH_END_TIME := 8.0
 const WIN_SCORE := 5
 
-enum Phase { WAITING, FREEZE, LIVE, MATCH_END }
+enum Phase { WAITING, FREEZE, LIVE, ROUND_END, MATCH_END }
 
 @export var players: Node
 
@@ -18,6 +19,7 @@ var phase := Phase.WAITING
 var time_left := 0.0
 var team_scores := {1: 0, 2: 0}
 var match_winner := 0
+var pending_winner := 0
 var teams := {}
 var player_names := {}
 
@@ -55,6 +57,10 @@ func _process(delta: float) -> void:
 			_advance_timer(delta)
 			if time_left <= 0.0:
 				_finish_timeout()
+		Phase.ROUND_END:
+			_advance_timer(delta)
+			if time_left <= 0.0:
+				_finish_round_end()
 		Phase.MATCH_END:
 			if not has_enough_players():
 				_enter_waiting(true)
@@ -400,14 +406,23 @@ func _finish_round(winner: int) -> void:
 	if phase != Phase.LIVE:
 		return
 
-	phase = Phase.FREEZE
-	time_left = 0.0
-
+	pending_winner = winner
 	if winner != 0:
 		team_scores[winner] += 1
-		if team_scores[winner] >= WIN_SCORE:
-			_start_match_end(winner)
-			return
+
+	for player: Player in get_players():
+		player.set_damage_enabled.rpc(false)
+
+	_set_phase(Phase.ROUND_END, ROUND_END_TIME)
+
+
+func _finish_round_end() -> void:
+	var winner := pending_winner
+	pending_winner = 0
+
+	if winner != 0 and team_scores[winner] >= WIN_SCORE:
+		_start_match_end(winner)
+		return
 
 	if has_enough_players():
 		_start_freeze()

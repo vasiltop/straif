@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://c7or5ygrt5xb4"]
 
 [ext_resource type="Script" path="res://src/maps/elimination_ui.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_theme"]
 [ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="3_panel"]
 
-[node name="EliminationUi" type="CanvasLayer" node_paths=PackedStringArray("scoreboard_panel", "team1_rows", "team2_rows", "phase_label", "timer_label", "team1_score_label", "team2_score_label", "scoreboard_score_label", "ammo_label", "health_label", "spectator_panel", "spectator_label", "match_end_panel", "match_end_label")]
+[node name="EliminationUi" type="CanvasLayer" unique_id=18501979 node_paths=PackedStringArray("scoreboard_panel", "team1_rows", "team2_rows", "phase_label", "timer_label", "team1_score_label", "team2_score_label", "scoreboard_score_label", "ammo_label", "health_label", "spectator_panel", "spectator_label", "match_end_panel", "match_end_label")]
 script = ExtResource("1_script")
 scoreboard_panel = NodePath("Control/Scoreboard")
 team1_rows = NodePath("Control/Scoreboard/MarginContainer/Content/Columns/Team1Column/Rows")
@@ -21,7 +21,7 @@ spectator_label = NodePath("Control/Spectator/MarginContainer/Label")
 match_end_panel = NodePath("Control/MatchEnd")
 match_end_label = NodePath("Control/MatchEnd/MarginContainer/Label")
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=1527419888]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +31,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_theme")
 
-[node name="TopMiddle" type="PanelContainer" parent="Control"]
+[node name="TopMiddle" type="PanelContainer" parent="Control" unique_id=1800732139]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -41,67 +41,67 @@ offset_right = 200.0
 offset_bottom = 60.0
 grow_horizontal = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/TopMiddle"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/TopMiddle" unique_id=1985644894]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Strip" type="HBoxContainer" parent="Control/TopMiddle/MarginContainer"]
+[node name="Strip" type="HBoxContainer" parent="Control/TopMiddle/MarginContainer" unique_id=1082499858]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="Team1" type="VBoxContainer" parent="Control/TopMiddle/MarginContainer/Strip"]
+[node name="Team1" type="VBoxContainer" parent="Control/TopMiddle/MarginContainer/Strip" unique_id=1581999974]
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 
-[node name="Name" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Team1"]
+[node name="Name" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Team1" unique_id=1207342178]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "Team 1"
 horizontal_alignment = 1
 
-[node name="Score" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Team1"]
+[node name="Score" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Team1" unique_id=1672600656]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "0"
 horizontal_alignment = 1
 
-[node name="Center" type="VBoxContainer" parent="Control/TopMiddle/MarginContainer/Strip"]
+[node name="Center" type="VBoxContainer" parent="Control/TopMiddle/MarginContainer/Strip" unique_id=413251566]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Phase" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Center"]
+[node name="Phase" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Center" unique_id=968345558]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "Waiting for players"
 horizontal_alignment = 1
 
-[node name="Timer" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Center"]
+[node name="Timer" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Center" unique_id=1704072351]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "00:00"
 horizontal_alignment = 1
 
-[node name="Team2" type="VBoxContainer" parent="Control/TopMiddle/MarginContainer/Strip"]
+[node name="Team2" type="VBoxContainer" parent="Control/TopMiddle/MarginContainer/Strip" unique_id=319618519]
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 
-[node name="Name" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Team2"]
+[node name="Name" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Team2" unique_id=1388492632]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "Team 2"
 horizontal_alignment = 1
 
-[node name="Score" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Team2"]
+[node name="Score" type="Label" parent="Control/TopMiddle/MarginContainer/Strip/Team2" unique_id=1016360786]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "0"
 horizontal_alignment = 1
 
-[node name="Scoreboard" type="PanelContainer" parent="Control"]
+[node name="Scoreboard" type="PanelContainer" parent="Control" unique_id=561050441]
 visible = false
 custom_minimum_size = Vector2(900, 500)
 layout_mode = 1
@@ -118,66 +118,66 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("3_panel")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/Scoreboard"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/Scoreboard" unique_id=1672628728]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Content" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer"]
+[node name="Content" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer" unique_id=1165849155]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Control/Scoreboard/MarginContainer/Content"]
+[node name="Title" type="Label" parent="Control/Scoreboard/MarginContainer/Content" unique_id=2095445481]
 layout_mode = 2
 text = "3v3 Elimination"
 horizontal_alignment = 1
 
-[node name="ScoreLine" type="Label" parent="Control/Scoreboard/MarginContainer/Content"]
+[node name="ScoreLine" type="Label" parent="Control/Scoreboard/MarginContainer/Content" unique_id=2109591912]
 layout_mode = 2
 text = "Team 1: 0 - Team 2: 0"
 horizontal_alignment = 1
 
-[node name="Rule" type="HSeparator" parent="Control/Scoreboard/MarginContainer/Content"]
+[node name="Rule" type="HSeparator" parent="Control/Scoreboard/MarginContainer/Content" unique_id=982812964]
 layout_mode = 2
 
-[node name="Columns" type="HBoxContainer" parent="Control/Scoreboard/MarginContainer/Content"]
+[node name="Columns" type="HBoxContainer" parent="Control/Scoreboard/MarginContainer/Content" unique_id=323566774]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 15
 
-[node name="Team1Column" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer/Content/Columns"]
+[node name="Team1Column" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer/Content/Columns" unique_id=372216523]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="Header" type="Label" parent="Control/Scoreboard/MarginContainer/Content/Columns/Team1Column"]
+[node name="Header" type="Label" parent="Control/Scoreboard/MarginContainer/Content/Columns/Team1Column" unique_id=105977897]
 layout_mode = 2
 text = "Team 1"
 horizontal_alignment = 1
 
-[node name="Rows" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer/Content/Columns/Team1Column"]
+[node name="Rows" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer/Content/Columns/Team1Column" unique_id=1147200774]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 4
 
-[node name="Team2Column" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer/Content/Columns"]
+[node name="Team2Column" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer/Content/Columns" unique_id=538686539]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="Header" type="Label" parent="Control/Scoreboard/MarginContainer/Content/Columns/Team2Column"]
+[node name="Header" type="Label" parent="Control/Scoreboard/MarginContainer/Content/Columns/Team2Column" unique_id=1199216743]
 layout_mode = 2
 text = "Team 2"
 horizontal_alignment = 1
 
-[node name="Rows" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer/Content/Columns/Team2Column"]
+[node name="Rows" type="VBoxContainer" parent="Control/Scoreboard/MarginContainer/Content/Columns/Team2Column" unique_id=1853752849]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 4
 
-[node name="BottomLeft" type="PanelContainer" parent="Control"]
+[node name="BottomLeft" type="PanelContainer" parent="Control" unique_id=1904432180]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -187,33 +187,33 @@ offset_right = 158.0
 grow_vertical = 0
 theme_override_styles/panel = ExtResource("3_panel")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/BottomLeft"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/BottomLeft" unique_id=1374370054]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 0
 
-[node name="Stats" type="VBoxContainer" parent="Control/BottomLeft/MarginContainer"]
+[node name="Stats" type="VBoxContainer" parent="Control/BottomLeft/MarginContainer" unique_id=59535671]
 layout_mode = 2
 
-[node name="Ammo" type="Label" parent="Control/BottomLeft/MarginContainer/Stats"]
+[node name="Ammo" type="Label" parent="Control/BottomLeft/MarginContainer/Stats" unique_id=1207281090]
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
 text = "Ammo: 30 / Inf"
 horizontal_alignment = 1
 
-[node name="Health" type="Label" parent="Control/BottomLeft/MarginContainer/Stats"]
+[node name="Health" type="Label" parent="Control/BottomLeft/MarginContainer/Stats" unique_id=482407760]
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
 text = "Health: 100"
 horizontal_alignment = 1
 
-[node name="Spectator" type="PanelContainer" parent="Control"]
+[node name="Spectator" type="PanelContainer" parent="Control" unique_id=2009121181]
 visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -226,14 +226,14 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = ExtResource("3_panel")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/Spectator"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/Spectator" unique_id=1991034246]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="Label" type="Label" parent="Control/Spectator/MarginContainer"]
+[node name="Label" type="Label" parent="Control/Spectator/MarginContainer" unique_id=125718048]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "Spectating player
@@ -241,7 +241,7 @@ Click to switch"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MatchEnd" type="PanelContainer" parent="Control"]
+[node name="MatchEnd" type="PanelContainer" parent="Control" unique_id=729808332]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -257,14 +257,14 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("3_panel")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/MatchEnd"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/MatchEnd" unique_id=828323257]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Label" type="Label" parent="Control/MatchEnd/MarginContainer"]
+[node name="Label" type="Label" parent="Control/MatchEnd/MarginContainer" unique_id=1135746769]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "Team 1 wins the match"

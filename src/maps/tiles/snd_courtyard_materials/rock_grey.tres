@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dpfj5kff8vt53"]
+
+[ext_resource type="Texture2D" uid="uid://bi3j8bcygxmto" path="res://src/maps/tiles/snd_courtyard_Rock030_1K-JPG_Color.jpg" id="1_14ohk"]
+[ext_resource type="Texture2D" uid="uid://rxrben3uxxy2" path="res://src/maps/tiles/snd_courtyard_Rock030_1K-JPG_Roughness.png" id="2_2fhh6"]
+[ext_resource type="Texture2D" uid="uid://c57lniubbnkav" path="res://src/maps/tiles/snd_courtyard_Rock030_1K-JPG_NormalGL.jpg" id="3_4e66c"]
+
+[resource]
+resource_name = "rock_grey"
+cull_mode = 2
+albedo_color = Color(0.85430586, 0.859696, 0.87034494, 1)
+albedo_texture = ExtResource("1_14ohk")
+metallic_texture = ExtResource("2_2fhh6")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_2fhh6")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.8
+normal_texture = ExtResource("3_4e66c")
+texture_filter = 2

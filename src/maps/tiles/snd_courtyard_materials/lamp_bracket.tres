@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b52chfd6oe4dh"]
+
+[resource]
+resource_name = "lamp_bracket"
+cull_mode = 2
+albedo_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+roughness = 0.7
+texture_filter = 2

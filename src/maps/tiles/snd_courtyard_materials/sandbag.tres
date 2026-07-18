@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dei32lfkrr8cy"]
+
+[ext_resource type="Texture2D" uid="uid://by6onx5jb5ac1" path="res://src/maps/tiles/snd_courtyard_Ground054_1K-JPG_Color.jpg" id="1_glvbd"]
+[ext_resource type="Texture2D" uid="uid://cyxq6peoxc4en" path="res://src/maps/tiles/snd_courtyard_Ground054_1K-JPG_Roughness.png" id="2_ifahw"]
+[ext_resource type="Texture2D" uid="uid://cyld41iqhpbb5" path="res://src/maps/tiles/snd_courtyard_Ground054_1K-JPG_NormalGL.jpg" id="3_0inlw"]
+
+[resource]
+resource_name = "sandbag"
+cull_mode = 2
+albedo_color = Color(1, 0.97769153, 0.86504203, 1)
+albedo_texture = ExtResource("1_glvbd")
+metallic_texture = ExtResource("2_ifahw")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_ifahw")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.8
+normal_texture = ExtResource("3_0inlw")
+texture_filter = 2

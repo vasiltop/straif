@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://etde4wlmf4cn"]
+
+[ext_resource type="Texture2D" uid="uid://c7ud0irwd1hkj" path="res://src/maps/tiles/snd_courtyard_Bricks075A_1K-JPG_Color.jpg" id="1_qt5wp"]
+[ext_resource type="Texture2D" uid="uid://c4isgihtsb2gj" path="res://src/maps/tiles/snd_courtyard_Bricks075A_1K-JPG_Roughness.png" id="2_rwfv4"]
+[ext_resource type="Texture2D" uid="uid://c6hdis5vv24my" path="res://src/maps/tiles/snd_courtyard_Bricks075A_1K-JPG_NormalGL.jpg" id="3_6dic7"]
+
+[resource]
+resource_name = "plaster_terra"
+cull_mode = 2
+albedo_color = Color(1, 0.80946815, 0.7014107, 1)
+albedo_texture = ExtResource("1_qt5wp")
+metallic_texture = ExtResource("2_rwfv4")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_rwfv4")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.8
+normal_texture = ExtResource("3_6dic7")
+texture_filter = 2

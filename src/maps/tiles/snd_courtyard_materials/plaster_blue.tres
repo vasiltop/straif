@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dx2k6ghj55g8c"]
+
+[ext_resource type="Texture2D" uid="uid://k28q3qoiy207" path="res://src/maps/tiles/snd_courtyard_PavingStones128_1K-JPG_Color.jpg" id="1_xupsb"]
+[ext_resource type="Texture2D" uid="uid://cg7cnyk12b6kq" path="res://src/maps/tiles/snd_courtyard_PavingStones128_1K-JPG_Roughness.png" id="2_vcuqy"]
+[ext_resource type="Texture2D" uid="uid://dbw3lqtjsuwaf" path="res://src/maps/tiles/snd_courtyard_PavingStones128_1K-JPG_NormalGL.jpg" id="3_hm5ia"]
+
+[resource]
+resource_name = "plaster_blue"
+cull_mode = 2
+albedo_color = Color(0.80946815, 0.886004, 1, 1)
+albedo_texture = ExtResource("1_xupsb")
+metallic_texture = ExtResource("2_vcuqy")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_vcuqy")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.8
+normal_texture = ExtResource("3_hm5ia")
+texture_filter = 2

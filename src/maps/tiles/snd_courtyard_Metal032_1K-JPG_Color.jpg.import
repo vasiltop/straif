@@ -3,9 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ctd3ovsml5qo1"
-path="res://.godot/imported/snd_courtyard_Metal032_1K-JPG_Color.jpg-290ffd5ce8e4429f6785712d33ee7219.ctex"
+path.s3tc="res://.godot/imported/snd_courtyard_Metal032_1K-JPG_Color.jpg-290ffd5ce8e4429f6785712d33ee7219.s3tc.ctex"
+path.etc2="res://.godot/imported/snd_courtyard_Metal032_1K-JPG_Color.jpg-290ffd5ce8e4429f6785712d33ee7219.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "ca40d92b508a3e6657ca23009cd3d29c"
@@ -14,11 +16,11 @@ generator_parameters={
 [deps]
 
 source_file="res://src/maps/tiles/snd_courtyard_Metal032_1K-JPG_Color.jpg"
-dest_files=["res://.godot/imported/snd_courtyard_Metal032_1K-JPG_Color.jpg-290ffd5ce8e4429f6785712d33ee7219.ctex"]
+dest_files=["res://.godot/imported/snd_courtyard_Metal032_1K-JPG_Color.jpg-290ffd5ce8e4429f6785712d33ee7219.s3tc.ctex", "res://.godot/imported/snd_courtyard_Metal032_1K-JPG_Color.jpg-290ffd5ce8e4429f6785712d33ee7219.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -39,5 +41,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=0
-detect_3d/compress_to=1
+process/size_limit=128
+detect_3d/compress_to=0

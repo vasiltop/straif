@@ -1,85 +1,63 @@
-[gd_scene load_steps=5 format=3 uid="uid://dhn8r5p2wak7c"]
+[gd_scene format=3 uid="uid://dhn8r5p2wak7c"]
 
 [ext_resource type="PackedScene" uid="uid://cby8geolqcubx" path="res://src/maps/tiles/snd_courtyard.glb" id="1_court"]
+[ext_resource type="Texture2D" uid="uid://71gdr8xurnos" path="res://src/textures/skyboxes/pink.png" id="2_dywee"]
 
-[sub_resource type="ProceduralSkyMaterial" id="Sky_dusk_mat"]
-sky_top_color = Color(0.05, 0.06, 0.14, 1)
-sky_horizon_color = Color(0.42, 0.26, 0.2, 1)
-sky_curve = 0.13
-sky_energy_multiplier = 0.9
-ground_bottom_color = Color(0.03, 0.028, 0.032, 1)
-ground_horizon_color = Color(0.22, 0.15, 0.12, 1)
-ground_curve = 0.08
-ground_energy_multiplier = 0.55
-sun_angle_max = 28.0
-sun_curve = 0.09
-use_debanding = true
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_o8rh7"]
+panorama = ExtResource("2_dywee")
 
-[sub_resource type="Sky" id="Sky_dusk"]
-sky_material = SubResource("Sky_dusk_mat")
+[sub_resource type="Sky" id="Sky_o3qlu"]
+sky_material = SubResource("PanoramaSkyMaterial_o8rh7")
 
-[sub_resource type="Environment" id="Environment_moody"]
+[sub_resource type="Environment" id="Environment_na4tu"]
 background_mode = 2
-sky = SubResource("Sky_dusk")
-ambient_light_source = 3
-ambient_light_color = Color(0.34, 0.31, 0.4, 1)
-ambient_light_sky_contribution = 0.6
-ambient_light_energy = 0.4
-tonemap_mode = 3
-tonemap_white = 6.0
-glow_enabled = true
-glow_intensity = 0.9
-glow_strength = 1.0
-glow_bloom = 0.15
-glow_blend_mode = 1
-glow_hdr_threshold = 0.85
-glow_hdr_scale = 2.0
-fog_enabled = true
-fog_light_color = Color(0.3, 0.26, 0.33, 1)
-fog_light_energy = 0.7
-fog_sun_scatter = 0.15
-fog_density = 0.011
-fog_aerial_perspective = 0.35
-fog_sky_affect = 0.25
-adjustment_enabled = true
-adjustment_brightness = 1.0
-adjustment_contrast = 1.08
-adjustment_saturation = 1.06
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_o3qlu")
+tonemap_mode = 2
+fog_light_color = Color(0.387157, 0.348374, 0.390983, 1)
+fog_light_energy = 1.34
+fog_sky_affect = 0.0
+fog_height = -22.35
+fog_height_density = 0.292
+volumetric_fog_density = 0.0813
+volumetric_fog_emission = Color(0.310617, 0.310617, 0.310617, 1)
+volumetric_fog_anisotropy = 0.0
+volumetric_fog_length = 80.09
+volumetric_fog_detail_spread = 6.0
 
 [node name="Courtyard" type="Node3D" unique_id=1641421048]
 
-[node name="snd_courtyard" parent="." instance=ExtResource("1_court")]
+[node name="snd_courtyard" parent="." unique_id=273547291 instance=ExtResource("1_court")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 
 [node name="Spawns" type="Node3D" parent="." unique_id=566534199]
 
 [node name="Team1" type="Node3D" parent="Spawns" unique_id=753058578]
 
 [node name="Spawn1" type="Marker3D" parent="Spawns/Team1" unique_id=1254118514]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.1, 56)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.1, 41)
 
 [node name="Spawn2" type="Marker3D" parent="Spawns/Team1" unique_id=607537515]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 56)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 41)
 
 [node name="Spawn3" type="Marker3D" parent="Spawns/Team1" unique_id=1635353402]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.1, 56)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.1, 41)
 
 [node name="Team2" type="Node3D" parent="Spawns" unique_id=945255561]
 
 [node name="Spawn1" type="Marker3D" parent="Spawns/Team2" unique_id=1498983176]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -8, 1.1, -56)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -8, 1.1, -41)
 
 [node name="Spawn2" type="Marker3D" parent="Spawns/Team2" unique_id=632416976]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 1.1, -56)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 1.1, -41)
 
 [node name="Spawn3" type="Marker3D" parent="Spawns/Team2" unique_id=1148752944]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8, 1.1, -56)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8, 1.1, -41)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=780264949]
-environment = SubResource("Environment_moody")
-
-[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1536442211]
-transform = Transform3D(-0.923077, 0, 0.384615, 0.161176, 0.907959, 0.386823, -0.349215, 0.419058, -0.838116, 0, 0, 0)
-light_color = Color(1, 0.68, 0.42, 1)
-light_energy = 1.1
-light_angular_distance = 1.2
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=537714811]
+transform = Transform3D(0.17907187, 0.50841, -0.8422901, -0.03750623, 0.8590337, 0.510543, 0.9831209, -0.05983274, 0.17289734, 0, 0, 0)
+light_energy = 0.9
 shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2095232159]
+environment = SubResource("Environment_na4tu")

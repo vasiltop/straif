@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://emc4ecf3x5cj"]
+
+[ext_resource type="Texture2D" uid="uid://bi3j8bcygxmto" path="res://src/maps/tiles/snd_courtyard_Rock030_1K-JPG_Color.jpg" id="1_ou1hx"]
+[ext_resource type="Texture2D" uid="uid://rxrben3uxxy2" path="res://src/maps/tiles/snd_courtyard_Rock030_1K-JPG_Roughness.png" id="2_djllo"]
+[ext_resource type="Texture2D" uid="uid://c57lniubbnkav" path="res://src/maps/tiles/snd_courtyard_Rock030_1K-JPG_NormalGL.jpg" id="3_mstys"]
+
+[resource]
+resource_name = "rock_tan"
+cull_mode = 2
+albedo_color = Color(1, 0.9639762, 0.9063318, 1)
+albedo_texture = ExtResource("1_ou1hx")
+metallic_texture = ExtResource("2_djllo")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_djllo")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.8
+normal_texture = ExtResource("3_mstys")
+texture_filter = 2

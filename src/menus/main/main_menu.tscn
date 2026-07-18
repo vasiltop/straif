@@ -19,7 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://fujx6s0p3i3h" path="res://src/textures/pavement.jpg" id="14_ynrsg"]
 [ext_resource type="PackedScene" uid="uid://dafd7bewek8ax" path="res://src/maps/tiles/vent_1.tscn" id="15_7pey8"]
 [ext_resource type="PackedScene" uid="uid://b01o82sp4jlmx" path="res://src/maps/tiles/vent_2.tscn" id="16_i5dmx"]
-[ext_resource type="PackedScene" path="res://src/menus/main/aim_menu.tscn" id="17_aim"]
+[ext_resource type="PackedScene" uid="uid://bpp08d4e3usc8" path="res://src/menus/main/aim_menu.tscn" id="17_aim"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
 size = Vector2(64, 64)
@@ -242,9 +242,10 @@ text = "Quit"
 
 [node name="Body" type="TabContainer" parent="MarginContainer/Content" unique_id=879515857]
 layout_mode = 2
-current_tab = 0
+current_tab = 2
 
 [node name="Speedrun" type="Control" parent="MarginContainer/Content/Body" unique_id=151761713]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -289,7 +290,6 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="Server Browser" parent="MarginContainer/Content/Body" unique_id=1793080607 instance=ExtResource("6_og6j4")]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

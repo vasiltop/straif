@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bcmxsl5dr2pbw"]
+
+[ext_resource type="Texture2D" uid="uid://c7ud0irwd1hkj" path="res://src/maps/tiles/snd_courtyard_Bricks075A_1K-JPG_Color.jpg" id="1_m8pj5"]
+[ext_resource type="Texture2D" uid="uid://c4isgihtsb2gj" path="res://src/maps/tiles/snd_courtyard_Bricks075A_1K-JPG_Roughness.png" id="2_eg5bd"]
+[ext_resource type="Texture2D" uid="uid://c6hdis5vv24my" path="res://src/maps/tiles/snd_courtyard_Bricks075A_1K-JPG_NormalGL.jpg" id="3_dkuay"]
+
+[resource]
+resource_name = "stone_wall"
+cull_mode = 2
+albedo_color = Color(1, 1, 0.9639762, 1)
+albedo_texture = ExtResource("1_m8pj5")
+metallic_texture = ExtResource("2_eg5bd")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_eg5bd")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.8
+normal_texture = ExtResource("3_dkuay")
+texture_filter = 2

@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://1vqdj15m0spj"]
+
+[resource]
+resource_name = "window_recess"
+cull_mode = 2
+albedo_color = Color(0.18974829, 0.18974829, 0.20598418, 1)
+roughness = 0.8
+texture_filter = 2

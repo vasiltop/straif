@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dqlii5nkmm70r"]
+
+[ext_resource type="Texture2D" uid="uid://by6onx5jb5ac1" path="res://src/maps/tiles/snd_courtyard_Ground054_1K-JPG_Color.jpg" id="1_aqpmy"]
+[ext_resource type="Texture2D" uid="uid://cyxq6peoxc4en" path="res://src/maps/tiles/snd_courtyard_Ground054_1K-JPG_Roughness.png" id="2_i6bxi"]
+[ext_resource type="Texture2D" uid="uid://cyld41iqhpbb5" path="res://src/maps/tiles/snd_courtyard_Ground054_1K-JPG_NormalGL.jpg" id="3_pdmn3"]
+
+[resource]
+resource_name = "sand"
+cull_mode = 2
+albedo_texture = ExtResource("1_aqpmy")
+metallic_texture = ExtResource("2_i6bxi")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_i6bxi")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.8
+normal_texture = ExtResource("3_pdmn3")
+texture_filter = 2

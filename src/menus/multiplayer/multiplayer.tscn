@@ -42,10 +42,6 @@ layout_mode = 2
 layout_mode = 2
 text = "Multiplayer"
 
-[node name="Subtitle" type="Label" parent="M/P/M/V" unique_id=362901133]
-layout_mode = 2
-text = "Choose a mode, then join a server."
-
 [node name="ModeTabs" type="TabBar" parent="M/P/M/V" unique_id=1755774607]
 layout_mode = 2
 

@@ -18,7 +18,8 @@ class_name EliminationUi extends CanvasLayer
 const PHASE_WAITING := 0
 const PHASE_FREEZE := 1
 const PHASE_LIVE := 2
-const PHASE_MATCH_END := 3
+const PHASE_ROUND_END := 3
+const PHASE_MATCH_END := 4
 
 var spectator_target_id := 0
 var spectator_index := -1
@@ -102,6 +103,8 @@ func _phase_text(phase: int) -> String:
 			return "Freeze time"
 		PHASE_LIVE:
 			return "Round live"
+		PHASE_ROUND_END:
+			return "Round over"
 		PHASE_MATCH_END:
 			return "Match over"
 	return "Waiting for players"

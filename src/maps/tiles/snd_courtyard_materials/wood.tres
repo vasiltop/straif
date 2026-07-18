@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dvurnihm258aq"]
+
+[ext_resource type="Texture2D" uid="uid://dj1gj7qa8byuc" path="res://src/maps/tiles/snd_courtyard_Wood062_1K-JPG_Color.jpg" id="1_xxx64"]
+[ext_resource type="Texture2D" uid="uid://v7o652rshvd7" path="res://src/maps/tiles/snd_courtyard_Wood062_1K-JPG_Roughness.png" id="2_76bo6"]
+[ext_resource type="Texture2D" uid="uid://cgcxqps3pu5r2" path="res://src/maps/tiles/snd_courtyard_Wood062_1K-JPG_NormalGL.jpg" id="3_4wl3h"]
+
+[resource]
+resource_name = "wood"
+cull_mode = 2
+albedo_texture = ExtResource("1_xxx64")
+metallic_texture = ExtResource("2_76bo6")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_76bo6")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.8
+normal_texture = ExtResource("3_4wl3h")
+texture_filter = 2

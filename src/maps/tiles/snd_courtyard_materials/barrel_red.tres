@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cpnoyft4he585"]
+
+[ext_resource type="Texture2D" uid="uid://ctd3ovsml5qo1" path="res://src/maps/tiles/snd_courtyard_Metal032_1K-JPG_Color.jpg" id="1_rfc4h"]
+[ext_resource type="Texture2D" uid="uid://b8oul8gk2ckb8" path="res://src/maps/tiles/snd_courtyard_Metal032_1K-JPG_Roughness.png" id="2_t8ceu"]
+[ext_resource type="Texture2D" uid="uid://pd6txqe6ik4q" path="res://src/maps/tiles/snd_courtyard_Metal032_1K-JPG_NormalGL.jpg" id="3_vmgbp"]
+
+[resource]
+resource_name = "barrel_red"
+cull_mode = 2
+albedo_color = Color(1, 0.735357, 0.6799757, 1)
+albedo_texture = ExtResource("1_rfc4h")
+metallic = 0.5
+metallic_texture = ExtResource("2_t8ceu")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_t8ceu")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.8
+normal_texture = ExtResource("3_vmgbp")
+texture_filter = 2
