@@ -146,10 +146,13 @@ const AimOverallScore = z.object({
 const AimOverallLeaderboardResponse = z.object({
   data: z.object({
     scores: z.array(AimOverallScore),
+    total: z.number().int().min(0),
   }),
 });
 
 const CountAll = sql<number>`count(*)`.mapWith(Number);
+const DistinctPlayerCount =
+  sql<number>`count(distinct ${aim_scores.steam_id})`.mapWith(Number);
 const TotalScoreExpression = sql`sum(${aim_scores.score})`;
 const TotalScore = TotalScoreExpression.mapWith(Number).as('total_score');
 const ScenariosCompletedExpression = sql`count(*)`;
@@ -437,33 +440,42 @@ app.get(
   '/overall',
   describe_aim_route(
     'Fetches the overall aim leaderboard by aggregating each player’s best score from every completed scenario.',
-    AimOverallLeaderboardResponse
+    AimOverallLeaderboardResponse,
+    { parameters: LeaderboardPaginationParameters }
   ),
+  zValidator('query', LeaderboardPaginationQuery),
   async (c) => {
+    const pagination = c.req.valid('query');
+
     try {
-      const scores = await db
-        .select({
-          steam_id: aim_scores.steam_id,
-          username: DeterministicUsername,
-          total_score: TotalScore,
-          scenarios_completed: ScenariosCompleted,
-          accuracy: AccuracyAverage,
-          avg_reaction_ms: AvgReaction,
-        })
-        .from(aim_scores)
-        .groupBy(aim_scores.steam_id)
-        .orderBy(
-          desc(TotalScoreExpression),
-          desc(ScenariosCompletedExpression),
-          desc(AccuracyAverageExpression),
-          asc(AvgReactionExpression),
-          asc(aim_scores.steam_id)
-        )
-        .limit(10);
+      const [scores, totals] = await Promise.all([
+        db
+          .select({
+            steam_id: aim_scores.steam_id,
+            username: DeterministicUsername,
+            total_score: TotalScore,
+            scenarios_completed: ScenariosCompleted,
+            accuracy: AccuracyAverage,
+            avg_reaction_ms: AvgReaction,
+          })
+          .from(aim_scores)
+          .groupBy(aim_scores.steam_id)
+          .orderBy(
+            desc(TotalScoreExpression),
+            desc(ScenariosCompletedExpression),
+            desc(AccuracyAverageExpression),
+            asc(AvgReactionExpression),
+            asc(aim_scores.steam_id)
+          )
+          .limit(pagination.limit)
+          .offset(get_leaderboard_offset(pagination)),
+        db.select({ count: DistinctPlayerCount }).from(aim_scores),
+      ]);
 
       return c.json({
         data: {
           scores,
+          total: totals[0].count,
         },
       });
     } catch (e) {

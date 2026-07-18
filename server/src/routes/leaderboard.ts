@@ -92,16 +92,22 @@ const PlayerPoints = z.object({
   points: z.number(),
 });
 
-const OverallLeaderboard = z.array(PlayerPoints);
+const OverallLeaderboardResponse = z.object({
+  data: z.array(PlayerPoints),
+  total: z.number().int().min(0),
+});
 
 app.get(
   '/mode/:mode_name/overall',
   describe_leaderboard_route(
     'Fetches the overall leaderboard for a specific mode.',
-    z.array(PlayerPoints)
+    OverallLeaderboardResponse,
+    { parameters: LeaderboardPaginationParameters }
   ),
+  zValidator('query', LeaderboardPaginationQuery),
   async (c) => {
     const mode = coerce_to_run_mode(c.req.param('mode_name'));
+    const pagination = c.req.valid('query');
     const maps = get_maps_of_mode(mode);
     const points_per_position = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     const points_map = new Map<string, z.infer<typeof PlayerPoints>>();
@@ -134,12 +140,15 @@ app.get(
       });
     }
 
-    const leaderboard = Array.from(points_map.values())
-      .sort((a, b) => b.points - a.points)
-      .slice(0, 10);
+    const sorted_leaderboard = Array.from(points_map.values()).sort(
+      (a, b) => b.points - a.points || a.steam_id.localeCompare(b.steam_id)
+    );
+    const page = paginate_leaderboard(sorted_leaderboard, pagination);
 
-    const data: z.infer<typeof OverallLeaderboard> = leaderboard;
-    return c.json({ data: data });
+    return c.json({
+      data: page.rows,
+      total: page.total,
+    });
   }
 );
 
