@@ -18,8 +18,8 @@ var _input_states := {
 	&"reload": false,
 }
 
-var _key_panels: Dictionary = {}
-var _key_labels: Dictionary = {}
+var _key_panels: Dictionary = { }
+var _key_labels: Dictionary = { }
 var _active_panel_style: StyleBoxFlat
 var _inactive_panel_style: StyleBoxFlat
 
@@ -47,7 +47,7 @@ func set_inputs(
 		shoot_input: bool,
 		ads_input: bool,
 		reload_input: bool,
-	) -> void:
+) -> void:
 	_input_states[&"forward"] = forward_input
 	_input_states[&"back"] = back_input
 	_input_states[&"left"] = left_input

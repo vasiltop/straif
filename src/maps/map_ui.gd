@@ -42,7 +42,7 @@ func set_replay_inputs(
 		shoot_input: bool,
 		ads_input: bool,
 		reload_input: bool,
-	) -> void:
+) -> void:
 	replay_input_display.set_inputs(
 			forward_input,
 			back_input,

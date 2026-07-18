@@ -103,7 +103,9 @@ func set_frame(value: int) -> void:
 	else:
 		map.map_ui.set_speed(speed)
 		map.map_ui.set_timer(current_frame * dt)
-		map.map_ui.set_replay_inputs(
+		map \
+				.map_ui \
+				.set_replay_inputs(
 				frame.forward_input,
 				frame.back_input,
 				frame.left_input,
