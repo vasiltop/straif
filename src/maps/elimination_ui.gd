@@ -196,31 +196,15 @@ func _spectate(teammates: Array[Player], next_index: int) -> void:
 func _begin_spectate(target: Player) -> void:
 	_end_spectate()
 	spectated_player = target
-	_hide_local_dead_view(_get_player(Global.id()))
 	target.begin_local_spectate_view()
 	spectator_label.text = "Spectating %s\nClick to switch" % target.player_name()
 	spectator_panel.visible = true
-
-
-func _hide_local_dead_view(local_player: Player) -> void:
-	if local_player == null or not local_player.is_dead:
-		return
-	local_player.third_person.visible = false
-	local_player.set_viewmodel_viewport_visible(false)
-
-
-func _restore_local_dead_view(local_player: Player) -> void:
-	if local_player == null or not local_player.is_dead:
-		return
-	local_player.third_person.visible = true
-	local_player.set_viewmodel_viewport_visible(false)
 
 
 func _end_spectate() -> void:
 	if spectated_player != null and is_instance_valid(spectated_player):
 		spectated_player.end_local_spectate_view()
 	spectated_player = null
-	_restore_local_dead_view(_get_player(Global.id()))
 
 
 func _show_no_teammates(local_player: Player) -> void:

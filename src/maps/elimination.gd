@@ -105,6 +105,7 @@ func _send_info(steam_name: String) -> void:
 		_set_player_frozen.rpc_id(sender, player.pid, phase != Phase.LIVE)
 
 	_create_player.rpc(sender, spawn_point, steam_name, team)
+	get_player(sender).set_damage_enabled.rpc(phase == Phase.LIVE)
 	_set_player_frozen.rpc(sender, phase != Phase.LIVE)
 
 	if phase == Phase.WAITING and has_enough_players():
@@ -236,7 +237,7 @@ func _start_freeze() -> void:
 			var spawn_point := _get_team_spawn(team, index)
 			player.global_position = spawn_point
 			player.velocity = Vector3.ZERO
-			player.respawn.rpc()
+			player.respawn.rpc(false)
 			player._update_state.rpc(spawn_point, player.global_rotation.y, 0.0, 0.0)
 			_set_player_frozen.rpc(player.pid, true)
 
@@ -246,6 +247,7 @@ func _start_freeze() -> void:
 func _start_live() -> void:
 	_set_phase(Phase.LIVE, ROUND_TIME)
 	for player: Player in get_players():
+		player.set_damage_enabled.rpc(true)
 		_set_player_frozen.rpc(player.pid, false)
 
 
@@ -253,6 +255,7 @@ func _start_match_end(winner: int) -> void:
 	match_winner = winner
 	_set_phase(Phase.MATCH_END, MATCH_END_TIME)
 	for player: Player in get_players():
+		player.set_damage_enabled.rpc(false)
 		_set_player_frozen.rpc(player.pid, true)
 
 
@@ -288,6 +291,7 @@ func _enter_waiting(reset_scores := false) -> void:
 	match_winner = 0
 	_set_phase(Phase.WAITING, 0.0)
 	for player: Player in get_players():
+		player.set_damage_enabled.rpc(false)
 		_set_player_frozen.rpc(player.pid, true)
 
 
