@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://dstrf0lbrow01"]
+
+[ext_resource type="Script" path="res://src/ui/components/leaderboard_row.gd" id="1_row"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_row"]
+bg_color = Color(0, 0, 0, 0)
+border_width_bottom = 1
+border_color = Color(0.1599, 0.1599, 0.1599, 1)
+
+[node name="LeaderboardRow" type="PanelContainer"]
+offset_right = 320.0
+offset_bottom = 44.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_row")
+script = ExtResource("1_row")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_bottom = 11
+
+[node name="H" type="HBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Rank" type="Label" parent="Margin/H"]
+custom_minimum_size = Vector2(44, 0)
+layout_mode = 2
+theme_type_variation = &"Data"
+text = "01"
+
+[node name="Name" type="Label" parent="Margin/H"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"BodyStrong"
+text = "Player"
+text_overrun_behavior = 3
+
+[node name="Value" type="Label" parent="Margin/H"]
+layout_mode = 2
+theme_type_variation = &"Data"
+text = "0"
+horizontal_alignment = 2

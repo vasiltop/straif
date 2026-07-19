@@ -1,12 +1,12 @@
 class_name ReplayInputDisplay
 extends HBoxContainer
 
-const ACTIVE_BG := Color(0.94, 0.93, 0.89, 1.0)
-const ACTIVE_BORDER := Color(0.18, 0.18, 0.18, 1.0)
-const ACTIVE_FONT := Color(0.10, 0.10, 0.10, 1.0)
-const INACTIVE_BG := Color(0.12, 0.14, 0.17, 1.0)
-const INACTIVE_BORDER := Color(0.30, 0.33, 0.37, 1.0)
-const INACTIVE_FONT := Color(0.78, 0.81, 0.84, 1.0)
+const ACTIVE_BG := Palette.TEXT
+const ACTIVE_BORDER := Palette.TEXT
+const ACTIVE_FONT := Palette.BACKGROUND
+const INACTIVE_BG := Palette.PANEL_FILL_SOFT
+const INACTIVE_BORDER := Palette.BORDER
+const INACTIVE_FONT := Palette.MUTED
 
 var _input_states := {
 	&"forward": false,

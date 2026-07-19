@@ -1,47 +1,22 @@
 class_name MainMenu extends Control
 
-@export var target_practice_leaderboard: VBoxContainer
-@export var movement_only_leaderboard: VBoxContainer
+@onready var avatar: TextureRect = $Center/Shell/Pad/HBox/Sidebar/Identity/Avatar
+@onready var username_label: Label = $Center/Shell/Pad/HBox/Sidebar/Identity/Label
+@onready var quit_btn: Button = $Center/Shell/Pad/HBox/Sidebar/Quit
+@onready var discord_btn: Button = $Center/Shell/Pad/HBox/Sidebar/Discord
+@onready var nav: VBoxContainer = $Center/Shell/Pad/HBox/Sidebar/Nav
+@onready var body: TabContainer = $Center/Shell/Pad/HBox/Body
+@onready var mode_select: HBoxContainer = $Center/Shell/Pad/HBox/Body/Play/M/V/ModeSelect
+@onready var mode_stack: Control = $Center/Shell/Pad/HBox/Body/Play/M/V/ModeStack
 
-@onready var avatar: TextureRect = $MarginContainer/Content/Header/Left/Avatar
-@onready var username_label: Label = $MarginContainer/Content/Header/Left/Label
-@onready var quit_btn: Button = $MarginContainer/Content/Header/Right/Quit
-@onready var discord_btn: TextureButton = $MarginContainer/Content/Header/Right/Discord
-@onready var mode_switcher: TabContainer = $MarginContainer/Content/Body/Speedrun/M/V/ModeSwitcher
-@onready var leaderboard_timer := BetterTimer.new(Global, 3.0, _on_leaderboard_timer)
-
-const MapButtonScene = preload("res://src/menus/main/map_button/map_button.tscn")
-
-func _on_leaderboard_timer() -> void:
-	var target_lb := await Global.server_bridge.get_overall_leaderboard("target")
-
-	for child in target_practice_leaderboard.get_children():
-		child.queue_free()
-
-	var label_from_run = func(run, pos) -> Label:
-		var label := Label.new()
-		label.text = "%s | %s - %s" % [pos, run.username, run.points]
-		return label
-
-	var lb_pos := 1
-	for run in target_lb:
-		target_practice_leaderboard.add_child(label_from_run.call(run, lb_pos))
-		lb_pos += 1
-
-	var bhop_lb := await Global.server_bridge.get_overall_leaderboard("bhop")
-
-	for child in movement_only_leaderboard.get_children():
-		child.queue_free()
-
-	lb_pos = 1
-	for run in bhop_lb:
-		movement_only_leaderboard.add_child(label_from_run.call(run, lb_pos))
-		lb_pos += 1
+const MODES := [["target", "Target Practice"], ["bhop", "Movement Only"]]
+var mode_to_container: Dictionary[String, ModeContainer] = { }
 
 func _ready() -> void:
 	Global.multiplayer.multiplayer_peer = null
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_instantiate_maps()
+	_build_mode_select()
 	quit_btn.pressed.connect(get_tree().quit)
 
 	if Global.steam_available():
@@ -51,18 +26,17 @@ func _ready() -> void:
 
 	discord_btn.pressed.connect(func() -> void: OS.shell_open(Global.server_bridge.DISCORD_URL))
 
-	leaderboard_timer.start()
+	var nav_buttons := nav.get_children()
+	for i in nav_buttons.size():
+		var idx := i
+		nav_buttons[idx].pressed.connect(func() -> void: body.current_tab = idx)
 
 func _instantiate_maps() -> void:
-	var mode_to_container: Dictionary[String, ModeContainer]
-
-	for child in mode_switcher.get_children():
+	for child in mode_stack.get_children():
 		if child is not ModeContainer:
 			continue
 		var mode_container := child as ModeContainer
 		mode_to_container[mode_container.mode] = mode_container
-
-	mode_to_container[Global.game_manager.current_mode].visible = true
 
 	for map in Global.map_manager.maps:
 		for mode: String in map.modes:
@@ -85,6 +59,26 @@ func _instantiate_maps() -> void:
 			if btn == null:
 				continue
 			btn.set_personal_best(snapped(float(run.time_ms) / 1000, 0.001) as float, run.position, run.total, mode)
+
+func _build_mode_select() -> void:
+	var current := Global.game_manager.current_mode
+	var group := ButtonGroup.new()
+	for entry in MODES:
+		var btn := Button.new()
+		btn.text = entry[1]
+		btn.toggle_mode = true
+		btn.button_group = group
+		btn.theme_type_variation = &"Segment"
+		btn.focus_mode = Control.FOCUS_NONE
+		btn.button_pressed = entry[0] == current
+		btn.pressed.connect(_select_mode.bind(entry[0]))
+		mode_select.add_child(btn)
+	_select_mode(current)
+
+func _select_mode(mode: String) -> void:
+	Global.game_manager.current_mode = mode
+	for m in mode_to_container:
+		mode_to_container[m].visible = m == mode
 
 func _on_refresh_lobby_search() -> void:
 	if not Global.steam_available():

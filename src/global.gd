@@ -28,6 +28,9 @@ func _ready() -> void:
 	if offline_playtest and not is_server:
 		print("Offline playtest mode active: skipping Steam Web API auth ticket request.")
 
+	if not is_server:
+		get_tree().node_added.connect(_apply_pointer_cursor)
+
 	map_manager = MapManager.new()
 	server_bridge = ServerBridge.new()
 
@@ -156,3 +159,7 @@ func is_sv() -> bool:
 
 func is_offline_playtest_mode(user_args: PackedStringArray) -> bool:
 	return user_args.has("--offline-playtest")
+
+func _apply_pointer_cursor(node: Node) -> void:
+	if node is BaseButton:
+		(node as Control).mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND

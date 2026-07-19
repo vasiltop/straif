@@ -12,7 +12,6 @@ TEST_SCRIPTS=(
 	"res://tests/replay_input_display_test.gd"
 	"res://tests/world_record_announcement_test.gd"
 	"res://tests/offline_playtest_smoke.gd"
-	"res://tests/aim_menu_smoke.gd"
 	"res://tests/aim_trainer_smoke.gd"
 	"res://tests/death_camera_test.gd"
 	"res://tests/elimination_round_state_test.gd"

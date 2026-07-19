@@ -8,10 +8,11 @@ var map_container := HFlowContainer.new()
 func _ready() -> void:
 	var sc := ScrollContainer.new()
 	sc.size_flags_vertical = Control.SIZE_EXPAND
+	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sc.set_anchors_preset(PRESET_FULL_RECT)
 	add_child(sc)
 	var margin_container := MarginContainer.new()
-	var margin := 20
+	var margin := 0
 	margin_container.add_theme_constant_override("margin_left", margin)
 	margin_container.add_theme_constant_override("margin_top", margin)
 	margin_container.add_theme_constant_override("margin_right", margin)
@@ -21,8 +22,12 @@ func _ready() -> void:
 	margin_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	map_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	map_container.add_theme_constant_override("h_separation", 15)
-	map_container.add_theme_constant_override("v_separation", 15)
+	map_container.add_theme_constant_override("h_separation", 20)
+	map_container.add_theme_constant_override("v_separation", 20)
+	map_container.resized.connect(_fit)
+
+func _fit() -> void:
+	CardGrid.fit(map_container, 3)
 
 func add_map(map: MapData, mode: String, pb: float, position: int, total: int) -> void:
 	var btn: MapButton = MapButtonScene.instantiate()
@@ -30,6 +35,7 @@ func add_map(map: MapData, mode: String, pb: float, position: int, total: int) -
 	btn.mode = mode
 	map_container.add_child(btn)
 	btn.set_personal_best(pb, position, total, mode)
+	_fit.call_deferred()
 
 func get_map(name: String) -> MapButton:
 	for child: MapButton in map_container.get_children():

@@ -151,7 +151,8 @@ func _clear_rows(container: VBoxContainer) -> void:
 
 func _add_waiting_row(container: VBoxContainer) -> void:
 	var waiting := Label.new()
-	waiting.text = "Waiting for player..."
+	waiting.theme_type_variation = &"Muted"
+	waiting.text = "Waiting for player"
 	waiting.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	container.add_child(waiting)
 
@@ -162,10 +163,12 @@ func _add_player_row(container: VBoxContainer, player: Player) -> void:
 
 	var player_name := Label.new()
 	player_name.text = player.player_name()
+	player_name.theme_type_variation = &"BodyStrong"
 	player_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	player_name.clip_text = true
 
 	var state := Label.new()
+	state.theme_type_variation = &"Data"
 	state.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	state.custom_minimum_size = Vector2(52.0, 0.0)
 

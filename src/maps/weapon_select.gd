@@ -18,6 +18,8 @@ func _ready() -> void:
 		var btn := Button.new()
 		weapon_buttons_container.add_child(btn)
 		btn.text = weapon.name
+		btn.theme_type_variation = &"GhostButton"
+		btn.custom_minimum_size = Vector2(0.0, 40.0)
 		btn.focus_mode = Control.FOCUS_NONE
 
 		btn.pressed.connect(func() -> void: weapon_chosen.emit(index))

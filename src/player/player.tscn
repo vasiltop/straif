@@ -6,10 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://djddy6xnwyhp7" path="res://src/player/arms_suit.jpg" id="4_8ydov"]
 [ext_resource type="PackedScene" uid="uid://dslxsxr407xd" path="res://src/player/character.glb" id="6_jiejy"]
 [ext_resource type="PackedScene" uid="uid://bl08qnvut26i8" path="res://src/menus/settings/settings_menu.tscn" id="6_x42xx"]
-[ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="7_l271a"]
 [ext_resource type="Script" uid="uid://cuhfu4wnvmo3h" path="res://src/target/body_part.gd" id="7_o822w"]
 [ext_resource type="Texture2D" uid="uid://dl7wdfh0wq8f8" path="res://src/textures/BloodOverlay_edited.png" id="8_8ydov"]
 [ext_resource type="Texture2D" uid="uid://cncfrlllaohv5" path="res://src/textures/sniper_overlay.png" id="11_ylhto"]
+[ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="13_theme"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uiqqt"]
 resource_name = "Material"
@@ -181,11 +181,11 @@ node_connections = [&"output", 0, &"blend", &"blend", 0, &"idle", &"blend", 1, &
 [node name="Player" type="CharacterBody3D" unique_id=320070462 node_paths=PackedStringArray("back_btn", "ui", "crosshair", "sniper_overlay", "main_menu_btn", "pause_menu", "bone_simulator", "ragdoll_camera", "fps_label", "hud_animator", "blood_overlay")]
 collision_layer = 2
 script = ExtResource("1_4anbu")
-back_btn = NodePath("UI/Control/PauseMenu/MarginContainer/VBoxContainer/HFlowContainer/Back")
+back_btn = NodePath("UI/Control/PauseMenu/Center/Shell/Pad/VBoxContainer/Header/Back")
 ui = NodePath("UI")
 crosshair = NodePath("UI/Control/Crosshair")
 sniper_overlay = NodePath("UI/Control/SniperOverlay")
-main_menu_btn = NodePath("UI/Control/PauseMenu/MarginContainer/VBoxContainer/HFlowContainer/MainMenu")
+main_menu_btn = NodePath("UI/Control/PauseMenu/Center/Shell/Pad/VBoxContainer/Header/MainMenu")
 pause_menu = NodePath("UI/Control/PauseMenu")
 bone_simulator = NodePath("ThirdPerson/Model/FullArmature/Skeleton3D/PhysicalBoneSimulator3D")
 ragdoll_camera = NodePath("ThirdPerson/Model/FullArmature/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone middle/RagdollCamera")
@@ -345,6 +345,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("13_theme")
 
 [node name="SniperOverlay" type="TextureRect" parent="UI/Control" unique_id=261367116]
 visible = false
@@ -398,39 +399,64 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Control/PauseMenu" unique_id=1847605072]
+[node name="Scrim" type="ColorRect" parent="UI/Control/PauseMenu"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 100
-theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 100
-theme_override_constants/margin_bottom = 100
+mouse_filter = 2
+color = Color(0, 0, 0, 0.35)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/PauseMenu/MarginContainer" unique_id=1523715808]
-layout_mode = 2
-theme_override_constants/separation = 20
+[node name="Center" type="CenterContainer" parent="UI/Control/PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="HFlowContainer" type="HFlowContainer" parent="UI/Control/PauseMenu/MarginContainer/VBoxContainer" unique_id=143516208]
+[node name="Shell" type="PanelContainer" parent="UI/Control/PauseMenu/Center"]
+custom_minimum_size = Vector2(1360, 768)
 layout_mode = 2
-theme_override_constants/h_separation = 10
 
-[node name="Back" type="Button" parent="UI/Control/PauseMenu/MarginContainer/VBoxContainer/HFlowContainer" unique_id=666208175]
-custom_minimum_size = Vector2(0, 50)
+[node name="Pad" type="MarginContainer" parent="UI/Control/PauseMenu/Center/Shell"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Back"
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 40
 
-[node name="MainMenu" type="Button" parent="UI/Control/PauseMenu/MarginContainer/VBoxContainer/HFlowContainer" unique_id=1272137461]
-custom_minimum_size = Vector2(0, 50)
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/PauseMenu/Center/Shell/Pad" unique_id=1523715808]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_constants/separation = 24
+
+[node name="Header" type="HBoxContainer" parent="UI/Control/PauseMenu/Center/Shell/Pad/VBoxContainer" unique_id=143516208]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Eyebrow" type="Label" parent="UI/Control/PauseMenu/Center/Shell/Pad/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Eyebrow"
+text = "PAUSED"
+vertical_alignment = 1
+
+[node name="Back" type="Button" parent="UI/Control/PauseMenu/Center/Shell/Pad/VBoxContainer/Header" unique_id=666208175]
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
+text = "Resume"
+
+[node name="MainMenu" type="Button" parent="UI/Control/PauseMenu/Center/Shell/Pad/VBoxContainer/Header" unique_id=1272137461]
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+theme_type_variation = &"DangerButton"
 text = "Main Menu"
 
-[node name="SettingsMenu" parent="UI/Control/PauseMenu/MarginContainer/VBoxContainer" unique_id=1894909301 instance=ExtResource("6_x42xx")]
+[node name="SettingsMenu" parent="UI/Control/PauseMenu/Center/Shell/Pad/VBoxContainer" unique_id=1894909301 instance=ExtResource("6_x42xx")]
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -439,7 +465,6 @@ custom_minimum_size = Vector2(120, 30)
 layout_mode = 1
 offset_right = 120.0
 offset_bottom = 30.0
-theme_override_styles/panel = ExtResource("7_l271a")
 
 [node name="Fps" type="Label" parent="UI/Control/TopLeft" unique_id=527587454]
 layout_mode = 1
@@ -448,7 +473,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 17
+theme_type_variation = &"Data"
 text = "60 fps"
 horizontal_alignment = 1
 vertical_alignment = 1

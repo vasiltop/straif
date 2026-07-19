@@ -1,23 +1,30 @@
-[gd_scene format=3 uid="uid://bqw7n2yx8vk3l"]
+[gd_scene load_steps=3 format=3 uid="uid://bqw7n2yx8vk3l"]
 
 [ext_resource type="Script" path="res://src/maps/weapon_select.gd" id="1_ws0nb"]
+[ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_theme"]
 
 [node name="WeaponSelect" type="PanelContainer"]
+custom_minimum_size = Vector2(260, 0)
+theme = ExtResource("2_theme")
 script = ExtResource("1_ws0nb")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 22
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Weapon Select"
+theme_type_variation = &"Eyebrow"
+text = "WEAPON SELECT"
+horizontal_alignment = 1
 
 [node name="WeaponButtons" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 8

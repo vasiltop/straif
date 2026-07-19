@@ -43,8 +43,8 @@ gdscript/warnings/inference_on_variant=0
 
 [display]
 
-window/stretch/mode="viewport"
-window/stretch/aspect="ignore"
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 window/vsync/vsync_mode=0
 
 [editor]

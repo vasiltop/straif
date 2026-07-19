@@ -1,10 +1,17 @@
-[gd_scene format=3 uid="uid://bpp08d4e3usc8"]
+[gd_scene load_steps=6 format=3 uid="uid://bpp08d4e3usc8"]
 
 [ext_resource type="Script" uid="uid://i3xqw50q2bka" path="res://src/menus/main/aim_menu.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_theme"]
-[ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="3_panel"]
+[ext_resource type="Texture2D" uid="uid://bdvgjao8edruy" path="res://src/textures/aim/gridshot.jpg" id="3_grid"]
+[ext_resource type="Texture2D" uid="uid://bxkwfje1p6i47" path="res://src/textures/aim/flick.jpg" id="4_flick"]
+[ext_resource type="Texture2D" uid="uid://bkfucv0fgg1bq" path="res://src/textures/aim/tracking.jpg" id="5_track"]
 
-[node name="AimMenu" type="Control" unique_id=449192479]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info"]
+bg_color = Color(0.0394, 0.0394, 0.0394, 0.88)
+border_width_top = 1
+border_color = Color(0.9516, 0.9487, 0.9281, 0.16)
+
+[node name="AimMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,193 +21,256 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_script")
 
-[node name="Scroll" type="ScrollContainer" parent="." unique_id=1043927663]
+[node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-horizontal_scroll_mode = 0
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 8
 
-[node name="Margin" type="MarginContainer" parent="Scroll" unique_id=1334126158]
+[node name="V" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+size_flags_vertical = 3
+theme_override_constants/separation = 18
 
-[node name="Content" type="VBoxContainer" parent="Scroll/Margin" unique_id=527657549]
+[node name="Title" type="Label" parent="Margin/V"]
+layout_mode = 2
+theme_type_variation = &"Heading"
+text = "Aim discipline"
+
+[node name="Cards" type="HBoxContainer" parent="Margin/V"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 23
+size_flags_vertical = 3
+theme_override_constants/separation = 16
 
-[node name="Title" type="Label" parent="Scroll/Margin/Content" unique_id=109730127]
-layout_mode = 2
-theme_override_font_sizes/font_size = 34
-text = "Aim Trainer"
-
-[node name="ScenarioList" type="HFlowContainer" parent="Scroll/Margin/Content" unique_id=1176750593]
+[node name="GridshotOption" type="Button" parent="Margin/V/Cards"]
+custom_minimum_size = Vector2(0, 360)
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/h_separation = 12
-theme_override_constants/v_separation = 12
+size_flags_vertical = 3
+theme_type_variation = &"ScenarioCard"
 
-[node name="GridshotOption" type="PanelContainer" parent="Scroll/Margin/Content/ScenarioList" unique_id=473258523]
-custom_minimum_size = Vector2(180, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("3_panel")
+[node name="Image" type="TextureRect" parent="Margin/V/Cards/GridshotOption"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_grid")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="OptionContent" type="MarginContainer" parent="Scroll/Margin/Content/ScenarioList/GridshotOption" unique_id=1611685579]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+[node name="Layout" type="VBoxContainer" parent="Margin/V/Cards/GridshotOption"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
 
-[node name="OptionStack" type="VBoxContainer" parent="Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent" unique_id=67755598]
+[node name="Spacer" type="Control" parent="Margin/V/Cards/GridshotOption/Layout"]
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Info" type="PanelContainer" parent="Margin/V/Cards/GridshotOption/Layout"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_info")
+
+[node name="M" type="MarginContainer" parent="Margin/V/Cards/GridshotOption/Layout/Info"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 18
+
+[node name="Stack" type="VBoxContainer" parent="Margin/V/Cards/GridshotOption/Layout/Info/M"]
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="GridshotButton" type="Button" parent="Scroll/Margin/Content/ScenarioList/GridshotOption/OptionContent/OptionStack" unique_id=272142700]
+[node name="Title" type="Label" parent="Margin/V/Cards/GridshotOption/Layout/Info/M/Stack"]
 layout_mode = 2
-toggle_mode = true
+mouse_filter = 2
+theme_type_variation = &"Subheading"
 text = "Gridshot"
 
-[node name="FlickOption" type="PanelContainer" parent="Scroll/Margin/Content/ScenarioList" unique_id=1237486155]
-custom_minimum_size = Vector2(180, 0)
+[node name="Desc" type="Label" parent="Margin/V/Cards/GridshotOption/Layout/Info/M/Stack"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Body"
+text = "Clear grids of pop-up targets as fast as you can. Sharpens flick speed and target switching."
+autowrap_mode = 3
+
+[node name="FlickOption" type="Button" parent="Margin/V/Cards"]
+custom_minimum_size = Vector2(0, 360)
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("3_panel")
+size_flags_vertical = 3
+theme_type_variation = &"ScenarioCard"
 
-[node name="OptionContent" type="MarginContainer" parent="Scroll/Margin/Content/ScenarioList/FlickOption" unique_id=1793227316]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+[node name="Image" type="TextureRect" parent="Margin/V/Cards/FlickOption"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_flick")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="OptionStack" type="VBoxContainer" parent="Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent" unique_id=2098220818]
+[node name="Layout" type="VBoxContainer" parent="Margin/V/Cards/FlickOption"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Spacer" type="Control" parent="Margin/V/Cards/FlickOption/Layout"]
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Info" type="PanelContainer" parent="Margin/V/Cards/FlickOption/Layout"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_info")
+
+[node name="M" type="MarginContainer" parent="Margin/V/Cards/FlickOption/Layout/Info"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 18
+
+[node name="Stack" type="VBoxContainer" parent="Margin/V/Cards/FlickOption/Layout/Info/M"]
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="FlickButton" type="Button" parent="Scroll/Margin/Content/ScenarioList/FlickOption/OptionContent/OptionStack" unique_id=1894681012]
+[node name="Title" type="Label" parent="Margin/V/Cards/FlickOption/Layout/Info/M/Stack"]
 layout_mode = 2
-toggle_mode = true
+mouse_filter = 2
+theme_type_variation = &"Subheading"
 text = "Flick"
 
-[node name="TrackingOption" type="PanelContainer" parent="Scroll/Margin/Content/ScenarioList" unique_id=2006786585]
-custom_minimum_size = Vector2(180, 0)
+[node name="Desc" type="Label" parent="Margin/V/Cards/FlickOption/Layout/Info/M/Stack"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Body"
+text = "Single targets appear at range. Snap on, land one clean shot, then reset."
+autowrap_mode = 3
+
+[node name="TrackingOption" type="Button" parent="Margin/V/Cards"]
+custom_minimum_size = Vector2(0, 360)
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("3_panel")
+size_flags_vertical = 3
+theme_type_variation = &"ScenarioCard"
 
-[node name="OptionContent" type="MarginContainer" parent="Scroll/Margin/Content/ScenarioList/TrackingOption" unique_id=967363142]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+[node name="Image" type="TextureRect" parent="Margin/V/Cards/TrackingOption"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_track")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="OptionStack" type="VBoxContainer" parent="Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent" unique_id=1717970606]
+[node name="Layout" type="VBoxContainer" parent="Margin/V/Cards/TrackingOption"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Spacer" type="Control" parent="Margin/V/Cards/TrackingOption/Layout"]
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Info" type="PanelContainer" parent="Margin/V/Cards/TrackingOption/Layout"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_info")
+
+[node name="M" type="MarginContainer" parent="Margin/V/Cards/TrackingOption/Layout/Info"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 18
+
+[node name="Stack" type="VBoxContainer" parent="Margin/V/Cards/TrackingOption/Layout/Info/M"]
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="TrackingButton" type="Button" parent="Scroll/Margin/Content/ScenarioList/TrackingOption/OptionContent/OptionStack" unique_id=391937139]
+[node name="Title" type="Label" parent="Margin/V/Cards/TrackingOption/Layout/Info/M/Stack"]
 layout_mode = 2
-toggle_mode = true
+mouse_filter = 2
+theme_type_variation = &"Subheading"
 text = "Tracking"
 
-[node name="SelectedScenarioLabel" type="Label" parent="Scroll/Margin/Content" unique_id=346974051]
+[node name="Desc" type="Label" parent="Margin/V/Cards/TrackingOption/Layout/Info/M/Stack"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 19
-text = "Selected Scenario: Gridshot"
+mouse_filter = 2
+theme_type_variation = &"Body"
+text = "Follow a moving target and keep your crosshair glued through long, curving arcs."
 autowrap_mode = 3
-
-[node name="StartButton" type="Button" parent="Scroll/Margin/Content" unique_id=210842098]
-custom_minimum_size = Vector2(0, 52)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Start"
-
-[node name="LeaderboardPanel" type="PanelContainer" parent="Scroll/Margin/Content" unique_id=1716217605]
-custom_minimum_size = Vector2(0, 300)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("3_panel")
-
-[node name="PanelMargin" type="MarginContainer" parent="Scroll/Margin/Content/LeaderboardPanel" unique_id=1497439273]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="PanelContent" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin" unique_id=86243203]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 14
-
-[node name="LeaderboardTitle" type="Label" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent" unique_id=176279214]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Leaderboards"
-
-[node name="LeaderboardTabs" type="TabContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent" unique_id=369445330]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_styles/panel = ExtResource("3_panel")
-current_tab = 0
-
-[node name="ScenarioRankings" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs" unique_id=1514770369]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 10
-metadata/_tab_index = 0
-
-[node name="ScenarioLeaderboardStatus" type="Label" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings" unique_id=1646875608]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.776471, 0.815686, 0.866667, 1)
-theme_override_font_sizes/font_size = 16
-text = "Loading scenario leaderboard..."
-autowrap_mode = 3
-
-[node name="ScenarioLeaderboardScroll" type="ScrollContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings" unique_id=1049786225]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ScenarioLeaderboardRows" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/ScenarioRankings/ScenarioLeaderboardScroll" unique_id=1180211722]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="OverallRankings" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs" unique_id=1163190557]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 10
-metadata/_tab_index = 1
-
-[node name="OverallLeaderboardStatus" type="Label" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings" unique_id=1090515789]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.776471, 0.815686, 0.866667, 1)
-theme_override_font_sizes/font_size = 16
-text = "Loading overall leaderboard..."
-autowrap_mode = 3
-
-[node name="OverallLeaderboardScroll" type="ScrollContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings" unique_id=847888780]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="OverallLeaderboardRows" type="VBoxContainer" parent="Scroll/Margin/Content/LeaderboardPanel/PanelMargin/PanelContent/LeaderboardTabs/OverallRankings/OverallLeaderboardScroll" unique_id=1756058708]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8

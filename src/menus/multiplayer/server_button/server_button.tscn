@@ -2,77 +2,90 @@
 
 [ext_resource type="Script" uid="uid://dl67sk5d5omqt" path="res://src/menus/multiplayer/server_button/server_button.gd" id="1_b2nqr"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info"]
+bg_color = Color(0.0394, 0.0394, 0.0394, 0.88)
+border_width_top = 1
+border_color = Color(0.9516, 0.9487, 0.9281, 0.16)
+
 [node name="ServerBrowser" type="Panel" unique_id=457801610]
-custom_minimum_size = Vector2(500, 300)
+clip_contents = true
+custom_minimum_size = Vector2(290, 300)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 script = ExtResource("1_b2nqr")
 
-[node name="M" type="MarginContainer" parent="." unique_id=1004490557]
+[node name="MapImage" type="TextureRect" parent="." unique_id=1596816359]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
 
-[node name="C" type="Control" parent="M" unique_id=1003413686]
-layout_mode = 2
-
-[node name="P" type="PanelContainer" parent="M/C" unique_id=1596816359]
+[node name="Layout" type="VBoxContainer" parent="." unique_id=1003413686]
 layout_mode = 1
-offset_right = 193.0
-offset_bottom = 81.0
-size_flags_horizontal = 0
-
-[node name="M" type="MarginContainer" parent="M/C/P" unique_id=140194075]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="V" type="VBoxContainer" parent="M/C/P/M" unique_id=1381659690]
-layout_mode = 2
-theme_override_constants/separation = 5
-
-[node name="Name" type="Label" parent="M/C/P/M/V" unique_id=1549806126]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Server Name"
-
-[node name="Mode" type="Label" parent="M/C/P/M/V" unique_id=306432456]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Mode: Deathmatch"
-
-[node name="Map" type="Label" parent="M/C/P/M/V" unique_id=1683007305]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Map: map_deathmatch"
-
-[node name="PlayerCount" type="Label" parent="M/C/P/M/V" unique_id=1319506755]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Players: 1 / 10"
-
-[node name="V" type="VBoxContainer" parent="M/C" unique_id=1027434247]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
 
-[node name="Join" type="Button" parent="M/C/V" unique_id=434862948]
+[node name="Spacer" type="Control" parent="Layout"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Join"
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Info" type="PanelContainer" parent="Layout" unique_id=140194075]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_info")
+
+[node name="M" type="MarginContainer" parent="Layout/Info"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="V" type="VBoxContainer" parent="Layout/Info/M" unique_id=1381659690]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Name" type="Label" parent="Layout/Info/M/V" unique_id=1549806126]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Subheading"
+text = "Server Name"
+text_overrun_behavior = 3
+
+[node name="Meta" type="Label" parent="Layout/Info/M/V" unique_id=306432456]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Data"
+text = "DEATHMATCH · map_deathmatch"
+text_overrun_behavior = 3
+
+[node name="PlayerCount" type="Label" parent="Layout/Info/M/V" unique_id=1319506755]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"DataStrong"
+text = "PLAYERS: 1 / 10"

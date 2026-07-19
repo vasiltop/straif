@@ -195,11 +195,15 @@ func show_leaderboard_rows(rows: Array) -> void:
 		var row_data = rows[index]
 		var entry := HBoxContainer.new()
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		entry.add_theme_constant_override("separation", 12)
+		entry.add_theme_constant_override("separation", 18)
 
 		var rank_label := Label.new()
 		var name_label := Label.new()
 		var value_label := Label.new()
+		rank_label.theme_type_variation = &"Data"
+		name_label.theme_type_variation = &"BodyStrong"
+		value_label.theme_type_variation = &"Data"
+		rank_label.custom_minimum_size = Vector2(44.0, 0.0)
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		value_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -467,12 +471,12 @@ func _on_player_toggled_pause(value: bool) -> void:
 func _refresh_hud() -> void:
 	timer_label.text = "TIME\n%.1f" % session_time_remaining
 	score_label.text = "SCORE\n%d" % score
-	scenario_label.text = "SCENARIO\n%s" % selected_scenario.to_upper()
-	hits_label.text = "HITS\n%d" % hits
-	misses_label.text = "MISSES\n%d" % misses
-	accuracy_label.text = "ACCURACY\n%.1f%%" % calculate_accuracy(hits, misses)
+	scenario_label.text = selected_scenario.to_upper()
+	hits_label.text = "%d" % hits
+	misses_label.text = "%d" % misses
+	accuracy_label.text = "%.1f%%" % calculate_accuracy(hits, misses)
 	var average_reaction_ms := calculate_average_reaction_ms(reaction_samples)
-	reaction_label.text = ("AVG REACTION\n%s" % ("--" if reaction_samples.is_empty() else "%d ms" % int(round(average_reaction_ms))))
+	reaction_label.text = "--" if reaction_samples.is_empty() else "%d ms" % int(round(average_reaction_ms))
 
 	if session_finished:
 		status_label.text = "Session complete"

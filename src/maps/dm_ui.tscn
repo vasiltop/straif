@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://yt11h0uucmdb"]
+[gd_scene load_steps=4 format=3 uid="uid://yt11h0uucmdb"]
 
 [ext_resource type="Script" uid="uid://dxy605d5e1r8s" path="res://src/maps/dm_ui.gd" id="1_4t61y"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_apyh6"]
-[ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="3_0d3cy"]
 [ext_resource type="PackedScene" uid="uid://bqw7n2yx8vk3l" path="res://src/maps/weapon_select.tscn" id="4_ws0nb"]
 
 [node name="DmUi" type="CanvasLayer" node_paths=PackedStringArray("killfeed", "weapon_select", "ammo_label", "health_label", "time_left_label")]
@@ -41,7 +40,7 @@ theme_override_constants/margin_bottom = 15
 [node name="Killfeed" type="VBoxContainer" parent="Control/Control"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 4
 
 [node name="WeaponSelect" parent="Control" instance=ExtResource("4_ws0nb")]
 layout_mode = 1
@@ -65,27 +64,27 @@ anchor_bottom = 1.0
 offset_top = -52.0
 offset_right = 158.0
 grow_vertical = 0
-theme_override_styles/panel = ExtResource("3_0d3cy")
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/BottomLeft"]
 layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/BottomLeft/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 3
 
 [node name="Ammo" type="Label" parent="Control/BottomLeft/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 17
+theme_type_variation = &"DataStrong"
 text = "Ammo: 30 / 180"
 horizontal_alignment = 1
 
 [node name="Health" type="Label" parent="Control/BottomLeft/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 17
+theme_type_variation = &"DataStrong"
 text = "Health: 100"
 horizontal_alignment = 1
 
@@ -108,7 +107,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="TimeLeft" type="Label" parent="Control/TopMiddle/MarginContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 15
+theme_type_variation = &"DataStrong"
 text = "Time Left: 250s"
 horizontal_alignment = 1
 vertical_alignment = 1

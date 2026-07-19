@@ -2,6 +2,9 @@
 
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="1_c5rfe"]
 [ext_resource type="Script" uid="uid://baftybw27iasg" path="res://src/menus/multiplayer/multiplayer.gd" id="2_tfc8f"]
+[ext_resource type="Texture2D" uid="uid://c4pkcl33pek3w" path="res://src/textures/ui/refresh.svg" id="2_refresh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nofill"]
 
 [node name="Multiplayer" type="Control" unique_id=1297871162]
 layout_mode = 3
@@ -20,40 +23,68 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="P" type="PanelContainer" parent="M" unique_id=644607146]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_nofill")
 
 [node name="M" type="MarginContainer" parent="M/P" unique_id=1050822829]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 8
 
 [node name="V" type="VBoxContainer" parent="M/P/M" unique_id=1394768766]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 18
 
 [node name="Label" type="Label" parent="M/P/M/V" unique_id=1902644272]
 layout_mode = 2
-text = "Multiplayer"
+theme_type_variation = &"Heading"
+text = "Join a live arena"
 
-[node name="ModeTabs" type="TabBar" parent="M/P/M/V" unique_id=1755774607]
+[node name="Toolbar" type="HBoxContainer" parent="M/P/M/V"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
 
-[node name="Refresh" type="Button" parent="M/P/M/V" unique_id=218052640]
+[node name="ModeTabs" type="HBoxContainer" parent="M/P/M/V/Toolbar" unique_id=1755774607]
 layout_mode = 2
-text = "Refresh Servers"
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 8
 
-[node name="ServerContainer" type="HFlowContainer" parent="M/P/M/V" unique_id=495822002]
+[node name="Refresh" type="Button" parent="M/P/M/V/Toolbar" unique_id=218052640]
+custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
+theme_type_variation = &"GhostButton"
+icon = ExtResource("2_refresh")
+
+[node name="Scroll" type="ScrollContainer" parent="M/P/M/V"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ServerContainer" type="HFlowContainer" parent="M/P/M/V/Scroll" unique_id=495822002]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
 
 [node name="EmptyState" type="Label" parent="M/P/M/V" unique_id=887549474]
 visible = false
 layout_mode = 2
+theme_type_variation = &"Body"
 text = "No servers online."
 horizontal_alignment = 1

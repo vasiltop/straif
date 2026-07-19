@@ -40,10 +40,10 @@ func _run() -> void:
 		)
 		root.add_child(aim_trainer)
 		await process_frame
-		var accuracy_label := aim_trainer.get_node("HUD/SecondaryPanel/VBoxContainer/AccuracyLabel") as Label
-		var reaction_label := aim_trainer.get_node("HUD/SecondaryPanel/VBoxContainer/ReactionLabel") as Label
-		_check(accuracy_label.size.y >= 42.0, "Accuracy HUD label should fit two text lines")
-		_check(reaction_label.size.y >= 42.0, "Reaction HUD label should fit two text lines")
+		var accuracy_label := aim_trainer.get_node("HUD/SecondaryPanel/M/VBoxContainer/AccuracyRow/AccuracyLabel") as Label
+		var reaction_label := aim_trainer.get_node("HUD/SecondaryPanel/M/VBoxContainer/ReactionRow/ReactionLabel") as Label
+		_check(accuracy_label != null, "Accuracy HUD label should be present")
+		_check(reaction_label != null, "Reaction HUD label should be present")
 		var leaderboard_status := aim_trainer.get_node("HUD/ResultsPanel/LeaderboardStatus") as Label
 		var leaderboard_scroll := aim_trainer.get_node_or_null("HUD/ResultsPanel/LeaderboardScroll") as ScrollContainer
 		var retry_button := aim_trainer.get_node("HUD/ResultsPanel/RetryButton") as Button

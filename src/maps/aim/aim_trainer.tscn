@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://ck8d0ge2viqor" path="res://src/maps/aim/aim_trainer.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="3_theme"]
 [ext_resource type="Texture2D" uid="uid://60ov88fgcpj7" path="res://src/textures/skyboxes/cold.png" id="4_il6ro"]
-[ext_resource type="StyleBox" uid="uid://qusrl8wrgfa0" path="res://src/panel_style.tres" id="4_panel"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor_ceiling"]
 size = Vector3(17, 0.5, 28)
@@ -57,14 +56,14 @@ player_spawn = NodePath("PlayerSpawn")
 aim_targets = NodePath("AimTargets")
 target_wall_anchor = NodePath("TargetWallAnchor")
 primary_panel = NodePath("HUD/PrimaryPanel")
-timer_label = NodePath("HUD/PrimaryPanel/TimerLabel")
-score_label = NodePath("HUD/PrimaryPanel/ScoreLabel")
+timer_label = NodePath("HUD/PrimaryPanel/M/Row/TimerLabel")
+score_label = NodePath("HUD/PrimaryPanel/M/Row/ScoreLabel")
 secondary_panel = NodePath("HUD/SecondaryPanel")
-scenario_label = NodePath("HUD/SecondaryPanel/VBoxContainer/ScenarioLabel")
-hits_label = NodePath("HUD/SecondaryPanel/VBoxContainer/HitsLabel")
-misses_label = NodePath("HUD/SecondaryPanel/VBoxContainer/MissesLabel")
-accuracy_label = NodePath("HUD/SecondaryPanel/VBoxContainer/AccuracyLabel")
-reaction_label = NodePath("HUD/SecondaryPanel/VBoxContainer/ReactionLabel")
+scenario_label = NodePath("HUD/SecondaryPanel/M/VBoxContainer/ScenarioLabel")
+hits_label = NodePath("HUD/SecondaryPanel/M/VBoxContainer/HitsRow/HitsLabel")
+misses_label = NodePath("HUD/SecondaryPanel/M/VBoxContainer/MissesRow/MissesLabel")
+accuracy_label = NodePath("HUD/SecondaryPanel/M/VBoxContainer/AccuracyRow/AccuracyLabel")
+reaction_label = NodePath("HUD/SecondaryPanel/M/VBoxContainer/ReactionRow/ReactionLabel")
 status_label = NodePath("HUD/StatusLabel")
 results_panel = NodePath("HUD/ResultsPanel")
 results_score_label = NodePath("HUD/ResultsPanel/ResultsScoreLabel")
@@ -182,24 +181,35 @@ layer = 3
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -190.0
-offset_top = 24.0
-offset_right = 190.0
-offset_bottom = 111.0
+offset_top = 20.0
 grow_horizontal = 2
 mouse_filter = 2
 theme = ExtResource("3_theme")
-theme_override_styles/panel = ExtResource("4_panel")
 
-[node name="TimerLabel" type="Label" parent="HUD/PrimaryPanel" unique_id=681874969]
+[node name="M" type="MarginContainer" parent="HUD/PrimaryPanel"]
+mouse_filter = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 14
+
+[node name="Row" type="HBoxContainer" parent="HUD/PrimaryPanel/M"]
+mouse_filter = 2
+theme_override_constants/separation = 48
+
+[node name="TimerLabel" type="Label" parent="HUD/PrimaryPanel/M/Row" unique_id=681874969]
+custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
+theme_type_variation = &"DataStrong"
 theme_override_font_sizes/font_size = 30
 text = "TIME
 60.0"
 vertical_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="HUD/PrimaryPanel" unique_id=632295292]
+[node name="ScoreLabel" type="Label" parent="HUD/PrimaryPanel/M/Row" unique_id=632295292]
+custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
+theme_type_variation = &"DataStrong"
 theme_override_font_sizes/font_size = 30
 text = "SCORE
 0"
@@ -210,47 +220,83 @@ vertical_alignment = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -286.0
-offset_top = 24.0
-offset_right = -24.0
-offset_bottom = 244.0
+offset_left = -300.0
+offset_top = 20.0
+offset_right = -20.0
 grow_horizontal = 0
 mouse_filter = 2
 theme = ExtResource("3_theme")
-theme_override_styles/panel = ExtResource("4_panel")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/SecondaryPanel" unique_id=374513758]
-layout_mode = 2
+[node name="M" type="MarginContainer" parent="HUD/SecondaryPanel"]
+mouse_filter = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 18
 
-[node name="ScenarioLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=1381549400]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "SCENARIO
-GRIDSHOT"
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/SecondaryPanel/M" unique_id=374513758]
+mouse_filter = 2
+theme_override_constants/separation = 12
 
-[node name="HitsLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=1095772489]
-layout_mode = 2
-theme_override_font_sizes/font_size = 17
-text = "HITS
-0"
+[node name="ScenarioCaption" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer"]
+theme_type_variation = &"Eyebrow"
+text = "SCENARIO"
 
-[node name="MissesLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=1124188211]
-layout_mode = 2
-theme_override_font_sizes/font_size = 17
-text = "MISSES
-0"
+[node name="ScenarioLabel" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer" unique_id=1381549400]
+theme_type_variation = &"Subheading"
+text = "GRIDSHOT"
 
-[node name="AccuracyLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=438090514]
-layout_mode = 2
-theme_override_font_sizes/font_size = 17
-text = "ACCURACY
-0.0%"
+[node name="HitsRow" type="HBoxContainer" parent="HUD/SecondaryPanel/M/VBoxContainer"]
+theme_override_constants/separation = 24
 
-[node name="ReactionLabel" type="Label" parent="HUD/SecondaryPanel/VBoxContainer" unique_id=1104226591]
-layout_mode = 2
-theme_override_font_sizes/font_size = 17
-text = "AVG REACTION
---"
+[node name="Caption" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer/HitsRow"]
+size_flags_horizontal = 3
+theme_type_variation = &"Data"
+text = "HITS"
+
+[node name="HitsLabel" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer/HitsRow" unique_id=1095772489]
+theme_type_variation = &"DataStrong"
+text = "0"
+horizontal_alignment = 2
+
+[node name="MissesRow" type="HBoxContainer" parent="HUD/SecondaryPanel/M/VBoxContainer"]
+theme_override_constants/separation = 24
+
+[node name="Caption" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer/MissesRow"]
+size_flags_horizontal = 3
+theme_type_variation = &"Data"
+text = "MISSES"
+
+[node name="MissesLabel" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer/MissesRow" unique_id=1124188211]
+theme_type_variation = &"DataStrong"
+text = "0"
+horizontal_alignment = 2
+
+[node name="AccuracyRow" type="HBoxContainer" parent="HUD/SecondaryPanel/M/VBoxContainer"]
+theme_override_constants/separation = 24
+
+[node name="Caption" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer/AccuracyRow"]
+size_flags_horizontal = 3
+theme_type_variation = &"Data"
+text = "ACCURACY"
+
+[node name="AccuracyLabel" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer/AccuracyRow" unique_id=438090514]
+theme_type_variation = &"DataStrong"
+text = "0.0%"
+horizontal_alignment = 2
+
+[node name="ReactionRow" type="HBoxContainer" parent="HUD/SecondaryPanel/M/VBoxContainer"]
+theme_override_constants/separation = 24
+
+[node name="Caption" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer/ReactionRow"]
+size_flags_horizontal = 3
+theme_type_variation = &"Data"
+text = "AVG REACTION"
+
+[node name="ReactionLabel" type="Label" parent="HUD/SecondaryPanel/M/VBoxContainer/ReactionRow" unique_id=1104226591]
+theme_type_variation = &"DataStrong"
+text = "--"
+horizontal_alignment = 2
 
 [node name="StatusLabel" type="Label" parent="HUD" unique_id=1199251276]
 anchors_preset = 5
@@ -262,7 +308,7 @@ offset_right = 180.0
 offset_bottom = 162.0
 grow_horizontal = 2
 theme = ExtResource("3_theme")
-theme_override_font_sizes/font_size = 22
+theme_type_variation = &"BodyStrong"
 text = "Starting in 3.0"
 horizontal_alignment = 1
 
@@ -280,7 +326,6 @@ offset_bottom = 310.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_theme")
-theme_override_styles/panel = ExtResource("4_panel")
 
 [node name="ResultsTitle" type="Label" parent="HUD/ResultsPanel" unique_id=512843115]
 layout_mode = 0
@@ -288,7 +333,7 @@ offset_left = 30.0
 offset_top = 24.0
 offset_right = 590.0
 offset_bottom = 58.0
-theme_override_font_sizes/font_size = 28
+theme_type_variation = &"Heading"
 text = "Session Results"
 horizontal_alignment = 1
 
@@ -298,7 +343,7 @@ offset_left = 30.0
 offset_top = 70.0
 offset_right = 590.0
 offset_bottom = 108.0
-theme_override_font_sizes/font_size = 26
+theme_type_variation = &"DataStrong"
 text = "Score 0"
 horizontal_alignment = 1
 
@@ -308,7 +353,7 @@ offset_left = 40.0
 offset_top = 118.0
 offset_right = 580.0
 offset_bottom = 220.0
-theme_override_font_sizes/font_size = 18
+theme_type_variation = &"Body"
 text = "Hits 0
 Misses 0
 Accuracy 0.0%
@@ -322,8 +367,8 @@ offset_left = 40.0
 offset_top = 234.0
 offset_right = 580.0
 offset_bottom = 262.0
-theme_override_font_sizes/font_size = 18
-text = "Scenario Leaderboard"
+theme_type_variation = &"Eyebrow"
+text = "SCENARIO LEADERBOARD"
 horizontal_alignment = 1
 
 [node name="LeaderboardStatus" type="Label" parent="HUD/ResultsPanel" unique_id=1129531963]
@@ -332,7 +377,7 @@ offset_left = 40.0
 offset_top = 270.0
 offset_right = 580.0
 offset_bottom = 312.0
-theme_override_font_sizes/font_size = 16
+theme_type_variation = &"Muted"
 text = "Leaderboard ready for integration"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -358,6 +403,7 @@ offset_left = 132.0
 offset_top = 550.0
 offset_right = 302.0
 offset_bottom = 594.0
+theme_type_variation = &"PrimaryButton"
 text = "Retry"
 
 [node name="MainMenuButton" type="Button" parent="HUD/ResultsPanel" unique_id=1631570143]
@@ -366,6 +412,7 @@ offset_left = 318.0
 offset_top = 550.0
 offset_right = 488.0
 offset_bottom = 594.0
+theme_type_variation = &"DangerButton"
 text = "Main Menu"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=663215520]

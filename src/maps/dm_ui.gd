@@ -7,7 +7,6 @@ class_name DmUi extends CanvasLayer
 @export var time_left_label: Label
 
 const MAX_KILLFEED_LENGTH := 5
-const KILLFEED_FONT_SIZE := 15
 const FEED_TTL := 5.0
 const TIME_PER_MAP := 180.0
 
@@ -87,8 +86,8 @@ func feed_log(value: String) -> void:
 	time_since_last_feed_update = 0.0
 	var label := Label.new()
 	label.text = value
+	label.theme_type_variation = &"Muted"
 	killfeed.add_child(label)
-	label.add_theme_font_size_override("font_size", KILLFEED_FONT_SIZE)
 
 func on_shot(mag_ammo: int, _reserve_ammo: int) -> void:
 	ammo_label.text = "Ammo: %d / Inf" % [mag_ammo]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0qa4nk774v55"]
+[gd_scene load_steps=8 format=3 uid="uid://c0qa4nk774v55"]
 
 [ext_resource type="Script" uid="uid://bsb0urrean8eg" path="res://src/menus/main/map_button/map_button.gd" id="1_b2nqr"]
 [ext_resource type="Texture2D" uid="uid://ddwv6d1j2fuuq" path="res://src/textures/bronze_medal.png" id="2_im2rw"]
@@ -7,103 +7,130 @@
 [ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="5_ckjem"]
 [ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="6_qp2bi"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info"]
+bg_color = Color(0.0394, 0.0394, 0.0394, 0.88)
+border_width_top = 1
+border_color = Color(0.9516, 0.9487, 0.9281, 0.16)
+
 [node name="MapButton" type="Panel"]
-custom_minimum_size = Vector2(500, 300)
+clip_contents = true
+custom_minimum_size = Vector2(290, 300)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 script = ExtResource("1_b2nqr")
 
-[node name="M" type="MarginContainer" parent="."]
+[node name="MapImage" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
 
-[node name="C" type="Control" parent="M"]
-layout_mode = 2
-
-[node name="P" type="PanelContainer" parent="M/C"]
+[node name="Layout" type="VBoxContainer" parent="."]
 layout_mode = 1
-offset_right = 193.0
-offset_bottom = 81.0
-size_flags_horizontal = 0
-
-[node name="M" type="MarginContainer" parent="M/C/P"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="V" type="VBoxContainer" parent="M/C/P/M"]
-layout_mode = 2
-
-[node name="MapName" type="Label" parent="M/C/P/M/V"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Map Name"
-
-[node name="Timer" type="Label" parent="M/C/P/M/V"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 20
-text = "Personal Best: Loading....
-Position: 0 / 0"
-
-[node name="V" type="VBoxContainer" parent="M/C"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
 
-[node name="Medals" type="GridContainer" parent="M/C/V"]
+[node name="Spacer" type="Control" parent="Layout"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Info" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_info")
+
+[node name="M" type="MarginContainer" parent="Layout/Info"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="V" type="VBoxContainer" parent="Layout/Info/M"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="MapName" type="Label" parent="Layout/Info/M/V"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Subheading"
+text = "Map Name"
+text_overrun_behavior = 3
+
+[node name="Timer" type="Label" parent="Layout/Info/M/V"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Data"
+text = "PB: --
+RANK: -- / --"
+
+[node name="Medals" type="GridContainer" parent="Layout/Info/M/V"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 8
 columns = 5
 
-[node name="Bronze" type="TextureRect" parent="M/C/V/Medals"]
+[node name="Bronze" type="TextureRect" parent="Layout/Info/M/V/Medals"]
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+mouse_filter = 2
 texture = ExtResource("2_im2rw")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Silver" type="TextureRect" parent="M/C/V/Medals"]
+[node name="Silver" type="TextureRect" parent="Layout/Info/M/V/Medals"]
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+mouse_filter = 2
 texture = ExtResource("3_vbpg3")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Gold" type="TextureRect" parent="M/C/V/Medals"]
+[node name="Gold" type="TextureRect" parent="Layout/Info/M/V/Medals"]
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+mouse_filter = 2
 texture = ExtResource("4_wkydv")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Plat" type="TextureRect" parent="M/C/V/Medals"]
+[node name="Plat" type="TextureRect" parent="Layout/Info/M/V/Medals"]
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+mouse_filter = 2
 texture = ExtResource("5_ckjem")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Author" type="TextureRect" parent="M/C/V/Medals"]
+[node name="Author" type="TextureRect" parent="Layout/Info/M/V/Medals"]
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+mouse_filter = 2
 texture = ExtResource("6_qp2bi")
-
-[node name="Play" type="Button" parent="M/C/V"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Play"
+expand_mode = 1
+stretch_mode = 5
