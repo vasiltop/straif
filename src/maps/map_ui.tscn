@@ -137,20 +137,22 @@ grow_vertical = 2
 
 [node name="Leaderboard" type="PanelContainer" parent="UiContainer/GameInfo" unique_id=106041974 node_paths=PackedStringArray("set_start_pos_btn")]
 z_index = 5
-custom_minimum_size = Vector2(900, 500)
+custom_minimum_size = Vector2(900, 0)
 layout_mode = 2
+size_flags_vertical = 4
 script = ExtResource("5_xab72")
 set_start_pos_btn = NodePath("M/V/SetStartPos")
 
 [node name="M" type="MarginContainer" parent="UiContainer/GameInfo/Leaderboard" unique_id=1987211971]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
 
 [node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Leaderboard/M" unique_id=256009263]
 layout_mode = 2
+theme_override_constants/separation = 8
 
 [node name="MapName" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=489005356]
 layout_mode = 2
@@ -159,36 +161,48 @@ text = "Current Map: Unknown"
 
 [node name="MedalInfo" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=407144307]
 layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 0
 columns = 5
 
 [node name="Bronze" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=1762660816]
-custom_minimum_size = Vector2(0, 175)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 3
+expand_mode = 1
+stretch_mode = 5
 texture = ExtResource("6_73vsl")
 
 [node name="Silver" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=1214353753]
-custom_minimum_size = Vector2(0, 175)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 3
+expand_mode = 1
+stretch_mode = 5
 texture = ExtResource("7_4gqp6")
 
 [node name="Gold" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=962079425]
-custom_minimum_size = Vector2(0, 175)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 3
+expand_mode = 1
+stretch_mode = 5
 texture = ExtResource("8_iw0sd")
 
 [node name="Plat" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=1442010764]
-custom_minimum_size = Vector2(0, 175)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 3
+expand_mode = 1
+stretch_mode = 5
 texture = ExtResource("9_k6ak5")
 
 [node name="Author" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=539784268]
-custom_minimum_size = Vector2(0, 175)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 3
+expand_mode = 1
+stretch_mode = 5
 texture = ExtResource("10_dxk01")
 
 [node name="BronzeTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=856530815]
@@ -228,7 +242,7 @@ text = "Leaderboard"
 
 [node name="TH" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=1869326597]
 layout_mode = 2
-theme_override_constants/h_separation = 30
+theme_override_constants/h_separation = 16
 columns = 6
 
 [node name="Pos" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH" unique_id=1499191342]
@@ -269,8 +283,8 @@ text = "View Replay"
 
 [node name="TRows" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=1498129242]
 layout_mode = 2
-theme_override_constants/h_separation = 30
-theme_override_constants/v_separation = 4
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 0
 columns = 6
 
 [node name="H" type="HBoxContainer" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=1413871904]
@@ -295,7 +309,7 @@ text = ">"
 
 [node name="SetStartPos" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=1429942046]
 layout_mode = 2
-size_flags_vertical = 10
+size_flags_vertical = 8
 focus_mode = 0
 theme_type_variation = &"GhostButton"
 text = "Set Start Position"

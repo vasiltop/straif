@@ -127,6 +127,8 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	t_rows.add_child(position_label)
 	position_label.text = str(run_position) + "."
 	position_label.custom_minimum_size.x = 30.0
+	position_label.theme_type_variation = &"Data"
+	position_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	run_position += 1
 
 	var name_label := ClickableLabel.new()
@@ -134,29 +136,33 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 	name_label.text = player_name
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND
 	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	name_label.theme_type_variation = &"DataStrong"
+	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
 	var time_label := Label.new()
 	t_rows.add_child(time_label)
 	time_label.text = str(snapped(time / 1000, 0.001))
 	time_label.size_flags_horizontal = Control.SIZE_EXPAND
+	time_label.theme_type_variation = &"DataStrong"
+	time_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
 	var date_label := Label.new()
 	t_rows.add_child(date_label)
 	date_label.text = str(date).substr(0, len("2024-10-10"))
 	date_label.size_flags_horizontal = Control.SIZE_EXPAND
+	date_label.theme_type_variation = &"Data"
+	date_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
 	var setup_race_btn_text := func() -> String:
 		return "Race %s" % player_name if not map_ui.map.currently_racing_steam_id == steam_id else "Stop Racing"
 
-	const BUTTON_FONT_SIZES := 10
 	var race_btn := Button.new()
 	t_rows.add_child(race_btn)
 	race_btn.text = setup_race_btn_text.call()
 	race_btn.focus_mode = Control.FOCUS_NONE
 	race_btn.size_flags_horizontal = Control.SIZE_EXPAND
 	race_btn.set_meta("player_name", player_name)
-	race_btn.custom_minimum_size.y = 1.0
-	race_btn.add_theme_font_size_override("font_size", BUTTON_FONT_SIZES)
+	race_btn.theme_type_variation = &"TableButton"
 
 	race_btn \
 			.pressed \
@@ -198,8 +204,7 @@ func _insert_table_row(run_position: int, player_name: String, time: float, date
 				else:
 					Info.alert("Invalid replay request")
 	)
-	replay_btn.custom_minimum_size.y = 1.0
-	replay_btn.add_theme_font_size_override("font_size", BUTTON_FONT_SIZES)
+	replay_btn.theme_type_variation = &"TableButton"
 
 	name_label \
 			.pressed \

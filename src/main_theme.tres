@@ -584,6 +584,36 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tblnorm"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tblhover"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.9516, 0.9487, 0.9281, 0.06)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2729, 0.2709, 0.2568, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tblpressed"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.9516, 0.9487, 0.9281, 0.1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9516, 0.9487, 0.9281, 1)
+
 [resource]
 default_font = SubResource("FontVariation_wl8xb")
 default_font_size = 17
@@ -756,6 +786,12 @@ Subheading/base_type = &"Label"
 Subheading/colors/font_color = Color(0.9516, 0.9487, 0.9281, 1)
 Subheading/font_sizes/font_size = 21
 Subheading/fonts/font = SubResource("FontVariation_2ui85")
+TableButton/base_type = &"Button"
+TableButton/font_sizes/font_size = 13
+TableButton/styles/focus = SubResource("StyleBoxEmpty_tblnorm")
+TableButton/styles/hover = SubResource("StyleBoxFlat_tblhover")
+TableButton/styles/normal = SubResource("StyleBoxEmpty_tblnorm")
+TableButton/styles/pressed = SubResource("StyleBoxFlat_tblpressed")
 TabBar/colors/font_disabled_color = Color(0.4602, 0.4572, 0.4366, 1)
 TabBar/colors/font_hovered_color = Color(0.9516, 0.9487, 0.9281, 1)
 TabBar/colors/font_selected_color = Color(0.9516, 0.9487, 0.9281, 1)
