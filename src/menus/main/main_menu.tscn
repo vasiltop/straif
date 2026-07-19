@@ -3,9 +3,7 @@
 [ext_resource type="Script" uid="uid://c3c48ot8m7wcr" path="res://src/menus/main/main_menu.gd" id="1_cput1"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="1_wwn1r"]
 [ext_resource type="PackedScene" uid="uid://bl08qnvut26i8" path="res://src/menus/settings/settings_menu.tscn" id="2_juxiq"]
-[ext_resource type="Texture2D" uid="uid://jbk5guvue7n4" path="res://src/textures/discord-hover.png" id="3_0gscq"]
 [ext_resource type="PackedScene" uid="uid://cpgalek8pubhp" path="res://src/maps/tiles/building.tscn" id="3_im8n7"]
-[ext_resource type="Texture2D" uid="uid://c4crre3khf17f" path="res://src/textures/discord.png" id="3_og6j4"]
 [ext_resource type="PackedScene" uid="uid://t8r6jl03nerq" path="res://src/maps/tiles/vent.tscn" id="4_wwn1r"]
 [ext_resource type="Script" uid="uid://be34vbfubnjti" path="res://src/menus/main/mode_container.gd" id="5_0gscq"]
 [ext_resource type="PackedScene" uid="uid://bdpgbrehy0o7b" path="res://src/menus/multiplayer/multiplayer.tscn" id="6_og6j4"]
@@ -20,17 +18,15 @@
 [ext_resource type="PackedScene" uid="uid://dafd7bewek8ax" path="res://src/maps/tiles/vent_1.tscn" id="15_7pey8"]
 [ext_resource type="PackedScene" uid="uid://b01o82sp4jlmx" path="res://src/maps/tiles/vent_2.tscn" id="16_i5dmx"]
 [ext_resource type="PackedScene" uid="uid://bpp08d4e3usc8" path="res://src/menus/main/aim_menu.tscn" id="17_aim"]
-[ext_resource type="PackedScene" uid="uid://b7lmn3q8xk2vd" path="res://src/menus/main/leaderboard_menu.tscn" id="18_lbmenu"]
-[ext_resource type="Script" path="res://src/ui/components/scrim.gd" id="18_scrim"]
-[ext_resource type="Script" path="res://src/ui/components/eyebrow.gd" id="19_eyebrow"]
+[ext_resource type="PackedScene" path="res://src/menus/main/leaderboard_menu.tscn" id="18_lbmenu"]
+[ext_resource type="Script" uid="uid://b87h2ecnlcsd3" path="res://src/ui/components/scrim.gd" id="18_scrim"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_nav"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yrkwj"]
 size = Vector2(64, 64)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nofill"]
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_nav"]
-
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3dplo"]
 
@@ -165,7 +161,7 @@ grow_vertical = 2
 theme = ExtResource("1_wwn1r")
 script = ExtResource("1_cput1")
 
-[node name="Scrim" type="Control" parent="."]
+[node name="Scrim" type="Control" parent="." unique_id=2060897398]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -177,7 +173,7 @@ script = ExtResource("18_scrim")
 dim = 0.68
 vignette = 0.78
 
-[node name="Center" type="CenterContainer" parent="."]
+[node name="Center" type="CenterContainer" parent="." unique_id=510282773]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -185,94 +181,94 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Shell" type="PanelContainer" parent="Center"]
+[node name="Shell" type="PanelContainer" parent="Center" unique_id=1091398386]
 custom_minimum_size = Vector2(1360, 768)
 layout_mode = 2
 
-[node name="Pad" type="MarginContainer" parent="Center/Shell"]
+[node name="Pad" type="MarginContainer" parent="Center/Shell" unique_id=1542430148]
 layout_mode = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="HBox" type="HBoxContainer" parent="Center/Shell/Pad"]
+[node name="HBox" type="HBoxContainer" parent="Center/Shell/Pad" unique_id=1767089764]
 layout_mode = 2
 theme_override_constants/separation = 48
 
-[node name="Sidebar" type="VBoxContainer" parent="Center/Shell/Pad/HBox"]
+[node name="Sidebar" type="VBoxContainer" parent="Center/Shell/Pad/HBox" unique_id=487508073]
 custom_minimum_size = Vector2(224, 0)
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Brand" type="VBoxContainer" parent="Center/Shell/Pad/HBox/Sidebar"]
+[node name="Brand" type="VBoxContainer" parent="Center/Shell/Pad/HBox/Sidebar" unique_id=1940258355]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="Wordmark" type="Label" parent="Center/Shell/Pad/HBox/Sidebar/Brand"]
+[node name="Wordmark" type="Label" parent="Center/Shell/Pad/HBox/Sidebar/Brand" unique_id=1439619700]
 layout_mode = 2
 theme_type_variation = &"Display"
 theme_override_font_sizes/font_size = 40
 text = "STRAIF"
 
-[node name="NavGap" type="Control" parent="Center/Shell/Pad/HBox/Sidebar"]
+[node name="NavGap" type="Control" parent="Center/Shell/Pad/HBox/Sidebar" unique_id=803752703]
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 
-[node name="Nav" type="VBoxContainer" parent="Center/Shell/Pad/HBox/Sidebar"]
+[node name="Nav" type="VBoxContainer" parent="Center/Shell/Pad/HBox/Sidebar" unique_id=170050202]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="Play" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav"]
+[node name="Play" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav" unique_id=571904357]
 layout_mode = 2
+theme_type_variation = &"SideNav"
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_nav")
-theme_type_variation = &"SideNav"
-alignment = 0
 text = "MAPS"
+alignment = 0
 
-[node name="Aim" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav"]
+[node name="Aim" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav" unique_id=1376628729]
 layout_mode = 2
+theme_type_variation = &"SideNav"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_nav")
-theme_type_variation = &"SideNav"
-alignment = 0
 text = "AIM"
+alignment = 0
 
-[node name="Leaderboard" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav"]
+[node name="Leaderboard" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav" unique_id=70457980]
 layout_mode = 2
+theme_type_variation = &"SideNav"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_nav")
-theme_type_variation = &"SideNav"
-alignment = 0
 text = "LEADERBOARD"
+alignment = 0
 
-[node name="Servers" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav"]
+[node name="Servers" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav" unique_id=1979170019]
 layout_mode = 2
+theme_type_variation = &"SideNav"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_nav")
-theme_type_variation = &"SideNav"
-alignment = 0
 text = "SERVERS"
+alignment = 0
 
-[node name="Settings" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav"]
+[node name="Settings" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav" unique_id=534707392]
 layout_mode = 2
+theme_type_variation = &"SideNav"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_nav")
-theme_type_variation = &"SideNav"
-alignment = 0
 text = "SETTINGS"
+alignment = 0
 
-[node name="Spacer" type="Control" parent="Center/Shell/Pad/HBox/Sidebar"]
+[node name="Spacer" type="Control" parent="Center/Shell/Pad/HBox/Sidebar" unique_id=237814098]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Identity" type="HBoxContainer" parent="Center/Shell/Pad/HBox/Sidebar"]
+[node name="Identity" type="HBoxContainer" parent="Center/Shell/Pad/HBox/Sidebar" unique_id=180625540]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Avatar" type="TextureRect" parent="Center/Shell/Pad/HBox/Sidebar/Identity"]
+[node name="Avatar" type="TextureRect" parent="Center/Shell/Pad/HBox/Sidebar/Identity" unique_id=74192814]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_vertical = 4
@@ -280,44 +276,43 @@ texture = SubResource("PlaceholderTexture2D_yrkwj")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Center/Shell/Pad/HBox/Sidebar/Identity"]
+[node name="Label" type="Label" parent="Center/Shell/Pad/HBox/Sidebar/Identity" unique_id=1510074783]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 theme_type_variation = &"BodyStrong"
 text = "Username"
 text_overrun_behavior = 3
 
-[node name="IdGap" type="Control" parent="Center/Shell/Pad/HBox/Sidebar"]
+[node name="IdGap" type="Control" parent="Center/Shell/Pad/HBox/Sidebar" unique_id=662968119]
 custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
 
-[node name="Discord" type="Button" parent="Center/Shell/Pad/HBox/Sidebar"]
+[node name="Discord" type="Button" parent="Center/Shell/Pad/HBox/Sidebar" unique_id=1028971344]
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
+tooltip_text = "Join the Discord"
 theme_type_variation = &"GhostButton"
 text = "Discord"
-tooltip_text = "Join the Discord"
 
-[node name="Quit" type="Button" parent="Center/Shell/Pad/HBox/Sidebar"]
+[node name="Quit" type="Button" parent="Center/Shell/Pad/HBox/Sidebar" unique_id=1772378258]
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 theme_type_variation = &"DangerButton"
 text = "Quit"
 
-[node name="Body" type="TabContainer" parent="Center/Shell/Pad/HBox"]
+[node name="Body" type="TabContainer" parent="Center/Shell/Pad/HBox" unique_id=667369361]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_nofill")
-tabs_visible = false
 current_tab = 0
+tabs_visible = false
 
-[node name="Play" type="Control" parent="Center/Shell/Pad/HBox/Body"]
+[node name="Play" type="Control" parent="Center/Shell/Pad/HBox/Body" unique_id=1376022721]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="M" type="MarginContainer" parent="Center/Shell/Pad/HBox/Body/Play"]
+[node name="M" type="MarginContainer" parent="Center/Shell/Pad/HBox/Body/Play" unique_id=1651523713]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -329,31 +324,31 @@ theme_override_constants/margin_top = 22
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 8
 
-[node name="V" type="VBoxContainer" parent="Center/Shell/Pad/HBox/Body/Play/M"]
+[node name="V" type="VBoxContainer" parent="Center/Shell/Pad/HBox/Body/Play/M" unique_id=918477101]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 18
 
-[node name="Intro" type="VBoxContainer" parent="Center/Shell/Pad/HBox/Body/Play/M/V"]
+[node name="Intro" type="VBoxContainer" parent="Center/Shell/Pad/HBox/Body/Play/M/V" unique_id=1362369247]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="Heading" type="Label" parent="Center/Shell/Pad/HBox/Body/Play/M/V/Intro"]
+[node name="Heading" type="Label" parent="Center/Shell/Pad/HBox/Body/Play/M/V/Intro" unique_id=827605690]
 layout_mode = 2
 theme_type_variation = &"Heading"
-text = "Choose a route. Chase a cleaner split."
+text = "Choose a map"
 
-[node name="ModeSelect" type="HBoxContainer" parent="Center/Shell/Pad/HBox/Body/Play/M/V"]
+[node name="ModeSelect" type="HBoxContainer" parent="Center/Shell/Pad/HBox/Body/Play/M/V" unique_id=131841294]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ModeStack" type="Control" parent="Center/Shell/Pad/HBox/Body/Play/M/V"]
+[node name="ModeStack" type="Control" parent="Center/Shell/Pad/HBox/Body/Play/M/V" unique_id=1369334376]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Target Practice" type="Control" parent="Center/Shell/Pad/HBox/Body/Play/M/V/ModeStack"]
+[node name="Target Practice" type="Control" parent="Center/Shell/Pad/HBox/Body/Play/M/V/ModeStack" unique_id=1870226388]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -364,7 +359,7 @@ script = ExtResource("5_0gscq")
 mode = "target"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 
-[node name="Movement Only" type="Control" parent="Center/Shell/Pad/HBox/Body/Play/M/V/ModeStack"]
+[node name="Movement Only" type="Control" parent="Center/Shell/Pad/HBox/Body/Play/M/V/ModeStack" unique_id=2053345141]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -376,27 +371,27 @@ script = ExtResource("5_0gscq")
 mode = "bhop"
 metadata/_custom_type_script = "uid://be34vbfubnjti"
 
-[node name="Aim" parent="Center/Shell/Pad/HBox/Body" instance=ExtResource("17_aim")]
+[node name="Aim" parent="Center/Shell/Pad/HBox/Body" unique_id=25855283 instance=ExtResource("17_aim")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Leaderboard" parent="Center/Shell/Pad/HBox/Body" instance=ExtResource("18_lbmenu")]
+[node name="Leaderboard" parent="Center/Shell/Pad/HBox/Body" unique_id=1333226390 instance=ExtResource("18_lbmenu")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="Servers" parent="Center/Shell/Pad/HBox/Body" instance=ExtResource("6_og6j4")]
+[node name="Servers" parent="Center/Shell/Pad/HBox/Body" unique_id=1429324163 instance=ExtResource("6_og6j4")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
-[node name="Settings" type="Control" parent="Center/Shell/Pad/HBox/Body"]
+[node name="Settings" type="Control" parent="Center/Shell/Pad/HBox/Body" unique_id=272445826]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="Center/Shell/Pad/HBox/Body/Settings"]
+[node name="MarginContainer" type="MarginContainer" parent="Center/Shell/Pad/HBox/Body/Settings" unique_id=298304194]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -408,7 +403,7 @@ theme_override_constants/margin_top = 22
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="SettingsMenu" parent="Center/Shell/Pad/HBox/Body/Settings/MarginContainer" instance=ExtResource("2_juxiq")]
+[node name="SettingsMenu" parent="Center/Shell/Pad/HBox/Body/Settings/MarginContainer" unique_id=905252031 instance=ExtResource("2_juxiq")]
 layout_mode = 2
 
 [node name="Background" type="Node3D" parent="." unique_id=502199811]

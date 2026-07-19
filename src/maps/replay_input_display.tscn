@@ -1,106 +1,105 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://ho5p32whlhnj"]
 
-[ext_resource type="Script" path="res://src/maps/replay_input_display.gd" id="1_ry1dp"]
+[ext_resource type="Script" uid="uid://kh1h1oua6pxx" path="res://src/maps/replay_input_display.gd" id="1_ry1dp"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_theme"]
 
-[node name="ReplayInputDisplay" type="HBoxContainer"]
+[node name="ReplayInputDisplay" type="HBoxContainer" unique_id=947741695]
 custom_minimum_size = Vector2(0, 64)
-layout_mode = 2
 theme = ExtResource("2_theme")
 theme_override_constants/separation = 14
 alignment = 1
 script = ExtResource("1_ry1dp")
 
-[node name="Movement" type="GridContainer" parent="."]
+[node name="Movement" type="GridContainer" parent="." unique_id=1347433417]
 layout_mode = 2
 theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 6
 columns = 3
 
-[node name="TopLeftSpacer" type="PanelContainer" parent="Movement"]
+[node name="TopLeftSpacer" type="PanelContainer" parent="Movement" unique_id=82485534]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 
-[node name="W" type="PanelContainer" parent="Movement"]
+[node name="W" type="PanelContainer" parent="Movement" unique_id=198500384]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Movement/W"]
+[node name="Label" type="Label" parent="Movement/W" unique_id=893052238]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "W"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TopRightSpacer" type="PanelContainer" parent="Movement"]
+[node name="TopRightSpacer" type="PanelContainer" parent="Movement" unique_id=1875772740]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 
-[node name="A" type="PanelContainer" parent="Movement"]
+[node name="A" type="PanelContainer" parent="Movement" unique_id=381824144]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Movement/A"]
+[node name="Label" type="Label" parent="Movement/A" unique_id=616404449]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "A"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="S" type="PanelContainer" parent="Movement"]
+[node name="S" type="PanelContainer" parent="Movement" unique_id=1865234675]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Movement/S"]
+[node name="Label" type="Label" parent="Movement/S" unique_id=1254822987]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "S"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="D" type="PanelContainer" parent="Movement"]
+[node name="D" type="PanelContainer" parent="Movement" unique_id=904217862]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Movement/D"]
+[node name="Label" type="Label" parent="Movement/D" unique_id=605694972]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "D"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Combat" type="HBoxContainer" parent="."]
+[node name="Combat" type="HBoxContainer" parent="." unique_id=1792359855]
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="Shoot" type="PanelContainer" parent="Combat"]
+[node name="Shoot" type="PanelContainer" parent="Combat" unique_id=42446737]
 custom_minimum_size = Vector2(54, 34)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Combat/Shoot"]
+[node name="Label" type="Label" parent="Combat/Shoot" unique_id=2029990552]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "LMB"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Ads" type="PanelContainer" parent="Combat"]
+[node name="Ads" type="PanelContainer" parent="Combat" unique_id=987143397]
 custom_minimum_size = Vector2(54, 34)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Combat/Ads"]
+[node name="Label" type="Label" parent="Combat/Ads" unique_id=1080213185]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "RMB"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Reload" type="PanelContainer" parent="Combat"]
+[node name="Reload" type="PanelContainer" parent="Combat" unique_id=1034340169]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Combat/Reload"]
+[node name="Label" type="Label" parent="Combat/Reload" unique_id=1721261158]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "R"

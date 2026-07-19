@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bdpgbrehy0o7b"]
 
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="1_c5rfe"]
-[ext_resource type="Script" uid="uid://baftybw27iasg" path="res://src/menus/multiplayer/multiplayer.gd" id="2_tfc8f"]
 [ext_resource type="Texture2D" uid="uid://c4pkcl33pek3w" path="res://src/textures/ui/refresh.svg" id="2_refresh"]
+[ext_resource type="Script" uid="uid://baftybw27iasg" path="res://src/menus/multiplayer/multiplayer.gd" id="2_tfc8f"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nofill"]
 
@@ -50,9 +50,9 @@ theme_override_constants/separation = 18
 [node name="Label" type="Label" parent="M/P/M/V" unique_id=1902644272]
 layout_mode = 2
 theme_type_variation = &"Heading"
-text = "Join a live arena"
+text = "Join a multiplayer server"
 
-[node name="Toolbar" type="HBoxContainer" parent="M/P/M/V"]
+[node name="Toolbar" type="HBoxContainer" parent="M/P/M/V" unique_id=814629838]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 16
@@ -69,7 +69,7 @@ layout_mode = 2
 theme_type_variation = &"GhostButton"
 icon = ExtResource("2_refresh")
 
-[node name="Scroll" type="ScrollContainer" parent="M/P/M/V"]
+[node name="Scroll" type="ScrollContainer" parent="M/P/M/V" unique_id=1049862433]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

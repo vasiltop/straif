@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bnati2e7fo1g"]
+[gd_scene format=3 uid="uid://bnati2e7fo1g"]
 
 [ext_resource type="Script" uid="uid://vuacki0u3vnw" path="res://src/maps/map_ui.gd" id="1_jnrmt"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_uralg"]
@@ -8,9 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://bo4kloegfbey2" path="res://src/textures/gold_medal.png" id="8_iw0sd"]
 [ext_resource type="Texture2D" uid="uid://dqvbiit5bj0rm" path="res://src/textures/plat_medal.png" id="9_k6ak5"]
 [ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="10_dxk01"]
-[ext_resource type="PackedScene" path="res://src/maps/replay_input_display.tscn" id="12_pfxlv"]
+[ext_resource type="PackedScene" uid="uid://ho5p32whlhnj" path="res://src/maps/replay_input_display.tscn" id="12_pfxlv"]
 
-[node name="MapUi" type="CanvasLayer" node_paths=PackedStringArray("keybind_info_label", "done_replay_btn", "tick_label", "replay_slider", "replay_container", "replay_v", "replay_input_display", "game_info", "ammo_label", "leaderboard")]
+[node name="MapUi" type="CanvasLayer" unique_id=1698354128 node_paths=PackedStringArray("keybind_info_label", "done_replay_btn", "tick_label", "replay_slider", "replay_container", "replay_v", "replay_input_display", "game_info", "ammo_label", "leaderboard")]
 script = ExtResource("1_jnrmt")
 keybind_info_label = NodePath("ReplayContainer/V/KeybindInfo")
 done_replay_btn = NodePath("ReplayContainer/V/Done")
@@ -23,7 +23,7 @@ game_info = NodePath("UiContainer/GameInfo")
 ammo_label = NodePath("UiContainer/BottomLeft/V/Ammo")
 leaderboard = NodePath("UiContainer/GameInfo/Leaderboard")
 
-[node name="UiContainer" type="Control" parent="."]
+[node name="UiContainer" type="Control" parent="." unique_id=315682984]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,7 +33,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_uralg")
 
-[node name="Middle" type="Control" parent="UiContainer"]
+[node name="Middle" type="Control" parent="UiContainer" unique_id=1089368078]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,7 +42,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Speed" type="Label" parent="UiContainer/Middle"]
+[node name="Speed" type="Label" parent="UiContainer/Middle" unique_id=194445199]
 z_index = 1
 layout_mode = 1
 anchors_preset = 8
@@ -61,7 +61,7 @@ text = "0.00 u/s"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PreStrafeSpeed" type="Label" parent="UiContainer/Middle"]
+[node name="PreStrafeSpeed" type="Label" parent="UiContainer/Middle" unique_id=1591576323]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -76,11 +76,12 @@ offset_bottom = 43.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"Data"
+theme_override_colors/font_color = Color(0.29684126, 0.6922049, 0.36827856, 1)
 text = "59.98 u/s"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BottomLeft" type="PanelContainer" parent="UiContainer"]
+[node name="BottomLeft" type="PanelContainer" parent="UiContainer" unique_id=570330950]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -89,35 +90,36 @@ offset_top = -108.0
 offset_right = 120.0
 grow_vertical = 0
 
-[node name="V" type="VBoxContainer" parent="UiContainer/BottomLeft"]
+[node name="V" type="VBoxContainer" parent="UiContainer/BottomLeft" unique_id=138487279]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 3
 
-[node name="Ammo" type="Label" parent="UiContainer/BottomLeft/V"]
+[node name="Ammo" type="Label" parent="UiContainer/BottomLeft/V" unique_id=686931024]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "Ammo: 0 / 0"
 horizontal_alignment = 1
 
-[node name="EnemiesLeft" type="Label" parent="UiContainer/BottomLeft/V"]
+[node name="EnemiesLeft" type="Label" parent="UiContainer/BottomLeft/V" unique_id=1341189886]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "Targets: 0/0"
 horizontal_alignment = 1
 
-[node name="Timer" type="Label" parent="UiContainer/BottomLeft/V"]
+[node name="Timer" type="Label" parent="UiContainer/BottomLeft/V" unique_id=1269862949]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "Time: 0.00"
 horizontal_alignment = 1
 
-[node name="Speed" type="Label" parent="UiContainer/BottomLeft/V"]
+[node name="Speed" type="Label" parent="UiContainer/BottomLeft/V" unique_id=1780177538]
 layout_mode = 2
 theme_type_variation = &"DataStrong"
 text = "0.00 u/s"
 horizontal_alignment = 1
 
-[node name="GameInfo" type="HBoxContainer" parent="UiContainer"]
+[node name="GameInfo" type="HBoxContainer" parent="UiContainer" unique_id=612811415]
 custom_minimum_size = Vector2(600, 500)
 layout_mode = 1
 anchors_preset = 8
@@ -132,202 +134,202 @@ offset_bottom = 325.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Leaderboard" type="PanelContainer" parent="UiContainer/GameInfo" node_paths=PackedStringArray("set_start_pos_btn")]
+[node name="Leaderboard" type="PanelContainer" parent="UiContainer/GameInfo" unique_id=106041974 node_paths=PackedStringArray("set_start_pos_btn")]
 z_index = 5
 custom_minimum_size = Vector2(900, 500)
 layout_mode = 2
 script = ExtResource("5_xab72")
 set_start_pos_btn = NodePath("M/V/SetStartPos")
 
-[node name="M" type="MarginContainer" parent="UiContainer/GameInfo/Leaderboard"]
+[node name="M" type="MarginContainer" parent="UiContainer/GameInfo/Leaderboard" unique_id=1987211971]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Leaderboard/M"]
+[node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Leaderboard/M" unique_id=256009263]
 layout_mode = 2
 
-[node name="MapName" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+[node name="MapName" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=489005356]
 layout_mode = 2
 theme_type_variation = &"BodyStrong"
 text = "Current Map: Unknown"
 
-[node name="MedalInfo" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+[node name="MedalInfo" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=407144307]
 layout_mode = 2
 columns = 5
 
-[node name="Bronze" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="Bronze" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=1762660816]
 custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("6_73vsl")
 
-[node name="Silver" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="Silver" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=1214353753]
 custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("7_4gqp6")
 
-[node name="Gold" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="Gold" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=962079425]
 custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("8_iw0sd")
 
-[node name="Plat" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="Plat" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=1442010764]
 custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("9_k6ak5")
 
-[node name="Author" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="Author" type="TextureRect" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=539784268]
 custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("10_dxk01")
 
-[node name="BronzeTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="BronzeTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=856530815]
 layout_mode = 2
 theme_type_variation = &"Data"
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="SilverTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="SilverTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=1617668812]
 layout_mode = 2
 theme_type_variation = &"Data"
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="GoldTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="GoldTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=1895132032]
 layout_mode = 2
 theme_type_variation = &"Data"
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="PlatTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="PlatTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=37557509]
 layout_mode = 2
 theme_type_variation = &"Data"
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="AuthorTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo"]
+[node name="AuthorTime" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/MedalInfo" unique_id=1707117230]
 layout_mode = 2
 theme_type_variation = &"Data"
 text = "0.0s"
 horizontal_alignment = 1
 
-[node name="LeaderboardTitle" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+[node name="LeaderboardTitle" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=31984167]
 layout_mode = 2
 theme_type_variation = &"Heading"
 text = "Leaderboard"
 
-[node name="TH" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+[node name="TH" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=1869326597]
 layout_mode = 2
 theme_override_constants/h_separation = 30
 columns = 6
 
-[node name="Pos" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+[node name="Pos" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH" unique_id=1499191342]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 theme_type_variation = &"Eyebrow"
 text = "Pos"
 
-[node name="Name" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+[node name="Name" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH" unique_id=1512849141]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Eyebrow"
 text = "Player Name"
 
-[node name="Time" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+[node name="Time" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH" unique_id=453976990]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Eyebrow"
 text = "Time (s)"
 
-[node name="DateSubmitted" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+[node name="DateSubmitted" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH" unique_id=1759524899]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Eyebrow"
 text = "Date Submitted"
 
-[node name="RaceGhost" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+[node name="RaceGhost" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH" unique_id=1178508459]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Eyebrow"
 text = "Race Ghost"
 
-[node name="RaceGhost2" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH"]
+[node name="RaceGhost2" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/TH" unique_id=815139411]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Eyebrow"
 text = "View Replay"
 
-[node name="TRows" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+[node name="TRows" type="GridContainer" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=1498129242]
 layout_mode = 2
 theme_override_constants/h_separation = 30
 theme_override_constants/v_separation = 4
 columns = 6
 
-[node name="H" type="HBoxContainer" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+[node name="H" type="HBoxContainer" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=1413871904]
 layout_mode = 2
 
-[node name="<" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V/H"]
+[node name="<" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V/H" unique_id=1227070789]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"IconButton"
 text = "<"
 
-[node name="Page" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/H"]
+[node name="Page" type="Label" parent="UiContainer/GameInfo/Leaderboard/M/V/H" unique_id=1826902507]
 layout_mode = 2
 theme_type_variation = &"Data"
 text = "Page 0 of 0"
 
-[node name=">" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V/H"]
+[node name=">" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V/H" unique_id=1228345956]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"IconButton"
 text = ">"
 
-[node name="SetStartPos" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+[node name="SetStartPos" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=1429942046]
 layout_mode = 2
 size_flags_vertical = 10
 focus_mode = 0
 theme_type_variation = &"GhostButton"
 text = "Set Start Position"
 
-[node name="ReplayLastRun" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V"]
+[node name="ReplayLastRun" type="Button" parent="UiContainer/GameInfo/Leaderboard/M/V" unique_id=925476624]
 layout_mode = 2
 size_flags_vertical = 8
 focus_mode = 0
 theme_type_variation = &"GhostButton"
 text = "Replay Last Run"
 
-[node name="Admin" type="PanelContainer" parent="UiContainer/GameInfo"]
+[node name="Admin" type="PanelContainer" parent="UiContainer/GameInfo" unique_id=1150062447]
 visible = false
 custom_minimum_size = Vector2(400, 100)
 layout_mode = 2
 
-[node name="M" type="MarginContainer" parent="UiContainer/GameInfo/Admin"]
+[node name="M" type="MarginContainer" parent="UiContainer/GameInfo/Admin" unique_id=186817390]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Admin/M"]
+[node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Admin/M" unique_id=1363649989]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="UiContainer/GameInfo/Admin/M/V"]
+[node name="Title" type="Label" parent="UiContainer/GameInfo/Admin/M/V" unique_id=1282515311]
 layout_mode = 2
 theme_type_variation = &"BodyStrong"
 text = "Admin - Click any player's name to view details."
 
-[node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Admin/M/V"]
+[node name="V" type="VBoxContainer" parent="UiContainer/GameInfo/Admin/M/V" unique_id=1793364255]
 layout_mode = 2
 
-[node name="ReplayContainer" type="Control" parent="."]
+[node name="ReplayContainer" type="Control" parent="." unique_id=335263360]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -341,7 +343,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("2_uralg")
 
-[node name="Backdrop" type="Panel" parent="ReplayContainer"]
+[node name="Backdrop" type="Panel" parent="ReplayContainer" unique_id=364099900]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -354,9 +356,9 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="V" type="VBoxContainer" parent="ReplayContainer"]
+[node name="V" type="VBoxContainer" parent="ReplayContainer" unique_id=1862181963]
 custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
+layout_mode = 0
 offset_right = 300.0
 offset_bottom = 215.0
 grow_horizontal = 2
@@ -364,24 +366,24 @@ grow_vertical = 0
 theme = ExtResource("2_uralg")
 alignment = 1
 
-[node name="ReplayInputDisplay" parent="ReplayContainer/V" instance=ExtResource("12_pfxlv")]
+[node name="ReplayInputDisplay" parent="ReplayContainer/V" unique_id=1634815601 instance=ExtResource("12_pfxlv")]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ReplayContainer/V"]
+[node name="Label" type="Label" parent="ReplayContainer/V" unique_id=1457130284]
 layout_mode = 2
 theme_type_variation = &"Data"
 text = "Tick: 0 / 999"
 horizontal_alignment = 1
 
-[node name="KeybindInfo" type="Label" parent="ReplayContainer/V"]
+[node name="KeybindInfo" type="Label" parent="ReplayContainer/V" unique_id=1664436269]
 layout_mode = 2
 theme_type_variation = &"Muted"
 horizontal_alignment = 1
 
-[node name="Slider" type="HSlider" parent="ReplayContainer/V"]
+[node name="Slider" type="HSlider" parent="ReplayContainer/V" unique_id=1014037587]
 layout_mode = 2
 
-[node name="Done" type="Button" parent="ReplayContainer/V"]
+[node name="Done" type="Button" parent="ReplayContainer/V" unique_id=942990446]
 layout_mode = 2
 theme_type_variation = &"GhostButton"
 text = "Back"

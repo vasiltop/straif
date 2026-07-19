@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bpp08d4e3usc8"]
+[gd_scene format=3 uid="uid://bpp08d4e3usc8"]
 
 [ext_resource type="Script" uid="uid://i3xqw50q2bka" path="res://src/menus/main/aim_menu.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://3as6f5nxctip" path="res://src/main_theme.tres" id="2_theme"]
@@ -11,7 +11,7 @@ bg_color = Color(0.0394, 0.0394, 0.0394, 0.88)
 border_width_top = 1
 border_color = Color(0.9516, 0.9487, 0.9281, 0.16)
 
-[node name="AimMenu" type="Control"]
+[node name="AimMenu" type="Control" unique_id=748723173]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +21,7 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_script")
 
-[node name="Margin" type="MarginContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="." unique_id=283558758]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,32 +33,32 @@ theme_override_constants/margin_top = 22
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 8
 
-[node name="V" type="VBoxContainer" parent="Margin"]
+[node name="V" type="VBoxContainer" parent="Margin" unique_id=45532089]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 18
 
-[node name="Title" type="Label" parent="Margin/V"]
+[node name="Title" type="Label" parent="Margin/V" unique_id=1199926737]
 layout_mode = 2
 theme_type_variation = &"Heading"
-text = "Aim discipline"
+text = "Aim training"
 
-[node name="Cards" type="HBoxContainer" parent="Margin/V"]
+[node name="Cards" type="HBoxContainer" parent="Margin/V" unique_id=297297163]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="GridshotOption" type="Button" parent="Margin/V/Cards"]
-custom_minimum_size = Vector2(0, 360)
+[node name="GridshotOption" type="Button" parent="Margin/V/Cards" unique_id=959910915]
 clip_contents = true
+custom_minimum_size = Vector2(0, 360)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"ScenarioCard"
 
-[node name="Image" type="TextureRect" parent="Margin/V/Cards/GridshotOption"]
+[node name="Image" type="TextureRect" parent="Margin/V/Cards/GridshotOption" unique_id=1716274434]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -74,7 +74,7 @@ texture = ExtResource("3_grid")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Layout" type="VBoxContainer" parent="Margin/V/Cards/GridshotOption"]
+[node name="Layout" type="VBoxContainer" parent="Margin/V/Cards/GridshotOption" unique_id=292662501]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -88,18 +88,18 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Spacer" type="Control" parent="Margin/V/Cards/GridshotOption/Layout"]
+[node name="Spacer" type="Control" parent="Margin/V/Cards/GridshotOption/Layout" unique_id=1426107661]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Info" type="PanelContainer" parent="Margin/V/Cards/GridshotOption/Layout"]
+[node name="Info" type="PanelContainer" parent="Margin/V/Cards/GridshotOption/Layout" unique_id=2049541867]
 custom_minimum_size = Vector2(0, 140)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_info")
 
-[node name="M" type="MarginContainer" parent="Margin/V/Cards/GridshotOption/Layout/Info"]
+[node name="M" type="MarginContainer" parent="Margin/V/Cards/GridshotOption/Layout/Info" unique_id=317857843]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 20
@@ -107,33 +107,31 @@ theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 18
 
-[node name="Stack" type="VBoxContainer" parent="Margin/V/Cards/GridshotOption/Layout/Info/M"]
+[node name="Stack" type="VBoxContainer" parent="Margin/V/Cards/GridshotOption/Layout/Info/M" unique_id=18301150]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Margin/V/Cards/GridshotOption/Layout/Info/M/Stack"]
+[node name="Title" type="Label" parent="Margin/V/Cards/GridshotOption/Layout/Info/M/Stack" unique_id=277863016]
 layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"Subheading"
 text = "Gridshot"
 
-[node name="Desc" type="Label" parent="Margin/V/Cards/GridshotOption/Layout/Info/M/Stack"]
+[node name="Desc" type="Label" parent="Margin/V/Cards/GridshotOption/Layout/Info/M/Stack" unique_id=1800944493]
 layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"Body"
 text = "Clear grids of pop-up targets as fast as you can. Sharpens flick speed and target switching."
 autowrap_mode = 3
 
-[node name="FlickOption" type="Button" parent="Margin/V/Cards"]
-custom_minimum_size = Vector2(0, 360)
+[node name="FlickOption" type="Button" parent="Margin/V/Cards" unique_id=772908356]
 clip_contents = true
+custom_minimum_size = Vector2(0, 360)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"ScenarioCard"
 
-[node name="Image" type="TextureRect" parent="Margin/V/Cards/FlickOption"]
+[node name="Image" type="TextureRect" parent="Margin/V/Cards/FlickOption" unique_id=521884651]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -149,7 +147,7 @@ texture = ExtResource("4_flick")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Layout" type="VBoxContainer" parent="Margin/V/Cards/FlickOption"]
+[node name="Layout" type="VBoxContainer" parent="Margin/V/Cards/FlickOption" unique_id=1329006778]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -163,18 +161,18 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Spacer" type="Control" parent="Margin/V/Cards/FlickOption/Layout"]
+[node name="Spacer" type="Control" parent="Margin/V/Cards/FlickOption/Layout" unique_id=1982277079]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Info" type="PanelContainer" parent="Margin/V/Cards/FlickOption/Layout"]
+[node name="Info" type="PanelContainer" parent="Margin/V/Cards/FlickOption/Layout" unique_id=796628008]
 custom_minimum_size = Vector2(0, 140)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_info")
 
-[node name="M" type="MarginContainer" parent="Margin/V/Cards/FlickOption/Layout/Info"]
+[node name="M" type="MarginContainer" parent="Margin/V/Cards/FlickOption/Layout/Info" unique_id=1540027007]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 20
@@ -182,33 +180,31 @@ theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 18
 
-[node name="Stack" type="VBoxContainer" parent="Margin/V/Cards/FlickOption/Layout/Info/M"]
+[node name="Stack" type="VBoxContainer" parent="Margin/V/Cards/FlickOption/Layout/Info/M" unique_id=1053154298]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Margin/V/Cards/FlickOption/Layout/Info/M/Stack"]
+[node name="Title" type="Label" parent="Margin/V/Cards/FlickOption/Layout/Info/M/Stack" unique_id=717385362]
 layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"Subheading"
 text = "Flick"
 
-[node name="Desc" type="Label" parent="Margin/V/Cards/FlickOption/Layout/Info/M/Stack"]
+[node name="Desc" type="Label" parent="Margin/V/Cards/FlickOption/Layout/Info/M/Stack" unique_id=1445633898]
 layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"Body"
 text = "Single targets appear at range. Snap on, land one clean shot, then reset."
 autowrap_mode = 3
 
-[node name="TrackingOption" type="Button" parent="Margin/V/Cards"]
-custom_minimum_size = Vector2(0, 360)
+[node name="TrackingOption" type="Button" parent="Margin/V/Cards" unique_id=500602475]
 clip_contents = true
+custom_minimum_size = Vector2(0, 360)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"ScenarioCard"
 
-[node name="Image" type="TextureRect" parent="Margin/V/Cards/TrackingOption"]
+[node name="Image" type="TextureRect" parent="Margin/V/Cards/TrackingOption" unique_id=337382058]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -224,7 +220,7 @@ texture = ExtResource("5_track")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Layout" type="VBoxContainer" parent="Margin/V/Cards/TrackingOption"]
+[node name="Layout" type="VBoxContainer" parent="Margin/V/Cards/TrackingOption" unique_id=117187027]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -238,18 +234,18 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Spacer" type="Control" parent="Margin/V/Cards/TrackingOption/Layout"]
+[node name="Spacer" type="Control" parent="Margin/V/Cards/TrackingOption/Layout" unique_id=1773729227]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Info" type="PanelContainer" parent="Margin/V/Cards/TrackingOption/Layout"]
+[node name="Info" type="PanelContainer" parent="Margin/V/Cards/TrackingOption/Layout" unique_id=1029811007]
 custom_minimum_size = Vector2(0, 140)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_info")
 
-[node name="M" type="MarginContainer" parent="Margin/V/Cards/TrackingOption/Layout/Info"]
+[node name="M" type="MarginContainer" parent="Margin/V/Cards/TrackingOption/Layout/Info" unique_id=1110069890]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 20
@@ -257,20 +253,18 @@ theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 18
 
-[node name="Stack" type="VBoxContainer" parent="Margin/V/Cards/TrackingOption/Layout/Info/M"]
+[node name="Stack" type="VBoxContainer" parent="Margin/V/Cards/TrackingOption/Layout/Info/M" unique_id=362393828]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Margin/V/Cards/TrackingOption/Layout/Info/M/Stack"]
+[node name="Title" type="Label" parent="Margin/V/Cards/TrackingOption/Layout/Info/M/Stack" unique_id=1806300233]
 layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"Subheading"
 text = "Tracking"
 
-[node name="Desc" type="Label" parent="Margin/V/Cards/TrackingOption/Layout/Info/M/Stack"]
+[node name="Desc" type="Label" parent="Margin/V/Cards/TrackingOption/Layout/Info/M/Stack" unique_id=143137427]
 layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"Body"
 text = "Follow a moving target and keep your crosshair glued through long, curving arcs."
 autowrap_mode = 3
