@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://doueeo1np6if1" path="res://src/textures/author_medal.png" id="10_dxk01"]
 [ext_resource type="PackedScene" uid="uid://ho5p32whlhnj" path="res://src/maps/replay_input_display.tscn" id="12_pfxlv"]
 
-[node name="MapUi" type="CanvasLayer" unique_id=1698354128 node_paths=PackedStringArray("keybind_info_label", "done_replay_btn", "tick_label", "replay_slider", "replay_container", "replay_v", "replay_input_display", "game_info", "ammo_label", "leaderboard")]
+[node name="MapUi" type="CanvasLayer" unique_id=1698354128 node_paths=PackedStringArray("keybind_info_label", "done_replay_btn", "tick_label", "replay_slider", "replay_container", "replay_v", "replay_backdrop", "replay_input_display", "game_info", "ammo_label", "leaderboard")]
 script = ExtResource("1_jnrmt")
 keybind_info_label = NodePath("ReplayContainer/V/KeybindInfo")
 done_replay_btn = NodePath("ReplayContainer/V/Done")
@@ -18,6 +18,7 @@ tick_label = NodePath("ReplayContainer/V/Label")
 replay_slider = NodePath("ReplayContainer/V/Slider")
 replay_container = NodePath("ReplayContainer")
 replay_v = NodePath("ReplayContainer/V")
+replay_backdrop = NodePath("ReplayContainer/Backdrop")
 replay_input_display = NodePath("ReplayContainer/V/ReplayInputDisplay")
 game_info = NodePath("UiContainer/GameInfo")
 ammo_label = NodePath("UiContainer/BottomLeft/V/Ammo")

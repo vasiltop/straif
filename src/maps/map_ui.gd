@@ -15,6 +15,7 @@ signal return_control_to_player
 @export var replay_slider: HSlider
 @export var replay_container: Control
 @export var replay_v: VBoxContainer
+@export var replay_backdrop: Panel
 @export var replay_input_display: ReplayInputDisplay
 @export var game_info: Container
 @export var ammo_label: Label
@@ -56,6 +57,7 @@ func set_replay_inputs(
 func set_replay_visible(value: bool) -> void:
 	replay_container.visible = value
 	replay_v.visible = value
+	replay_backdrop.visible = value
 	map.recorder.controller.visible = value
 	if not value:
 		replay_input_display.reset()
@@ -76,6 +78,7 @@ func _process(_delta: float) -> void:
 
 	if Input.is_action_just_pressed("ui_admin") and is_replay_visible():
 		replay_v.visible = not replay_v.visible
+		replay_backdrop.visible = replay_v.visible
 
 	if Input.is_action_just_pressed("restart") and is_replay_visible():
 		map.recorder.set_frame(0)

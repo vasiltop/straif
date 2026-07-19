@@ -18,7 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://dafd7bewek8ax" path="res://src/maps/tiles/vent_1.tscn" id="15_7pey8"]
 [ext_resource type="PackedScene" uid="uid://b01o82sp4jlmx" path="res://src/maps/tiles/vent_2.tscn" id="16_i5dmx"]
 [ext_resource type="PackedScene" uid="uid://bpp08d4e3usc8" path="res://src/menus/main/aim_menu.tscn" id="17_aim"]
-[ext_resource type="PackedScene" path="res://src/menus/main/leaderboard_menu.tscn" id="18_lbmenu"]
+[ext_resource type="PackedScene" uid="uid://b7lmn3q8xk2vd" path="res://src/menus/main/leaderboard_menu.tscn" id="18_lbmenu"]
 [ext_resource type="Script" uid="uid://b87h2ecnlcsd3" path="res://src/ui/components/scrim.gd" id="18_scrim"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_nav"]
@@ -225,7 +225,7 @@ theme_type_variation = &"SideNav"
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_nav")
-text = "MAPS"
+text = "SPEEDRUN"
 alignment = 0
 
 [node name="Aim" type="Button" parent="Center/Shell/Pad/HBox/Sidebar/Nav" unique_id=1376628729]
