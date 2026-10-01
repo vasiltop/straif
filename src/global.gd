@@ -26,13 +26,14 @@ func _ready() -> void:
 	var is_connect_client := options.role == RuntimeOptions.Role.CONNECT_CLIENT
 
 	if offline_playtest and not is_server:
-		print("Offline playtest mode active: skipping Steam Web API auth ticket request.")
+		print("Offline mode active: skipping Steam Web API auth ticket request.")
 
 	if not is_server:
 		get_tree().node_added.connect(_apply_pointer_cursor)
 
 	map_manager = MapManager.new()
 	server_bridge = ServerBridge.new()
+	server_bridge.set_offline_mode(offline_playtest)
 
 	var build := Bootstrap.build(options, server_bridge, allow_test_adapters)
 	if not build.is_ok():
@@ -105,7 +106,7 @@ func _start_identity(identity: IdentityProvider) -> void:
 
 func _on_auth_ticket_ready(ticket: String) -> void:
 	game_manager.store_auth_ticket(ticket)
-	if ticket.is_empty():
+	if ticket.is_empty() or offline_playtest:
 		return
 	server_bridge.heartbeat_timer.start()
 
@@ -151,6 +152,22 @@ func display_name() -> String:
 func steam_available() -> bool:
 	return context != null and context.identity is SteamIdentityProvider
 
+func enable_offline_mode() -> void:
+	if offline_playtest:
+		return
+
+	offline_playtest = true
+	if server_bridge != null:
+		server_bridge.set_offline_mode(true)
+
+	if context != null:
+		context.identity = FakeIdentityProvider.new(1, "Playtester", "offline-playtest-ticket")
+		_start_identity(context.identity)
+
+	if game_manager != null:
+		game_manager.admin = false
+		game_manager.maintenance = false
+
 func mp() -> bool:
 	return multiplayer.multiplayer_peer != null
 
@@ -158,7 +175,7 @@ func is_sv() -> bool:
 	return is_server
 
 func is_offline_playtest_mode(user_args: PackedStringArray) -> bool:
-	return user_args.has("--offline-playtest")
+	return user_args.has("--offline") or user_args.has("--offline-playtest")
 
 func _apply_pointer_cursor(node: Node) -> void:
 	if node is BaseButton:

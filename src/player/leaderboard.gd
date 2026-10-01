@@ -82,7 +82,19 @@ func _process(_delta: float) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _load_runs() -> void:
+	if Global.offline_playtest:
+		page_label.text = "Offline"
+		for child in t_rows.get_children():
+			child.queue_free()
+		return
+
 	var response := await Global.server_bridge.get_runs(Global.game_manager.current_mode, Global.game_manager.current_map.name, current_page)
+	if response == null:
+		page_label.text = "Leaderboard unavailable"
+		for child in t_rows.get_children():
+			child.queue_free()
+		return
+
 	var my_run := await Global.server_bridge.get_my_run_by_map(Global.game_manager.current_mode, Global.game_manager.current_map.name)
 
 	total_pages = max(1, ceil(response.total / PAGE_SIZE))

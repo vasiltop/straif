@@ -230,6 +230,9 @@ func _win() -> void:
 	sound_player.play()
 
 	var bytes := recorder.to_bytes()
+	if Global.offline_playtest:
+		return
+
 	await Global.server_bridge.publish_run(Global.game_manager.current_mode, bytes, Global.game_manager.current_map.name, int(timer * 1000))
 
 func spawn_target(identifier: int, pos: Vector3) -> void:

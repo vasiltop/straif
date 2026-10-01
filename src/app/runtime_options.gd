@@ -60,6 +60,9 @@ static func parse(args: PackedStringArray, allow_e2e: bool) -> ParseResult:
 	while index < count:
 		var arg := args[index]
 		match arg:
+			"--offline":
+				options.offline_playtest = true
+				index += 1
 			"--offline-playtest":
 				options.offline_playtest = true
 				index += 1

@@ -69,6 +69,11 @@ layout_mode = 2
 theme_type_variation = &"GhostButton"
 icon = ExtResource("2_refresh")
 
+[node name="PlayOffline" type="Button" parent="M/P/M/V/Toolbar"]
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
+text = "PLAY OFFLINE"
+
 [node name="Scroll" type="ScrollContainer" parent="M/P/M/V" unique_id=1049862433]
 layout_mode = 2
 size_flags_horizontal = 3

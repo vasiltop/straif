@@ -18,4 +18,10 @@ func _call_and_reset() -> void:
 
 func start() -> void:
 	_call_and_reset()
-	self._timer.timeout.connect(_call_and_reset)
+	if not self._timer.timeout.is_connected(_call_and_reset):
+		self._timer.timeout.connect(_call_and_reset)
+
+func stop() -> void:
+	self._timer.stop()
+	if self._timer.timeout.is_connected(_call_and_reset):
+		self._timer.timeout.disconnect(_call_and_reset)

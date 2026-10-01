@@ -525,6 +525,11 @@ func _can_apply_results_request(generation: int) -> bool:
 func _submit_results_and_load_leaderboard(generation: int) -> void:
 	var accuracy := calculate_accuracy(hits, misses)
 	var average_reaction_ms := calculate_average_reaction_ms(reaction_samples)
+	if Global.offline_playtest:
+		if _can_apply_results_request(generation):
+			leaderboard_status.text = "Score not submitted in offline mode."
+		return
+
 	var submission = await Global.server_bridge.submit_aim_score(selected_scenario, score, hits, misses, accuracy, int(round(average_reaction_ms)))
 	if not _can_apply_results_request(generation):
 		return

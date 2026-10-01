@@ -7,6 +7,7 @@ It is heavily inspired by source engine games such as Counter Strike: Source, le
 ## Quick Links
 - [Website](#website)
 - [Web Api](#web-api)
+- [Configuration](#configuration)
 - [Screenshots](#screenshots)
 - [Local Setup](#local-setup)
 - [Steam Deployment](#steam-deployment)
@@ -28,6 +29,62 @@ pnpm dev
 ## Web Api
 The straif [web api](https://straifapi.pumped.software) is public and [documentation](https://straifapi.pumped.software/docs) can be viewed as well.
 
+## Configuration
+
+Configuration is kept separate for the game, API, website, and Steam upload
+tools. Copy the relevant example file before running that component.
+
+### API server variables
+
+Copy `server/.env.example` to `server/.env`:
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `DATABASE_URL` | Local development | PostgreSQL connection string. Docker Compose supplies its internal value. |
+| `VERSION` | Yes | Client version accepted by the API. |
+| `STEAM_API_KEY` | Yes for authenticated requests | Steam Web API key used to validate game tickets. |
+| `DISCORD_TOKEN` | No | Discord bot token. Discord integration is skipped when unset. |
+| `PORT` | Yes | API listening port, normally `3000`. |
+
+The database service in `server/compose.yaml` uses the fixed Docker settings
+`POSTGRES_USER=postgres`, `POSTGRES_PASSWORD=root`, and `POSTGRES_DB=straif`.
+
+### Website variables
+
+Copy `website/.env.example` to `website/.env` when the website needs a custom
+API endpoint:
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `VITE_API_BASE_URL` | No | API base URL. Defaults to the public Straif API. |
+
+### Game-server Docker variables
+
+Dedicated game servers receive these variables through
+`docker/game-servers.compose.yaml` or `scripts/game-server-docker.sh`:
+
+| Variable | Description |
+| --- | --- |
+| `SERVER_NAME` | Name shown in the server browser. |
+| `PORT` | ENet UDP port. |
+| `MAX_PLAYERS` | Maximum connected players. |
+| `MODE` | `deathmatch` or `elimination`. |
+
+### Steam deployment variables
+
+Copy `steam/steam.env.example` to `steam/steam.env` before uploading builds:
+`STEAM_USERNAME`, `STEAM_DEPOT_WINDOWS`, `STEAM_DEPOT_LINUX`, and
+`STEAM_DEPOT_MACOS` are required by the upload script. `STEAMCMD` is optional
+and defaults to `~/.local/steamcmd/steamcmd.sh`.
+
+The deployment script also accepts `DROPLET_HOST` (required) and
+`DROPLET_PATH` (optional, default `~/straif-game-servers`). Export scripts use
+`GODOT` when set, while tests use `GODOT_BIN`.
+
+The Godot client does not require a `.env` file. Its API URL and version are
+stored in `settings-dev.json` for editor runs and `settings-prod.json` for
+exports.
+
 ## Screenshots
 ![streets](./images/screenshots/image7.png)
 ![multiplayer](./images/screenshots/multiplayer.png)
@@ -45,6 +102,15 @@ godot -e
 Requires Godot 4.6.1. Run `./scripts/setup-dev.sh` to install development
 dependencies and Git hooks. Run `./scripts/test-godot.sh` for the Godot test
 suite and `./scripts/test-e2e.sh` for the multi-process ENet test.
+
+If Steam or the API is unavailable, choose **Play Offline** from the server
+browser or maintenance screen. Offline mode supports local speedrun, movement,
+and aim practice; leaderboard and score submission features are disabled.
+It can also be selected from the command line with:
+
+```bash
+godot -- --offline
+```
 
 ### Hosting a game server
 

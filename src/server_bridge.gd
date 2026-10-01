@@ -11,6 +11,7 @@ var client: BetterHTTPClient
 
 var api_url: String
 var version: String
+var offline_mode := false
 var last_aim_overall_leaderboard_available := true
 
 var heartbeat_timer: BetterTimer
@@ -37,13 +38,24 @@ func _init() -> void:
 	client = BetterHTTPClient.new(Global, BetterHTTPURL.parse(api_url))
 	heartbeat_timer = BetterTimer.new(Global, 3.0, _on_heartbeat_timer)
 
+func set_offline_mode(enabled: bool) -> void:
+	offline_mode = enabled
+	if enabled and heartbeat_timer != null:
+		heartbeat_timer.stop()
+
 func _on_heartbeat_timer() -> void:
+	if offline_mode:
+		return
+
 	var url := "/game/heartbeat"
 
 	var request := client.http_get(url)
 	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
 	request.header("version", version)
 	var response := await request.send()
+
+	if offline_mode:
+		return
 
 	if not response or response.status() != 200:
 		Global.get_tree().change_scene_to_file("res://src/maintenance.tscn")
@@ -228,6 +240,9 @@ func _parse_aim_overall_entry(entry: Dictionary) -> AimOverallEntry:
 	)
 
 func get_runs(mode: String, map_name: String, page: int) -> MapRunsResponse:
+	if offline_mode:
+		return MapRunsResponse.new([], 0)
+
 	var url := get_leaderboard_base(mode) + "/maps/%s/runs?page=%d" % [map_name, page - 1]
 	var response := await client.http_get(url).send()
 	var data := await data_or_print_error(response)
@@ -256,6 +271,9 @@ class PositionalRunResponse:
 		self.position = position
 
 func get_my_run_by_map(mode: String, map_name: String) -> PositionalRunResponse:
+	if offline_mode:
+		return null
+
 	var url := get_leaderboard_base(mode) + "/maps/%s/runs/%d" % [map_name, Global.account_id()]
 	var response := await client.http_get(url).send()
 	var data := await data_or_print_error(response, true)
@@ -272,6 +290,9 @@ func get_my_run_by_map(mode: String, map_name: String) -> PositionalRunResponse:
 	)
 
 func publish_run(mode: String, recording: PackedByteArray, map_name: String, time_ms: int) -> void:
+	if offline_mode:
+		return
+
 	if len(recording) > MAX_RUN_RECORDING_BYTES:
 		Info.alert("Could not submit run, you went past the run size limit.")
 		return
@@ -301,6 +322,9 @@ func publish_run(mode: String, recording: PackedByteArray, map_name: String, tim
 			mode_info.pb = time_s
 
 func is_admin(steam_id: int) -> bool:
+	if offline_mode:
+		return false
+
 	var url := "/admin/player/%d" % steam_id
 	var response := await client.http_get(url).header("auth-ticket", Global.game_manager.auth_ticket_hex).send()
 
@@ -308,6 +332,9 @@ func is_admin(steam_id: int) -> bool:
 	return data if data else false
 
 func set_maintenance(new_value: bool) -> void:
+	if offline_mode:
+		return
+
 	var request := client.http_post("/admin/maintenance")
 	request.json({ "new_value": new_value })
 	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
@@ -316,6 +343,9 @@ func set_maintenance(new_value: bool) -> void:
 	await data_or_print_error(response)
 
 func set_admin(steam_id: int, new_value: bool) -> void:
+	if offline_mode:
+		return
+
 	var request := client.http_post("/admin/%d" % steam_id)
 	request.json({ "new_value": new_value })
 	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
@@ -326,6 +356,9 @@ func set_admin(steam_id: int, new_value: bool) -> void:
 		Info.alert(data as String)
 
 func delete_run(mode: String, map_name: String, steam_id: int) -> void:
+	if offline_mode:
+		return
+
 	var url := get_leaderboard_base(mode) + "/maps/%s/runs/%d" % [map_name, steam_id]
 	var response := await client.http_delete(url).header("auth-ticket", Global.game_manager.auth_ticket_hex).send()
 	var data := await data_or_print_error(response)
@@ -334,6 +367,9 @@ func delete_run(mode: String, map_name: String, steam_id: int) -> void:
 		Info.alert(data as String)
 
 func get_replay(mode: String, map_name: String, steam_id: int) -> String:
+	if offline_mode:
+		return ""
+
 	var url := get_leaderboard_base(mode) + "/maps/%s/players/%d/recording" % [map_name, steam_id]
 	var response := await client.http_get(url).header("auth-ticket", Global.game_manager.auth_ticket_hex).send()
 	var data := await data_or_print_error(response)
@@ -364,11 +400,17 @@ class RunsRequestResponse:
 		self.runs = runs
 
 func is_banned(steam_id: int) -> bool:
+	if offline_mode:
+		return false
+
 	var response := await client.http_get("/admin/bans/%s" % steam_id).send()
 	var data := await data_or_print_error(response)
 	return data
 
 func set_ban(steam_id: int, new_value: bool) -> void:
+	if offline_mode:
+		return
+
 	var request := client.http_post("/admin/bans/%d" % steam_id)
 	request.json({ "new_value": new_value })
 	request.header("auth-ticket", Global.game_manager.auth_ticket_hex)
@@ -379,6 +421,9 @@ func set_ban(steam_id: int, new_value: bool) -> void:
 		Info.alert(data as String)
 
 func get_my_runs(mode: String) -> RunsRequestResponse:
+	if offline_mode:
+		return RunsRequestResponse.new([])
+
 	var url := get_leaderboard_base(mode) + "/players/%d/runs" % [Global.account_id()]
 	var response := await client.http_get(url).send()
 	var data := await data_or_print_error(response)
@@ -399,6 +444,9 @@ func submit_aim_score(
 		accuracy: float,
 		avg_reaction_ms: int,
 ) -> AimScoreSubmissionResult:
+	if offline_mode:
+		return null
+
 	var request := client.http_post("/leaderboard/aim/scenarios/%s/scores" % scenario)
 	var body := {
 		"score": score,
@@ -424,6 +472,9 @@ func submit_aim_score(
 	)
 
 func get_aim_scores(scenario: String, page := 1) -> AimScoresResponse:
+	if offline_mode:
+		return null
+
 	var response := await client.http_get("/leaderboard/aim/scenarios/%s/scores?page=%d" % [scenario, page - 1]).send()
 	var data := await data_or_print_error(response, true)
 	if data == null:
@@ -436,6 +487,10 @@ func get_aim_scores(scenario: String, page := 1) -> AimScoresResponse:
 	return AimScoresResponse.new(scores, data.total as int)
 
 func get_aim_overall_leaderboard() -> Array[AimOverallEntry]:
+	if offline_mode:
+		last_aim_overall_leaderboard_available = false
+		return []
+
 	var response := await client.http_get("/leaderboard/aim/overall").send()
 	var data := await data_or_print_error(response, true)
 	if data == null:
@@ -449,6 +504,9 @@ func get_aim_overall_leaderboard() -> Array[AimOverallEntry]:
 	return scores
 
 func get_overall_leaderboard(mode: String) -> Array:
+	if offline_mode:
+		return []
+
 	var res = await client.http_get(get_leaderboard_base(mode) + "/overall").send()
 	var data := await data_or_print_error(res)
 	if data == null:
@@ -467,6 +525,9 @@ class ServerResponse:
 	var ip: String
 
 func get_servers() -> Array[ServerResponse]:
+	if offline_mode:
+		return []
+
 	var response := await (client.http_get("/browser")).send()
 	var data := await data_or_print_error(response)
 	if data == null:

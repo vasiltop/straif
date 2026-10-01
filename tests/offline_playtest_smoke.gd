@@ -15,12 +15,17 @@ func _run() -> void:
 				"Offline helper should enable on the exact flag",
 		)
 		_check(
+				global_node.is_offline_playtest_mode(PackedStringArray(["--offline"])),
+				"Offline helper should enable on the short flag",
+		)
+		_check(
 				not global_node.is_offline_playtest_mode(PackedStringArray(["--offline-playtestx"])),
 				"Offline helper should ignore partial flag matches",
 		)
 
 		var context: Variant = await _await_context(global_node)
 		_check(global_node.offline_playtest, "Global should report offline playtest mode when launched with the flag")
+		_check(global_node.server_bridge.offline_mode, "Offline mode should disable server bridge requests")
 		_check(context != null, "Global should build an AppContext during startup")
 
 		if context != null and context.identity != null:

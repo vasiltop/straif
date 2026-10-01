@@ -4,6 +4,7 @@ extends Control
 @onready var mode_tabs: HBoxContainer = $M/P/M/V/Toolbar/ModeTabs
 @onready var server_container: HFlowContainer = $M/P/M/V/Scroll/ServerContainer
 @onready var empty_state: Label = $M/P/M/V/EmptyState
+@onready var play_offline_btn: Button = $M/P/M/V/Toolbar/PlayOffline
 
 const ServerButtonScene = preload("res://src/menus/multiplayer/server_button/server_button.tscn")
 const FILTERS := ["All", "Deathmatch", "Elimination"]
@@ -24,6 +25,7 @@ func _ready() -> void:
 		btn.pressed.connect(_on_mode_selected.bind(i))
 		mode_tabs.add_child(btn)
 	refresh_servers_btn.pressed.connect(_refresh_servers)
+	play_offline_btn.pressed.connect(_play_offline)
 	server_container.resized.connect(_fit)
 	_refresh_servers()
 
@@ -69,3 +71,7 @@ func _render_servers() -> void:
 
 	empty_state.text = "No %s servers online." % mode if not mode.is_empty() else "No servers online."
 	empty_state.visible = servers.is_empty()
+
+func _play_offline() -> void:
+	Global.enable_offline_mode()
+	get_tree().change_scene_to_file("res://src/menus/main/main_menu.tscn")

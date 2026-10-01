@@ -11,6 +11,7 @@ func _init() -> void:
 	_test_server_missing_or_invalid_positionals(t)
 	_test_unknown_command_flag_and_extra(t)
 	_test_offline_playtest_flag(t)
+	_test_offline_alias(t)
 	_test_server_rejects_flag_like_positionals(t)
 	_test_valid_connect_with_e2e(t)
 	_test_invalid_connect(t)
@@ -117,6 +118,12 @@ func _test_offline_playtest_flag(t: TestCase) -> void:
 			not RuntimeOptions.parse(PackedStringArray(["--offline-playtestx"]), false).is_ok(),
 			"A partial match of --offline-playtest should not be accepted as the flag",
 	)
+
+func _test_offline_alias(t: TestCase) -> void:
+	var result := RuntimeOptions.parse(PackedStringArray(["--offline"]), false)
+	t.check(result.is_ok(), "The --offline alias should parse without error, got: %s" % result.error)
+	if result.is_ok():
+		t.check(result.options.offline_playtest, "--offline should enable the offline profile")
 
 func _test_valid_connect_with_e2e(t: TestCase) -> void:
 	var args := PackedStringArray(["connect", "127.0.0.1", "5000", "--e2e", "--e2e-instance", "alice", "--e2e-control-port", "6001"])
